@@ -85,6 +85,15 @@ export function buildImageKitUrl(
     return src;
   }
 
+  // If ImageKit is not configured, return the original path
+  if (!imagekitConfig.urlEndpoint || imagekitConfig.urlEndpoint === '') {
+    // Don't log warning in production to avoid console spam
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('ImageKit URL endpoint not configured, returning original path');
+    }
+    return src;
+  }
+
   // Build ImageKit URL with transformations
   let url = `${imagekitConfig.urlEndpoint}${src.startsWith('/') ? src : `/${src}`}`;
   

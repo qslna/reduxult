@@ -13,7 +13,7 @@ const aboutSections = [
     description: '시각적 창조와 예술적 표현의 경계를 탐험합니다',
     href: '/about/visual-art',
     icon: Eye,
-    image: '/about/visual-art/Metamorphosis.png',
+    image: '/placeholder.svg',
     color: 'from-purple-500 to-pink-500',
   },
   {
@@ -21,7 +21,7 @@ const aboutSections = [
     description: '협업과 공동 창작을 통한 새로운 가능성을 발견합니다',
     href: '/about/collective',
     icon: Users,
-    image: '/about/visual-art/Collective Vision.png',
+    image: '/placeholder.svg',
     color: 'from-blue-500 to-cyan-500',
   },
   {
@@ -29,7 +29,7 @@ const aboutSections = [
     description: '패션과 영상의 만남으로 스토리텔링을 완성합니다',
     href: '/about/fashion-film',
     icon: Film,
-    image: '/about/visual-art/Digital Dreams.png',
+    image: '/placeholder.svg',
     color: 'from-orange-500 to-red-500',
   },
   {
@@ -37,7 +37,7 @@ const aboutSections = [
     description: '공간과 관람객의 상호작용을 통한 몰입형 경험을 제공합니다',
     href: '/about/installation',
     icon: Palette,
-    image: '/about/visual-art/Form & Void.png',
+    image: '/placeholder.svg',
     color: 'from-green-500 to-emerald-500',
   },
   {
@@ -45,7 +45,7 @@ const aboutSections = [
     description: '시간과 기억의 흔적을 디자인으로 보존하고 재해석합니다',
     href: '/about/memory',
     icon: Clock,
-    image: '/about/visual-art/Analog Memories.png',
+    image: '/placeholder.svg',
     color: 'from-yellow-500 to-orange-500',
   },
 ];

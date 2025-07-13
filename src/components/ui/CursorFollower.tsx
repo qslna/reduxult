@@ -22,6 +22,9 @@ export default function CursorFollower() {
   const { currentTheme } = useThemeStore();
 
   useEffect(() => {
+    // Skip on server-side rendering
+    if (typeof window === 'undefined') return;
+
     const updateCursor = (e: MouseEvent) => {
       setCursor(prev => ({
         ...prev,
@@ -51,19 +54,24 @@ export default function CursorFollower() {
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
 
-    // Add pointer detection for interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, [role="button"], input, textarea, select');
-    
-    interactiveElements.forEach(el => {
-      el.addEventListener('mouseenter', handlePointerEnter);
-      el.addEventListener('mouseleave', handlePointerLeave);
-    });
+    // Delay the interactive element detection to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      const interactiveElements = document.querySelectorAll('a, button, [role="button"], input, textarea, select');
+      
+      interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', handlePointerEnter);
+        el.addEventListener('mouseleave', handlePointerLeave);
+      });
+    }, 100);
 
     return () => {
+      clearTimeout(timeoutId);
       document.removeEventListener('mousemove', updateCursor);
       document.removeEventListener('mouseenter', handleMouseEnter);
       document.removeEventListener('mouseleave', handleMouseLeave);
       
+      // Clean up interactive element listeners
+      const interactiveElements = document.querySelectorAll('a, button, [role="button"], input, textarea, select');
       interactiveElements.forEach(el => {
         el.removeEventListener('mouseenter', handlePointerEnter);
         el.removeEventListener('mouseleave', handlePointerLeave);

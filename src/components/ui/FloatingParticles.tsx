@@ -24,6 +24,9 @@ export default function FloatingParticles({ count = 50, className = '' }: Floati
   const animationRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
+    // Skip on server-side rendering
+    if (typeof window === 'undefined') return;
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
 

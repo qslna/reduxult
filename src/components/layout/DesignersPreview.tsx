@@ -17,8 +17,8 @@ const designersData = [
     experience: '6+ Years',
     location: 'Seoul, Korea',
     portfolioPreview: [
-      '/images/profile/Hwang Jinsu.jpg',
-      '/about/visual-art/Form & Void.png',
+      '/placeholder.svg',
+      '/placeholder.svg',
     ],
   },
   {
@@ -27,8 +27,8 @@ const designersData = [
     experience: '5+ Years',
     location: 'Seoul, Korea',
     portfolioPreview: [
-      '/images/profile/Choi Eunsol.jpeg',
-      '/about/visual-art/Analog Memories.png',
+      '/placeholder.svg',
+      '/placeholder.svg',
     ],
   },
   {
@@ -37,8 +37,8 @@ const designersData = [
     experience: '4+ Years',
     location: 'Seoul, Korea',
     portfolioPreview: [
-      '/images/profile/Park Parang.jpg',
-      '/about/visual-art/Digital Dreams.png',
+      '/placeholder.svg',
+      '/placeholder.svg',
     ],
   },
   {
@@ -47,8 +47,8 @@ const designersData = [
     experience: '7+ Years',
     location: 'Seoul, Korea',
     portfolioPreview: [
-      '/images/profile/Lee Taehyeon.jpg',
-      '/about/visual-art/Color Theory.png',
+      '/placeholder.svg',
+      '/placeholder.svg',
     ],
   },
   {
@@ -57,8 +57,8 @@ const designersData = [
     experience: '4+ Years',
     location: 'Seoul, Korea',
     portfolioPreview: [
-      '/images/profile/Kim Bomin.webp',
-      '/about/visual-art/Metamorphosis.png',
+      '/placeholder.svg',
+      '/placeholder.svg',
     ],
   },
   {
@@ -67,8 +67,8 @@ const designersData = [
     experience: '5+ Years',
     location: 'Seoul, Korea',
     portfolioPreview: [
-      '/images/profile/Kim Gyeongsu.webp',
-      '/about/visual-art/Shadow Play.png',
+      '/placeholder.svg',
+      '/placeholder.svg',
     ],
   },
 ];

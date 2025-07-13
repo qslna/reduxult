@@ -31,6 +31,9 @@ export default function ProfileImage({
 }: ProfileImageProps) {
   const { width, height } = sizeMap[size];
   
+  // Use placeholder if original image doesn't exist
+  const imageSrc = src || '/placeholder.svg';
+  
   return (
     <motion.div
       className={cn('relative', className)}
@@ -72,7 +75,7 @@ export default function ProfileImage({
         )}
       >
         <Image
-          src={buildImageKitUrl(src, {
+          src={buildImageKitUrl(imageSrc, {
             width,
             height,
             quality: 90,
@@ -84,6 +87,10 @@ export default function ProfileImage({
           fill
           className="object-cover"
           sizes={`${width}px`}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = '/placeholder.svg';
+          }}
         />
         
         {/* Subtle overlay gradient */}
