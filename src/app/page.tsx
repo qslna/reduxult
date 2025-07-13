@@ -1,100 +1,134 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import dynamic from 'next/dynamic';
+import VideoHeroSection from '@/components/layout/VideoHeroSection';
+import LoadingScreen from '@/components/ui/LoadingScreen';
 
-export default function SafeHomePage() {
-  const [mounted, setMounted] = useState(false);
-  
+// Lazy load heavy components for better performance
+const AboutShowcase = dynamic(() => import('@/components/layout/AboutShowcase'), {
+  loading: () => <div className="h-screen flex items-center justify-center">Loading...</div>
+});
+
+const DesignersPreview = dynamic(() => import('@/components/layout/DesignersPreview'), {
+  loading: () => <div className="h-screen flex items-center justify-center">Loading...</div>
+});
+
+export default function HomePage() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
   useEffect(() => {
-    setMounted(true);
+    // Simulate loading progress
+    const interval = setInterval(() => {
+      setLoadingProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => setIsLoading(false), 500);
+          return 100;
+        }
+        return prev + 2;
+      });
+    }, 50);
+
+    return () => clearInterval(interval);
   }, []);
 
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Loading...</h1>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center">
-        <div className="text-center max-w-5xl px-6">
-          <h1 className="text-7xl sm:text-8xl md:text-9xl font-extrabold tracking-tight mb-6 text-white">
-            REDUX
-          </h1>
-          
-          <p className="text-xl sm:text-2xl md:text-3xl text-gray-300 mb-4">
-            KOREAN FASHION DESIGNER COLLECTIVE
-          </p>
-          
-          <p className="text-base sm:text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
-            실험적 패션과 비주얼 아트의 경계를 탐구하는 6인의 디자이너
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/designers" className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors">
-              디자이너 만나기
-            </Link>
-            
-            <Link href="/exhibitions" className="px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-colors">
-              전시 둘러보기
-            </Link>
+    <>
+      <AnimatePresence>
+        {isLoading && (
+          <LoadingScreen 
+            isLoading={isLoading}
+            progress={loadingProgress}
+            message="창의적 비전을 로딩 중..."
+          />
+        )}
+      </AnimatePresence>
+
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative"
+      >
+        {/* Hero Section */}
+        <VideoHeroSection />
+
+        {/* About Preview Section */}
+        <section className="relative">
+          <AboutShowcase />
+        </section>
+
+        {/* Designers Preview Section */}
+        <section className="relative">
+          <DesignersPreview />
+        </section>
+
+        {/* Featured Works Section */}
+        <section className="relative py-20 bg-gray-950">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center"
+            >
+              <h2 className="text-4xl md:text-6xl font-bold mb-8">
+                <span className="bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent">
+                  FEATURED WORKS
+                </span>
+              </h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                세계 최고 수준의 디자인 작품들을 만나보세요. 
+                각 디자이너의 독창적인 비전과 혁신적인 접근법이 담긴 프로젝트들입니다.
+              </p>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* About Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-6xl font-bold mb-8">ABOUT REDUX</h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            세계 최고 수준의 디자인과 창의적 비전을 탐구하는 패션 컬렉티브입니다.
-          </p>
-        </div>
-      </section>
-
-      {/* Designers Section */}
-      <section className="py-20 px-6 bg-gray-950">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-bold mb-12 text-center">DESIGNERS</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {['Hwang Jinsu', 'Choi Eunsol', 'Park Parang', 'Lee Taehyeon', 'Kim Bomin', 'Kim Gyeongsu'].map((name) => (
-              <div key={name} className="bg-black p-6 rounded-lg">
-                <h3 className="text-2xl font-semibold mb-2">{name}</h3>
-                <p className="text-gray-400">Fashion Designer</p>
+        {/* Call to Action Section */}
+        <section className="relative py-20 bg-black">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
+                함께 만들어가는 디자인의 미래
+              </h2>
+              <p className="text-lg text-gray-400 mb-10 leading-relaxed">
+                REDUX66에서 창의적 파트너십을 시작하세요. 
+                혁신적인 아이디어와 최고의 디자인 퀄리티로 프로젝트를 성공으로 이끌어드립니다.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <motion.a
+                  href="/contact"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  프로젝트 문의하기
+                </motion.a>
+                
+                <motion.a
+                  href="/about"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-black transition-all duration-300"
+                >
+                  더 알아보기
+                </motion.a>
               </div>
-            ))}
+            </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            함께 만들어가는 디자인의 미래
-          </h2>
-          <p className="text-lg text-gray-400 mb-10">
-            REDUX66에서 창의적 파트너십을 시작하세요.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact" className="px-8 py-4 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
-              프로젝트 문의하기
-            </Link>
-            
-            <Link href="/about" className="px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-black transition-colors">
-              더 알아보기
-            </Link>
-          </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </motion.div>
+    </>
   );
 }
