@@ -12,7 +12,13 @@
       "Bash(if grep -r \"redux-cms\\.js\\|redux-simple-cms\\.js\\|redux-modern-cms\\.js\\|redux-master-system\\.js\" /mnt/c/Users/t9140/OneDrive/바탕 화면/redux6/*.html)",
       "Bash(then echo \"WARNING: Old references found!\")",
       "Bash(else echo \"SUCCESS: No old CMS script references found.\")",
-      "Bash(fi)"
+      "Bash(fi)",
+      "Bash(cat:*)",
+      "Bash(env)",
+      "Bash(claude logout)",
+      "Bash(claude login)",
+      "Bash(sudo npm update -g @anthropic-ai/claude-code)",
+      "Bash(npm update:*)"
     ],
     "deny": []
   }
