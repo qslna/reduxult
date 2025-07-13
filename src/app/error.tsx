@@ -36,17 +36,21 @@ export default function Error({
             </a>
           </div>
         </div>
-        {process.env.NODE_ENV === 'development' && (
-          <details className="mt-8 text-left">
-            <summary className="cursor-pointer text-red-400">
-              Error details (development only)
-            </summary>
-            <pre className="mt-2 text-xs bg-gray-900 p-4 rounded overflow-auto">
-              {error.message}
-              {error.stack}
-            </pre>
-          </details>
-        )}
+        {/* Always show error details for debugging */}
+        <details className="mt-8 text-left">
+          <summary className="cursor-pointer text-red-400">
+            Error details
+          </summary>
+          <pre className="mt-2 text-xs bg-gray-900 p-4 rounded overflow-auto">
+            Error: {error.message}
+            {'\n'}
+            Stack: {error.stack}
+            {'\n'}
+            Digest: {error.digest}
+            {'\n'}
+            Environment: {process.env.NODE_ENV}
+          </pre>
+        </details>
       </div>
     </div>
   );

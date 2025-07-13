@@ -2,15 +2,15 @@ import ImageKit from 'imagekit';
 
 // ImageKit configuration
 export const imagekitConfig = {
-  publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!,
-  urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!,
+  publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY || '',
+  urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || '',
   authenticationEndpoint: '/api/imagekit/auth',
 };
 
 // Server-side ImageKit instance (for admin operations)
 export const imagekit = new ImageKit({
   publicKey: imagekitConfig.publicKey,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY || '',
   urlEndpoint: imagekitConfig.urlEndpoint,
 });
 
