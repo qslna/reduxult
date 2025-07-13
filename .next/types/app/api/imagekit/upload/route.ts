@@ -1,4 +1,4 @@
-// File: /mnt/c/Users/t9140/OneDrive/바탕 화면/redux6/src/app/api/imagekit/upload/route.ts
+// File: /mnt/c/Users/t9140/OneDrive/바탕 화면/reduxult/src/app/api/imagekit/upload/route.ts
 import * as entry from '../../../../../../src/app/api/imagekit/upload/route.js'
 import type { NextRequest } from 'next/server.js'
 

@@ -1,4 +1,4 @@
-// File: /mnt/c/Users/t9140/OneDrive/바탕 화면/redux6/src/app/about/visual-art/page.tsx
+// File: /mnt/c/Users/t9140/OneDrive/바탕 화면/reduxult/src/app/about/visual-art/page.tsx
 import * as entry from '../../../../../src/app/about/visual-art/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

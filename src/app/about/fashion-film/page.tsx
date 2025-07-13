@@ -79,7 +79,7 @@ const fashionFilms = [
     description: '미니멀한 아름다움을 시적으로 표현한 작품',
     videoUrl: getDrivePreview(FASHION_FILM_IDS['designer-kimgyeongsu']),
     thumbnailKey: 'fashion-film-kimgyeongsu-thumb',
-    fallbackThumbnail: '/images/designers/kimgyeongsu/Showcase/IMG_2544.HEIC'
+    fallbackThumbnail: '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg'
   }
 ];
 

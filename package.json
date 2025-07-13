@@ -5,13 +5,16 @@
   "description": "Modern designer portfolio built with Next.js 15 and TypeScript",
   "scripts": {
     "dev": "next dev --turbo",
+    "prebuild": "node scripts/pre-build-check.cjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "analyze": "ANALYZE=true next build",
     "vercel": "vercel",
-    "vercel:prod": "vercel --prod"
+    "vercel:prod": "vercel --prod",
+    "check": "node scripts/pre-build-check.cjs",
+    "build:safe": "npm run check && npm run build"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.4",

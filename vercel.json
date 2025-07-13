@@ -12,10 +12,6 @@
       "maxDuration": 30
     }
   },
-  "images": {
-    "domains": ["ik.imagekit.io"],
-    "minimumCacheTTL": 31536000
-  },
   "headers": [
     {
       "source": "/(.*)",

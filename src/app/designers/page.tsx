@@ -72,7 +72,7 @@ const designersData: ExtendedDesigner[] = [
     specialty: 'Structural Design & Space',
     bio: '공간과 구조의 관계를 탐구하며 새로운 디자인 가능성을 제시하는 디자이너입니다.',
     image: DESIGNERS.kimgyeongsu.profileImage,
-    portfolioImage: '/images/designers/kimgyeongsu/portfolio/IMG_5484.HEIC',
+    portfolioImage: '/images/designers/kimgyeongsu/portfolio/IMG_5484.jpg',
     stats: { projects: 12, exhibitions: 7, awards: 4 },
     featured: false
   },
