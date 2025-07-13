@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(pkill:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "WebFetch(domain:redux66.netlify.app)",
+      "Bash(rm:*)",
+      "Bash(find:*)",
+      "Bash(sed:*)",
+      "Bash(if grep -r \"redux-cms\\.js\\|redux-simple-cms\\.js\\|redux-modern-cms\\.js\\|redux-master-system\\.js\" /mnt/c/Users/t9140/OneDrive/바탕 화면/redux6/*.html)",
+      "Bash(then echo \"WARNING: Old references found!\")",
+      "Bash(else echo \"SUCCESS: No old CMS script references found.\")",
+      "Bash(fi)"
+    ],
+    "deny": []
+  }
+}

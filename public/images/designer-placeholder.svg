@@ -1,0 +1,6 @@
+<svg width="400" height="500" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="400" height="500" fill="#F3F4F6"/>
+<circle cx="200" cy="180" r="40" fill="#9CA3AF"/>
+<path d="M140 300H260C260 300 260 260 200 260C140 260 140 300 140 300Z" fill="#9CA3AF"/>
+<text x="200" y="380" text-anchor="middle" fill="#6B7280" font-family="Arial, sans-serif" font-size="14px">Designer Photo</text>
+</svg>

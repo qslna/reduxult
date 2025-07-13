@@ -1,0 +1,23 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/imagekit/upload/route": "app/api/imagekit/upload/route.js",
+  "/api/imagekit/auth/route": "app/api/imagekit/auth/route.js",
+  "/api/imagekit/delete/route": "app/api/imagekit/delete/route.js",
+  "/api/imagekit/list/route": "app/api/imagekit/list/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/about/fashion-film/page": "app/about/fashion-film/page.js",
+  "/about/collective/page": "app/about/collective/page.js",
+  "/about/page": "app/about/page.js",
+  "/about/installation/page": "app/about/installation/page.js",
+  "/about/memory/page": "app/about/memory/page.js",
+  "/about/visual-art/page": "app/about/visual-art/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/admin/gallery/page": "app/admin/gallery/page.js",
+  "/designers/page": "app/designers/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/exhibitions/page": "app/exhibitions/page.js",
+  "/page": "app/page.js",
+  "/test/page": "app/test/page.js",
+  "/designers/[name]/page": "app/designers/[name]/page.js"
+}
