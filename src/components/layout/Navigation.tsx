@@ -1,109 +1,48 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 import { cn } from '@/utils/cn';
-import { NAVIGATION } from '@/utils/constants';
+
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/designers', label: 'Designers' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/exhibitions', label: 'Exhibitions' },
+  { href: '/contact', label: 'Contact' },
+];
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    setIsOpen(false);
-    setActiveSubmenu(null);
-  }, [pathname]);
 
   return (
-    <nav
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        scrolled ? 'bg-black/90 backdrop-blur-md' : 'bg-transparent'
-      )}
-    >
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
       <div className="container">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link
-            href="/"
-            className="text-2xl font-bold tracking-wider hover:opacity-80 transition-opacity"
-          >
+          <Link href="/" className="text-2xl font-bold tracking-wider">
             REDUX
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {NAVIGATION.map((item) => (
-              <div
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <Link
                 key={item.href}
-                className="relative"
-                onMouseEnter={() => setActiveSubmenu(item.label)}
-                onMouseLeave={() => setActiveSubmenu(null)}
+                href={item.href}
+                className="text-sm uppercase tracking-wider hover:text-gray-300 transition-colors"
               >
-                <Link
-                  href={item.href}
-                  className={cn(
-                    'flex items-center gap-1 py-2 text-sm font-medium transition-colors',
-                    pathname.startsWith(item.href)
-                      ? 'text-white'
-                      : 'text-gray-400 hover:text-white'
-                  )}
-                >
-                  {item.label}
-                  {item.submenu && (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </Link>
-
-                {/* Submenu */}
-                <AnimatePresence>
-                  {item.submenu && activeSubmenu === item.label && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 mt-2 w-48 bg-black/90 backdrop-blur-md rounded-lg overflow-hidden"
-                    >
-                      {item.submenu.map((subitem) => (
-                        <Link
-                          key={subitem.href}
-                          href={subitem.href}
-                          className={cn(
-                            'block px-4 py-3 text-sm transition-colors',
-                            pathname === subitem.href
-                              ? 'bg-white/10 text-white'
-                              : 'text-gray-400 hover:bg-white/5 hover:text-white'
-                          )}
-                        >
-                          {subitem.label}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                {item.label}
+              </Link>
             ))}
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 hover:bg-white/10 rounded-md transition-colors"
+            className="md:hidden p-2 hover:bg-white/10 rounded-md transition-colors"
             aria-label="Toggle menu"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -112,53 +51,25 @@ export default function Navigation() {
       </div>
 
       {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="lg:hidden bg-black/95 backdrop-blur-md"
-          >
-            <div className="container py-4">
-              {NAVIGATION.map((item) => (
-                <div key={item.href} className="py-2">
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      'block py-2 text-lg font-medium transition-colors',
-                      pathname.startsWith(item.href)
-                        ? 'text-white'
-                        : 'text-gray-400'
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                  {item.submenu && (
-                    <div className="ml-4 mt-2 space-y-2">
-                      {item.submenu.map((subitem) => (
-                        <Link
-                          key={subitem.href}
-                          href={subitem.href}
-                          className={cn(
-                            'block py-1 text-sm transition-colors',
-                            pathname === subitem.href
-                              ? 'text-white'
-                              : 'text-gray-500'
-                          )}
-                        >
-                          {subitem.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </motion.div>
+      <div
+        className={cn(
+          'md:hidden fixed inset-x-0 top-20 bg-black/95 backdrop-blur-md border-b border-white/10 transition-all duration-300',
+          isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'
         )}
-      </AnimatePresence>
+      >
+        <div className="container py-4 space-y-2">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setIsOpen(false)}
+              className="block py-3 text-sm uppercase tracking-wider hover:text-gray-300 transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </div>
     </nav>
   );
 }

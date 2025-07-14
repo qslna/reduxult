@@ -1,59 +1,69 @@
-// Designer types
+// Core Types for REDUX Website
+
 export interface Designer {
   id: string;
   name: string;
   nameKo: string;
-  nameEn: string;
   role: string;
-  description: string;
+  bio: string;
   profileImage: string;
+  coverImage: string;
   instagramHandle: string;
-  instagramUrl: string;
   portfolioImages: string[];
-  theme: {
-    primary: string;
-    secondary: string;
-    accent: string;
-  };
+  featured: boolean;
+  order: number;
 }
 
-// Gallery types
-export interface GalleryImage {
-  id: string;
-  url: string;
-  alt: string;
-  caption?: string;
-  width?: number;
-  height?: number;
-}
-
-// About section types
-export interface AboutSection {
+export interface Project {
   id: string;
   title: string;
   titleKo: string;
   description: string;
-  coverImage: string;
+  descriptionKo: string;
+  category: 'collective' | 'visual-art' | 'fashion-film' | 'installation' | 'memory';
+  designers: string[]; // Designer IDs
   images: string[];
+  videoUrl?: string;
+  date: string;
+  featured: boolean;
+  order: number;
 }
 
-// Navigation types
-export interface NavItem {
-  label: string;
-  href: string;
-  submenu?: NavItem[];
+export interface Exhibition {
+  id: string;
+  title: string;
+  titleKo: string;
+  description: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  images: string[];
+  status: 'upcoming' | 'ongoing' | 'past';
+  featured: boolean;
 }
 
-// CMS types
-export interface ImageUpload {
-  file: File;
-  preview: string;
-  progress: number;
-  error?: string;
+export interface CMSImage {
+  id: string;
+  url: string;
+  alt: string;
+  width: number;
+  height: number;
+  uploadedAt: string;
+  category: string;
 }
 
-export interface CMSConfig {
-  allowedTypes: string[];
-  maxFileSize: number;
-  maxFiles: number;
+export interface SiteSettings {
+  heroVideo: string;
+  heroImage: string;
+  aboutText: string;
+  aboutTextKo: string;
+  contactEmail: string;
+  contactPhone: string;
+  address: string;
+  addressKo: string;
+  socialLinks: {
+    instagram: string;
+    youtube?: string;
+    facebook?: string;
+  };
 }

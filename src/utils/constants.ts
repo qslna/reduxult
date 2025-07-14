@@ -1,185 +1,160 @@
-import { Designer, AboutSection, NavItem } from '@/types';
+import { Designer, Project } from '@/types';
 
-// 디자이너 정보
 export const DESIGNERS: Designer[] = [
   {
-    id: 'hwangjinsu',
+    id: 'hwang-jinsu',
     name: 'Hwang Jinsu',
     nameKo: '황진수',
-    nameEn: 'Hwang Jinsu',
-    role: 'Fashion Designer',
-    description: '실험적이고 아방가르드한 디자인을 추구하는 패션 디자이너',
-    profileImage: '/images/profile/Hwang Jinsu.jpg',
-    instagramHandle: 'j_j_j_j_j_h',
-    instagramUrl: 'https://instagram.com/j_j_j_j_j_h',
-    portfolioImages: [],
-    theme: {
-      primary: '#000000',
-      secondary: '#1a1a1a',
-      accent: '#ff0000',
-    },
+    role: 'Creative Director',
+    bio: 'REDUX의 창립자이자 크리에이티브 디렉터로, 실험적인 패션과 예술의 경계를 탐구합니다.',
+    profileImage: '/images/designers/hwang-jinsu/profile.jpg',
+    coverImage: '/images/designers/hwang-jinsu/cover.jpg',
+    instagramHandle: 'hwangjinsu',
+    portfolioImages: [
+      '/images/designers/hwang-jinsu/portfolio-1.jpg',
+      '/images/designers/hwang-jinsu/portfolio-2.jpg',
+      '/images/designers/hwang-jinsu/portfolio-3.jpg',
+    ],
+    featured: true,
+    order: 1,
   },
   {
-    id: 'choieunsol',
+    id: 'choi-eunsol',
     name: 'Choi Eunsol',
     nameKo: '최은솔',
-    nameEn: 'Choi Eunsol',
     role: 'Fashion Designer',
-    description: '자연과 인간의 조화를 담은 지속가능한 패션을 추구',
-    profileImage: '/images/profile/Choi Eunsol.jpeg',
-    instagramHandle: 'choieunsol.of',
-    instagramUrl: 'https://instagram.com/choieunsol.of',
-    portfolioImages: [],
-    theme: {
-      primary: '#1a1a1a',
-      secondary: '#2a2a2a',
-      accent: '#4a4a4a',
-    },
+    bio: '전통과 현대를 융합한 독특한 미학을 추구하는 패션 디자이너입니다.',
+    profileImage: '/images/designers/choi-eunsol/profile.jpg',
+    coverImage: '/images/designers/choi-eunsol/cover.jpg',
+    instagramHandle: 'choieunsol',
+    portfolioImages: [
+      '/images/designers/choi-eunsol/portfolio-1.jpg',
+      '/images/designers/choi-eunsol/portfolio-2.jpg',
+      '/images/designers/choi-eunsol/portfolio-3.jpg',
+    ],
+    featured: true,
+    order: 2,
   },
   {
-    id: 'parkparang',
+    id: 'park-parang',
     name: 'Park Parang',
     nameKo: '박파랑',
-    nameEn: 'Park Parang',
     role: 'Visual Artist',
-    description: '시각적 내러티브를 통해 현대 사회를 탐구하는 비주얼 아티스트',
-    profileImage: '/images/profile/Park Parang.jpg',
-    instagramHandle: 'rannx8m',
-    instagramUrl: 'https://instagram.com/rannx8m',
-    portfolioImages: [],
-    theme: {
-      primary: '#0000ff',
-      secondary: '#000080',
-      accent: '#00ffff',
-    },
+    bio: '시각 예술과 패션의 경계를 넘나드는 멀티미디어 아티스트입니다.',
+    profileImage: '/images/designers/park-parang/profile.jpg',
+    coverImage: '/images/designers/park-parang/cover.jpg',
+    instagramHandle: 'parkparang',
+    portfolioImages: [
+      '/images/designers/park-parang/portfolio-1.jpg',
+      '/images/designers/park-parang/portfolio-2.jpg',
+      '/images/designers/park-parang/portfolio-3.jpg',
+    ],
+    featured: true,
+    order: 3,
   },
   {
-    id: 'leetaehyeon',
+    id: 'lee-taehyeon',
     name: 'Lee Taehyeon',
     nameKo: '이태현',
-    nameEn: 'Lee Taehyeon',
     role: 'Fashion Designer',
-    description: '전통과 현대의 경계를 넘나드는 크리에이티브 디렉터',
-    profileImage: '/images/profile/Lee Taehyeon.jpg',
-    instagramHandle: 'tododope',
-    instagramUrl: 'https://instagram.com/tododope',
-    portfolioImages: [],
-    theme: {
-      primary: '#ff6b00',
-      secondary: '#ff8c00',
-      accent: '#ffd600',
-    },
+    bio: '미니멀리즘과 구조적 실루엣을 탐구하는 패션 디자이너입니다.',
+    profileImage: '/images/designers/lee-taehyeon/profile.jpg',
+    coverImage: '/images/designers/lee-taehyeon/cover.jpg',
+    instagramHandle: 'leetaehyeon',
+    portfolioImages: [
+      '/images/designers/lee-taehyeon/portfolio-1.jpg',
+      '/images/designers/lee-taehyeon/portfolio-2.jpg',
+      '/images/designers/lee-taehyeon/portfolio-3.jpg',
+    ],
+    featured: false,
+    order: 4,
   },
   {
-    id: 'kimbomin',
+    id: 'kim-bomin',
     name: 'Kim Bomin',
     nameKo: '김보민',
-    nameEn: 'Kim Bomin',
-    role: 'Creative Director',
-    description: '미니멀하면서도 임팩트 있는 디자인을 추구하는 크리에이티브 디렉터',
-    profileImage: '/images/designer-placeholder.jpg',
-    instagramHandle: 'minectivbe',
-    instagramUrl: 'https://instagram.com/minectivbe',
-    portfolioImages: [],
-    theme: {
-      primary: '#ff1493',
-      secondary: '#ff69b4',
-      accent: '#ffc0cb',
-    },
+    role: 'Creative Designer',
+    bio: '색채와 텍스처를 통해 감정을 표현하는 크리에이티브 디자이너입니다.',
+    profileImage: '/images/designers/kim-bomin/profile.jpg',
+    coverImage: '/images/designers/kim-bomin/cover.jpg',
+    instagramHandle: 'kimbomin',
+    portfolioImages: [
+      '/images/designers/kim-bomin/portfolio-1.jpg',
+      '/images/designers/kim-bomin/portfolio-2.jpg',
+      '/images/designers/kim-bomin/portfolio-3.jpg',
+    ],
+    featured: false,
+    order: 5,
   },
   {
-    id: 'kimgyeongsu',
+    id: 'kim-gyeongsu',
     name: 'Kim Gyeongsu',
     nameKo: '김경수',
-    nameEn: 'Kim Gyeongsu',
     role: 'Fashion Designer',
-    description: '구조적 실루엣과 혁신적인 소재를 탐구하는 패션 디자이너',
-    profileImage: '/images/designer-placeholder.jpg',
-    instagramHandle: 'gang._.soo__',
-    instagramUrl: 'https://instagram.com/gang._.soo__',
-    portfolioImages: [],
-    theme: {
-      primary: '#2c2c2c',
-      secondary: '#4c4c4c',
-      accent: '#8b8b8b',
-    },
+    bio: '기능성과 예술성을 결합한 혁신적인 패션을 선보이는 디자이너입니다.',
+    profileImage: '/images/designers/kim-gyeongsu/profile.jpg',
+    coverImage: '/images/designers/kim-gyeongsu/cover.jpg',
+    instagramHandle: 'kimgyeongsu',
+    portfolioImages: [
+      '/images/designers/kim-gyeongsu/portfolio-1.jpg',
+      '/images/designers/kim-gyeongsu/portfolio-2.jpg',
+      '/images/designers/kim-gyeongsu/portfolio-3.jpg',
+    ],
+    featured: false,
+    order: 6,
   },
 ];
 
-// About 섹션
-export const ABOUT_SECTIONS: AboutSection[] = [
+export const PROJECTS: Project[] = [
   {
+    id: 'redux-2024-collection',
+    title: 'REDUX 2024 Collection',
+    titleKo: 'REDUX 2024 컬렉션',
+    description: 'A revolutionary collection that challenges the boundaries between fashion and art.',
+    descriptionKo: '패션과 예술의 경계에 도전하는 혁신적인 컬렉션입니다.',
+    category: 'collective',
+    designers: ['hwang-jinsu', 'choi-eunsol', 'park-parang'],
+    images: [
+      '/images/projects/redux-2024/image-1.jpg',
+      '/images/projects/redux-2024/image-2.jpg',
+      '/images/projects/redux-2024/image-3.jpg',
+    ],
+    videoUrl: '/videos/redux-2024-collection.mp4',
+    date: '2024-03-15',
+    featured: true,
+    order: 1,
+  },
+];
+
+export const CATEGORIES = {
+  collective: {
     id: 'collective',
     title: 'Collective',
     titleKo: '컬렉티브',
     description: '협업과 공동 창작을 통한 새로운 가능성을 발견합니다',
-    coverImage: '/images/about/collective/cover.jpg',
-    images: [],
   },
-  {
+  'visual-art': {
     id: 'visual-art',
     title: 'Visual Art',
     titleKo: '비주얼 아트',
-    description: '시각적 장르의 예술적 표현의 경계를 탐험합니다',
-    coverImage: '/images/about/visual-art/cover.jpg',
-    images: [],
+    description: '시각적 언어로 표현하는 예술적 실험',
   },
-  {
+  'fashion-film': {
     id: 'fashion-film',
     title: 'Fashion Film',
     titleKo: '패션 필름',
-    description: '패션과 영상의 만남으로 스토리텔링을 완성합니다',
-    coverImage: '/images/about/fashion-film/cover.jpg',
-    images: [],
+    description: '움직임과 이야기가 있는 패션의 새로운 표현',
   },
-  {
+  installation: {
     id: 'installation',
     title: 'Installation',
     titleKo: '인스톨레이션',
-    description: '공간과 관람객이 상호작용하는 통합 예술을 경험을 제공합니다',
-    coverImage: '/images/about/installation/cover.jpg',
-    images: [],
+    description: '공간과 관객이 만나는 통합적 예술 경험',
   },
-  {
+  memory: {
     id: 'memory',
     title: 'Memory',
     titleKo: '메모리',
-    description: '기억과 시간의 흔적을 디자인으로 표현하는 이야기를 전합니다',
-    coverImage: '/images/about/memory/cover.jpg',
-    images: [],
+    description: '시간과 기억의 흔적을 담은 창작물',
   },
-];
-
-// 네비게이션
-export const NAVIGATION: NavItem[] = [
-  {
-    label: 'About',
-    href: '/about',
-    submenu: [
-      { label: 'Collective', href: '/about/collective' },
-      { label: 'Visual Art', href: '/about/visual-art' },
-      { label: 'Fashion Film', href: '/about/fashion-film' },
-      { label: 'Installation', href: '/about/installation' },
-      { label: 'Memory', href: '/about/memory' },
-    ],
-  },
-  {
-    label: 'Designers',
-    href: '/designers',
-  },
-  {
-    label: 'Exhibitions',
-    href: '/exhibitions',
-  },
-  {
-    label: 'Contact',
-    href: '/contact',
-  },
-];
-
-// CMS 설정
-export const CMS_CONFIG = {
-  allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
-  maxFileSize: 10 * 1024 * 1024, // 10MB
-  maxFiles: 20,
-};
+} as const;

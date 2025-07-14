@@ -1,72 +1,30 @@
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display, JetBrains_Mono } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({ 
   subsets: ['latin'],
+  display: 'swap',
   variable: '--font-inter',
-  display: 'swap',
-});
-
-const playfair = Playfair_Display({ 
-  subsets: ['latin'],
-  variable: '--font-playfair',
-  display: 'swap',
-});
-
-const jetbrains = JetBrains_Mono({ 
-  subsets: ['latin'],
-  variable: '--font-jetbrains',
-  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: 'REDUX - Korean Fashion Designer Collective',
-    template: '%s | REDUX',
-  },
-  description: '실험적 패션과 비주얼 아트의 경계를 탐구하는 6인의 디자이너',
-  keywords: ['fashion', 'design', 'korean fashion', 'designer collective', 'visual art'],
-  authors: [{ name: 'REDUX Collective' }],
+  title: 'REDUX - Fashion & Art Collective',
+  description: 'REDUX는 6인의 디자이너로 구성된 패션과 예술의 창작 집단입니다.',
+  keywords: 'REDUX, fashion, art, collective, designer, seoul',
+  authors: [{ name: 'REDUX' }],
   openGraph: {
-    title: 'REDUX - Korean Fashion Designer Collective',
-    description: '실험적 패션과 비주얼 아트의 경계를 탐구하는 6인의 디자이너',
-    url: 'https://reduxult.vercel.app',
+    title: 'REDUX - Fashion & Art Collective',
+    description: 'REDUX는 6인의 디자이너로 구성된 패션과 예술의 창작 집단입니다.',
+    url: 'https://redux.kr',
     siteName: 'REDUX',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'REDUX Collective',
-      },
-    ],
     locale: 'ko_KR',
     type: 'website',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'REDUX - Korean Fashion Designer Collective',
-    description: '실험적 패션과 비주얼 아트의 경계를 탐구하는 6인의 디자이너',
-    images: ['/og-image.jpg'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
-  },
 };
+
+import Navigation from '@/components/layout/Navigation';
+import Footer from '@/components/layout/Footer';
 
 export default function RootLayout({
   children,
@@ -74,9 +32,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={`${inter.variable} ${playfair.variable} ${jetbrains.variable}`}>
-      <body className="font-sans antialiased">
-        {children}
+    <html lang="ko" className={inter.variable}>
+      <body className="font-sans antialiased bg-black text-white">
+        <Navigation />
+        <main className="pt-20">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
