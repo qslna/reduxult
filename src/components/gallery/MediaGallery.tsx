@@ -177,12 +177,7 @@ export default function MediaGallery({
             >
               <div className="relative aspect-video">
                 <Image
-                  src={buildImageKitUrl(item.thumbnailUrl || item.url, {
-                    width: 400,
-                    height: 300,
-                    quality: 85,
-                    format: 'webp'
-                  })}
+                  src={buildImageKitUrl(item.thumbnailUrl || item.url)}
                   alt={item.name}
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -281,10 +276,7 @@ export default function MediaGallery({
                 />
               ) : (
                 <Image
-                  src={buildImageKitUrl(selectedItem.url, {
-                    quality: 95,
-                    format: 'webp'
-                  })}
+                  src={buildImageKitUrl(selectedItem.url)}
                   alt={selectedItem.name}
                   width={1200}
                   height={800}

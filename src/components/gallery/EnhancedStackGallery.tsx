@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Plus, X, Settings, Eye } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { StackGalleryProps, GalleryImage } from '@/types';
-import { buildImageKitUrl, createBlurPlaceholder } from '@/lib/imagekit';
+import { buildImageKitUrl } from '@/lib/imagekit';
 
 interface EnhancedStackGalleryProps extends StackGalleryProps {
   isAdmin?: boolean;
@@ -246,17 +246,10 @@ export default function EnhancedStackGallery({
                 }}
               >
                 <Image
-                  src={buildImageKitUrl(image.url, {
-                    width: 400,
-                    height: 500,
-                    quality: 85,
-                    format: 'webp'
-                  })}
+                  src={buildImageKitUrl(image.url)}
                   alt={image.name}
                   fill
                   className="object-cover"
-                  placeholder="blur"
-                  blurDataURL={createBlurPlaceholder(image.url)}
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
                 
@@ -362,10 +355,7 @@ export default function EnhancedStackGallery({
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={buildImageKitUrl(selectedImage.url, {
-                  quality: 95,
-                  format: 'webp'
-                })}
+                src={buildImageKitUrl(selectedImage.url)}
                 alt={selectedImage.name}
                 fill
                 className="object-contain rounded-lg"

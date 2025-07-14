@@ -186,12 +186,7 @@ export default function AdminGallery({
             >
               <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-900">
                 <Image
-                  src={buildImageKitUrl(image.url, {
-                    width: 300,
-                    height: 300,
-                    quality: 85,
-                    format: 'webp'
-                  })}
+                  src={buildImageKitUrl(image.url)}
                   alt={image.name}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-110"

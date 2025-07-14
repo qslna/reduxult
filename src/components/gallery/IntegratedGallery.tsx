@@ -366,12 +366,7 @@ export default function IntegratedGallery({
                     </div>
                   ) : (
                     <Image
-                      src={buildImageKitUrl(item.url, {
-                        width: 400,
-                        height: 500,
-                        quality: 85,
-                        format: 'webp'
-                      })}
+                      src={buildImageKitUrl(item.url)}
                       alt={item.name}
                       fill
                       className="object-cover"
@@ -541,12 +536,7 @@ export default function IntegratedGallery({
                     </div>
                   ) : (
                     <Image
-                      src={buildImageKitUrl(item.url, {
-                        width: 300,
-                        height: 300,
-                        quality: 85,
-                        format: 'webp'
-                      })}
+                      src={buildImageKitUrl(item.url)}
                       alt={item.name}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"

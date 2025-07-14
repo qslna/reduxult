@@ -303,9 +303,6 @@ export default function UniversalNavigation() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* 네비게이션 높이만큼 스페이서 */}
-      <div className="h-16" />
     </>
   );
 }

@@ -111,13 +111,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="font-sans antialiased bg-black text-white overflow-x-hidden selection:bg-white/20">
-        {/* Noise overlay */}
-        <div className="noise-overlay" />
         
         <ToastProvider>
           <CursorFollower />
           <UniversalNavigation />
-          <main className="relative min-h-screen pt-16">
+          <main className="relative min-h-screen">
             {children}
           </main>
           <Footer />

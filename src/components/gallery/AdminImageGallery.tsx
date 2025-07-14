@@ -224,12 +224,7 @@ export default function AdminImageGallery({
           >
             <div className="relative w-full h-full rounded-lg overflow-hidden shadow-2xl bg-gray-900 border border-white/10">
               <Image
-                src={buildImageKitUrl(image.url, {
-                  width: 400,
-                  height: 500,
-                  quality: 85,
-                  format: 'webp'
-                })}
+                src={buildImageKitUrl(image.url)}
                 alt={image.name}
                 fill
                 className="object-cover"
@@ -400,12 +395,7 @@ export default function AdminImageGallery({
               <>
                 <div className="relative aspect-square">
                   <Image
-                    src={buildImageKitUrl(image.url, {
-                      width: 300,
-                      height: 300,
-                      quality: 85,
-                      format: 'webp'
-                    })}
+                    src={buildImageKitUrl(image.url)}
                     alt={image.name}
                     fill
                     className="object-cover"
@@ -439,12 +429,7 @@ export default function AdminImageGallery({
               <>
                 <div className="w-16 h-16 relative rounded overflow-hidden flex-shrink-0">
                   <Image
-                    src={buildImageKitUrl(image.url, {
-                      width: 64,
-                      height: 64,
-                      quality: 85,
-                      format: 'webp'
-                    })}
+                    src={buildImageKitUrl(image.url)}
                     alt={image.name}
                     fill
                     className="object-cover"

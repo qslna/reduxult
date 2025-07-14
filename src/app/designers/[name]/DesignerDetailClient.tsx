@@ -79,7 +79,6 @@ export default function DesignerDetailClient({ designerId }: DesignerDetailClien
                   src={designer.profileImage}
                   alt={designer.nameKo}
                   size="xl"
-                  shadowColor={designer.colors.primary}
                 />
               </motion.div>
 

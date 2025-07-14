@@ -116,7 +116,7 @@ export default function FashionFilmPage() {
 
   const getThumbnailUrl = (film: typeof fashionFilms[0]) => {
     return thumbnails[film.id] 
-      ? buildImageKitUrl(thumbnails[film.id], { width: 600, height: 338, quality: 80 })
+      ? buildImageKitUrl(thumbnails[film.id])
       : film.fallbackThumbnail;
   };
 

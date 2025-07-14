@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, X, Plus } from 'lucide-react';
-import { validateFile } from '@/lib/imagekit';
+// import { validateFile } from '@/lib/imagekit';
 import { cn } from '@/utils/cn';
 
 interface ImageManagerProps {
@@ -39,9 +39,14 @@ export default function ImageManager({
     const newImages: string[] = [];
 
     for (const file of Array.from(files)) {
-      const validation = validateFile(file);
-      if (!validation.valid) {
-        console.error(validation.error);
+      // Basic file validation
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+      if (!allowedTypes.includes(file.type)) {
+        console.error(`File type ${file.type} is not allowed`);
+        continue;
+      }
+      if (file.size > 50 * 1024 * 1024) { // 50MB limit
+        console.error('File size exceeds 50MB limit');
         continue;
       }
 

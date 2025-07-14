@@ -191,12 +191,7 @@ export default function DesignersPage() {
                   <div className="group cursor-pointer">
                     <div className="relative aspect-[3/4] overflow-hidden rounded-lg mb-6">
                       <Image
-                        src={buildImageKitUrl(designer.portfolioImage, {
-                          width: 600,
-                          height: 800,
-                          quality: 85,
-                          format: 'webp'
-                        })}
+                        src={buildImageKitUrl(designer.portfolioImage)}
                         alt={designer.name}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -265,7 +260,6 @@ export default function DesignersPage() {
                         src={designer.image}
                         alt={designer.name}
                         size="md"
-                        shadowColor={(designer as any).colors?.accent || '#666666'}
                         className="mx-auto"
                       />
                       

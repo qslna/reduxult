@@ -392,12 +392,7 @@ export default function GalleryManager({
                 <>
                   <div className="relative aspect-square">
                     <Image
-                      src={buildImageKitUrl(image.url, {
-                        width: 200,
-                        height: 200,
-                        quality: 85,
-                        format: 'webp'
-                      })}
+                      src={buildImageKitUrl(image.url)}
                       alt={image.name}
                       fill
                       className="object-cover"
@@ -429,12 +424,7 @@ export default function GalleryManager({
                 <>
                   <div className="w-16 h-16 relative rounded overflow-hidden flex-shrink-0">
                     <Image
-                      src={buildImageKitUrl(image.url, {
-                        width: 64,
-                        height: 64,
-                        quality: 85,
-                        format: 'webp'
-                      })}
+                      src={buildImageKitUrl(image.url)}
                       alt={image.name}
                       fill
                       className="object-cover"

@@ -245,20 +245,7 @@ a {
   background-clip: text;
 }
 
-/* Noise overlay */
-.noise-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0.03;
-  z-index: -1; /* Changed from 1 to -1 to prevent overlapping issues */
-  background-image: 
-    repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,.1) 2px, rgba(0,0,0,.1) 4px),
-    repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(0,0,0,.05) 2px, rgba(0,0,0,.05) 4px);
-}
+/* Noise overlay - REMOVED to prevent rendering issues */
 
 /* Mobile optimizations */
 @media (hover: none) and (pointer: coarse) {

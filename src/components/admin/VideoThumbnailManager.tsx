@@ -132,7 +132,7 @@ export default function VideoThumbnailManager({
 
   const getThumbnailUrl = () => {
     if (previewImage) return previewImage;
-    if (currentThumbnail) return buildImageKitUrl(currentThumbnail, { width: 400, height: 225, quality: 80 });
+    if (currentThumbnail) return buildImageKitUrl(currentThumbnail);
     return fallbackThumbnail;
   };
 
