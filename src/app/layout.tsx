@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import './error-overlay-fix.css';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
 
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
+import ErrorOverlayRemover from '@/components/ErrorOverlayRemover';
 
 export default function RootLayout({
   children,
@@ -34,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className={inter.variable}>
       <body className="font-sans antialiased bg-black text-white">
+        <ErrorOverlayRemover />
         <Navigation />
         <main className="pt-20">
           {children}

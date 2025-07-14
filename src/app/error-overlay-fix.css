@@ -1,0 +1,35 @@
+/* Next.js Error Overlay Fix */
+/* 이 파일은 Next.js 개발 모드에서 에러 오버레이가 화면을 가리는 문제를 해결합니다 */
+
+/* Next.js 에러 오버레이 iframe 숨기기 */
+nextjs-portal,
+iframe#webpack-dev-server-client-overlay,
+body > iframe[style*="position: fixed"],
+body > nextjs-portal,
+#__next-build-error-dialog,
+[id^="__next-route-announcer"],
+div[style*="position: fixed"][style*="z-index: 9999"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* body에 강제로 적용되는 스타일 방지 */
+body {
+  overflow: auto !important;
+  overflow-y: scroll !important;
+  padding-right: 0 !important;
+  position: static !important;
+}
+
+/* html에도 적용 */
+html {
+  overflow: auto !important;
+  padding-right: 0 !important;
+}
+
+/* 모든 고정 위치 오버레이 숨기기 (더 공격적인 방법) */
+body > div[style*="position: fixed"][style*="inset: 0"] {
+  display: none !important;
+}

@@ -134,3 +134,17 @@
     animation: scale-in 0.6s ease-out;
   }
 }
+
+/* Fix for Next.js error overlay blocking the entire screen */
+/* This hides the error overlay in development mode */
+nextjs-portal,
+iframe#webpack-dev-server-client-overlay,
+body > iframe[style*="position: fixed"] {
+  display: none !important;
+}
+
+/* Prevent body from being stuck with overflow hidden */
+body {
+  overflow: visible !important;
+  padding-right: 0 !important;
+}
