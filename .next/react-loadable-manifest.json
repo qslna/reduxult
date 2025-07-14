@@ -6,7 +6,7 @@
       "static/chunks/aaea2bcf-95596ff5eda0f3c0.js",
       "static/chunks/565-8b945ff428f8bcc8.js",
       "static/chunks/498-2e1a8fb3ec35eb86.js",
-      "static/chunks/449.2bd6944e6bc9f454.js"
+      "static/chunks/449.54e455db213dd7d8.js"
     ]
   },
   "app/page.tsx -> @/components/layout/DesignersPreview": {
@@ -18,7 +18,7 @@
       "static/chunks/498-2e1a8fb3ec35eb86.js",
       "static/chunks/181-780c07556f745252.js",
       "static/chunks/988-3efbb6f1ab4ed71c.js",
-      "static/chunks/484.a1e328a3370b6063.js"
+      "static/chunks/484.0bfb79c71ce5d156.js"
     ]
   }
 }

@@ -90,6 +90,11 @@ export function buildImageKitUrl(
     return src;
   }
 
+  // TEMPORARY: Always return original path until ImageKit is properly configured
+  return src;
+  
+  // Original ImageKit code commented out for now
+  /*
   // If ImageKit is not configured, return the original path
   if (!imagekitConfig.urlEndpoint || imagekitConfig.urlEndpoint === '') {
     // Don't log warning in production to avoid console spam
@@ -118,6 +123,7 @@ export function buildImageKitUrl(
   }
   
   return url;
+  */
 }
 
 // Upload image to ImageKit
