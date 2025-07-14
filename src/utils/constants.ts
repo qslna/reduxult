@@ -1,4 +1,4 @@
-import { Designer, Project } from '@/types';
+import { Designer, Project, Exhibition } from '@/types';
 
 export const DESIGNERS: Designer[] = [
   {
@@ -158,3 +158,76 @@ export const CATEGORIES = {
     description: '시간과 기억의 흔적을 담은 창작물',
   },
 } as const;
+
+export const EXHIBITIONS: Exhibition[] = [
+  {
+    id: 'redux-showcase-2024',
+    title: 'REDUX Showcase 2024',
+    titleKo: 'REDUX 쇼케이스 2024',
+    description: 'REDUX 디자이너들의 최신 작품을 선보이는 연례 쇼케이스',
+    venue: 'Seoul Museum of Art',
+    startDate: '2024-03-15',
+    endDate: '2024-04-30',
+    year: 2024,
+    participants: ['Hwang Jinsu', 'Choi Eunsol', 'Park Parang', 'Lee Soyeon'],
+    images: ['/images/exhibitions/redux-showcase-2024/main.jpg'],
+    status: 'upcoming',
+    featured: true,
+  },
+  {
+    id: 'seoul-fashion-week-2023',
+    title: 'Seoul Fashion Week 2023',
+    titleKo: '서울 패션위크 2023',
+    description: 'REDUX 컬렉티브가 참여한 서울 패션위크 공식 프로그램',
+    venue: 'DDP (Dongdaemun Design Plaza)',
+    startDate: '2023-10-16',
+    endDate: '2023-10-21',
+    year: 2023,
+    participants: ['Hwang Jinsu', 'Choi Eunsol', 'Jung Jiwoo'],
+    images: ['/images/exhibitions/seoul-fashion-week-2023/main.jpg'],
+    status: 'past',
+    featured: true,
+  },
+  {
+    id: 'memory-traces-2023',
+    title: 'Memory Traces',
+    titleKo: '기억의 흔적',
+    description: '시간과 기억을 주제로 한 멀티미디어 인스톨레이션 전시',
+    venue: 'Alternative Space LOOP',
+    startDate: '2023-07-01',
+    endDate: '2023-08-15',
+    year: 2023,
+    participants: ['Park Parang', 'Lee Soyeon'],
+    images: ['/images/exhibitions/memory-traces-2023/main.jpg'],
+    status: 'past',
+    featured: false,
+  },
+  {
+    id: 'fashion-film-festival-2023',
+    title: 'International Fashion Film Festival',
+    titleKo: '국제 패션 필름 페스티벌',
+    description: 'REDUX의 패션 필름이 상영된 국제 페스티벌',
+    venue: 'Megabox COEX',
+    startDate: '2023-05-20',
+    endDate: '2023-05-27',
+    year: 2023,
+    participants: ['Kim Gyeongsu', 'Jung Jiwoo'],
+    images: ['/images/exhibitions/fashion-film-festival-2023/main.jpg'],
+    status: 'past',
+    featured: false,
+  },
+  {
+    id: 'redux-popup-2022',
+    title: 'REDUX Pop-up Store',
+    titleKo: 'REDUX 팝업 스토어',
+    description: '한정판 작품과 협업 제품을 선보인 팝업 스토어',
+    venue: 'Hyundai Department Store',
+    startDate: '2022-12-01',
+    endDate: '2022-12-31',
+    year: 2022,
+    participants: ['All REDUX Designers'],
+    images: ['/images/exhibitions/redux-popup-2022/main.jpg'],
+    status: 'past',
+    featured: false,
+  },
+];

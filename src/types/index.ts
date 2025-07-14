@@ -34,9 +34,11 @@ export interface Exhibition {
   title: string;
   titleKo: string;
   description: string;
-  location: string;
+  venue: string;
   startDate: string;
   endDate: string;
+  year: number;
+  participants: string[];
   images: string[];
   status: 'upcoming' | 'ongoing' | 'past';
   featured: boolean;
