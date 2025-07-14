@@ -8,11 +8,16 @@ export const imagekitConfig = {
 };
 
 // Server-side ImageKit instance (for admin operations)
-export const imagekit = new ImageKit({
-  publicKey: imagekitConfig.publicKey,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY || '',
-  urlEndpoint: imagekitConfig.urlEndpoint,
-});
+// Only create instance if all required credentials are available
+let imagekit: ImageKit | null = null;
+
+if (process.env.IMAGEKIT_PRIVATE_KEY && imagekitConfig.publicKey && imagekitConfig.urlEndpoint) {
+  imagekit = new ImageKit({
+    publicKey: imagekitConfig.publicKey,
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+    urlEndpoint: imagekitConfig.urlEndpoint,
+  });
+}
 
 // Folder mappings for organized storage
 export const folderMappings = {
@@ -121,6 +126,10 @@ export async function uploadImage(
   folder: FolderType,
   fileName?: string
 ): Promise<{ url: string; fileId: string }> {
+  if (!imagekit) {
+    throw new Error('ImageKit not configured. Please set up environment variables.');
+  }
+  
   try {
     const sanitizedFileName = fileName || file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const folderPath = folderMappings[folder];
@@ -148,6 +157,10 @@ export async function uploadImage(
 
 // Delete image from ImageKit
 export async function deleteImage(fileId: string): Promise<void> {
+  if (!imagekit) {
+    throw new Error('ImageKit not configured. Please set up environment variables.');
+  }
+  
   try {
     await imagekit.deleteFile(fileId);
   } catch (error) {
@@ -158,11 +171,18 @@ export async function deleteImage(fileId: string): Promise<void> {
 
 // Get authentication parameters for client-side uploads
 export function getAuthenticationParameters() {
+  if (!imagekit) {
+    throw new Error('ImageKit not configured. Please set up environment variables.');
+  }
   return imagekit.getAuthenticationParameters();
 }
 
 // List files in a folder
 export async function listFiles(folder: FolderType, limit: number = 50) {
+  if (!imagekit) {
+    throw new Error('ImageKit not configured. Please set up environment variables.');
+  }
+  
   try {
     const folderPath = folderMappings[folder];
     const response = await imagekit.listFiles({
@@ -223,6 +243,10 @@ export async function batchDeleteImages(fileIds: string[]): Promise<void> {
 
 // Get file details
 export async function getFileDetails(fileId: string) {
+  if (!imagekit) {
+    throw new Error('ImageKit not configured. Please set up environment variables.');
+  }
+  
   try {
     return await imagekit.getFileDetails(fileId);
   } catch (error) {
