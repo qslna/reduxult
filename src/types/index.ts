@@ -34,7 +34,7 @@ export interface AboutSection {
   titleKo: string;
   description: string;
   coverImage: string;
-  images: GalleryImage[];
+  images: string[];
 }
 
 // Navigation types

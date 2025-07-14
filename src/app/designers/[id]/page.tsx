@@ -6,9 +6,9 @@ import DesignerDetail from '@/components/designers/DesignerDetail';
 import { DESIGNERS } from '@/utils/constants';
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -18,7 +18,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const designer = DESIGNERS.find((d) => d.id === params.id);
+  const resolvedParams = await params;
+  const designer = DESIGNERS.find((d) => d.id === resolvedParams.id);
 
   if (!designer) {
     return {
@@ -32,8 +33,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function DesignerPage({ params }: Props) {
-  const designer = DESIGNERS.find((d) => d.id === params.id);
+export default async function DesignerPage({ params }: Props) {
+  const resolvedParams = await params;
+  const designer = DESIGNERS.find((d) => d.id === resolvedParams.id);
 
   if (!designer) {
     notFound();

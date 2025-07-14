@@ -6,9 +6,9 @@ import AboutDetail from '@/components/about/AboutDetail';
 import { ABOUT_SECTIONS } from '@/utils/constants';
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -18,7 +18,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const section = ABOUT_SECTIONS.find((s) => s.id === params.id);
+  const resolvedParams = await params;
+  const section = ABOUT_SECTIONS.find((s) => s.id === resolvedParams.id);
 
   if (!section) {
     return {
@@ -32,8 +33,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function AboutSectionPage({ params }: Props) {
-  const section = ABOUT_SECTIONS.find((s) => s.id === params.id);
+export default async function AboutSectionPage({ params }: Props) {
+  const resolvedParams = await params;
+  const section = ABOUT_SECTIONS.find((s) => s.id === resolvedParams.id);
 
   if (!section) {
     notFound();

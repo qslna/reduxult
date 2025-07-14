@@ -14,7 +14,7 @@ interface Props {
 
 export default function AboutDetail({ section }: Props) {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [images, setImages] = useState(section.images || []);
+  const [images, setImages] = useState<string[]>(section.images || []);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImagesUpdate = (newImages: string[]) => {

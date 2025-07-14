@@ -136,6 +136,7 @@ export default function ImageUploader({
                 alt="Current image"
                 fill
                 className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
               <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div className="text-center">
@@ -191,6 +192,7 @@ export default function ImageUploader({
               alt={`Image ${index + 1}`}
               fill
               className="object-cover"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
             <button
               onClick={() => removeImage(index)}

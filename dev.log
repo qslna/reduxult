@@ -13,3 +13,21 @@
  ✓ Ready in 16.2s
    Reload env: .env.local
    Reload env: .env.local
+[Error: ENOENT: no such file or directory, scandir '/mnt/c/Users/t9140/OneDrive/바탕 화면/reduxult/src/app'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/mnt/c/Users/t9140/OneDrive/바탕 화면/reduxult/src/app'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, scandir '/mnt/c/Users/t9140/OneDrive/바탕 화면/reduxult/src/app'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/mnt/c/Users/t9140/OneDrive/바탕 화면/reduxult/src/app'
+}
+ ⨯ unhandledRejection:  [Error: ENOENT: no such file or directory, scandir '/mnt/c/Users/t9140/OneDrive/바탕 화면/reduxult/src/app'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/mnt/c/Users/t9140/OneDrive/바탕 화면/reduxult/src/app'
+}
