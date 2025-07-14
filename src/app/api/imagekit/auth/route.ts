@@ -1,21 +1,30 @@
-import { NextRequest, NextResponse } from 'next/server';
-import ImageKit from 'imagekit';
+import { NextResponse } from 'next/server';
+import crypto from 'crypto';
 
-const imagekit = new ImageKit({
-  publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
-  urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!,
-});
-
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const authenticationParameters = imagekit.getAuthenticationParameters();
-    
-    return NextResponse.json(authenticationParameters, {
-      status: 200,
-      headers: {
-        'Cache-Control': 'no-store',
-      },
+    const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
+    const publicKey = process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY;
+
+    if (!privateKey || !publicKey) {
+      return NextResponse.json(
+        { error: 'ImageKit configuration missing' },
+        { status: 500 }
+      );
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+    const expire = Math.floor(Date.now() / 1000) + 3600; // 1 hour
+
+    const auth = crypto
+      .createHmac('sha1', privateKey)
+      .update(token + expire)
+      .digest('hex');
+
+    return NextResponse.json({
+      token,
+      expire,
+      signature: auth,
     });
   } catch (error) {
     console.error('ImageKit auth error:', error);
