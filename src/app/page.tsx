@@ -51,23 +51,25 @@ export default function HomePage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoading ? 0 : 1 }}
         transition={{ duration: 0.6 }}
-        className="relative"
+        className="relative z-0"
       >
         {/* Hero Section */}
-        <VideoHeroSection />
+        <section className="relative z-10">
+          <VideoHeroSection />
+        </section>
 
         {/* About Preview Section */}
-        <section className="relative">
+        <section className="relative z-20 bg-black">
           <AboutShowcase />
         </section>
 
         {/* Designers Preview Section */}
-        <section className="relative">
+        <section className="relative z-20 bg-black">
           <DesignersPreview />
         </section>
 
         {/* Featured Works Section */}
-        <section className="relative py-20 bg-gray-950">
+        <section className="relative z-20 py-20 bg-gray-950">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -90,7 +92,7 @@ export default function HomePage() {
         </section>
 
         {/* Call to Action Section */}
-        <section className="relative py-20 bg-black">
+        <section className="relative z-20 py-20 bg-black">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}

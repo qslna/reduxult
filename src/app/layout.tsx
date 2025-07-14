@@ -117,7 +117,7 @@ export default function RootLayout({
         <ToastProvider>
           <CursorFollower />
           <UniversalNavigation />
-          <main className="relative min-h-screen">
+          <main className="relative min-h-screen pt-16">
             {children}
           </main>
           <Footer />

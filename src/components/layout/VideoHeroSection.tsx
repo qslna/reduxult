@@ -116,7 +116,7 @@ export default function VideoHeroSection() {
   return (
     <section 
       ref={sectionRef}
-      className="relative h-screen overflow-hidden bg-black"
+      className="relative h-[calc(100vh-4rem)] overflow-hidden bg-black"
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setShowControls(false)}
     >

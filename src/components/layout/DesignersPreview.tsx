@@ -247,11 +247,11 @@ export default function DesignersPreview() {
                   className="relative"
                 >
                   {/* Main profile with enhanced shadow */}
-                  <div className="relative group flex items-center justify-center h-80 bg-gradient-to-br from-gray-900 to-black rounded-2xl p-8">
+                  <div className="relative group flex items-center justify-center h-80 bg-gradient-to-br from-gray-900 to-black rounded-2xl p-8 overflow-hidden">
                     <ProfileImage
                       src={designer.profileImage}
                       alt={designer.name}
-                      size="lg"
+                      size="md"
                       shadowColor={designer.colors.accent}
                       className="mx-auto"
                     />

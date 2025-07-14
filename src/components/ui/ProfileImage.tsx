@@ -75,21 +75,15 @@ export default function ProfileImage({
         )}
       >
         <Image
-          src={buildImageKitUrl(imageSrc, {
-            width,
-            height,
-            quality: 90,
-            format: 'webp',
-            crop: 'maintain_ratio',
-            focus: 'face'
-          })}
+          src={imageSrc}
           alt={alt}
           fill
           className="object-cover"
           sizes={`${width}px`}
+          priority
           onError={(e) => {
             const target = e.target as HTMLImageElement;
-            target.src = '/placeholder.svg';
+            target.src = '/images/designer-placeholder.jpg';
           }}
         />
         
