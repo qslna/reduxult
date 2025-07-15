@@ -1,9 +1,38 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 import { CATEGORIES } from '@/utils/constants';
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import EditableImage from '@/components/admin/EditableImage';
+
+interface CategoryState {
+  id: string;
+  title: string;
+  titleKo: string;
+  description: string;
+  coverImage: string;
+  images?: readonly string[];
+  processImages?: readonly string[];
+  videoUrl?: string;
+}
 
 export default function AboutContent() {
-  const categoryList = Object.values(CATEGORIES);
+  const [categories, setCategories] = useState<CategoryState[]>(() => 
+    Object.values(CATEGORIES).map(cat => ({
+      ...cat,
+      coverImage: cat.coverImage || ''
+    }))
+  );
+
+  const handleImageUpdate = (categoryId: string, newImageUrl: string) => {
+    setCategories(prev => prev.map(category => 
+      category.id === categoryId 
+        ? { ...category, coverImage: newImageUrl }
+        : category
+    ));
+  };
 
   return (
     <section className="section-padding">
@@ -30,25 +59,52 @@ export default function AboutContent() {
         <div className="mb-20">
           <h2 className="heading-3 mb-12 text-center">What We Do</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categoryList.map((category) => (
-              <Link
-                key={category.id}
-                href={`/projects?category=${category.id}`}
-                className="group block p-8 bg-zinc-900 rounded-lg hover:bg-zinc-800 transition-all"
-              >
-                <h3 className="text-2xl font-semibold mb-3 group-hover:text-gray-300 transition-colors">
-                  {category.title}
-                </h3>
-                <p className="text-gray-500 mb-2">{category.titleKo}</p>
-                <p className="text-gray-400 mb-6">
-                  {category.description}
-                </p>
-                <div className="flex items-center text-sm text-gray-500 group-hover:text-white transition-colors">
-                  <span>Explore</span>
-                  <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-            ))}
+            {categories.map((category, index) => {
+              const href = `/about/${category.id}`;
+              
+              return (
+                <motion.div
+                  key={category.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <Link
+                    href={href}
+                    className="group block relative overflow-hidden bg-zinc-900 hover:bg-zinc-800 transition-all duration-300"
+                  >
+                    {/* Category Image */}
+                    {category.coverImage && (
+                      <div className="relative h-48 overflow-hidden">
+                        <EditableImage
+                          src={category.coverImage}
+                          alt={category.title}
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          onUpdate={(newSrc) => handleImageUpdate(category.id, newSrc)}
+                          category={`about/${category.id}`}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
+                      </div>
+                    )}
+                    
+                    <div className="p-8">
+                      <h3 className="text-2xl font-semibold mb-3 group-hover:text-gray-300 transition-colors">
+                        {category.title}
+                      </h3>
+                      <p className="text-gray-500 mb-2">{category.titleKo}</p>
+                      <p className="text-gray-400 mb-6">
+                        {category.description}
+                      </p>
+                      <div className="flex items-center text-sm text-gray-500 group-hover:text-white transition-colors">
+                        <span>Explore</span>
+                        <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
 

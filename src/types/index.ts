@@ -69,3 +69,14 @@ export interface SiteSettings {
     facebook?: string;
   };
 }
+
+export interface Category {
+  id: string;
+  title: string;
+  titleKo: string;
+  description: string;
+  coverImage?: string;
+  images?: string[];
+  videoUrl?: string;
+  processImages?: string[];
+}

@@ -33,6 +33,11 @@ export function getImageKitUrl(
 
   const transformString = transforms.length > 0 ? `tr:${transforms.join(',')}` : '';
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  
+  // Remove trailing slash from urlEndpoint if present
+  const baseUrl = imageKitConfig.urlEndpoint.endsWith('/') 
+    ? imageKitConfig.urlEndpoint.slice(0, -1) 
+    : imageKitConfig.urlEndpoint;
 
-  return `${imageKitConfig.urlEndpoint}/${transformString}${cleanPath}`;
+  return transformString ? `${baseUrl}/${transformString}${cleanPath}` : `${baseUrl}${cleanPath}`;
 }
