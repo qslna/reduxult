@@ -1,184 +1,505 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, Upload, Eye, EyeOff } from 'lucide-react';
+import { 
+  X, Settings, Image, Video, Users, Briefcase, Info, Eye, EyeOff, 
+  RefreshCw, Upload, Search, Filter, Grid, List, FolderPlus, 
+  Download, Trash2, Move, Copy, BarChart3, Activity
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useContentStore from '@/store/useContentStore';
+import useCMSStore from '@/store/useCMSStore';
 
-interface AdminPanelProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface MediaGridProps {
+  onUpload: () => void;
 }
 
-export default function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+function MediaGrid({ onUpload }: MediaGridProps) {
+  const {
+    media,
+    selectedMedia,
+    currentFolder,
+    searchQuery,
+    filters,
+    getFilteredMedia,
+    selectMedia,
+    deselectMedia,
+    clearSelection,
+    setSearchQuery,
+    setFilters,
+    setCurrentFolder,
+    folders,
+    getMediaStats
+  } = useCMSStore();
+
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const filteredMedia = getFilteredMedia();
+  const stats = getMediaStats();
+
+  return (
+    <div className="h-full flex flex-col">
+      {/* Toolbar */}
+      <div className="border-b border-gray-700 p-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-4">
+            <h3 className="text-lg font-semibold text-white">Media Library</h3>
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <span>{stats.total} items</span>
+              <span>•</span>
+              <span>{stats.images} images</span>
+              <span>•</span>
+              <span>{stats.videos} videos</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+              className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
+            >
+              {viewMode === 'grid' ? <List size={16} /> : <Grid size={16} />}
+            </button>
+            <button
+              onClick={onUpload}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-2 transition-colors"
+            >
+              <Upload size={16} />
+              Upload
+            </button>
+          </div>
+        </div>
+
+        {/* Search and Filter */}
+        <div className="flex items-center gap-4">
+          <div className="flex-1 relative">
+            <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search media..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <select
+            value={filters.type || ''}
+            onChange={(e) => setFilters({ type: e.target.value as 'image' | 'video' || undefined })}
+            className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">All Types</option>
+            <option value="image">Images</option>
+            <option value="video">Videos</option>
+          </select>
+          <select
+            value={currentFolder}
+            onChange={(e) => setCurrentFolder(e.target.value)}
+            className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {Object.values(folders).map(folder => (
+              <option key={folder.id} value={folder.id}>
+                {folder.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Selection Actions */}
+        {selectedMedia.length > 0 && (
+          <div className="flex items-center gap-2 mt-4 p-3 bg-blue-600/20 rounded-lg">
+            <span className="text-sm text-blue-300">
+              {selectedMedia.length} item{selectedMedia.length > 1 ? 's' : ''} selected
+            </span>
+            <div className="flex items-center gap-2 ml-auto">
+              <button className="p-1 text-blue-300 hover:text-white transition-colors">
+                <Copy size={14} />
+              </button>
+              <button className="p-1 text-blue-300 hover:text-white transition-colors">
+                <Move size={14} />
+              </button>
+              <button className="p-1 text-blue-300 hover:text-white transition-colors">
+                <Download size={14} />
+              </button>
+              <button className="p-1 text-red-400 hover:text-red-300 transition-colors">
+                <Trash2 size={14} />
+              </button>
+              <button
+                onClick={clearSelection}
+                className="p-1 text-gray-400 hover:text-white transition-colors ml-2"
+              >
+                <X size={14} />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Media Grid/List */}
+      <div className="flex-1 overflow-auto p-4">
+        {filteredMedia.length === 0 ? (
+          <div className="flex items-center justify-center h-full text-gray-400">
+            <div className="text-center">
+              <Image size={48} className="mx-auto mb-4 opacity-50" />
+              <p className="text-lg font-medium mb-2">No media found</p>
+              <p className="text-sm">Upload some files to get started</p>
+            </div>
+          </div>
+        ) : viewMode === 'grid' ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {filteredMedia.map((item) => (
+              <div
+                key={item.id}
+                className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer transition-all ${
+                  selectedMedia.includes(item.id)
+                    ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-gray-900'
+                    : 'hover:scale-105'
+                }`}
+                onClick={() => selectedMedia.includes(item.id) ? deselectMedia(item.id) : selectMedia(item.id)}
+              >
+                {item.type === 'image' ? (
+                  <img
+                    src={item.url}
+                    alt={item.alt || item.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                    <Video size={24} className="text-gray-400" />
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity">
+                  <div className="absolute bottom-2 left-2 right-2">
+                    <p className="text-white text-xs font-medium truncate">
+                      {item.title}
+                    </p>
+                    <p className="text-gray-300 text-xs">
+                      {item.type} • {Math.round(item.size / 1024)}KB
+                    </p>
+                  </div>
+                </div>
+                {selectedMedia.includes(item.id) && (
+                  <div className="absolute top-2 right-2 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                    <X size={12} className="text-white" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {filteredMedia.map((item) => (
+              <div
+                key={item.id}
+                className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer transition-colors ${
+                  selectedMedia.includes(item.id)
+                    ? 'bg-blue-600/20 border border-blue-500'
+                    : 'bg-gray-800 hover:bg-gray-700'
+                }`}
+                onClick={() => selectedMedia.includes(item.id) ? deselectMedia(item.id) : selectMedia(item.id)}
+              >
+                <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                  {item.type === 'image' ? (
+                    <img
+                      src={item.url}
+                      alt={item.alt || item.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                      <Video size={16} className="text-gray-400" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-medium truncate">{item.title}</p>
+                  <p className="text-gray-400 text-sm">
+                    {item.type} • {Math.round(item.size / 1024)}KB • {new Date(item.uploadedAt).toLocaleDateString()}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  {item.tags.map(tag => (
+                    <span key={tag} className="px-2 py-1 bg-gray-600 rounded text-xs text-gray-300">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Dashboard() {
+  const { activities, getMediaStats } = useCMSStore();
+  const stats = getMediaStats();
+
+  return (
+    <div className="p-6 space-y-6">
+      <div>
+        <h3 className="text-xl font-semibold text-white mb-4">Dashboard</h3>
+        
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Total Media</p>
+                <p className="text-2xl font-bold text-white">{stats.total}</p>
+              </div>
+              <Image className="text-blue-500" size={24} />
+            </div>
+          </div>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Images</p>
+                <p className="text-2xl font-bold text-white">{stats.images}</p>
+              </div>
+              <Image className="text-green-500" size={24} />
+            </div>
+          </div>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Videos</p>
+                <p className="text-2xl font-bold text-white">{stats.videos}</p>
+              </div>
+              <Video className="text-purple-500" size={24} />
+            </div>
+          </div>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Storage</p>
+                <p className="text-2xl font-bold text-white">
+                  {(stats.totalSize / (1024 * 1024)).toFixed(1)}MB
+                </p>
+              </div>
+              <BarChart3 className="text-orange-500" size={24} />
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="bg-gray-800 rounded-lg p-4">
+          <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <Activity size={20} />
+            Recent Activity
+          </h4>
+          <div className="space-y-3 max-h-64 overflow-auto">
+            {activities.slice(0, 10).map((activity) => (
+              <div key={activity.id} className="flex items-start gap-3 text-sm">
+                <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <div className="flex-1">
+                  <p className="text-white">{activity.details}</p>
+                  <p className="text-gray-400">
+                    {new Date(activity.timestamp).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function AdminPanel() {
+  const { isAdmin, setIsAdmin, initializeData } = useContentStore();
+  const [isOpen, setIsOpen] = useState(false);
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  useEffect(() => {
+    initializeData();
+  }, [initializeData]);
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // 간단한 인증 (실제로는 서버 인증 필요)
-    if (password === 'redux2024') {
-      setIsAuthenticated(true);
-      localStorage.setItem('adminAuth', 'true');
+    
+    if (password === 'redux2025') {
+      setIsAdmin(true);
+      setPassword('');
+      setIsOpen(true);
     } else {
-      alert('비밀번호가 틀렸습니다.');
+      alert('비밀번호가 올바르지 않습니다.');
     }
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('adminAuth');
-    onClose();
+    setIsAdmin(false);
+    setIsOpen(false);
   };
 
-  useEffect(() => {
-    // 로컬 스토리지에서 인증 상태 확인
-    const auth = localStorage.getItem('adminAuth');
-    if (auth === 'true') {
-      setIsAuthenticated(true);
-    }
-  }, []);
+  const handleUpload = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = true;
+    input.accept = 'image/*,video/*';
+    input.click();
+  };
 
-  if (!isOpen) return null;
+  const tabs = [
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
+    { id: 'media', label: 'Media', icon: Image },
+    { id: 'content', label: 'Content', icon: Briefcase },
+    { id: 'settings', label: 'Settings', icon: Settings },
+  ];
 
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={onClose}
+  if (!isAdmin) {
+    return (
+      <div className="fixed bottom-6 right-6 z-50">
+        <button
+          onClick={() => setIsOpen(true)}
+          className="w-12 h-12 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center shadow-lg transition-colors"
         >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-zinc-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10">
-              <h2 className="text-2xl font-bold">Admin Panel</h2>
-              <button
-                onClick={onClose}
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-              >
-                <X size={24} />
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="p-6">
-              {!isAuthenticated ? (
-                // Login Form
+          <Settings size={20} className="text-white" />
+        </button>
+        
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+            >
+              <div className="bg-gray-900 rounded-lg p-6 w-96 border border-gray-700">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-white">Admin Login</h3>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+                
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">
-                      관리자 비밀번호
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Password
                     </label>
                     <div className="relative">
                       <input
                         type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-4 py-2 bg-black/50 border border-white/10 rounded-lg focus:border-white/30 focus:outline-none transition-colors"
-                        placeholder="비밀번호를 입력하세요"
+                        className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter admin password"
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded transition-colors"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                       >
-                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
                     </div>
                   </div>
+                  
                   <button
                     type="submit"
-                    className="w-full py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                    className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white transition-colors"
                   >
-                    로그인
+                    Login
                   </button>
                 </form>
-              ) : (
-                // Admin Content
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-semibold">콘텐츠 관리</h3>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {/* Admin Toggle Button */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center shadow-lg transition-colors"
+        >
+          <Settings size={20} className="text-white" />
+        </button>
+      </div>
+
+      {/* Admin Panel */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            className="fixed inset-y-0 right-0 w-full md:w-2/3 lg:w-1/2 xl:w-2/5 bg-gray-900 border-l border-gray-700 z-40 flex flex-col"
+          >
+            {/* Header */}
+            <div className="border-b border-gray-700 p-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-white">Admin Panel</h2>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleLogout}
+                    className="px-3 py-1 text-sm bg-red-600 hover:bg-red-700 rounded text-white transition-colors"
+                  >
+                    Logout
+                  </button>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              </div>
+              
+              {/* Tabs */}
+              <div className="flex space-x-1 mt-4">
+                {tabs.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
                     <button
-                      onClick={handleLogout}
-                      className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                        activeTab === tab.id
+                          ? 'bg-blue-600 text-white'
+                          : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                      }`}
                     >
-                      로그아웃
+                      <Icon size={16} />
+                      {tab.label}
                     </button>
-                  </div>
+                  );
+                })}
+              </div>
+            </div>
 
-                  {/* Upload Section */}
-                  <div className="border border-white/10 rounded-lg p-6">
-                    <h4 className="text-lg font-medium mb-4">이미지 업로드</h4>
-                    <div className="border-2 border-dashed border-white/20 rounded-lg p-8 text-center hover:border-white/40 transition-colors cursor-pointer">
-                      <Upload size={48} className="mx-auto mb-4 text-gray-400" />
-                      <p className="text-gray-400 mb-2">
-                        클릭하거나 드래그하여 이미지를 업로드하세요
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        지원 형식: JPG, PNG, WebP (최대 10MB)
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Quick Actions */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <button className="p-4 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
-                      <div className="text-left">
-                        <h5 className="font-medium mb-1">디자이너 관리</h5>
-                        <p className="text-sm text-gray-400">
-                          프로필 이미지 및 포트폴리오 수정
-                        </p>
-                      </div>
-                    </button>
-                    <button className="p-4 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
-                      <div className="text-left">
-                        <h5 className="font-medium mb-1">프로젝트 관리</h5>
-                        <p className="text-sm text-gray-400">
-                          프로젝트 이미지 및 정보 수정
-                        </p>
-                      </div>
-                    </button>
-                    <button className="p-4 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
-                      <div className="text-left">
-                        <h5 className="font-medium mb-1">About 섹션</h5>
-                        <p className="text-sm text-gray-400">
-                          카테고리별 이미지 관리
-                        </p>
-                      </div>
-                    </button>
-                    <button className="p-4 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
-                      <div className="text-left">
-                        <h5 className="font-medium mb-1">Fashion Film</h5>
-                        <p className="text-sm text-gray-400">
-                          비디오 링크 및 썸네일 관리
-                        </p>
-                      </div>
-                    </button>
-                  </div>
-
-                  {/* Instructions */}
-                  <div className="bg-blue-600/10 border border-blue-600/20 rounded-lg p-4">
-                    <p className="text-sm text-blue-400">
-                      <strong>사용 방법:</strong> 각 페이지에서 편집 모드를 활성화하면 
-                      이미지를 직접 클릭하여 교체하거나 삭제할 수 있습니다.
-                    </p>
-                  </div>
+            {/* Content */}
+            <div className="flex-1 overflow-hidden">
+              {activeTab === 'dashboard' && <Dashboard />}
+              {activeTab === 'media' && <MediaGrid onUpload={handleUpload} />}
+              {activeTab === 'content' && (
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4">Content Management</h3>
+                  <p className="text-gray-400">Content management tools coming soon...</p>
+                </div>
+              )}
+              {activeTab === 'settings' && (
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4">Settings</h3>
+                  <p className="text-gray-400">Settings panel coming soon...</p>
                 </div>
               )}
             </div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
