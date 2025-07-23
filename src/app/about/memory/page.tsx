@@ -169,7 +169,7 @@ export default function MemoryPage() {
                 '--index': index,
                 animation: `fadeInSequential 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards`,
                 animationDelay: `${index * 50}ms`
-              }}
+              } as React.CSSProperties}
               onClick={() => openLightbox(index)}
             >
               <img 

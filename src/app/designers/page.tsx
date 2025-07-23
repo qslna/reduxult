@@ -186,7 +186,7 @@ export default function DesignersPage() {
               style={{ 
                 '--index': index,
                 animationDelay: `${index * 0.15}s`
-              }}
+              } as React.CSSProperties}
               onClick={() => handleDesignerClick(designer.id)}
             >
               <div className="designer-image absolute top-0 left-0 w-full h-full">

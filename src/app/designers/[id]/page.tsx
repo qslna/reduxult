@@ -128,11 +128,7 @@ interface Props {
   }>;
 }
 
-export async function generateStaticParams() {
-  return Object.keys(designersData).map((id) => ({
-    id,
-  }));
-}
+// generateStaticParams removed as this is a client component
 
 export default function DesignerPage({ params }: Props) {
   const router = useRouter();

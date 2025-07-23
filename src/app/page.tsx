@@ -71,12 +71,12 @@ export default function HomePage() {
 }
 
 // 타입 정의
-export interface HomePageProps {
+interface HomePageProps {
   className?: string;
 }
 
 // 홈페이지 유틸리티 함수들
-export const homePageUtils = {
+const homePageUtils = {
   // 모바일 감지 (HTML 버전과 동일)
   isMobile: () => {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -105,7 +105,7 @@ export const homePageUtils = {
 };
 
 // CSS 클래스명 상수
-export const HOME_CLASSES = {
+const HOME_CLASSES = {
   loadingScreen: {
     base: 'loading-screen',
     hide: 'hide',

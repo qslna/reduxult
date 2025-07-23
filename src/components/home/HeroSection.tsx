@@ -166,16 +166,11 @@ export default function HeroSection() {
               fontSize: 'clamp(3rem, 8vw, 8rem)',
               textShadow: '0 0 20px rgba(255,255,255,0.1), 0 0 40px rgba(255,255,255,0.05)'
             }}>
-          <span style={{'--i': 1} as React.CSSProperties} className="inline-block transform translate-y-full animate-[revealText_1s_ease_forwards]" 
-                 style={{animationDelay: 'calc(var(--i) * 0.1s)'}}>R</span>
-          <span style={{'--i': 2} as React.CSSProperties} className="inline-block transform translate-y-full animate-[revealText_1s_ease_forwards]" 
-                 style={{animationDelay: 'calc(var(--i) * 0.1s)'}}>E</span>
-          <span style={{'--i': 3} as React.CSSProperties} className="inline-block transform translate-y-full animate-[revealText_1s_ease_forwards]" 
-                 style={{animationDelay: 'calc(var(--i) * 0.1s)'}}>D</span>
-          <span style={{'--i': 4} as React.CSSProperties} className="inline-block transform translate-y-full animate-[revealText_1s_ease_forwards]" 
-                 style={{animationDelay: 'calc(var(--i) * 0.1s)'}}>U</span>
-          <span style={{'--i': 5} as React.CSSProperties} className="inline-block transform translate-y-full animate-[revealText_1s_ease_forwards]" 
-                 style={{animationDelay: 'calc(var(--i) * 0.1s)'}}>X</span>
+          <span style={{'--i': 1, animationDelay: 'calc(var(--i) * 0.1s)'} as React.CSSProperties} className="inline-block transform translate-y-full animate-[revealText_1s_ease_forwards]">R</span>
+          <span style={{'--i': 2, animationDelay: 'calc(var(--i) * 0.1s)'} as React.CSSProperties} className="inline-block transform translate-y-full animate-[revealText_1s_ease_forwards]">E</span>
+          <span style={{'--i': 3, animationDelay: 'calc(var(--i) * 0.1s)'} as React.CSSProperties} className="inline-block transform translate-y-full animate-[revealText_1s_ease_forwards]">D</span>
+          <span style={{'--i': 4, animationDelay: 'calc(var(--i) * 0.1s)'} as React.CSSProperties} className="inline-block transform translate-y-full animate-[revealText_1s_ease_forwards]">U</span>
+          <span style={{'--i': 5, animationDelay: 'calc(var(--i) * 0.1s)'} as React.CSSProperties} className="inline-block transform translate-y-full animate-[revealText_1s_ease_forwards]">X</span>
         </h1>
 
         {/* 서브타이틀 - HTML 버전과 동일한 "THE ROOM OF [ ]" */}

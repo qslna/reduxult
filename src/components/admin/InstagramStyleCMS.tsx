@@ -18,7 +18,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Settings,
-  SelectAll,
+  CheckSquare,
   MoreHorizontal,
   Copy,
   Move,
@@ -512,8 +512,8 @@ const InstagramStyleCMS: React.FC<InstagramStyleCMSProps> = ({
                 }`}
                 title="Selection Mode"
               >
-                <SelectAll className="w-4 h-4" />
-              </div>
+                <CheckSquare className="w-4 h-4" />
+              </button>
               
               {isSelectionMode && (
                 <div className="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2">

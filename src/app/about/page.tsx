@@ -418,8 +418,4 @@ declare global {
   }
 }
 
-// 메타데이터
-export const metadata = {
-  title: 'About | REDUX',
-  description: 'REDUX의 철학과 비전을 소개합니다.',
-};
+// 메타데이터는 client component에서 제거됨 - layout.tsx에서 처리됨

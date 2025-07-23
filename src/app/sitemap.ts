@@ -49,7 +49,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const projectRoutes = projects.map((id) => ());
+  const projectRoutes = projects.map((id) => ({
+    url: `${baseUrl}/projects/${id}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
 
   return [
     ...staticRoutes,
