@@ -399,7 +399,10 @@ export class GSAPAnimations {
   }
 
   static smoothScroll(options: { duration?: number; easing?: (t: number) => number; smooth?: boolean } = {}) {
-    const lenis = new (window as { Lenis?: any }).Lenis({
+    const LenisClass = (window as any).Lenis;
+    if (!LenisClass) return;
+    
+    const lenis = new LenisClass({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smooth: true,
@@ -489,7 +492,7 @@ export const refreshScrollTrigger = () => {
 };
 
 // React hook for GSAP animations
-export const useGSAP = (callback: () => void | (() => void), deps: unknown[] = []) => {
+export const useGSAP = (callback: () => void | (() => void)) => {
   if (typeof window === 'undefined') return;
   
   const cleanup = callback();

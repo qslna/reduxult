@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { designers } from '@/data/designers';
-import { exhibitions } from '@/data/exhibitions';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/animations';
 import EditableImage from '@/components/admin/EditableImage';
 import useContentStore from '@/store/useContentStore';

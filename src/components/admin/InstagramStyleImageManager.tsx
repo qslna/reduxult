@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, X, Trash2, Upload, RotateCcw, Check } from 'lucide-react';
+import { Plus, X, Trash2, Upload, Check } from 'lucide-react';
 import Image from 'next/image';
 
 interface ImageItem {

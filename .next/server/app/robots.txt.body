@@ -1,0 +1,14 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /.*
+
+User-Agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+Host: https://reduxult.vercel.app
+Sitemap: https://reduxult.vercel.app/sitemap.xml

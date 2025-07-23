@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, X, Grid, List, Search, Filter } from 'lucide-react';
+import { Plus, X, Grid, List, Search } from 'lucide-react';
 import EditableImage from '@/components/admin/EditableImage';
 import Lightbox from '@/components/ui/Lightbox';
 import InstagramStyleImageManager from '@/components/admin/InstagramStyleImageManager';
@@ -62,7 +62,8 @@ export default function MemoryGallery({
         
         const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
         const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
-        const rowSpan = Math.ceil((item.querySelector('.content')?.getBoundingClientRect().height! + rowGap) / (rowHeight + rowGap));
+        const contentHeight = item.querySelector('.content')?.getBoundingClientRect().height || 0;
+        const rowSpan = Math.ceil((contentHeight + rowGap) / (rowHeight + rowGap));
         item.style.gridRowEnd = `span ${rowSpan}`;
       };
 

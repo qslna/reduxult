@@ -7,18 +7,14 @@ import {
   X, 
   Upload, 
   Trash2, 
-  Download, 
   Grid, 
   List,
   Search,
-  Filter,
   MoreHorizontal,
   Check,
   Image as ImageIcon,
   Video,
-  File,
-  Eye,
-  Edit
+  File
 } from 'lucide-react';
 import Image from 'next/image';
 

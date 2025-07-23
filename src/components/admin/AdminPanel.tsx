@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { 
-  X, Settings, Image, Video, Briefcase, Eye, EyeOff, 
+  X, Settings, Image as ImageIcon, Video, Briefcase, Eye, EyeOff, 
   Upload, Search, Grid, List, 
   Download, Trash2, Move, Copy, BarChart3, Activity
 } from 'lucide-react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import useContentStore from '@/store/useContentStore';
 import useCMSStore from '@/store/useCMSStore';
@@ -137,7 +138,7 @@ function MediaGrid({ onUpload }: MediaGridProps) {
         {filteredMedia.length === 0 ? (
           <div className="flex items-center justify-center h-full text-gray-400">
             <div className="text-center">
-              <Image size={48} className="mx-auto mb-4 opacity-50" />
+              <ImageIcon size={48} className="mx-auto mb-4 opacity-50" />
               <p className="text-lg font-medium mb-2">No media found</p>
               <p className="text-sm">Upload some files to get started</p>
             </div>
@@ -155,10 +156,12 @@ function MediaGrid({ onUpload }: MediaGridProps) {
                 onClick={() => selectedMedia.includes(item.id) ? deselectMedia(item.id) : selectMedia(item.id)}
               >
                 {item.type === 'image' ? (
-                  <img
+                  <Image
                     src={item.url}
-                    alt={item.alt || item.title}
-                    className="w-full h-full object-cover"
+                    alt={item.alt || item.title || 'Media item'}
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 16vw"
+                    className="object-cover"
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-800 flex items-center justify-center">
@@ -197,10 +200,12 @@ function MediaGrid({ onUpload }: MediaGridProps) {
               >
                 <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
                   {item.type === 'image' ? (
-                    <img
+                    <Image
                       src={item.url}
-                      alt={item.alt || item.title}
-                      className="w-full h-full object-cover"
+                      alt={item.alt || item.title || 'Media item'}
+                      fill
+                      sizes="48px"
+                      className="object-cover"
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-700 flex items-center justify-center">
@@ -247,7 +252,7 @@ function Dashboard() {
                 <p className="text-gray-400 text-sm">Total Media</p>
                 <p className="text-2xl font-bold text-white">{stats.total}</p>
               </div>
-              <Image className="text-blue-500" size={24} />
+              <ImageIcon className="text-blue-500" size={24} />
             </div>
           </div>
           <div className="bg-gray-800 p-4 rounded-lg">
@@ -256,7 +261,7 @@ function Dashboard() {
                 <p className="text-gray-400 text-sm">Images</p>
                 <p className="text-2xl font-bold text-white">{stats.images}</p>
               </div>
-              <Image className="text-green-500" size={24} />
+              <ImageIcon className="text-green-500" size={24} />
             </div>
           </div>
           <div className="bg-gray-800 p-4 rounded-lg">
@@ -344,7 +349,7 @@ export default function AdminPanel() {
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-    { id: 'media', label: 'Media', icon: Image },
+    { id: 'media', label: 'Media', icon: ImageIcon },
     { id: 'content', label: 'Content', icon: Briefcase },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
