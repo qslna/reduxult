@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import { 
   X, Settings, Image as ImageIcon, Video, Briefcase, Eye, EyeOff, 
   Upload, Search, Grid, List, 
-  Download, Trash2, Move, Copy, BarChart3, Activity
+  Download, Trash2, Move, Copy, BarChart3, Activity, Shield, User
 } from 'lucide-react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
+import ModernLoginModal from './ModernLoginModal';
 import useContentStore from '@/store/useContentStore';
 import useCMSStore from '@/store/useCMSStore';
 
@@ -312,30 +314,27 @@ function Dashboard() {
 }
 
 export default function AdminPanel() {
-  const { isAdmin, setIsAdmin, initializeData } = useContentStore();
+  const { 
+    isAuthenticated, 
+    isAdmin, 
+    user, 
+    showLoginModal, 
+    setShowLoginModal, 
+    logout, 
+    requestAdminAccess,
+    hasPermission
+  } = useAdminAuth();
+  
+  const { initializeData } = useContentStore();
   const [isOpen, setIsOpen] = useState(false);
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
 
   useEffect(() => {
     initializeData();
   }, [initializeData]);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (password === 'redux2025') {
-      setIsAdmin(true);
-      setPassword('');
-      setIsOpen(true);
-    } else {
-      alert('비밀번호가 올바르지 않습니다.');
-    }
-  };
-
   const handleLogout = () => {
-    setIsAdmin(false);
+    logout();
     setIsOpen(false);
   };
 
@@ -354,71 +353,25 @@ export default function AdminPanel() {
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
-  if (!isAdmin) {
+  if (!isAuthenticated) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="w-12 h-12 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center shadow-lg transition-colors"
-        >
-          <Settings size={20} className="text-white" />
-        </button>
+      <>
+        <div className="fixed bottom-6 right-6 z-50">
+          <motion.button
+            onClick={requestAdminAccess}
+            className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Shield size={20} className="text-white" />
+          </motion.button>
+        </div>
         
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
-            >
-              <div className="bg-gray-900 rounded-lg p-6 w-96 border border-gray-700">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-white">Admin Login</h3>
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-                
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Password
-                    </label>
-                    <div className="relative">
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter admin password"
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
-                      >
-                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <button
-                    type="submit"
-                    className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white transition-colors"
-                  >
-                    Login
-                  </button>
-                </form>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+        <ModernLoginModal 
+          isOpen={showLoginModal} 
+          onClose={() => setShowLoginModal(false)} 
+        />
+      </>
     );
   }
 
@@ -426,12 +379,24 @@ export default function AdminPanel() {
     <>
       {/* Admin Toggle Button */}
       <div className="fixed bottom-6 right-6 z-50">
-        <button
+        <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center shadow-lg transition-colors"
+          className="w-12 h-12 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl relative group"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
         >
           <Settings size={20} className="text-white" />
-        </button>
+          
+          {/* User indicator */}
+          <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-lg">
+            {user?.avatar || '👤'}
+          </div>
+          
+          {/* Tooltip */}
+          <div className="absolute right-full mr-3 px-3 py-2 bg-black/80 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+            {user?.username} • {user?.role.replace('_', ' ')}
+          </div>
+        </motion.button>
       </div>
 
       {/* Admin Panel */}
@@ -446,17 +411,25 @@ export default function AdminPanel() {
             {/* Header */}
             <div className="border-b border-gray-700 p-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-white">Admin Panel</h2>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-lg">
+                    {user?.avatar}
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-semibold text-white">Admin Panel</h2>
+                    <p className="text-sm text-gray-400">{user?.username} • {user?.role.replace('_', ' ')}</p>
+                  </div>
+                </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleLogout}
-                    className="px-3 py-1 text-sm bg-red-600 hover:bg-red-700 rounded text-white transition-colors"
+                    className="px-3 py-1 text-sm bg-red-600 hover:bg-red-700 rounded-lg text-white transition-colors"
                   >
                     Logout
                   </button>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-gray-400 hover:text-white transition-colors p-1 hover:bg-gray-700 rounded"
                   >
                     <X size={20} />
                   </button>

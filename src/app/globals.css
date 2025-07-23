@@ -4,16 +4,55 @@
 
 @layer base {
   :root {
-    /* REDUX Color System (from HTML version) */
+    /* REDUX Core Colors */
     --primary-black: #000000;
     --primary-white: #FFFFFF;
-    --accent-mocha: #B7AFA3; /* Pantone 2025 Color of the Year */
+    
+    /* 2025 Fashion Trend Colors */
+    /* Pantone 2025 Color of the Year - Mocha Mousse */
+    --accent-mocha: #B7AFA3;
     --accent-warm: #D4CCC5;
     --accent-deep: #9A9086;
     --accent-neutral: #F8F6F4;
     
-    /* Fashion industry standard gray scale */
-    --gray-100: #F8F8F8;
+    /* Digital Lime - Tech-influenced fresh */
+    --fashion-lime: #82FF25;
+    --fashion-lime-soft: #A3FF60;
+    --fashion-lime-deep: #6EE015;
+    
+    /* Neo-Mint - Fresh, modern */
+    --fashion-mint: #06CCC7;
+    --fashion-mint-soft: #22E9E5;
+    --fashion-mint-deep: #059FA3;
+    
+    /* Electric Blue - Bold, energetic */
+    --fashion-electric: #2882FF;
+    --fashion-electric-soft: #51A8FF;
+    --fashion-electric-deep: #1A5CFF;
+    
+    /* Terracotta - Earthy, sophisticated */
+    --fashion-terracotta: #E26B52;
+    --fashion-terracotta-soft: #ED9179;
+    --fashion-terracotta-deep: #D0513A;
+    
+    /* Lavender Gray - Soft, calming */
+    --fashion-lavender: #9B85BE;
+    --fashion-lavender-soft: #B8A8D1;
+    --fashion-lavender-deep: #8169A8;
+    
+    /* Honey Gold - Warm, luxurious */
+    --fashion-honey: #F9A007;
+    --fashion-honey-soft: #FFC220;
+    --fashion-honey-deep: #DD7A02;
+    
+    /* Peach Fuzz - Continuing trend from 2024 */
+    --fashion-peach: #FF6B35;
+    --fashion-peach-soft: #FF9873;
+    --fashion-peach-deep: #F04A1C;
+    
+    /* Professional fashion grays */
+    --gray-50: #F8F8F8;
+    --gray-100: #F0F0F0;
     --gray-200: #E8E8E8;
     --gray-300: #D0D0D0;
     --gray-400: #A0A0A0;
@@ -22,6 +61,7 @@
     --gray-700: #303030;
     --gray-800: #202020;
     --gray-900: #101010;
+    --gray-950: #000000;
     
     /* Next.js theme variables (remapped) */
     --background: 0 0% 0%;
@@ -520,6 +560,207 @@
     padding-right: env(safe-area-inset-right);
   }
 
+  /* Fashion Industry 2025 Trend Gradients */
+  .fashion-gradient-primary {
+    background: linear-gradient(135deg, var(--accent-mocha) 0%, var(--fashion-honey) 100%);
+  }
+  
+  .fashion-gradient-digital {
+    background: linear-gradient(135deg, var(--fashion-lime) 0%, var(--fashion-mint) 100%);
+  }
+  
+  .fashion-gradient-sunset {
+    background: linear-gradient(135deg, var(--fashion-peach) 0%, var(--fashion-terracotta) 100%);
+  }
+  
+  .fashion-gradient-electric {
+    background: linear-gradient(135deg, var(--fashion-electric) 0%, var(--fashion-lavender) 100%);
+  }
+  
+  .fashion-gradient-neutral {
+    background: linear-gradient(135deg, var(--gray-100) 0%, var(--accent-warm) 100%);
+  }
+  
+  /* Sophisticated Fashion Text Gradients */
+  .text-fashion-primary {
+    background: linear-gradient(135deg, var(--accent-mocha) 0%, var(--fashion-honey) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-fashion-digital {
+    background: linear-gradient(135deg, var(--fashion-lime) 0%, var(--fashion-electric) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-fashion-warm {
+    background: linear-gradient(135deg, var(--fashion-peach) 0%, var(--fashion-honey) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Fashion Industry Button Styles */
+  .btn-fashion-primary {
+    @apply px-8 py-4 rounded-full font-semibold uppercase tracking-wider transition-all duration-300;
+    background: linear-gradient(135deg, var(--accent-mocha) 0%, var(--fashion-honey) 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(183, 175, 163, 0.3);
+  }
+  
+  .btn-fashion-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(183, 175, 163, 0.4);
+  }
+  
+  .btn-fashion-electric {
+    @apply px-8 py-4 rounded-full font-semibold uppercase tracking-wider transition-all duration-300;
+    background: linear-gradient(135deg, var(--fashion-electric) 0%, var(--fashion-lavender) 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(40, 130, 255, 0.3);
+  }
+  
+  .btn-fashion-electric:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 130, 255, 0.4);
+  }
+  
+  /* Fashion Card Styles with Trend Colors */
+  .card-fashion {
+    @apply relative overflow-hidden rounded-2xl transition-all duration-500;
+    background: linear-gradient(135deg, 
+      rgba(183, 175, 163, 0.1) 0%, 
+      rgba(249, 160, 7, 0.05) 100%);
+    border: 1px solid rgba(183, 175, 163, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  
+  .card-fashion:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(183, 175, 163, 0.2);
+    border-color: rgba(183, 175, 163, 0.4);
+  }
+  
+  .card-fashion::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(255, 255, 255, 0.1), 
+      transparent);
+    transition: left 0.6s;
+  }
+  
+  .card-fashion:hover::before {
+    left: 100%;
+  }
+  
+  /* Designer Role-Based Color Accents */
+  .role-creative-director {
+    --role-color: var(--fashion-honey);
+    --role-gradient: linear-gradient(135deg, var(--fashion-honey) 0%, var(--accent-mocha) 100%);
+  }
+  
+  .role-fashion-designer {
+    --role-color: var(--fashion-peach);
+    --role-gradient: linear-gradient(135deg, var(--fashion-peach) 0%, var(--fashion-terracotta) 100%);
+  }
+  
+  .role-visual-artist {
+    --role-color: var(--fashion-electric);
+    --role-gradient: linear-gradient(135deg, var(--fashion-electric) 0%, var(--fashion-lavender) 100%);
+  }
+  
+  .role-installation-artist {
+    --role-color: var(--fashion-mint);
+    --role-gradient: linear-gradient(135deg, var(--fashion-mint) 0%, var(--fashion-lime) 100%);
+  }
+  
+  /* Fashion Industry Hover Effects */
+  .fashion-hover-lift {
+    @apply transition-all duration-500 ease-out;
+  }
+  
+  .fashion-hover-lift:hover {
+    transform: translateY(-12px);
+    filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.3));
+  }
+  
+  .fashion-hover-glow {
+    @apply transition-all duration-300;
+  }
+  
+  .fashion-hover-glow:hover {
+    box-shadow: 0 0 30px var(--accent-mocha), 0 0 60px rgba(183, 175, 163, 0.3);
+  }
+  
+  /* Sophisticated Border Animations */
+  .fashion-border-animated {
+    @apply relative;
+    border: 2px solid transparent;
+    background: linear-gradient(var(--primary-black), var(--primary-black)) padding-box,
+                linear-gradient(135deg, var(--accent-mocha), var(--fashion-honey), var(--fashion-electric)) border-box;
+  }
+  
+  .fashion-border-animated::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--accent-mocha), var(--fashion-honey), var(--fashion-electric));
+    border-radius: inherit;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask-composite: xor;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .fashion-border-animated:hover::before {
+    opacity: 1;
+  }
+  
+  /* Fashion Typography Enhancements */
+  .fashion-heading {
+    @apply font-playfair font-bold tracking-tight;
+    background: linear-gradient(135deg, 
+      var(--primary-white) 0%, 
+      var(--accent-mocha) 50%, 
+      var(--fashion-honey) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(183, 175, 163, 0.3);
+  }
+  
+  .fashion-subheading {
+    @apply font-inter font-medium uppercase tracking-[0.2em];
+    color: var(--accent-mocha);
+    position: relative;
+  }
+  
+  .fashion-subheading::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-mocha), var(--fashion-honey));
+    transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  .fashion-subheading:hover::after {
+    width: 100%;
+  }
+  
   /* Smooth Underline */
   .underline-effect {
     @apply relative;
@@ -527,12 +768,52 @@
   
   .underline-effect::after {
     content: '';
-    @apply absolute bottom-0 left-0 h-[2px] w-0 bg-white;
+    @apply absolute bottom-0 left-0 h-[2px] w-0;
+    background: linear-gradient(90deg, var(--accent-mocha), var(--fashion-honey));
     transition: width 0.3s ease;
   }
   
   .underline-effect:hover::after {
     @apply w-full;
+  }
+  
+  /* Fashion Loading Animation */
+  .fashion-loading {
+    @apply relative overflow-hidden;
+  }
+  
+  .fashion-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(183, 175, 163, 0.2), 
+      rgba(249, 160, 7, 0.2), 
+      transparent);
+    animation: fashion-shimmer 2s infinite;
+  }
+  
+  @keyframes fashion-shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+  
+  /* Responsive Fashion Utilities */
+  .fashion-grid {
+    @apply grid gap-8;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .fashion-container {
+    @apply mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl;
+  }
+  
+  .fashion-section {
+    @apply py-16 sm:py-24 lg:py-32;
   }
 }
 

@@ -24,13 +24,15 @@ export const designers: Designer[] = [
   {
     id: 'park-parang',
     name: 'Park Parang',
-    nameKo: '박파랑',
+    nameKo: '박파렁',
     role: 'Visual Artist',
     bio: 'Creating visual narratives that challenge conventional fashion aesthetics.',
-    profileImage: '/images/designer-placeholder.jpg',
-    coverImage: '/images/designer-placeholder.jpg',
+    profileImage: '/images/profile/Park Parang.jpg',
+    coverImage: '/images/profile/Park Parang.jpg',
     instagramHandle: '@parkparang_redux',
-    portfolioImages: [],
+    portfolioImages: [
+      '/images/profile/Park Parang.jpg'
+    ],
     featured: true,
     order: 2
   },
@@ -77,7 +79,7 @@ export const designers: Designer[] = [
     nameKo: '황진수',
     role: 'Film Director',
     bio: 'Capturing fashion through cinematic storytelling and visual poetry.',
-    profileImage: '/images/designer-placeholder.jpg',
+    profileImage: '/images/profile/Hwang Jinsu.jpg',
     coverImage: '/images/designers/hwangjinsu/cinemode/NOR_7743.jpg',
     instagramHandle: '@hwangjinsu_redux',
     portfolioImages: [
@@ -100,7 +102,7 @@ export const designers: Designer[] = [
     nameKo: '김경수',
     role: 'Installation Artist',
     bio: 'Creating immersive fashion installations that transform spaces.',
-    profileImage: '/images/designer-placeholder.jpg',
+    profileImage: '/images/profile/Kim Gyeongsu.webp',
     coverImage: '/images/designers/kimgyeongsu/Showcase/IMG_5568.JPG',
     instagramHandle: '@kimgyeongsu_redux',
     portfolioImages: [

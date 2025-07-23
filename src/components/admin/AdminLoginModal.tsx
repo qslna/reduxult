@@ -7,7 +7,7 @@ import { Lock, Eye, EyeOff, X, Shield } from 'lucide-react';
 interface AdminLoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (password: string) => boolean;
+  onLogin: (credentials: { password: string; remember?: boolean }) => Promise<boolean>;
 }
 
 export default function AdminLoginModal({
@@ -17,6 +17,7 @@ export default function AdminLoginModal({
 }: AdminLoginModalProps) {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,16 +28,18 @@ export default function AdminLoginModal({
     setIsLoading(true);
     setError('');
 
-    // Add a small delay for better UX
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    const success = onLogin(password);
-    
-    if (success) {
-      setPassword('');
-      onClose();
-    } else {
-      setError('Invalid password. Please try again.');
+    try {
+      const success = await onLogin({ password, remember });
+      
+      if (success) {
+        setPassword('');
+        setRemember(false);
+        onClose();
+      } else {
+        setError('Invalid password. Please try again.');
+      }
+    } catch (error) {
+      setError('An error occurred during login.');
     }
     
     setIsLoading(false);
@@ -44,6 +47,7 @@ export default function AdminLoginModal({
 
   const handleClose = () => {
     setPassword('');
+    setRemember(false);
     setError('');
     onClose();
   };
@@ -113,6 +117,20 @@ export default function AdminLoginModal({
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
                   </div>
+                </div>
+
+                {/* Remember me checkbox */}
+                <div className="flex items-center">
+                  <input
+                    id="remember"
+                    type="checkbox"
+                    checked={remember}
+                    onChange={(e) => setRemember(e.target.checked)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="remember" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                    Remember me for 7 days
+                  </label>
                 </div>
 
                 {error && (

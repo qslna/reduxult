@@ -6,10 +6,12 @@ import Image from 'next/image';
 import { designers } from '@/data/designers';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/animations';
 import EditableImage from '@/components/admin/EditableImage';
+import InstagramStyleCMS from '@/components/admin/InstagramStyleCMS';
 import useContentStore from '@/store/useContentStore';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 export default function DesignersPreview() {
-  const { isAdmin } = useContentStore();
+  const { isAdmin } = useAdminAuth();
   
   // Combine designers and exhibitions for the showcase grid (matching HTML structure)
   const showcaseItems = [
@@ -18,7 +20,7 @@ export default function DesignersPreview() {
       id: 'kim-bomin',
       name: 'KIM BOMIN',
       role: 'Creative Director',
-      image: '/images/designer-placeholder.jpg',
+      image: '/images/designers/kimbomin/cinemode/김보민 사진.jpg',
       href: '/designers/kim-bomin'
     },
     {
@@ -26,7 +28,7 @@ export default function DesignersPreview() {
       id: 'park-parang',
       name: 'PARK PARANG',
       role: 'Visual Artist',
-      image: '/images/designer-placeholder.jpg',
+      image: '/images/profile/Park Parang.jpg',
       href: '/designers/park-parang'
     },
     {
@@ -50,7 +52,7 @@ export default function DesignersPreview() {
       id: 'hwang-jinsu',
       name: 'HWANG JINSU',
       role: 'Film Director',
-      image: '/images/designer-placeholder.jpg',
+      image: '/images/profile/Hwang Jinsu.jpg',
       href: '/designers/hwang-jinsu'
     },
     {
@@ -58,7 +60,7 @@ export default function DesignersPreview() {
       id: 'kim-gyeongsu',
       name: 'KIM GYEONGSU',
       role: 'Installation Artist',
-      image: '/images/designer-placeholder.jpg',
+      image: '/images/profile/Kim Gyeongsu.webp',
       href: '/designers/kim-gyeongsu'
     },
     {
@@ -66,7 +68,7 @@ export default function DesignersPreview() {
       id: 'cine-mode',
       name: 'CINE MODE',
       role: '2025.03',
-      image: '/images/exhibition-placeholder.jpg',
+      image: '/images/exhibitions/cinemode/1.jpg',
       href: '/exhibitions#cine-mode'
     },
     {
@@ -74,7 +76,7 @@ export default function DesignersPreview() {
       id: 'the-room',
       name: 'THE ROOM OF [ ]',
       role: '2025.12',
-      image: '/images/exhibition-placeholder.jpg',
+      image: '/images/exhibitions/theroom/1.jpg',
       href: '/exhibitions#the-room'
     }
   ];
@@ -103,31 +105,34 @@ export default function DesignersPreview() {
           </motion.p>
         </motion.div>
 
-        <motion.div 
-          className="grid grid-cols-2 md:grid-cols-4 gap-[2px] bg-gray-200"
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, amount: 0.1 }}
-        >
-          {showcaseItems.map((item, index) => (
-            <motion.div
-              key={item.id}
-              variants={staggerItem}
-              custom={index}
-              className="relative group"
-            >
-              <Link href={item.href} className="block relative aspect-square overflow-hidden bg-black">
-                {isAdmin ? (
-                  <EditableImage
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover transition-all duration-600 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                    onUpdate={(newSrc) => console.log('Update showcase image:', item.id, newSrc)}
-                    category="showcase"
-                  />
-                ) : (
+        {isAdmin ? (
+          // Admin mode: Show InstagramStyleCMS
+          <div className="mb-12">
+            <InstagramStyleCMS
+              galleryId="main-showcase"
+              aspectRatio="square"
+              columns={4}
+              maxItems={8}
+              allowedTypes={['image']}
+            />
+          </div>
+        ) : (
+          // Regular mode: Show showcase grid
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-[2px] bg-gray-200"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.1 }}
+          >
+            {showcaseItems.map((item, index) => (
+              <motion.div
+                key={item.id}
+                variants={staggerItem}
+                custom={index}
+                className="relative group"
+              >
+                <Link href={item.href} className="block relative aspect-square overflow-hidden bg-black">
                   <Image
                     src={item.image}
                     alt={item.name}
@@ -135,20 +140,34 @@ export default function DesignersPreview() {
                     className="object-cover transition-all duration-600 group-hover:scale-105 opacity-90 group-hover:opacity-100"
                     sizes="(max-width: 768px) 50vw, 25vw"
                   />
-                )}
-                
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex flex-col items-center justify-center text-white p-6 text-center">
-                  <h3 className="text-xl font-light mb-2 tracking-[0.1em] uppercase">
-                    {item.name}
-                  </h3>
-                  <p className="text-xs opacity-70 uppercase tracking-[0.15em]">
-                    {item.role}
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+                  
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex flex-col items-center justify-center text-white p-6 text-center">
+                    <h3 className="text-xl font-light mb-2 tracking-[0.1em] uppercase">
+                      {item.name}
+                    </h3>
+                    <p className="text-xs opacity-70 uppercase tracking-[0.15em]">
+                      {item.role}
+                    </p>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+
+        {/* Optional: Admin toggle note */}
+        {isAdmin && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-8 p-4 bg-purple-50 border border-purple-200 rounded-lg text-center"
+          >
+            <p className="text-sm text-purple-800">
+              <strong>Admin Mode:</strong> You can now manage the showcase gallery images. 
+              Changes will be reflected on the main site.
+            </p>
+          </motion.div>
+        )}
       </div>
     </section>
   );
