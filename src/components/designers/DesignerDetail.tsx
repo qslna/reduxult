@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Instagram, Plus, Grid3X3, Camera, Hash, Palette, Lightbulb, Target, Award, Users, Sparkles, Eye, Heart, Star } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Instagram, Camera, Palette, Lightbulb, Target, Award, Users, Eye, Heart, Star } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Designer } from '@/types';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import InstagramStyleCMS from '@/components/admin/InstagramStyleCMS';
-import { fadeInUp, staggerContainer, staggerItem } from '@/lib/animations';
+import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 interface Props {
   designer: Designer;

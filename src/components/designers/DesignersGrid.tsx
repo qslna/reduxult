@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Instagram, ArrowUpRight, Users, Camera, Grid, Eye, Star, Award, Heart } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import InstagramStyleCMS from '@/components/admin/InstagramStyleCMS';
 import useContentStore from '@/store/useContentStore';
-import { fadeInUp, staggerContainer, staggerItem } from '@/lib/animations';
+import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 export default function DesignersGrid() {
   const { designers } = useContentStore();

@@ -3,11 +3,8 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { designers } from '@/data/designers';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/animations';
-import EditableImage from '@/components/admin/EditableImage';
 import InstagramStyleCMS from '@/components/admin/InstagramStyleCMS';
-import useContentStore from '@/store/useContentStore';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 export default function DesignersPreview() {

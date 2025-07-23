@@ -85,6 +85,72 @@ const InstagramStyleCMS: React.FC<InstagramStyleCMSProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
 
+  // File validation utility
+  const isValidFile = useCallback((file: File): boolean => {
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    const validVideoTypes = ['video/mp4', 'video/webm', 'video/mov'];
+    
+    if (allowedTypes.includes('image') && validImageTypes.includes(file.type)) return true;
+    if (allowedTypes.includes('video') && validVideoTypes.includes(file.type)) return true;
+    
+    return false;
+  }, [allowedTypes]);
+
+  // File upload handler
+  const handleFileUpload = useCallback(async (files: FileList) => {
+    if (!files.length) return;
+    
+    setIsUploading(true);
+    const newItems: MediaItem[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (!isValidFile(file)) continue;
+
+      try {
+        // Create a URL for preview (in real implementation, upload to ImageKit)
+        const url = URL.createObjectURL(file);
+        const newItem: MediaItem = {
+          id: `temp_${Date.now()}_${i}`,
+          url,
+          type: file.type.startsWith('video/') ? 'video' : 'image',
+          filename: file.name,
+          size: file.size,
+          createdAt: new Date(),
+          alt: file.name.replace(/\.[^/.]+$/, '')
+        };
+        
+        newItems.push(newItem);
+      } catch (error) {
+        console.error('Upload failed:', error);
+      }
+    }
+
+    const updatedItems = [...items, ...newItems].slice(0, maxItems);
+    setItems(updatedItems);
+    onUpdate?.(updatedItems);
+    setIsUploading(false);
+  }, [items, maxItems, onUpdate, isValidFile]);
+
+  // Drag and drop handlers
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    if (!dropZoneRef.current?.contains(e.relatedTarget as Node)) {
+      setIsDragOver(false);
+    }
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    handleFileUpload(e.dataTransfer.files);
+  }, [handleFileUpload]);
+
   // 관리자 모드가 아니면 일반 갤러리만 표시
   if (!isAdmin) {
     return (
@@ -130,61 +196,6 @@ const InstagramStyleCMS: React.FC<InstagramStyleCMSProps> = ({
     );
   }
 
-  // File upload handler
-  const handleFileUpload = useCallback(async (files: FileList) => {
-    if (!files.length) return;
-    
-    setIsUploading(true);
-    const newItems: MediaItem[] = [];
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      if (!isValidFile(file)) continue;
-
-      try {
-        // Create a URL for preview (in real implementation, upload to ImageKit)
-        const url = URL.createObjectURL(file);
-        const newItem: MediaItem = {
-          id: `temp_${Date.now()}_${i}`,
-          url,
-          type: file.type.startsWith('video/') ? 'video' : 'image',
-          filename: file.name,
-          size: file.size,
-          createdAt: new Date(),
-          alt: file.name.replace(/\.[^/.]+$/, '')
-        };
-        
-        newItems.push(newItem);
-      } catch (error) {
-        console.error('Upload failed:', error);
-      }
-    }
-
-    const updatedItems = [...items, ...newItems].slice(0, maxItems);
-    setItems(updatedItems);
-    onUpdate?.(updatedItems);
-    setIsUploading(false);
-  }, [items, maxItems, onUpdate]);
-
-  // Drag and drop handlers
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    if (!dropZoneRef.current?.contains(e.relatedTarget as Node)) {
-      setIsDragOver(false);
-    }
-  }, []);
-
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    handleFileUpload(e.dataTransfer.files);
-  }, [handleFileUpload]);
-
   // Selection handlers
   const toggleItemSelection = (itemId: string) => {
     const newSelection = new Set(selectedItems);
@@ -217,17 +228,6 @@ const InstagramStyleCMS: React.FC<InstagramStyleCMSProps> = ({
     const updatedItems = items.filter(item => item.id !== itemId);
     setItems(updatedItems);
     onUpdate?.(updatedItems);
-  };
-
-  // File validation utility
-  const isValidFile = (file: File): boolean => {
-    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    const validVideoTypes = ['video/mp4', 'video/webm', 'video/mov'];
-    
-    if (allowedTypes.includes('image') && validImageTypes.includes(file.type)) return true;
-    if (allowedTypes.includes('video') && validVideoTypes.includes(file.type)) return true;
-    
-    return false;
   };
 
   return (
@@ -513,10 +513,13 @@ const InstagramStyleCMS: React.FC<InstagramStyleCMSProps> = ({
               </button>
               
               {lightboxItem.type === 'image' ? (
-                <img
+                <Image
                   src={lightboxItem.url}
                   alt={lightboxItem.alt || lightboxItem.filename}
+                  width={1200}
+                  height={800}
                   className="max-w-full max-h-full object-contain rounded-lg"
+                  sizes="100vw"
                 />
               ) : (
                 <video
