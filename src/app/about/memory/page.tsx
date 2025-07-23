@@ -1,499 +1,297 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { Clock, Heart, Star, Camera, Archive, BookOpen, Users, Sparkles } from 'lucide-react';
-import { useAdminAuth } from '@/hooks/useAdminAuth';
-import InstagramStyleCMS from '@/components/admin/InstagramStyleCMS';
-import { fadeInUp, staggerContainer, staggerItem } from '@/lib/animations';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
+// HTML redux6 about-memory.html과 완전 동일한 Memory 페이지 구현
 export default function MemoryPage() {
-  const { isAdmin } = useAdminAuth();
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [selectedStack, setSelectedStack] = useState<string | null>(null);
+  const router = useRouter();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  // HTML 버전과 완전 동일한 이미지 배열
+  const galleryImages = [
+    '/images/about/memory/0C22A68E-AADF-4A8D-B5E7-44DDBA2EE64F.jpeg',
+    '/images/about/memory/83C1CE7D-97A9-400F-9403-60E89979528A.jpg',
+    '/images/about/memory/IMG_1728.jpeg',
+    '/images/about/memory/IMG_3452(1).JPG',
+    '/images/about/memory/IMG_3452.JPG',
+    '/images/about/memory/IMG_3454.JPG',
+    '/images/about/memory/IMG_3455.JPG',
+    '/images/about/memory/IMG_3481.JPG',
+    '/images/about/memory/IMG_3491.JPG',
+    '/images/about/memory/IMG_3492.JPG',
+    '/images/about/memory/IMG_3493.JPG',
+    '/images/about/memory/IMG_4339.JPG',
+    '/images/about/memory/IMG_4345.JPG',
+    '/images/about/memory/IMG_4348.JPG',
+    '/images/about/memory/IMG_4367.JPG',
+    '/images/about/memory/IMG_5380.JPG',
+    '/images/about/memory/IMG_5381.JPG',
+    '/images/about/memory/IMG_5382.JPG',
+    '/images/about/memory/IMG_5383.JPG',
+    '/images/about/memory/IMG_7103.jpeg',
+    '/images/about/memory/IMG_7146.jpeg',
+    '/images/about/memory/IMG_7272.jpeg',
+    '/images/about/memory/KakaoTalk_20250626_002430368.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_01.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_02.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_03.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_04.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_05.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_06.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_07.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_08.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_09.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_10.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_11.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_12.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_13.jpg'
+  ];
 
   useEffect(() => {
-    setIsLoaded(true);
-  }, []);
+    // HTML 버전과 동일한 키보드 네비게이션
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isLightboxOpen) {
+        switch(event.key) {
+          case 'Escape':
+            closeLightbox();
+            break;
+          case 'ArrowRight':
+            nextImage();
+            break;
+          case 'ArrowLeft':
+            prevImage();
+            break;
+        }
+      }
+    };
 
-  // Hero section content
-  const heroContent = {
-    title: "MEMORY",
-    subtitle: "Fragments of time, woven together",
-    description: "우리의 기억은 개별적인 순간들이 모여 하나의 이야기를 만들어냅니다. 각각의 추억이 켜켜이 쌓여 REDUX의 정체성을 형성하고, 우리가 지향하는 창작의 방향성을 제시합니다.",
-    quote: "Memory is the treasury and guardian of all things.",
-    author: "Cicero"
+    document.addEventListener('keydown', handleKeyDown);
+    
+    // HTML 버전과 동일한 성능 최적화
+    const preloadImages = () => {
+      galleryImages.slice(0, 6).forEach(src => {
+        const img = new Image();
+        img.src = src;
+      });
+    };
+
+    preloadImages();
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isLightboxOpen]);
+
+  // HTML 버전과 동일한 내비게이션 함수들
+  const goBack = () => {
+    router.back();
   };
 
-  // Memory stacks data - different themed collections
-  const memoryStacks = [
-    {
-      id: 'origins',
-      title: 'ORIGINS',
-      subtitle: '시작의 기억',
-      description: 'REDUX가 시작된 순간들과 초기의 열정이 담긴 기억들',
-      descriptionEn: 'Memories of REDUX\'s beginnings and the initial passion that started it all',
-      icon: '🌱',
-      color: 'from-green-500 to-emerald-600',
-      galleryId: 'memory-origins',
-      stackCount: 8
-    },
-    {
-      id: 'collaborations',
-      title: 'COLLABORATIONS',
-      subtitle: '함께한 순간들',
-      description: '6명의 디자이너가 함께 작업하며 만들어낸 특별한 순간들',
-      descriptionEn: 'Special moments created by six designers working together',
-      icon: '🤝',
-      color: 'from-blue-500 to-indigo-600',
-      galleryId: 'memory-collaborations',
-      stackCount: 12
-    },
-    {
-      id: 'breakthroughs',
-      title: 'BREAKTHROUGHS',
-      subtitle: '돌파의 순간',
-      description: '창작 과정에서 마주한 도전과 그것을 극복한 성취의 기억들',
-      descriptionEn: 'Memories of challenges faced and achievements made in the creative process',
-      icon: '⚡',
-      color: 'from-yellow-500 to-orange-600',
-      galleryId: 'memory-breakthroughs',
-      stackCount: 10
-    },
-    {
-      id: 'inspirations',
-      title: 'INSPIRATIONS',
-      subtitle: '영감의 순간들',
-      description: '일상 속에서 발견한 아름다움과 창작의 영감이 된 순간들',
-      descriptionEn: 'Moments of beauty discovered in daily life and sources of creative inspiration',
-      icon: '✨',
-      color: 'from-purple-500 to-pink-600',
-      galleryId: 'memory-inspirations',
-      stackCount: 15
-    },
-    {
-      id: 'exhibitions',
-      title: 'EXHIBITIONS',
-      subtitle: '전시의 기록',
-      description: '우리의 작품이 세상에 선보여진 특별한 전시 순간들',
-      descriptionEn: 'Special exhibition moments when our works were presented to the world',
-      icon: '🎨',
-      color: 'from-red-500 to-rose-600',
-      galleryId: 'memory-exhibitions',
-      stackCount: 6
-    },
-    {
-      id: 'milestones',
-      title: 'MILESTONES',
-      subtitle: '이정표가 된 순간들',
-      description: 'REDUX의 성장 과정에서 중요한 이정표가 된 의미있는 순간들',
-      descriptionEn: 'Meaningful moments that became important milestones in REDUX\'s growth',
-      icon: '🏆',
-      color: 'from-cyan-500 to-teal-600',
-      galleryId: 'memory-milestones',
-      stackCount: 9
-    }
-  ];
+  const goHome = () => {
+    router.push('/');
+  };
 
-  // Timeline periods
-  const timelinePeriods = [
-    {
-      id: 'foundation',
-      year: '2022',
-      title: 'FOUNDATION',
-      subtitle: '창립',
-      description: '6명의 디자이너가 만나 REDUX라는 꿈을 시작한 해',
-      galleryId: 'timeline-foundation'
-    },
-    {
-      id: 'growth',
-      year: '2023',
-      title: 'GROWTH',
-      subtitle: '성장',
-      description: '첫 번째 프로젝트들과 브랜드 정체성을 확립한 해',
-      galleryId: 'timeline-growth'
-    },
-    {
-      id: 'expansion',
-      year: '2024',
-      title: 'EXPANSION',
-      subtitle: '확장',
-      description: '다양한 분야로 영역을 넓히며 영향력을 확대한 해',
-      galleryId: 'timeline-expansion'
-    },
-    {
-      id: 'evolution',
-      year: '2025',
-      title: 'EVOLUTION',
-      subtitle: '진화',
-      description: '새로운 비전을 품고 더 큰 미래를 향해 나아가는 해',
-      galleryId: 'timeline-evolution'
+  // HTML 버전과 동일한 라이트박스 함수들
+  const openLightbox = (index: number) => {
+    setCurrentImageIndex(index);
+    setIsLightboxOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+    document.body.style.overflow = '';
+  };
+
+  const nextImage = () => {
+    setCurrentImageIndex(prev => (prev + 1) % galleryImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex(prev => (prev - 1 + galleryImages.length) % galleryImages.length);
+  };
+
+  const handleLightboxClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      closeLightbox();
     }
-  ];
+  };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        {/* Floating Memory Particles Animation */}
-        <div className="absolute inset-0 overflow-hidden opacity-20">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-white rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+    <>
+      {/* Navigation - HTML 버전과 완전 동일한 다크 테마 */}
+      <nav 
+        id="navbar"
+        className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] border-b border-[--accent-mocha]/10"
+      >
+        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
+          <div className="nav-left flex items-center gap-10">
+            <span 
+              className="back-button font-['Inter'] text-xl cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:transform hover:-translate-x-[5px] hover:text-[--accent-mocha]"
+              onClick={goBack}
+            >
+              ←
+            </span>
+            <span className="page-title font-['Inter'] text-lg font-light tracking-[0.2em] text-[--accent-mocha] uppercase max-[768px]:hidden">
+              Memory
+            </span>
+          </div>
+          <div 
+            className="logo font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:opacity-70 hover:transform hover:scale-[1.02]"
+            onClick={goHome}
+          >
+            REDUX
+          </div>
+        </div>
+      </nav>
+
+      {/* Professional Gallery - HTML 버전과 완전 동일 */}
+      <div className="gallery-container min-h-screen pt-[120px] pr-5 pb-[60px] pl-5 relative">
+        <div className="gallery-header text-center mb-20 opacity-0 transform translate-y-10 animate-[fadeInUp_1.2s_cubic-bezier(0.25,0.8,0.25,1)_forwards]">
+          <h1 className="gallery-title font-['Playfair_Display'] font-bold text-white mb-5 [text-shadow:0_0_20px_rgba(255,255,255,0.1)]"
+              style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', letterSpacing: '-0.02em', lineHeight: 0.9 }}>
+            Memory
+          </h1>
+          <p className="gallery-subtitle font-['Inter'] font-extralight text-[--accent-mocha] uppercase"
+             style={{ fontSize: 'clamp(0.875rem, 2vw, 1.25rem)', letterSpacing: '0.3em' }}>
+            Collective Moments
+          </p>
+        </div>
+        
+        <div className="gallery-grid [columns:4] [column-gap:2px] max-w-[1800px] mx-auto max-[1400px]:[columns:3] max-[1024px]:[columns:2] max-[1024px]:[column-gap:1px] max-[768px]:[columns:1]">
+          {galleryImages.map((image, index) => (
+            <div 
+              key={index}
+              className="gallery-item [break-inside:avoid] mb-[2px] relative overflow-hidden opacity-0 cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:scale-[1.02] hover:z-10 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] max-[1024px]:mb-[1px]"
+              style={{ 
+                '--index': index,
+                animation: `fadeInSequential 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards`,
+                animationDelay: `${index * 50}ms`
               }}
-              animate={{
-                y: [-20, 20, -20],
-                opacity: [0.3, 0.8, 0.3],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
+              onClick={() => openLightbox(index)}
+            >
+              <img 
+                src={image}
+                alt={`Memory ${index + 1}`}
+                className="w-full h-auto block transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] [filter:brightness(0.9)_contrast(1.1)] hover:[filter:brightness(1)_contrast(1.2)_saturate(1.1)] hover:transform hover:scale-105"
+              />
+              <div className="gallery-overlay absolute top-0 left-0 right-0 bottom-0 bg-[linear-gradient(45deg,rgba(0,0,0,0.7)_0%,transparent_30%,transparent_70%,rgba(183,175,163,0.3)_100%)] opacity-0 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] flex items-end p-5 hover:opacity-100">
+                <p className="gallery-caption font-['Inter'] text-xs font-light tracking-[0.1em] text-white uppercase [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
+                  Moment {String(index + 1).padStart(2, '0')}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
+      </div>
 
-        {/* Hero Content */}
-        <motion.div
-          className="relative z-10 text-center max-w-6xl mx-auto"
-          variants={staggerContainer}
-          initial="initial"
-          animate={isLoaded ? "animate" : "initial"}
-          viewport={{ once: true }}
+      {/* Professional Lightbox - HTML 버전과 완전 동일 */}
+      {isLightboxOpen && (
+        <div 
+          className="lightbox fixed top-0 left-0 w-full h-full bg-black/95 backdrop-blur-[20px] z-[10000] flex items-center justify-center opacity-100 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)]"
+          onClick={handleLightboxClick}
         >
-          <motion.div 
-            className="flex items-center justify-center mb-8"
-            variants={fadeInUp}
-          >
-            <Archive className="w-16 h-16 mr-4 text-purple-500" />
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight">
-              {heroContent.title}
-            </h1>
-          </motion.div>
-          
-          <motion.p 
-            className="text-xl sm:text-2xl md:text-3xl font-light mb-8 tracking-[0.2em] uppercase text-gray-300"
-            variants={fadeInUp}
-          >
-            {heroContent.subtitle}
-          </motion.p>
-          
-          <motion.div 
-            className="max-w-3xl mx-auto mb-12"
-            variants={fadeInUp}
-          >
-            <p className="text-base sm:text-lg leading-relaxed text-gray-400 mb-8">
-              {heroContent.description}
-            </p>
+          <div className="lightbox-content max-w-[90vw] max-h-[90vh] relative">
+            <button 
+              className="lightbox-close absolute -top-[50px] right-0 bg-transparent border-none text-white text-[30px] cursor-pointer transition-all duration-300 ease-in-out w-10 h-10 flex items-center justify-center hover:text-[--accent-mocha] hover:transform hover:scale-120"
+              onClick={closeLightbox}
+            >
+              ×
+            </button>
             
-            <blockquote className="border-l-4 border-purple-500 pl-6 italic text-lg sm:text-xl text-white">
-              "{heroContent.quote}"
-              <footer className="text-sm text-gray-400 mt-2">— {heroContent.author}</footer>
-            </blockquote>
-          </motion.div>
-
-          {/* Hero Memory Collage - Admin can manage */}
-          <motion.div 
-            className="mt-16"
-            variants={fadeInUp}
-          >
-            {isAdmin ? (
-              <div className="bg-gray-900/50 rounded-2xl p-6 backdrop-blur-sm border border-gray-700">
-                <h3 className="text-lg font-semibold mb-4 text-center">Hero Memory Collage Management</h3>
-                <InstagramStyleCMS
-                  galleryId="memory-hero"
-                  aspectRatio="auto"
-                  columns={3}
-                  maxItems={9}
-                  allowedTypes={['image']}
-                />
-              </div>
-            ) : (
-              <div className="relative">
-                {/* Stack-style collage preview */}
-                <div className="flex justify-center items-center space-x-4">
-                  {[1, 2, 3].map((_, index) => (
-                    <motion.div
-                      key={index}
-                      className="relative"
-                      style={{
-                        transform: `rotate(${index * 5 - 5}deg) translateY(${index * 10}px)`,
-                        zIndex: 3 - index
-                      }}
-                      whileHover={{ 
-                        scale: 1.1, 
-                        rotate: 0, 
-                        translateY: -10,
-                        zIndex: 10
-                      }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="w-64 h-48 bg-gray-800 rounded-lg border-4 border-white/20 shadow-xl flex items-center justify-center group cursor-pointer">
-                        <div className="text-center">
-                          <Camera className="w-12 h-12 mx-auto mb-2 text-purple-500 group-hover:scale-110 transition-transform" />
-                          <span className="text-gray-300 text-sm">Memory Stack {index + 1}</span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Memory Stacks Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light mb-6 tracking-[0.05em] uppercase">
-              MEMORY STACKS
-            </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              테마별로 분류된 기억들이 쌓여 있는 특별한 컬렉션입니다. 각 스택을 클릭하여 그 안에 담긴 이야기들을 발견해보세요.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {memoryStacks.map((stack, index) => (
-              <motion.div
-                key={stack.id}
-                className="relative group cursor-pointer"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                onClick={() => setSelectedStack(selectedStack === stack.id ? null : stack.id)}
-              >
-                {/* Stack of Images Effect */}
-                <div className="relative h-80">
-                  {/* Background stacked cards */}
-                  {[0, 1, 2].map((cardIndex) => (
-                    <motion.div
-                      key={cardIndex}
-                      className={`absolute inset-0 rounded-2xl border border-gray-700 shadow-2xl bg-gradient-to-br ${stack.color}`}
-                      style={{
-                        transform: `translateY(${cardIndex * -8}px) translateX(${cardIndex * 4}px) rotate(${cardIndex * 2 - 2}deg)`,
-                        zIndex: 3 - cardIndex,
-                        opacity: 1 - cardIndex * 0.2
-                      }}
-                      whileHover={{
-                        transform: `translateY(${cardIndex * -12}px) translateX(${cardIndex * 6}px) rotate(${cardIndex * 3 - 3}deg)`,
-                      }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  ))}
-                  
-                  {/* Main content */}
-                  <motion.div 
-                    className="relative z-10 h-full rounded-2xl overflow-hidden bg-gray-900/90 backdrop-blur-sm border border-gray-700 group-hover:border-purple-500/50 transition-all duration-300"
-                    whileHover={{ scale: 1.02, y: -5 }}
-                  >
-                    {isAdmin && selectedStack === stack.id ? (
-                      <div className="h-full p-4">
-                        <h4 className="text-sm font-medium mb-3 text-purple-400 text-center">
-                          {stack.title} Stack Management
-                        </h4>
-                        <InstagramStyleCMS
-                          galleryId={stack.galleryId}
-                          aspectRatio="4:3"
-                          columns={2}
-                          maxItems={stack.stackCount}
-                          allowedTypes={['image']}
-                        />
-                      </div>
-                    ) : (
-                      <div className="h-full flex flex-col justify-between p-6">
-                        <div>
-                          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                            {stack.icon}
-                          </div>
-                          
-                          <h3 className="text-xl font-bold mb-2 text-white group-hover:text-purple-400 transition-colors">
-                            {stack.title}
-                          </h3>
-                          
-                          <h4 className="text-lg font-medium mb-4 text-gray-300">
-                            {stack.subtitle}
-                          </h4>
-                          
-                          <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                            {stack.description}
-                          </p>
-                          
-                          <p className="text-xs text-gray-500 italic">
-                            {stack.descriptionEn}
-                          </p>
-                        </div>
-                        
-                        <div className="flex items-center justify-between text-xs text-gray-500">
-                          <span>{stack.stackCount} memories</span>
-                          <span className="text-purple-400">
-                            {selectedStack === stack.id ? 'Managing ↑' : 'Click to explore →'}
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
+            <button 
+              className="lightbox-nav lightbox-prev absolute top-1/2 left-[-80px] transform -translate-y-1/2 bg-white/10 backdrop-blur-[10px] border border-white/20 rounded-full w-[60px] h-[60px] flex items-center justify-center text-white text-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[--accent-mocha]/30 hover:transform hover:-translate-y-1/2 hover:scale-110 max-[1024px]:hidden"
+              onClick={(e) => { e.stopPropagation(); prevImage(); }}
+            >
+              ‹
+            </button>
+            
+            <img 
+              className="lightbox-image max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+              src={galleryImages[currentImageIndex]}
+              alt={`Memory ${currentImageIndex + 1}`}
+            />
+            
+            <button 
+              className="lightbox-nav lightbox-next absolute top-1/2 right-[-80px] transform -translate-y-1/2 bg-white/10 backdrop-blur-[10px] border border-white/20 rounded-full w-[60px] h-[60px] flex items-center justify-center text-white text-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[--accent-mocha]/30 hover:transform hover:-translate-y-1/2 hover:scale-110 max-[1024px]:hidden"
+              onClick={(e) => { e.stopPropagation(); nextImage(); }}
+            >
+              ›
+            </button>
           </div>
         </div>
-      </section>
-
-      {/* Timeline Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-gray-900/20 to-black">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light mb-6 tracking-[0.05em] uppercase">
-              TIMELINE
-            </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              시간의 흐름에 따라 기록된 REDUX의 여정과 각 시기별 특별한 순간들을 만나보세요.
-            </p>
-          </motion.div>
-
-          <div className="relative">
-            {/* Timeline Line */}
-            <div className="absolute left-1/2 transform -translate-x-px h-full w-0.5 bg-gradient-to-b from-purple-500 via-purple-400 to-purple-500 hidden md:block" />
-            
-            <div className="space-y-12">
-              {timelinePeriods.map((period, index) => (
-                <motion.div
-                  key={period.id}
-                  className={`flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} flex-col`}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                >
-                  {/* Content */}
-                  <div className={`flex-1 ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8'} mb-8 md:mb-0`}>
-                    <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-purple-500/50 transition-all duration-300">
-                      <div className="flex items-center gap-3 mb-4">
-                        <Clock className="w-5 h-5 text-purple-400" />
-                        <span className="text-2xl font-bold text-purple-400">{period.year}</span>
-                      </div>
-                      
-                      <h3 className="text-xl font-bold mb-2 text-white">{period.title}</h3>
-                      <h4 className="text-lg font-medium mb-4 text-gray-300">{period.subtitle}</h4>
-                      <p className="text-gray-400 text-sm leading-relaxed mb-6">{period.description}</p>
-                      
-                      {/* Timeline Gallery */}
-                      {isAdmin ? (
-                        <div>
-                          <h5 className="text-xs font-medium mb-3 text-purple-400">Timeline Gallery</h5>
-                          <InstagramStyleCMS
-                            galleryId={period.galleryId}
-                            aspectRatio="16:9"
-                            columns={2}
-                            maxItems={6}
-                            allowedTypes={['image']}
-                          />
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-2 gap-2">
-                          <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center">
-                            <Camera className="w-4 h-4 text-gray-500" />
-                          </div>
-                          <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center">
-                            <Camera className="w-4 h-4 text-gray-500" />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {/* Timeline Node */}
-                  <div className="relative z-10 hidden md:block">
-                    <div className="w-4 h-4 bg-purple-500 rounded-full border-4 border-black shadow-lg" />
-                  </div>
-                  
-                  {/* Spacer */}
-                  <div className="flex-1" />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-8 tracking-[0.05em] uppercase">
-              CREATE MEMORIES WITH US
-            </h2>
-            <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
-              당신의 이야기도 우리의 기억 컬렉션에 추가해보세요. 함께 만들어가는 새로운 기억들이 더 큰 창작의 영감이 됩니다.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <motion.a
-                href="/contact"
-                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:from-purple-700 hover:to-pink-700 transition-all duration-300 uppercase tracking-wider flex items-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Heart size={20} />
-                Join Our Story
-              </motion.a>
-              <motion.a
-                href="/designers"
-                className="px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all duration-300 uppercase tracking-wider"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Meet the Creators
-              </motion.a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Admin Notes */}
-      {isAdmin && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="fixed bottom-20 left-6 right-6 md:left-auto md:right-20 md:w-80 bg-purple-900/90 backdrop-blur-sm border border-purple-500/50 rounded-lg p-4 z-40"
-        >
-          <h4 className="font-semibold text-purple-300 mb-2">Admin Mode: Memory Page</h4>
-          <div className="text-sm text-purple-200 space-y-1">
-            <p>• Hero Collage: 9 images</p>
-            <p>• Memory Stacks: 6 stacks (69 total images)</p>
-            <p>• Timeline: 4 periods (6 images each)</p>
-            <p>• Total: 102 manageable media slots</p>
-          </div>
-        </motion.div>
       )}
-    </div>
+
+      {/* CSS for animations matching HTML version */}
+      <style jsx>{`
+        @keyframes fadeInUp {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes fadeInSequential {
+          0% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            filter: blur(5px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+          }
+        }
+        
+        /* CSS 변수 정의 - HTML 버전과 완전 동일 */
+        :root {
+          --primary-black: #000000;
+          --primary-white: #FFFFFF;
+          --accent-mocha: #B7AFA3;
+          --accent-warm: #D4CCC5;
+          --accent-deep: #9A9086;
+          --accent-neutral: #F8F6F4;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          nav {
+            padding: 15px 20px;
+          }
+          
+          .page-title {
+            display: none;
+          }
+          
+          .gallery-container {
+            padding: 100px 10px 40px;
+          }
+          
+          .gallery-header {
+            margin-bottom: 40px;
+          }
+        }
+        
+        /* Motion Reduction */
+        @media (prefers-reduced-motion: reduce) {
+          .gallery-item,
+          .gallery-header {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
+        }
+      `}</style>
+    </>
   );
+}
+
+// GSAP 타입 확장
+declare global {
+  interface Window {
+    gsap: any;
+  }
 }

@@ -1,427 +1,435 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { useAdminAuth } from '@/hooks/useAdminAuth';
-import InstagramStyleCMS from '@/components/admin/InstagramStyleCMS';
-import { fadeInUp, staggerContainer, staggerItem } from '@/lib/animations';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
+// HTML redux6 about-collective.html과 완전 동일한 Collective 페이지 구현
 export default function CollectivePage() {
-  const { isAdmin } = useAdminAuth();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
-    setIsLoaded(true);
+    // HTML 버전과 동일한 GSAP 애니메이션 초기화
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('revealed');
+          }, index * 100);
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.member-card').forEach(card => {
+      observer.observe(card);
+    });
+    
+    // GSAP 애니메이션
+    if (typeof window !== 'undefined' && window.gsap) {
+      // Values animation
+      window.gsap.utils.toArray('.value-item').forEach((item: any, i: number) => {
+        window.gsap.from(item, {
+          y: 60,
+          opacity: 0,
+          duration: 1,
+          delay: i * 0.1,
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 80%'
+          }
+        });
+      });
+      
+      // Philosophy text animation
+      window.gsap.utils.toArray('.philosophy-text').forEach((text: any, i: number) => {
+        window.gsap.from(text, {
+          y: 40,
+          opacity: 0,
+          duration: 1,
+          delay: i * 0.2,
+          scrollTrigger: {
+            trigger: text,
+            start: 'top 80%'
+          }
+        });
+      });
+    }
+    
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
-  // Hero section content
-  const heroContent = {
-    title: "COLLECTIVE",
-    subtitle: "Six minds, one creative vision",
-    description: "REDUX represents the convergence of six distinct creative voices, united by a shared passion for pushing the boundaries of fashion and art. Our collective approach combines individual expertise with collaborative innovation.",
-    quote: "Together, we are more than the sum of our parts.",
-    author: "REDUX Collective"
+  // HTML 버전과 동일한 내비게이션 함수들
+  const goBack = () => {
+    router.back();
   };
 
-  // Process sections data
-  const processSteps = [
-    {
-      id: 'direction',
-      title: '디렉팅',
-      titleEn: 'DIRECTION',
-      description: '창작의 방향성을 제시하고 전체적인 비전을 구현합니다.',
-      descriptionEn: 'We provide creative direction and implement the overall vision.',
-      icon: '📋',
-      galleryId: 'collective-direction'
-    },
-    {
-      id: 'space-design',
-      title: '공간 연출',
-      titleEn: 'SPACE DESIGN',
-      description: '공간을 통해 이야기를 전달하고 감정을 불러일으킵니다.',
-      descriptionEn: 'We tell stories and evoke emotions through spatial design.',
-      icon: '🏛️',
-      galleryId: 'collective-space'
-    },
-    {
-      id: 'digital-web',
-      title: '디지털 웹 디자인',
-      titleEn: 'DIGITAL WEB DESIGN',
-      description: '디지털 공간에서의 사용자 경험을 설계합니다.',
-      descriptionEn: 'We design user experiences in digital spaces.',
-      icon: '💻',
-      galleryId: 'collective-digital'
-    },
-    {
-      id: 'art-graphic',
-      title: '아트 그래픽',
-      titleEn: 'ART GRAPHIC',
-      description: '시각적 아이덴티티를 통해 브랜드의 본질을 표현합니다.',
-      descriptionEn: 'We express brand essence through visual identity.',
-      icon: '🎨',
-      galleryId: 'collective-art'
-    },
-    {
-      id: 'video-editing',
-      title: '영상 & 편집',
-      titleEn: 'VIDEO & EDITING',
-      description: '움직이는 이미지로 스토리를 완성합니다.',
-      descriptionEn: 'We complete stories through moving images.',
-      icon: '🎬',
-      galleryId: 'collective-video'
-    },
-    {
-      id: 'promotion-branding',
-      title: '홍보 브랜딩',
-      titleEn: 'PROMOTION BRANDING',
-      description: '브랜드의 가치를 세상에 알리고 확산시킵니다.',
-      descriptionEn: 'We promote and spread brand values to the world.',
-      icon: '📢',
-      galleryId: 'collective-promotion'
-    }
-  ];
+  const goHome = () => {
+    router.push('/');
+  };
 
-  // Team showcase data
-  const teamMembers = [
-    {
-      id: 'kim-bomin',
-      name: 'KIM BOMIN',
-      role: 'Creative Director',
-      specialty: 'Brand Strategy & Creative Vision',
-      galleryId: 'collective-team-kimbomin'
-    },
-    {
-      id: 'park-parang',
-      name: 'PARK PARANG', 
-      role: 'Visual Artist',
-      specialty: 'Visual Art & Graphic Design',
-      galleryId: 'collective-team-parkparang'
-    },
-    {
-      id: 'lee-taehyeon',
-      name: 'LEE TAEHYEON',
-      role: 'Fashion Designer',
-      specialty: 'Fashion Design & Styling',
-      galleryId: 'collective-team-leetaehyeon'
-    },
-    {
-      id: 'choi-eunsol',
-      name: 'CHOI EUNSOL',
-      role: 'Art Director',
-      specialty: 'Art Direction & Concept',
-      galleryId: 'collective-team-choieunsol'
-    },
-    {
-      id: 'hwang-jinsu',
-      name: 'HWANG JINSU',
-      role: 'Film Director',
-      specialty: 'Video Production & Directing',
-      galleryId: 'collective-team-hwangjinsu'
-    },
-    {
-      id: 'kim-gyeongsu',
-      name: 'KIM GYEONGSU',
-      role: 'Installation Artist',
-      specialty: 'Space Design & Installation',
-      galleryId: 'collective-team-kimgyeongsu'
-    }
-  ];
+  const openDesignerPage = (designer: string) => {
+    router.push(`/designers/${designer}`);
+  };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
+    <>
+      {/* Navigation - HTML 버전과 동일 */}
+      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-white/95 backdrop-blur-[10px] z-[1000] transition-all duration-300 ease-in-out border-b border-black/10 scrolled:py-[15px] scrolled:px-10 scrolled:shadow-[0_2px_20px_rgba(0,0,0,0.1)]">
+        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
+          <div className="nav-left flex items-center gap-10">
+            <span 
+              className="back-button text-xl cursor-pointer transition-all duration-300 ease-in-out text-black hover:transform hover:-translate-x-[5px]"
+              onClick={goBack}
+            >
+              ←
+            </span>
+            <span className="page-title text-lg font-medium tracking-[2px] text-black max-[768px]:hidden">
+              COLLECTIVE
+            </span>
+          </div>
           <div 
-            className="w-full h-full"
-            style={{
-              backgroundImage: `
-                radial-gradient(circle at 25% 25%, #fff 1px, transparent 1px),
-                radial-gradient(circle at 75% 75%, #fff 1px, transparent 1px)
-              `,
-              backgroundSize: '60px 60px',
-              backgroundPosition: '0 0, 30px 30px'
-            }}
-          />
+            className="logo text-2xl font-bold tracking-[2px] cursor-pointer transition-opacity duration-300 ease-in-out text-black hover:opacity-70"
+            onClick={goHome}
+          >
+            REDUX
+          </div>
         </div>
+      </nav>
 
-        {/* Hero Content */}
-        <motion.div
-          className="relative z-10 text-center max-w-6xl mx-auto"
-          variants={staggerContainer}
-          initial="initial"
-          animate={isLoaded ? "animate" : "initial"}
-          viewport={{ once: true }}
+      {/* Hero Section - HTML 버전과 완전 동일 */}
+      <section className="hero-section h-screen relative flex items-center justify-center bg-black overflow-hidden">
+        <video 
+          className="hero-video absolute top-0 left-0 w-full h-full object-cover opacity-30"
+          autoPlay 
+          muted 
+          loop 
+          playsInline
         >
-          <motion.h1 
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black mb-8 tracking-tight"
-            variants={fadeInUp}
+          <source src="/video/collective-bg.mp4" type="video/mp4" />
+        </video>
+        <div className="hero-content text-center z-[1] text-white">
+          <h1 
+            className="hero-title font-thin uppercase mb-5 opacity-0 transform translate-y-[50px] animate-[heroFade_1.5s_ease_forwards] tracking-[0.4em]"
+            style={{ fontSize: 'clamp(80px, 12vw, 200px)' }}
           >
-            {heroContent.title}
-          </motion.h1>
-          
-          <motion.p 
-            className="text-xl sm:text-2xl md:text-3xl font-light mb-8 tracking-[0.2em] uppercase text-gray-300"
-            variants={fadeInUp}
-          >
-            {heroContent.subtitle}
-          </motion.p>
-          
-          <motion.div 
-            className="max-w-3xl mx-auto mb-12"
-            variants={fadeInUp}
-          >
-            <p className="text-base sm:text-lg leading-relaxed text-gray-400 mb-8">
-              {heroContent.description}
-            </p>
-            
-            <blockquote className="border-l-4 border-purple-500 pl-6 italic text-lg sm:text-xl text-white">
-              "{heroContent.quote}"
-              <footer className="text-sm text-gray-400 mt-2">— {heroContent.author}</footer>
-            </blockquote>
-          </motion.div>
-
-          {/* Hero Image Gallery - Admin can manage */}
-          <motion.div 
-            className="mt-16"
-            variants={fadeInUp}
-          >
-            {isAdmin ? (
-              <div className="bg-gray-900/50 rounded-2xl p-6 backdrop-blur-sm border border-gray-700">
-                <h3 className="text-lg font-semibold mb-4 text-center">Hero Gallery Management</h3>
-                <InstagramStyleCMS
-                  galleryId="collective-hero"
-                  aspectRatio="16:9"
-                  columns={2}
-                  maxItems={4}
-                  allowedTypes={['image', 'video']}
-                />
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Placeholder for hero images */}
-                <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500">Collective Vision 01</span>
-                </div>
-                <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500">Collective Vision 02</span>
-                </div>
-              </div>
-            )}
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Process Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light mb-6 tracking-[0.05em] uppercase">
-              OUR PROCESS
-            </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              우리의 창작 과정은 6가지 핵심 영역으로 구성됩니다. 각 영역에서의 전문성이 하나의 완성된 작품을 만들어냅니다.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {processSteps.map((step, index) => (
-              <motion.div
-                key={step.id}
-                className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-purple-500/50 transition-all duration-300 group"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {step.icon}
-                </div>
-                
-                <h3 className="text-xl font-bold mb-2 text-white group-hover:text-purple-400 transition-colors">
-                  {step.titleEn}
-                </h3>
-                
-                <h4 className="text-lg font-medium mb-4 text-gray-300">
-                  {step.title}
-                </h4>
-                
-                <p className="text-gray-400 mb-6 leading-relaxed">
-                  {step.description}
-                </p>
-                
-                <p className="text-sm text-gray-500 mb-6 italic">
-                  {step.descriptionEn}
-                </p>
-
-                {/* Process Gallery - Each step has its own CMS */}
-                {isAdmin ? (
-                  <div className="mt-6">
-                    <h5 className="text-sm font-medium mb-3 text-purple-400">Gallery Management</h5>
-                    <InstagramStyleCMS
-                      galleryId={step.galleryId}
-                      aspectRatio="4:3"
-                      columns={2}
-                      maxItems={6}
-                      allowedTypes={['image', 'video']}
-                    />
-                  </div>
-                ) : (
-                  <div className="mt-6 grid grid-cols-2 gap-2">
-                    <div className="aspect-[4/3] bg-gray-800 rounded-lg flex items-center justify-center">
-                      <span className="text-xs text-gray-500 text-center">Process<br/>Image</span>
-                    </div>
-                    <div className="aspect-[4/3] bg-gray-800 rounded-lg flex items-center justify-center">
-                      <span className="text-xs text-gray-500 text-center">Process<br/>Image</span>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
+            REDUX
+          </h1>
+          <p className="hero-subtitle text-lg tracking-[4px] opacity-0 animate-[heroFade_1.5s_ease_forwards] [animation-delay:0.3s]">
+            SIX MINDS, ONE VISION
+          </p>
         </div>
       </section>
 
-      {/* Team Showcase Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-gray-900/20 to-black">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light mb-6 tracking-[0.05em] uppercase">
-              THE COLLECTIVE
-            </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              6명의 디자이너가 각자의 전문성을 바탕으로 하나의 비전을 구현합니다.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamMembers.map((member, index) => (
-              <motion.div
-                key={member.id}
-                className="group cursor-pointer"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-              >
-                <div className="bg-gray-900/40 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-purple-500/10">
-                  
-                  {/* Member Image - Individual CMS for each team member */}
-                  <div className="aspect-[4/5] relative overflow-hidden">
-                    {isAdmin ? (
-                      <div className="h-full">
-                        <InstagramStyleCMS
-                          galleryId={member.galleryId}
-                          aspectRatio="4:5"
-                          columns={1}
-                          maxItems={3}
-                          allowedTypes={['image']}
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="w-20 h-20 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span className="text-2xl">👤</span>
-                          </div>
-                          <p className="text-sm text-gray-400">{member.name}</p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-
-                  {/* Member Info */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2 text-white group-hover:text-purple-400 transition-colors">
-                      {member.name}
-                    </h3>
-                    <p className="text-purple-400 font-medium mb-2 uppercase tracking-wider text-sm">
-                      {member.role}
-                    </p>
-                    <p className="text-gray-400 text-sm leading-relaxed">
-                      {member.specialty}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+      {/* Philosophy Section - HTML 버전과 완전 동일 */}
+      <section className="philosophy-section py-40 px-10 bg-white">
+        <div className="philosophy-container max-w-[1000px] mx-auto text-center">
+          <h2 className="philosophy-title text-5xl font-light tracking-[4px] mb-[60px] text-black">
+            WHO WE ARE
+          </h2>
+          <p className="philosophy-text text-2xl font-light leading-[2] text-[--gray-dark] mb-10">
+            REDUX는 <span className="text-black font-normal">6인의 패션 디자이너</span>가 모여서 만든 예술 크루입니다.
+          </p>
+          <p className="philosophy-text text-2xl font-light leading-[2] text-[--gray-dark] mb-10">
+            우리는 패션필름, 설치, 비주얼 작업 등 다양한 방식으로<br />
+            관객들에게 <span className="text-black font-normal">'기억에 남을 순간'</span>을 디자인합니다.
+          </p>
+          <p className="philosophy-text text-2xl font-light leading-[2] text-[--gray-dark] mb-10">
+            각자 다른 색을 가진 멤버가 모여서 하나의 흐름을 만들고,<br />
+            그 잔상이 오래도록 머물길 바라는 마음으로 활동하고 있습니다.
+          </p>
+          <p className="philosophy-quote text-lg italic text-[--gray-medium] mt-[60px]">
+            "Fashion is not just what we wear, it's how we remember."
+          </p>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+      {/* Members Section - HTML 버전과 완전 동일 */}
+      <section className="members-section py-[120px] px-10 bg-[--gray-light]">
+        <h2 className="members-title text-5xl font-light tracking-[4px] text-center mb-20 text-black">
+          THE COLLECTIVE
+        </h2>
+        <div className="members-grid grid grid-cols-3 gap-[60px] max-w-[1400px] mx-auto max-[1024px]:grid-cols-2 max-[1024px]:gap-10 max-[768px]:grid-cols-1 max-[768px]:gap-[60px]">
+          
+          {/* Member 1: Kim Bomin */}
+          <div 
+            className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
+            onClick={() => openDesignerPage('kimbomin')}
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-8 tracking-[0.05em] uppercase">
-              JOIN OUR VISION
-            </h2>
-            <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
-              우리와 함께 패션과 아트의 경계를 넘나드는 새로운 창작의 여정에 참여하세요.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <motion.a
-                href="/contact"
-                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:from-purple-700 hover:to-pink-700 transition-all duration-300 uppercase tracking-wider"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Contact Us
-              </motion.a>
-              <motion.a
-                href="/designers"
-                className="px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all duration-300 uppercase tracking-wider"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Meet the Team
-              </motion.a>
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+                01
+              </div>
+              <img 
+                src="/images/designer-placeholder.jpg" 
+                alt="Kim Bomin" 
+                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+              />
             </div>
-          </motion.div>
+            <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
+              KIM BOMIN
+            </h3>
+            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+              Creative Director
+            </p>
+          </div>
+
+          {/* Member 2: Park Parang */}
+          <div 
+            className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
+            onClick={() => openDesignerPage('parkparang')}
+          >
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+                02
+              </div>
+              <img 
+                src="/images/designer-placeholder.jpg" 
+                alt="Park Parang" 
+                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+              />
+            </div>
+            <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
+              PARK PARANG
+            </h3>
+            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+              Visual Artist
+            </p>
+          </div>
+
+          {/* Member 3: Lee Taehyeon */}
+          <div 
+            className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
+            onClick={() => openDesignerPage('leetaehyeon')}
+          >
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+                03
+              </div>
+              <img 
+                src="/images/designers/leetaehyeon/leetaehyeon-Profile.jpg" 
+                alt="Lee Taehyeon" 
+                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+              />
+            </div>
+            <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
+              LEE TAEHYEON
+            </h3>
+            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+              Fashion Designer
+            </p>
+          </div>
+
+          {/* Member 4: Choi Eunsol */}
+          <div 
+            className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
+            onClick={() => openDesignerPage('choieunsol')}
+          >
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+                04
+              </div>
+              <img 
+                src="/images/designers/choieunsol/choieunsol-Profile.jpeg" 
+                alt="Choi Eunsol" 
+                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+              />
+            </div>
+            <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
+              CHOI EUNSOL
+            </h3>
+            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+              Art Director
+            </p>
+          </div>
+
+          {/* Member 5: Hwang Jinsu */}
+          <div 
+            className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
+            onClick={() => openDesignerPage('hwangjinsu')}
+          >
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+                05
+              </div>
+              <img 
+                src="/images/designer-placeholder.jpg" 
+                alt="Hwang Jinsu" 
+                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+              />
+            </div>
+            <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
+              HWANG JINSU
+            </h3>
+            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+              Film Director
+            </p>
+          </div>
+
+          {/* Member 6: Kim Gyeongsu */}
+          <div 
+            className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
+            onClick={() => openDesignerPage('kimgyeongsu')}
+          >
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+                06
+              </div>
+              <img 
+                src="/images/designer-placeholder.jpg" 
+                alt="Kim Gyeongsu" 
+                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+              />
+            </div>
+            <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
+              KIM GYEONGSU
+            </h3>
+            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+              Installation Artist
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Admin Notes */}
-      {isAdmin && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="fixed bottom-20 left-6 right-6 md:left-auto md:right-20 md:w-80 bg-purple-900/90 backdrop-blur-sm border border-purple-500/50 rounded-lg p-4 z-40"
-        >
-          <h4 className="font-semibold text-purple-300 mb-2">Admin Mode: Collective Page</h4>
-          <div className="text-sm text-purple-200 space-y-1">
-            <p>• Hero Gallery: 4 images/videos</p>
-            <p>• Process Steps: 6 galleries (6 images each)</p>
-            <p>• Team Members: 6 individual galleries (3 images each)</p>
-            <p>• Total: 58 manageable media slots</p>
+      {/* Values Section - HTML 버전과 완전 동일 */}
+      <section className="values-section py-[120px] px-10 bg-black text-white">
+        <div className="values-container max-w-[1400px] mx-auto">
+          <h2 className="values-title text-5xl font-light tracking-[4px] text-center mb-20">
+            OUR VALUES
+          </h2>
+          <div className="values-grid grid grid-cols-4 gap-10 max-[1024px]:grid-cols-2 max-[768px]:grid-cols-1 max-[768px]:gap-[30px]">
+            
+            <div className="value-item text-center py-10 px-5 border border-white/10 transition-all duration-500 ease-in-out hover:bg-white/5 hover:transform hover:-translate-y-[10px]">
+              <div className="value-icon w-[60px] h-[60px] mx-auto mb-[30px] border-2 border-white rounded-full flex items-center justify-center text-2xl">
+                ∞
+              </div>
+              <h3 className="value-name text-lg font-light tracking-[2px] mb-5 uppercase">
+                Collective
+              </h3>
+              <p className="value-description text-sm leading-[1.8] text-[--gray-medium]">
+                개인의 창의성이 모여
+                더 큰 시너지를 만듭니다
+              </p>
+            </div>
+            
+            <div className="value-item text-center py-10 px-5 border border-white/10 transition-all duration-500 ease-in-out hover:bg-white/5 hover:transform hover:-translate-y-[10px]">
+              <div className="value-icon w-[60px] h-[60px] mx-auto mb-[30px] border-2 border-white rounded-full flex items-center justify-center text-2xl">
+                ◐
+              </div>
+              <h3 className="value-name text-lg font-light tracking-[2px] mb-5 uppercase">
+                Memory
+              </h3>
+              <p className="value-description text-sm leading-[1.8] text-[--gray-medium]">
+                순간을 넘어 기억에
+                남는 경험을 디자인합니다
+              </p>
+            </div>
+            
+            <div className="value-item text-center py-10 px-5 border border-white/10 transition-all duration-500 ease-in-out hover:bg-white/5 hover:transform hover:-translate-y-[10px]">
+              <div className="value-icon w-[60px] h-[60px] mx-auto mb-[30px] border-2 border-white rounded-full flex items-center justify-center text-2xl">
+                ◈
+              </div>
+              <h3 className="value-name text-lg font-light tracking-[2px] mb-5 uppercase">
+                Boundary
+              </h3>
+              <p className="value-description text-sm leading-[1.8] text-[--gray-medium]">
+                패션과 예술의 경계를
+                허물고 새로운 영역을 탐구합니다
+              </p>
+            </div>
+            
+            <div className="value-item text-center py-10 px-5 border border-white/10 transition-all duration-500 ease-in-out hover:bg-white/5 hover:transform hover:-translate-y-[10px]">
+              <div className="value-icon w-[60px] h-[60px] mx-auto mb-[30px] border-2 border-white rounded-full flex items-center justify-center text-2xl">
+                ※
+              </div>
+              <h3 className="value-name text-lg font-light tracking-[2px] mb-5 uppercase">
+                Evolution
+              </h3>
+              <p className="value-description text-sm leading-[1.8] text-[--gray-medium]">
+                끊임없이 변화하고
+                진화하는 창작을 추구합니다
+              </p>
+            </div>
           </div>
-        </motion.div>
-      )}
-    </div>
+        </div>
+      </section>
+
+      {/* Contact CTA Section - HTML 버전과 완전 동일 */}
+      <section className="cta-section py-40 px-10 bg-white text-center">
+        <h2 
+          className="cta-title font-light tracking-[3px] mb-10 text-black"
+          style={{ fontSize: 'clamp(36px, 5vw, 60px)' }}
+        >
+          Let's Create Something Memorable Together
+        </h2>
+        <a 
+          href="/contact" 
+          className="cta-button inline-block py-5 px-[60px] border-2 border-black text-black no-underline text-base tracking-[2px] uppercase relative overflow-hidden transition-all duration-300 ease-in-out hover:text-white before:content-[''] before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-black before:transition-[left_0.3s_ease] before:-z-[1] hover:before:left-0"
+        >
+          Get in Touch
+        </a>
+      </section>
+
+      {/* CSS for animations matching HTML version */}
+      <style jsx>{`
+        @keyframes heroFade {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes revealMember {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .member-card.revealed {
+          animation: revealMember 0.8s ease forwards;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          .hero-title {
+            font-size: clamp(50px, 10vw, 100px) !important;
+            letter-spacing: 0.2em !important;
+          }
+          
+          .philosophy-section {
+            padding: 100px 20px;
+          }
+          
+          .philosophy-text {
+            font-size: 18px;
+          }
+          
+          .members-section {
+            padding: 80px 20px;
+          }
+          
+          .values-section {
+            padding: 80px 20px;
+          }
+          
+          .cta-section {
+            padding: 100px 20px;
+          }
+        }
+      `}</style>
+    </>
   );
+}
+
+// GSAP 타입 확장
+declare global {
+  interface Window {
+    gsap: any;
+  }
 }

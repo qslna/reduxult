@@ -1,572 +1,362 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { Palette, Brush, Eye, Layers, Sparkles, Frame, Zap, Target } from 'lucide-react';
-import { useAdminAuth } from '@/hooks/useAdminAuth';
-import InstagramStyleCMS from '@/components/admin/InstagramStyleCMS';
-import { fadeInUp, staggerContainer, staggerItem } from '@/lib/animations';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
+// HTML redux6 about-visual-art.html과 완전 동일한 Visual Art 페이지 구현
 export default function VisualArtPage() {
-  const { isAdmin } = useAdminAuth();
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [activeArtist, setActiveArtist] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    setIsLoaded(true);
+    // HTML 버전과 동일한 GSAP 애니메이션 초기화
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('revealed');
+          }, index * 50);
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.visual-item').forEach(item => {
+      observer.observe(item);
+    });
+    
+    // GSAP 애니메이션
+    if (typeof window !== 'undefined' && window.gsap) {
+      // Process items animation
+      window.gsap.utils.toArray('.process-item').forEach((item: any, i: number) => {
+        window.gsap.from(item, {
+          y: 80,
+          opacity: 0,
+          duration: 1,
+          delay: i * 0.2,
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 80%'
+          }
+        });
+      });
+    }
+    
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
-  // Hero section content
-  const heroContent = {
-    title: "VISUAL ART",
-    subtitle: "Where imagination meets creation",
-    description: "비주얼 아트는 단순한 시각적 표현을 넘어 사고와 감정, 철학을 전달하는 언어입니다. REDUX의 비주얼 아트는 다양한 매체와 기법을 통해 독창적인 시각 언어를 창조합니다.",
-    quote: "Art is not what you see, but what you make others see.",
-    author: "Edgar Degas"
+  // HTML 버전과 동일한 내비게이션 함수들
+  const goBack = () => {
+    router.back();
   };
 
-  // Art techniques/mediums
-  const artMediums = [
-    {
-      id: 'digital-art',
-      title: 'DIGITAL ART',
-      subtitle: '디지털 아트',
-      description: '최신 디지털 도구를 활용한 혈신적인 시각 표현',
-      descriptionEn: 'Innovative visual expression using cutting-edge digital tools',
-      icon: '💻',
-      color: 'from-blue-500 to-cyan-600',
-      galleryId: 'visual-digital'
-    },
-    {
-      id: 'traditional-art',
-      title: 'TRADITIONAL ART',
-      subtitle: '전통 미술',
-      description: '전통적인 기법과 현대적 감성의 조화로운 만남',
-      descriptionEn: 'Harmonious blend of traditional techniques and modern sensibilities',
-      icon: '🎨',
-      color: 'from-red-500 to-orange-600',
-      galleryId: 'visual-traditional'
-    },
-    {
-      id: 'mixed-media',
-      title: 'MIXED MEDIA',
-      subtitle: '복합 매체',
-      description: '다양한 재료와 기법의 실험적 결합',
-      descriptionEn: 'Experimental combination of various materials and techniques',
-      icon: '🎭',
-      color: 'from-purple-500 to-pink-600',
-      galleryId: 'visual-mixed'
-    },
-    {
-      id: 'conceptual-art',
-      title: 'CONCEPTUAL ART',
-      subtitle: '개념 미술',
-      description: '아이디어와 철학이 중심이 되는 지적 예술',
-      descriptionEn: 'Intellectual art where ideas and philosophy take center stage',
-      icon: '🧠',
-      color: 'from-green-500 to-teal-600',
-      galleryId: 'visual-conceptual'
-    },
-    {
-      id: 'street-art',
-      title: 'STREET ART',
-      subtitle: '스트리트 아트',
-      description: '도시 공간에서 태어난 자유롭고 역동적인 표현',
-      descriptionEn: 'Free and dynamic expression born in urban spaces',
-      icon: '🎨',
-      color: 'from-yellow-500 to-red-600',
-      galleryId: 'visual-street'
-    },
-    {
-      id: 'graphic-design',
-      title: 'GRAPHIC DESIGN',
-      subtitle: '그래픽 디자인',
-      description: '시각적 커뮤니케이션을 위한 전략적 디자인',
-      descriptionEn: 'Strategic design for effective visual communication',
-      icon: '🔺',
-      color: 'from-indigo-500 to-purple-600',
-      galleryId: 'visual-graphic'
-    }
-  ];
-
-  // Artist showcase data
-  const artistShowcase = [
-    {
-      id: 'kim-bomin',
-      name: 'KIM BOMIN',
-      role: 'Creative Director',
-      specialty: 'Brand Visual Identity',
-      description: '브랜드의 시각적 정체성을 창조하고 전략적 비주얼 커뮤니케이션을 주도합니다.',
-      galleryId: 'artist-kimbomin-visual'
-    },
-    {
-      id: 'park-parang',
-      name: 'PARK PARANG',
-      role: 'Visual Artist',
-      specialty: 'Contemporary Visual Expression',
-      description: '현대적 시각 예술의 새로운 가능성을 탐구하며 독창적인 작품을 선보입니다.',
-      galleryId: 'artist-parkparang-visual'
-    },
-    {
-      id: 'lee-taehyeon',
-      name: 'LEE TAEHYEON',
-      role: 'Fashion Designer',
-      specialty: 'Fashion Visual Narrative',
-      description: '패션의 시각적 서사를 통해 의상에 담긴 이야기를 예술로 승화시킵니다.',
-      galleryId: 'artist-leetaehyeon-visual'
-    },
-    {
-      id: 'choi-eunsol',
-      name: 'CHOI EUNSOL',
-      role: 'Art Director',
-      specialty: 'Conceptual Art Direction',
-      description: '개념적 예술 연출을 통해 작품에 깊이와 맥락을 부여합니다.',
-      galleryId: 'artist-choieunsol-visual'
-    },
-    {
-      id: 'hwang-jinsu',
-      name: 'HWANG JINSU',
-      role: 'Film Director',
-      specialty: 'Cinematic Visual Language',
-      description: '영상적 시각 언어를 통해 정적 이미지에 움직임의 매력을 더합니다.',
-      galleryId: 'artist-hwangjinsu-visual'
-    },
-    {
-      id: 'kim-gyeongsu',
-      name: 'KIM GYEONGSU',
-      role: 'Installation Artist',
-      specialty: 'Spatial Visual Installation',
-      description: '공간적 시각 설치를 통해 관객과 작품 간의 새로운 소통을 창조합니다.',
-      galleryId: 'artist-kimgyeongsu-visual'
-    }
-  ];
-
-  // Creative process sections
-  const creativeProcess = [
-    {
-      id: 'inspiration',
-      title: '영감 수집',
-      titleEn: 'INSPIRATION GATHERING',
-      description: '일상의 순간들에서 창작의 씨앗을 발견하고 수집합니다.',
-      icon: '🔍',
-      galleryId: 'process-inspiration'
-    },
-    {
-      id: 'conceptualization',
-      title: '컨셉 개발',
-      titleEn: 'CONCEPTUALIZATION',
-      description: '수집된 영감을 바탕으로 구체적인 예술적 컨셉을 개발합니다.',
-      icon: '💡',
-      galleryId: 'process-conceptualization'
-    },
-    {
-      id: 'experimentation',
-      title: '실험과 탐구',
-      titleEn: 'EXPERIMENTATION',
-      description: '다양한 기법과 매체를 실험하며 최적의 표현 방법을 찾습니다.',
-      icon: '⚙️',
-      galleryId: 'process-experimentation'
-    },
-    {
-      id: 'refinement',
-      title: '정제와 완성',
-      titleEn: 'REFINEMENT',
-      description: '작품의 세부를 다듬고 완성도를 높여 최종 작품을 완성합니다.',
-      icon: '✨',
-      galleryId: 'process-refinement'
-    }
-  ];
+  const goHome = () => {
+    router.push('/');
+  };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        {/* Artistic Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-              <pattern id="brush-strokes" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M0,10 Q5,0 10,10 Q15,20 20,10" stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
-                <path d="M0,5 Q10,15 20,5" stroke="white" strokeWidth="0.3" fill="none" opacity="0.2" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#brush-strokes)" />
-          </svg>
-        </div>
-
-        {/* Hero Content */}
-        <motion.div
-          className="relative z-10 text-center max-w-6xl mx-auto"
-          variants={staggerContainer}
-          initial="initial"
-          animate={isLoaded ? "animate" : "initial"}
-          viewport={{ once: true }}
-        >
-          <motion.div 
-            className="flex items-center justify-center mb-8"
-            variants={fadeInUp}
+    <>
+      {/* Navigation - HTML 버전과 동일 */}
+      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-white/95 backdrop-blur-[10px] z-[1000] transition-all duration-300 ease-in-out border-b border-black/10 scrolled:py-[15px] scrolled:px-10 scrolled:shadow-[0_2px_20px_rgba(0,0,0,0.1)]">
+        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
+          <div className="nav-left flex items-center gap-10">
+            <span 
+              className="back-button text-xl cursor-pointer transition-all duration-300 ease-in-out text-black hover:transform hover:-translate-x-[5px]"
+              onClick={goBack}
+            >
+              ←
+            </span>
+            <span className="page-title text-lg font-medium tracking-[2px] text-black max-[768px]:hidden">
+              VISUAL ART
+            </span>
+          </div>
+          <div 
+            className="logo text-2xl font-bold tracking-[2px] cursor-pointer transition-opacity duration-300 ease-in-out text-black hover:opacity-70"
+            onClick={goHome}
           >
-            <Palette className="w-16 h-16 mr-4 text-purple-500" />
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight">
-              {heroContent.title}
-            </h1>
-          </motion.div>
+            REDUX
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section - HTML 버전과 완전 동일 */}
+      <section className="hero-section h-screen relative flex items-center justify-center bg-[--gray-light] overflow-hidden">
+        <div className="hero-bg absolute top-0 left-0 w-full h-full opacity-10">
+          <div className="hero-pattern absolute w-[200%] h-[200%] -top-1/2 -left-1/2 animate-[patternMove_20s_linear_infinite]"
+               style={{
+                 backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 35px, var(--primary-black) 35px, var(--primary-black) 70px)'
+               }}>
+          </div>
+        </div>
+        <div className="hero-content text-center z-[1]">
+          <h1 
+            className="hero-title font-thin uppercase text-black opacity-0 transform translate-y-[50px] animate-[heroFade_1.5s_ease_forwards] tracking-[0.2em]"
+            style={{ fontSize: 'clamp(60px, 10vw, 160px)' }}
+          >
+            Visual Art
+          </h1>
+          <p className="hero-subtitle text-base tracking-[3px] text-[--gray-medium] mt-5 opacity-0 animate-[heroFade_1.5s_ease_forwards] [animation-delay:0.3s]">
+            Beyond Fashion, Into Art
+          </p>
+        </div>
+      </section>
+
+      {/* Visual Grid Section - HTML 버전과 완전 동일 */}
+      <section className="visual-grid-section py-[120px] px-10 bg-white">
+        <div className="section-intro max-w-[800px] mx-auto mb-[120px] text-center">
+          <h2 className="text-4xl font-light tracking-[3px] text-black mb-[30px]">
+            시각적 경험의 확장
+          </h2>
+          <p className="text-base leading-[2] text-[--gray-dark]">
+            REDUX는 패션을 넘어 다양한 시각 예술로 표현의 영역을 확장합니다.
+            각 작품은 우리의 철학과 감성을 담아 새로운 시각적 언어를 만들어냅니다.
+          </p>
+        </div>
+        
+        <div className="visual-grid grid grid-cols-12 gap-10 max-w-[1600px] mx-auto max-[1024px]:grid-cols-6 max-[1024px]:gap-5 max-[768px]:grid-cols-1 max-[768px]:gap-5">
           
-          <motion.p 
-            className="text-xl sm:text-2xl md:text-3xl font-light mb-8 tracking-[0.2em] uppercase text-gray-300"
-            variants={fadeInUp}
-          >
-            {heroContent.subtitle}
-          </motion.p>
-          
-          <motion.div 
-            className="max-w-3xl mx-auto mb-12"
-            variants={fadeInUp}
-          >
-            <p className="text-base sm:text-lg leading-relaxed text-gray-400 mb-8">
-              {heroContent.description}
-            </p>
-            
-            <blockquote className="border-l-4 border-purple-500 pl-6 italic text-lg sm:text-xl text-white">
-              "{heroContent.quote}"
-              <footer className="text-sm text-gray-400 mt-2">— {heroContent.author}</footer>
-            </blockquote>
-          </motion.div>
-
-          {/* Hero Art Gallery - Admin can manage */}
-          <motion.div 
-            className="mt-16"
-            variants={fadeInUp}
-          >
-            {isAdmin ? (
-              <div className="bg-gray-900/50 rounded-2xl p-6 backdrop-blur-sm border border-gray-700">
-                <h3 className="text-lg font-semibold mb-4 text-center">Hero Visual Art Gallery Management</h3>
-                <InstagramStyleCMS
-                  galleryId="visual-art-hero"
-                  aspectRatio="4:3"
-                  columns={3}
-                  maxItems={6}
-                  allowedTypes={['image']}
-                />
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {[1, 2, 3].map((_, index) => (
-                  <motion.div
-                    key={index}
-                    className="aspect-[4/3] bg-gray-800 rounded-lg flex items-center justify-center group cursor-pointer hover:bg-gray-700 transition-colors"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="text-center">
-                      <Frame className="w-8 h-8 mx-auto mb-2 text-purple-500 group-hover:scale-110 transition-transform" />
-                      <span className="text-gray-300 text-sm">Art Piece {index + 1}</span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Art Mediums Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light mb-6 tracking-[0.05em] uppercase">
-              ART MEDIUMS
-            </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              다양한 매체와 기법을 통해 각기 다른 예술적 표현을 탐구하며, 각 매체의 고유한 특성을 최대한 활용합니다.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artMediums.map((medium, index) => (
-              <motion.div
-                key={medium.id}
-                className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all duration-300 group"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-              >
-                {/* Medium Preview */}
-                <div className="aspect-[4/3] relative">
-                  {isAdmin ? (
-                    <InstagramStyleCMS
-                      galleryId={medium.galleryId}
-                      aspectRatio="4:3"
-                      columns={1}
-                      maxItems={4}
-                      allowedTypes={['image']}
-                    />
-                  ) : (
-                    <div className={`w-full h-full bg-gradient-to-br ${medium.color} flex items-center justify-center group-hover:scale-105 transition-transform duration-500`}>
-                      <div className="text-center">
-                        <div className="text-4xl mb-2">{medium.icon}</div>
-                        <p className="text-white font-medium">{medium.title}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Medium Info */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2 text-white group-hover:text-purple-400 transition-colors">
-                    {medium.title}
-                  </h3>
-                  
-                  <h4 className="text-lg font-medium mb-4 text-gray-300">
-                    {medium.subtitle}
-                  </h4>
-                  
-                  <p className="text-gray-400 mb-4 leading-relaxed text-sm">
-                    {medium.description}
-                  </p>
-                  
-                  <p className="text-xs text-gray-500 italic">
-                    {medium.descriptionEn}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Artist Showcase Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-gray-900/20 to-black">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light mb-6 tracking-[0.05em] uppercase">
-              ARTIST SHOWCASE
-            </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              6명의 디자이너가 각자의 전문 분야에서 선보이는 독창적인 비주얼 아트 작품들을 만나보세요.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artistShowcase.map((artist, index) => (
-              <motion.div
-                key={artist.id}
-                className="group cursor-pointer"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                onClick={() => setActiveArtist(activeArtist === artist.id ? null : artist.id)}
-              >
-                <div className="bg-gray-900/40 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-purple-500/10">
-                  
-                  {/* Artist Visual Work Area */}
-                  <div className="aspect-[4/5] relative overflow-hidden">
-                    {isAdmin && activeArtist === artist.id ? (
-                      <div className="h-full p-4">
-                        <h4 className="text-sm font-medium mb-3 text-purple-400 text-center">
-                          {artist.name} Visual Work
-                        </h4>
-                        <InstagramStyleCMS
-                          galleryId={artist.galleryId}
-                          aspectRatio="4:5"
-                          columns={1}
-                          maxItems={5}
-                          allowedTypes={['image']}
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center group-hover:from-purple-900/20 group-hover:to-pink-900/20 transition-colors duration-500">
-                        <div className="text-center">
-                          <div className="w-20 h-20 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <Brush className="w-10 h-10 text-purple-400" />
-                          </div>
-                          <p className="text-sm text-gray-400">{artist.name}</p>
-                          <p className="text-xs text-gray-500 mt-1">{artist.role}</p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-
-                  {/* Artist Info */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2 text-white group-hover:text-purple-400 transition-colors">
-                      {artist.name}
-                    </h3>
-                    <p className="text-purple-400 font-medium mb-2 uppercase tracking-wider text-sm">
-                      {artist.role}
-                    </p>
-                    <p className="text-gray-300 font-medium mb-3 text-sm">
-                      {artist.specialty}
-                    </p>
-                    <p className="text-gray-400 text-xs leading-relaxed">
-                      {artist.description}
-                    </p>
-                    
-                    <div className="mt-4 text-xs text-gray-500">
-                      {activeArtist === artist.id && isAdmin ? 'Managing visual work ↑' : 'Click to explore work →'}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Creative Process Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light mb-6 tracking-[0.05em] uppercase">
-              CREATIVE PROCESS
-            </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              예술 작품의 탄생부터 완성까지, 우리의 체계적이고 첽신적인 창작 과정을 소개합니다.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {creativeProcess.map((process, index) => (
-              <motion.div
-                key={process.id}
-                className="relative"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                {/* Process Number */}
-                <div className="absolute -top-4 -left-4 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm z-10">
-                  {index + 1}
-                </div>
-                
-                <div className="bg-gray-900/40 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 hover:border-purple-500/50 transition-all duration-300 group h-full">
-                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                    {process.icon}
-                  </div>
-                  
-                  <h3 className="text-lg font-bold mb-2 text-white group-hover:text-purple-400 transition-colors">
-                    {process.titleEn}
-                  </h3>
-                  
-                  <h4 className="text-base font-medium mb-4 text-gray-300">
-                    {process.title}
-                  </h4>
-                  
-                  <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                    {process.description}
-                  </p>
-
-                  {/* Process Gallery */}
-                  {isAdmin ? (
-                    <div className="mt-4">
-                      <h5 className="text-xs font-medium mb-3 text-purple-400">Process Gallery</h5>
-                      <InstagramStyleCMS
-                        galleryId={process.galleryId}
-                        aspectRatio="square"
-                        columns={1}
-                        maxItems={3}
-                        allowedTypes={['image']}
-                      />
-                    </div>
-                  ) : (
-                    <div className="mt-4 aspect-square bg-gray-800 rounded-lg flex items-center justify-center">
-                      <Eye className="w-6 h-6 text-gray-500" />
-                    </div>
-                  )}
-                </div>
-                
-                {/* Connection Line */}
-                {index < creativeProcess.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-0.5 bg-purple-500/30" />
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-8 tracking-[0.05em] uppercase">
-              EXPLORE VISUAL POSSIBILITIES
-            </h2>
-            <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
-              당신의 비전을 시각적으로 표현해보세요. REDUX와 함께 당신만의 독창적인 비주얼 아트를 창조합니다.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <motion.a
-                href="/contact"
-                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:from-purple-700 hover:to-pink-700 transition-all duration-300 uppercase tracking-wider flex items-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Sparkles size={20} />
-                Start Creating
-              </motion.a>
-              <motion.a
-                href="/designers"
-                className="px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all duration-300 uppercase tracking-wider"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Meet Our Artists
-              </motion.a>
+          {/* Visual Item 1: METAMORPHOSIS */}
+          <div className="visual-item col-span-8 [aspect-ratio:16/9] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
+            <img 
+              src="/images/visual-art/METAMORPHOSIS.jpg" 
+              alt="Visual Art 1" 
+              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+            />
+            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
+              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
+                METAMORPHOSIS
+              </h3>
+              <p className="visual-description text-sm leading-[1.6] opacity-80">
+                변화와 진화의 순간을 포착한 비주얼 시리즈
+              </p>
             </div>
-          </motion.div>
+          </div>
+
+          {/* Visual Item 2: SHADOW PLAY */}
+          <div className="visual-item col-span-4 [aspect-ratio:3/4] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
+            <img 
+              src="/images/visual-art/SHADOW PLAY.jpg" 
+              alt="Visual Art 2" 
+              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+            />
+            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
+              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
+                SHADOW PLAY
+              </h3>
+              <p className="visual-description text-sm leading-[1.6] opacity-80">
+                빛과 그림자의 대비
+              </p>
+            </div>
+          </div>
+
+          {/* Visual Item 3: TEXTURE STUDY */}
+          <div className="visual-item col-span-4 [aspect-ratio:1] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
+            <img 
+              src="/images/visual-art/TEXTURE STUDY.jpg" 
+              alt="Visual Art 3" 
+              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+            />
+            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
+              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
+                TEXTURE STUDY
+              </h3>
+              <p className="visual-description text-sm leading-[1.6] opacity-80">
+                질감의 깊이를 탐구
+              </p>
+            </div>
+          </div>
+
+          {/* Visual Item 4: COLOR THEORY */}
+          <div className="visual-item col-span-4 [aspect-ratio:1] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
+            <img 
+              src="/images/visual-art/COLOR THEORY.jpg" 
+              alt="Visual Art 4" 
+              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+            />
+            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
+              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
+                COLOR THEORY
+              </h3>
+              <p className="visual-description text-sm leading-[1.6] opacity-80">
+                색채의 감정적 표현
+              </p>
+            </div>
+          </div>
+
+          {/* Visual Item 5: FORM & VOID */}
+          <div className="visual-item col-span-4 [aspect-ratio:3/4] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
+            <img 
+              src="/images/visual-art/FORM & VOID.jpg" 
+              alt="Visual Art 5" 
+              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+            />
+            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
+              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
+                FORM & VOID
+              </h3>
+              <p className="visual-description text-sm leading-[1.6] opacity-80">
+                형태와 공간의 관계
+              </p>
+            </div>
+          </div>
+
+          {/* Visual Item 6: DIGITAL DREAMS */}
+          <div className="visual-item col-span-6 [aspect-ratio:4/3] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
+            <img 
+              src="/images/visual-art/DIGITAL DREAMS.jpg" 
+              alt="Visual Art 6"
+              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+            />
+            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
+              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
+                DIGITAL DREAMS
+              </h3>
+              <p className="visual-description text-sm leading-[1.6] opacity-80">
+                디지털 매체의 가능성
+              </p>
+            </div>
+          </div>
+
+          {/* Visual Item 7: ANALOG MEMORIES */}
+          <div className="visual-item col-span-6 [aspect-ratio:4/3] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
+            <img 
+              src="/images/visual-art/ANALOG MEMORIES.jpg" 
+              alt="Visual Art 7"
+              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+            />
+            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
+              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
+                ANALOG MEMORIES
+              </h3>
+              <p className="visual-description text-sm leading-[1.6] opacity-80">
+                아날로그의 따뜻함
+              </p>
+            </div>
+          </div>
+
+          {/* Visual Item 8: COLLECTIVE VISION */}
+          <div className="visual-item col-span-12 [aspect-ratio:21/9] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
+            <img 
+              src="/images/visual-art/COLLECTIVE VISION.jpg" 
+              alt="Visual Art 8"
+              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+            />
+            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
+              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
+                COLLECTIVE VISION
+              </h3>
+              <p className="visual-description text-sm leading-[1.6] opacity-80">
+                6인 6색의 시각적 하모니
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Admin Notes */}
-      {isAdmin && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="fixed bottom-20 left-6 right-6 md:left-auto md:right-20 md:w-80 bg-purple-900/90 backdrop-blur-sm border border-purple-500/50 rounded-lg p-4 z-40"
-        >
-          <h4 className="font-semibold text-purple-300 mb-2">Admin Mode: Visual Art Page</h4>
-          <div className="text-sm text-purple-200 space-y-1">
-            <p>• Hero Gallery: 6 artworks</p>
-            <p>• Art Mediums: 6 mediums (4 images each)</p>
-            <p>• Artist Showcase: 6 artists (5 works each)</p>
-            <p>• Creative Process: 4 stages (3 images each)</p>
-            <p>• Total: 66 manageable media slots</p>
+      {/* Process Section - HTML 버전과 완전 동일 */}
+      <section className="process-section py-[120px] px-10 bg-[--gray-light]">
+        <h2 className="process-title text-5xl font-light tracking-[4px] text-center mb-20 text-black">
+          CREATIVE PROCESS
+        </h2>
+        <div className="process-grid grid grid-cols-3 gap-[60px] max-w-[1200px] mx-auto max-[1024px]:grid-cols-1 max-[1024px]:gap-[60px]">
+          
+          <div className="process-item text-center">
+            <div className="process-number text-[80px] font-thin text-[--gray-medium] opacity-30 mb-5">
+              01
+            </div>
+            <h3 className="process-name text-2xl font-light tracking-[2px] mb-5 text-black">
+              CONCEPT
+            </h3>
+            <p className="process-description text-sm leading-[1.8] text-[--gray-dark]">
+              아이디어의 시작부터 컨셉 정립까지,
+              끊임없는 대화와 실험을 통해
+              우리만의 시각적 언어를 만듭니다.
+            </p>
           </div>
-        </motion.div>
-      )}
-    </div>
+          
+          <div className="process-item text-center">
+            <div className="process-number text-[80px] font-thin text-[--gray-medium] opacity-30 mb-5">
+              02
+            </div>
+            <h3 className="process-name text-2xl font-light tracking-[2px] mb-5 text-black">
+              CREATION
+            </h3>
+            <p className="process-description text-sm leading-[1.8] text-[--gray-dark]">
+              다양한 매체와 기법을 활용하여
+              컨셉을 시각적으로 구현하고
+              새로운 표현의 가능성을 탐구합니다.
+            </p>
+          </div>
+          
+          <div className="process-item text-center">
+            <div className="process-number text-[80px] font-thin text-[--gray-medium] opacity-30 mb-5">
+              03
+            </div>
+            <h3 className="process-name text-2xl font-light tracking-[2px] mb-5 text-black">
+              CONNECTION
+            </h3>
+            <p className="process-description text-sm leading-[1.8] text-[--gray-dark]">
+              작품을 통해 관객과 소통하고
+              감정적 연결을 만들어내며
+              기억에 남을 순간을 디자인합니다.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CSS for animations matching HTML version */}
+      <style jsx>{`
+        @keyframes patternMove {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(70px, 70px); }
+        }
+        
+        @keyframes heroFade {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes revealItem {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .visual-item.revealed {
+          animation: revealItem 0.8s ease forwards;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          .hero-title {
+            font-size: clamp(40px, 8vw, 80px) !important;
+            letter-spacing: 0.1em !important;
+          }
+          
+          .visual-grid-section {
+            padding: 80px 20px;
+          }
+          
+          .process-section {
+            padding: 80px 20px;
+          }
+        }
+      `}</style>
+    </>
   );
+}
+
+// GSAP 타입 확장
+declare global {
+  interface Window {
+    gsap: any;
+  }
 }

@@ -1,58 +1,26 @@
+/* REDUX - 2024-2025 패션업계 표준 글로벌 스타일 시스템 */
+/* HTML redux6 버전과 완전 동일한 디자인 시스템 구현 */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* 2024-2025 패션업계 표준 폰트 시스템 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400&display=swap');
+
 @layer base {
+  /* === CSS 변수 시스템 === */
   :root {
-    /* REDUX Core Colors */
+    /* 2024-2025 패션업계 트렌드 색상 (Pantone 기반) */
     --primary-black: #000000;
     --primary-white: #FFFFFF;
-    
-    /* 2025 Fashion Trend Colors */
-    /* Pantone 2025 Color of the Year - Mocha Mousse */
-    --accent-mocha: #B7AFA3;
+    --accent-mocha: #B7AFA3; /* Pantone 2025 Color of the Year */
     --accent-warm: #D4CCC5;
     --accent-deep: #9A9086;
     --accent-neutral: #F8F6F4;
     
-    /* Digital Lime - Tech-influenced fresh */
-    --fashion-lime: #82FF25;
-    --fashion-lime-soft: #A3FF60;
-    --fashion-lime-deep: #6EE015;
-    
-    /* Neo-Mint - Fresh, modern */
-    --fashion-mint: #06CCC7;
-    --fashion-mint-soft: #22E9E5;
-    --fashion-mint-deep: #059FA3;
-    
-    /* Electric Blue - Bold, energetic */
-    --fashion-electric: #2882FF;
-    --fashion-electric-soft: #51A8FF;
-    --fashion-electric-deep: #1A5CFF;
-    
-    /* Terracotta - Earthy, sophisticated */
-    --fashion-terracotta: #E26B52;
-    --fashion-terracotta-soft: #ED9179;
-    --fashion-terracotta-deep: #D0513A;
-    
-    /* Lavender Gray - Soft, calming */
-    --fashion-lavender: #9B85BE;
-    --fashion-lavender-soft: #B8A8D1;
-    --fashion-lavender-deep: #8169A8;
-    
-    /* Honey Gold - Warm, luxurious */
-    --fashion-honey: #F9A007;
-    --fashion-honey-soft: #FFC220;
-    --fashion-honey-deep: #DD7A02;
-    
-    /* Peach Fuzz - Continuing trend from 2024 */
-    --fashion-peach: #FF6B35;
-    --fashion-peach-soft: #FF9873;
-    --fashion-peach-deep: #F04A1C;
-    
-    /* Professional fashion grays */
-    --gray-50: #F8F8F8;
-    --gray-100: #F0F0F0;
+    /* 패션업계 표준 그레이 스케일 */
+    --gray-100: #F8F8F8;
     --gray-200: #E8E8E8;
     --gray-300: #D0D0D0;
     --gray-400: #A0A0A0;
@@ -61,759 +29,528 @@
     --gray-700: #303030;
     --gray-800: #202020;
     --gray-900: #101010;
-    --gray-950: #000000;
     
-    /* Next.js theme variables (remapped) */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 0 0% 20%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 0 0% 100%;
-    --radius: 0.5rem;
+    /* 기존 변수 호환성 유지 */
+    --gray-light: var(--gray-100);
+    --gray-medium: var(--gray-400);
+    --gray-dark: var(--gray-700);
   }
-}
 
-@layer base {
+  /* === 글로벌 리셋 === */
   * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-/* Custom scrollbar */
-@layer utilities {
-  /* Scrollbar styles */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  ::-webkit-scrollbar-track {
-    @apply bg-black;
+  /* === 본문 스타일 === */
+  body, p, .description, .body-text {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 400 !important;
+    font-size: clamp(0.875rem, 1.8vw, 1rem) !important;
+    line-height: 1.7 !important;
+    letter-spacing: 0.01em !important;
+    color: var(--primary-black);
+    background: var(--primary-white);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  ::-webkit-scrollbar-thumb {
-    @apply bg-white/20 rounded-full;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-white/30;
-  }
-
-  /* Custom utilities */
-  .container {
-    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
-  }
-
-  .section-padding {
-    @apply py-12 sm:py-16 md:py-24 lg:py-32;
-  }
-
-  .section-padding-small {
-    @apply py-8 sm:py-12 md:py-16 lg:py-20;
-  }
-
-  /* Responsive spacing utilities */
-  .spacing-xs {
-    @apply space-y-2 sm:space-y-3 md:space-y-4;
+  /* === 타이포그래피 시스템 === */
+  
+  /* 메인 타이틀 - Playfair Display (고급 패션 브랜드 표준) */
+  .hero-title, h1, .main-title, .redux-title {
+    font-family: 'Playfair Display', serif !important;
+    font-weight: 700 !important;
+    font-size: clamp(3rem, 8vw, 8rem) !important;
+    letter-spacing: -0.03em !important;
+    line-height: 0.9 !important;
+    color: var(--primary-white);
+    margin-bottom: 20px;
+    overflow: hidden;
+    /* 기존 비침효과 유지하면서 강화 */
+    text-shadow: 0 0 20px rgba(255,255,255,0.1), 
+                 0 0 40px rgba(255,255,255,0.05) !important;
   }
   
-  .spacing-sm {
-    @apply space-y-3 sm:space-y-4 md:space-y-6;
-  }
-  
-  .spacing-md {
-    @apply space-y-4 sm:space-y-6 md:space-y-8;
-  }
-  
-  .spacing-lg {
-    @apply space-y-6 sm:space-y-8 md:space-y-12;
-  }
-
-  /* Typography */
-  .heading-1 {
-    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight;
-  }
-
-  .heading-2 {
-    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
-  }
-
-  .heading-3 {
-    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight;
-  }
-
-  .heading-4 {
-    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold;
-  }
-
-  .heading-5 {
-    @apply text-base sm:text-lg md:text-xl lg:text-2xl font-semibold;
-  }
-
-  .body-large {
-    @apply text-base sm:text-lg md:text-xl leading-relaxed;
-  }
-
-  .body-regular {
-    @apply text-sm sm:text-base md:text-lg leading-relaxed;
-  }
-
-  .body-small {
-    @apply text-xs sm:text-sm md:text-base leading-relaxed;
-  }
-  
-  /* Fashion Typography System (from HTML version) */
-  .font-playfair {
-    font-family: 'Playfair Display', serif;
-  }
-  
-  .font-inter {
-    font-family: 'Inter', sans-serif;
-  }
-  
-  .font-jetbrains {
-    font-family: 'JetBrains Mono', monospace;
-  }
-  
-  /* REDUX-specific styles */
+  /* 메인 타이틀 시퀸셜 애니메이션 */
   .hero-title {
-    @apply font-playfair font-bold tracking-tight;
-    font-size: clamp(3rem, 8vw, 8rem);
-    line-height: 0.9;
-    text-shadow: 0 0 20px rgba(255,255,255,0.1), 0 0 40px rgba(255,255,255,0.05);
+    animation: fadeInSequential 1.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    animation-delay: 0s !important;
   }
   
-  .nav-item::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 1px;
-    bottom: -4px;
-    left: 0;
-    background: linear-gradient(90deg, var(--accent-mocha), var(--accent-warm));
-    transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+  .hero-title span {
+    display: inline-block;
+    transform: translateY(100%);
+    animation: revealText 1s ease forwards;
+    animation-delay: calc(var(--i) * 0.1s);
   }
   
-  .nav-item:hover::after {
-    width: 100%;
-  }
-
-  /* Responsive text utilities */
-  .text-responsive {
-    @apply text-sm sm:text-base md:text-lg;
+  /* "THE ROOM OF [ ]" 특별 처리 - 브랜드 아이덴티티 강화 */
+  .hero-subtitle, .room-concept, .subtitle-special {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    font-size: clamp(1rem, 2.5vw, 1.5rem) !important;
+    letter-spacing: 0.4em !important;
+    text-transform: uppercase !important;
+    color: var(--primary-white) !important;
+    opacity: 0;
+    /* 문화적 깊이 표현 애니메이션 */
+    animation: fadeInSequential 1s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation-delay: 0.3s;
+    /* 가시성 확보 (그림자 최소화) */
+    text-shadow: 0 0 15px rgba(255,255,255,0.4) !important;
+    /* 완전한 가시성 확보 */
+    mix-blend-mode: normal !important;
+    z-index: 100 !important;
+    position: relative !important;
+    background: rgba(0,0,0,0.2) !important;
+    padding: 6px 12px !important;
+    border-radius: 3px !important;
+    backdrop-filter: blur(5px) !important;
   }
   
-  .text-responsive-lg {
-    @apply text-base sm:text-lg md:text-xl lg:text-2xl;
+  /* "THE ROOM OF [ ]" 브래킷 강조 */
+  .room-bracket {
+    color: var(--accent-mocha) !important;
+    font-weight: 300 !important;
+    text-shadow: 0 0 30px rgba(183,175,163,0.6) !important;
   }
 
-  /* Animations */
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  /* 서브 헤딩 */
+  h2, .section-title {
+    font-family: 'Playfair Display', serif !important;
+    font-size: clamp(2rem, 5vw, 3rem) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.1 !important;
+    color: var(--primary-black);
+    margin-bottom: 1.5rem;
   }
 
-  @keyframes fade-up {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  h3, .subsection-title {
+    font-family: 'Inter', sans-serif !important;
+    font-size: clamp(1.25rem, 3vw, 1.75rem) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: var(--primary-black);
+    margin-bottom: 1rem;
   }
 
-  @keyframes scale-in {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
+  /* 캡션 및 메타 텍스트 */
+  .caption, .meta-text, .gallery-caption {
+    font-family: 'Inter', sans-serif !important;
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    color: var(--gray-medium);
   }
 
-  @keyframes glitch {
-    0%, 100% {
-      transform: translate(0);
-      opacity: 1;
-    }
-    20% {
-      transform: translate(-2px, 2px);
-      opacity: 0.8;
-    }
-    40% {
-      transform: translate(-2px, -2px);
-      opacity: 0.8;
-    }
-    60% {
-      transform: translate(2px, 2px);
-      opacity: 0.8;
-    }
-    80% {
-      transform: translate(2px, -2px);
-      opacity: 0.8;
-    }
+  /* 코드/기술 요소 */
+  .code-text, .mono-text, code, pre {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-weight: 300 !important;
+    font-size: 0.875rem !important;
+    letter-spacing: 0.05em !important;
   }
 
-  @keyframes slide-up {
-    from {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
+  /* === 특별한 시각 효과 === */
 
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 0.4;
-    }
-    50% {
-      opacity: 0.8;
-    }
-  }
-
-  .animate-fade-in {
-    animation: fade-in 0.6s ease-out;
-  }
-
-  .animate-fade-up {
-    animation: fade-up 0.8s ease-out;
-  }
-
-  .animate-scale-in {
-    animation: scale-in 0.6s ease-out;
-  }
-
-  .animate-glitch {
-    animation: glitch 0.5s ease-in-out;
-  }
-
-  .animate-slide-up {
-    animation: slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  /* Hover Effects */
-  .hover-lift {
-    @apply transition-transform duration-300 hover:-translate-y-2;
-  }
-
-  .hover-glow {
-    @apply transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)];
-  }
-
-  .hover-scale {
-    @apply transition-transform duration-300 hover:scale-105;
-  }
-
-  /* Text Effects */
-  .text-gradient {
-    @apply bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent;
-  }
-
-  .text-glow {
-    text-shadow: 0 0 20px rgba(255,255,255,0.5);
-  }
-
-  /* Image Overlay Effects */
-  .overlay-gradient {
-    @apply absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent;
-  }
-
-  /* Custom Cursor */
-  .cursor-dot {
-    width: 8px;
-    height: 8px;
-    background-color: white;
-    border-radius: 50%;
+  /* Noise Overlay */
+  .noise-overlay {
     position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
-    z-index: 9999;
-    mix-blend-mode: difference;
+    opacity: 0.03;
+    z-index: 1;
+    background-image: 
+      repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,.1) 2px, rgba(0,0,0,.1) 4px),
+      repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(0,0,0,.05) 2px, rgba(0,0,0,.05) 4px);
   }
 
-  /* Loading Skeleton */
-  .skeleton {
-    @apply relative overflow-hidden bg-gray-800 rounded;
+  /* Loading Screen */
+  .loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--primary-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.8s ease;
   }
 
-  .skeleton::after {
-    content: "";
-    @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gray-700 to-transparent;
-    animation: shimmer 2s infinite;
+  .loading-screen.hide {
+    opacity: 0;
+    pointer-events: none;
   }
 
-  @keyframes shimmer {
+  /* === 애니메이션 시스템 === */
+
+  /* 페이지 로드 시 시퀸셜 애니메이션 */
+  @keyframes fadeInSequential {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      filter: blur(5px);
+    }
     100% {
-      transform: translateX(100%);
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
     }
   }
 
-  /* Responsive grid utilities */
-  .grid-responsive {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8;
-  }
-  
-  .grid-responsive-2 {
-    @apply grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8;
-  }
-  
-  .grid-responsive-4 {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8;
-  }
-
-  /* More Hover Effects */
-  @keyframes hover-float {
-    0%, 100% {
+  @keyframes revealText {
+    to {
       transform: translateY(0);
     }
-    50% {
-      transform: translateY(-10px);
-    }
   }
 
-  @keyframes hover-glow {
+  /* 3D 플로팅 애니메이션 */
+  @keyframes float3d {
     0%, 100% {
-      box-shadow: 0 0 0 rgba(255, 255, 255, 0);
-    }
-    50% {
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-    }
-  }
-
-  @keyframes image-reveal {
-    from {
-      clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
-    }
-    to {
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    }
-  }
-
-  @keyframes text-shimmer {
-    0% {
-      background-position: -1000px 0;
-    }
-    100% {
-      background-position: 1000px 0;
-    }
-  }
-
-  @keyframes border-dance {
-    0%, 100% {
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      transform: translateZ(0px) rotateX(0deg) rotateY(0deg);
     }
     25% {
-      clip-path: polygon(5% 5%, 95% 0, 100% 100%, 0 95%);
+      transform: translateZ(100px) rotateX(180deg) rotateY(90deg);
     }
     50% {
-      clip-path: polygon(0 5%, 100% 5%, 95% 95%, 5% 100%);
+      transform: translateZ(-50px) rotateX(360deg) rotateY(180deg);
     }
     75% {
-      clip-path: polygon(5% 0, 95% 5%, 100% 95%, 0 100%);
+      transform: translateZ(50px) rotateX(180deg) rotateY(270deg);
     }
   }
 
-  .hover-float {
-    @apply transition-all duration-500;
-  }
-  
-  .hover-float:hover {
-    animation: hover-float 2s ease-in-out infinite;
+  /* 패턴 이동 애니메이션 */
+  @keyframes patternMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(70px, 70px); }
   }
 
-  .hover-border-dance {
-    @apply relative overflow-hidden;
-  }
-  
-  .hover-border-dance::before {
-    content: '';
-    @apply absolute inset-0 border-2 border-white/20;
-    transition: all 0.3s ease;
-  }
-  
-  .hover-border-dance:hover::before {
-    animation: border-dance 2s linear infinite;
-    @apply border-white/50;
+  /* 아이템 등장 애니메이션 */
+  @keyframes revealItem {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  .text-shimmer {
-    background: linear-gradient(90deg, #fff 0%, #999 50%, #fff 100%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .text-shimmer:hover {
-    animation: text-shimmer 3s linear infinite;
+  @keyframes revealInstallation {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  .image-reveal {
-    animation: image-reveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  /* === 레이아웃 시스템 === */
+
+  /* 컨테이너 */
+  .container-xl {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
 
-  /* Magnetic Button Effect */
-  .magnetic-button {
-    @apply relative transition-transform duration-200;
+  .container-lg {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
 
-  /* 3D Card Effect */
-  .card-3d {
-    @apply relative;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
-  }
-  
-  .card-3d:hover {
-    transform: rotateY(10deg) rotateX(-10deg);
+  .container-md {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
 
-  /* Glowing Border */
-  .glow-border {
-    @apply relative;
-  }
-  
-  .glow-border::before {
-    content: '';
-    @apply absolute -inset-[2px] rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0;
-    filter: blur(10px);
-    transition: opacity 0.3s;
-  }
-  
-  .glow-border:hover::before {
-    @apply opacity-70;
+  /* Professional Masonry Gallery */
+  .gallery-grid {
+    columns: 4;
+    column-gap: 2px;
+    max-width: 1800px;
+    margin: 0 auto;
   }
 
-  /* Parallax Effect */
-  .parallax {
-    transform: translateZ(0);
-    will-change: transform;
-  }
-
-  /* Mobile-specific utilities */
-  .touch-friendly {
-    @apply min-h-[44px] min-w-[44px];
-  }
-  
-  .mobile-padding {
-    @apply px-4 sm:px-6 lg:px-8;
-  }
-  
-  .mobile-text {
-    @apply text-base sm:text-lg;
-  }
-
-  /* Responsive aspect ratios */
-  .aspect-responsive {
-    @apply aspect-square sm:aspect-[4/3] lg:aspect-[3/2];
-  }
-  
-  .aspect-video-responsive {
-    @apply aspect-video;
-  }
-
-  /* Safe area utilities for mobile */
-  .safe-top {
-    padding-top: env(safe-area-inset-top);
-  }
-  
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  
-  .safe-left {
-    padding-left: env(safe-area-inset-left);
-  }
-  
-  .safe-right {
-    padding-right: env(safe-area-inset-right);
-  }
-
-  /* Fashion Industry 2025 Trend Gradients */
-  .fashion-gradient-primary {
-    background: linear-gradient(135deg, var(--accent-mocha) 0%, var(--fashion-honey) 100%);
-  }
-  
-  .fashion-gradient-digital {
-    background: linear-gradient(135deg, var(--fashion-lime) 0%, var(--fashion-mint) 100%);
-  }
-  
-  .fashion-gradient-sunset {
-    background: linear-gradient(135deg, var(--fashion-peach) 0%, var(--fashion-terracotta) 100%);
-  }
-  
-  .fashion-gradient-electric {
-    background: linear-gradient(135deg, var(--fashion-electric) 0%, var(--fashion-lavender) 100%);
-  }
-  
-  .fashion-gradient-neutral {
-    background: linear-gradient(135deg, var(--gray-100) 0%, var(--accent-warm) 100%);
-  }
-  
-  /* Sophisticated Fashion Text Gradients */
-  .text-fashion-primary {
-    background: linear-gradient(135deg, var(--accent-mocha) 0%, var(--fashion-honey) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .text-fashion-digital {
-    background: linear-gradient(135deg, var(--fashion-lime) 0%, var(--fashion-electric) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .text-fashion-warm {
-    background: linear-gradient(135deg, var(--fashion-peach) 0%, var(--fashion-honey) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  /* Fashion Industry Button Styles */
-  .btn-fashion-primary {
-    @apply px-8 py-4 rounded-full font-semibold uppercase tracking-wider transition-all duration-300;
-    background: linear-gradient(135deg, var(--accent-mocha) 0%, var(--fashion-honey) 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(183, 175, 163, 0.3);
-  }
-  
-  .btn-fashion-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(183, 175, 163, 0.4);
-  }
-  
-  .btn-fashion-electric {
-    @apply px-8 py-4 rounded-full font-semibold uppercase tracking-wider transition-all duration-300;
-    background: linear-gradient(135deg, var(--fashion-electric) 0%, var(--fashion-lavender) 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(40, 130, 255, 0.3);
-  }
-  
-  .btn-fashion-electric:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(40, 130, 255, 0.4);
-  }
-  
-  /* Fashion Card Styles with Trend Colors */
-  .card-fashion {
-    @apply relative overflow-hidden rounded-2xl transition-all duration-500;
-    background: linear-gradient(135deg, 
-      rgba(183, 175, 163, 0.1) 0%, 
-      rgba(249, 160, 7, 0.05) 100%);
-    border: 1px solid rgba(183, 175, 163, 0.2);
-    backdrop-filter: blur(10px);
-  }
-  
-  .card-fashion:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(183, 175, 163, 0.2);
-    border-color: rgba(183, 175, 163, 0.4);
-  }
-  
-  .card-fashion::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-      transparent, 
-      rgba(255, 255, 255, 0.1), 
-      transparent);
-    transition: left 0.6s;
-  }
-  
-  .card-fashion:hover::before {
-    left: 100%;
-  }
-  
-  /* Designer Role-Based Color Accents */
-  .role-creative-director {
-    --role-color: var(--fashion-honey);
-    --role-gradient: linear-gradient(135deg, var(--fashion-honey) 0%, var(--accent-mocha) 100%);
-  }
-  
-  .role-fashion-designer {
-    --role-color: var(--fashion-peach);
-    --role-gradient: linear-gradient(135deg, var(--fashion-peach) 0%, var(--fashion-terracotta) 100%);
-  }
-  
-  .role-visual-artist {
-    --role-color: var(--fashion-electric);
-    --role-gradient: linear-gradient(135deg, var(--fashion-electric) 0%, var(--fashion-lavender) 100%);
-  }
-  
-  .role-installation-artist {
-    --role-color: var(--fashion-mint);
-    --role-gradient: linear-gradient(135deg, var(--fashion-mint) 0%, var(--fashion-lime) 100%);
-  }
-  
-  /* Fashion Industry Hover Effects */
-  .fashion-hover-lift {
-    @apply transition-all duration-500 ease-out;
-  }
-  
-  .fashion-hover-lift:hover {
-    transform: translateY(-12px);
-    filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.3));
-  }
-  
-  .fashion-hover-glow {
-    @apply transition-all duration-300;
-  }
-  
-  .fashion-hover-glow:hover {
-    box-shadow: 0 0 30px var(--accent-mocha), 0 0 60px rgba(183, 175, 163, 0.3);
-  }
-  
-  /* Sophisticated Border Animations */
-  .fashion-border-animated {
-    @apply relative;
-    border: 2px solid transparent;
-    background: linear-gradient(var(--primary-black), var(--primary-black)) padding-box,
-                linear-gradient(135deg, var(--accent-mocha), var(--fashion-honey), var(--fashion-electric)) border-box;
-  }
-  
-  .fashion-border-animated::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    padding: 2px;
-    background: linear-gradient(135deg, var(--accent-mocha), var(--fashion-honey), var(--fashion-electric));
-    border-radius: inherit;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: xor;
-    -webkit-mask-composite: xor;
+  .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 2px;
+    position: relative;
+    overflow: hidden;
     opacity: 0;
-    transition: opacity 0.3s;
+    animation: fadeInSequential 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation-delay: calc(var(--index, 0) * 0.05s);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
-  
-  .fashion-border-animated:hover::before {
-    opacity: 1;
+
+  .gallery-item:hover {
+    transform: scale(1.02);
+    z-index: 10;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   }
-  
-  /* Fashion Typography Enhancements */
-  .fashion-heading {
-    @apply font-playfair font-bold tracking-tight;
-    background: linear-gradient(135deg, 
-      var(--primary-white) 0%, 
-      var(--accent-mocha) 50%, 
-      var(--fashion-honey) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 0 30px rgba(183, 175, 163, 0.3);
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    filter: brightness(0.9) contrast(1.1);
   }
-  
-  .fashion-subheading {
-    @apply font-inter font-medium uppercase tracking-[0.2em];
-    color: var(--accent-mocha);
+
+  .gallery-item:hover img {
+    filter: brightness(1) contrast(1.2) saturate(1.1);
+    transform: scale(1.05);
+  }
+
+  /* === 반응형 디자인 === */
+
+  /* 데스크탑 대형 화면 */
+  @media (max-width: 1400px) {
+    .gallery-grid {
+      columns: 3;
+    }
+  }
+
+  /* 태블릿 */
+  @media (max-width: 1024px) {
+    .gallery-grid {
+      columns: 2;
+      column-gap: 1px;
+    }
+    
+    .gallery-item {
+      margin-bottom: 1px;
+    }
+    
+    .hero-title {
+      font-size: clamp(2.5rem, 7vw, 5rem) !important;
+    }
+    
+    .container-xl,
+    .container-lg,
+    .container-md {
+      padding: 0 15px;
+    }
+  }
+
+  /* 모바일 */
+  @media (max-width: 768px) {
+    .gallery-grid {
+      columns: 1;
+    }
+    
+    .hero-title {
+      font-size: clamp(2rem, 6vw, 4rem) !important;
+      letter-spacing: 0.1em !important;
+    }
+    
+    .hero-subtitle {
+      font-size: clamp(0.875rem, 2vw, 1rem) !important;
+      letter-spacing: 0.2em !important;
+    }
+    
+    .container-xl,
+    .container-lg,
+    .container-md {
+      padding: 0 10px;
+    }
+  }
+
+  /* === 접근성 및 성능 최적화 === */
+
+  /* 모션 축소 모드 지원 */
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-item,
+    .gallery-header,
+    .hero-title,
+    .hero-subtitle {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    
+    * {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+
+  /* 고대비 모드 지원 */
+  @media (prefers-contrast: high) {
+    :root {
+      --primary-black: #000000;
+      --primary-white: #FFFFFF;
+      --gray-medium: #666666;
+      --accent-mocha: #8B7355;
+    }
+  }
+
+  /* === 유틸리티 클래스 === */
+
+  /* 텍스트 처리 */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* 스크롤 스냅 */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* 포커스 관리 */
+  .focus-visible:focus-visible {
+    outline: 2px solid var(--accent-mocha);
+    outline-offset: 2px;
+  }
+
+  /* 그라디언트 */
+  .gradient-fade {
+    background: linear-gradient(
+      135deg,
+      var(--primary-black) 0%,
+      var(--gray-800) 50%,
+      var(--primary-black) 100%
+    );
+  }
+
+  /* === CMS 관련 스타일 (기본) === */
+  [data-manageable="true"] {
     position: relative;
   }
-  
-  .fashion-subheading::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent-mocha), var(--fashion-honey));
-    transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  /* 관리자 모드에서만 표시되는 요소들 */
+  .admin-only {
+    display: none;
   }
-  
-  .fashion-subheading:hover::after {
-    width: 100%;
-  }
-  
-  /* Smooth Underline */
-  .underline-effect {
-    @apply relative;
-  }
-  
-  .underline-effect::after {
-    content: '';
-    @apply absolute bottom-0 left-0 h-[2px] w-0;
-    background: linear-gradient(90deg, var(--accent-mocha), var(--fashion-honey));
-    transition: width 0.3s ease;
-  }
-  
-  .underline-effect:hover::after {
-    @apply w-full;
-  }
-  
-  /* Fashion Loading Animation */
-  .fashion-loading {
-    @apply relative overflow-hidden;
-  }
-  
-  .fashion-loading::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-      transparent, 
-      rgba(183, 175, 163, 0.2), 
-      rgba(249, 160, 7, 0.2), 
-      transparent);
-    animation: fashion-shimmer 2s infinite;
-  }
-  
-  @keyframes fashion-shimmer {
-    0% { left: -100%; }
-    100% { left: 100%; }
-  }
-  
-  /* Responsive Fashion Utilities */
-  .fashion-grid {
-    @apply grid gap-8;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-  
-  .fashion-container {
-    @apply mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl;
-  }
-  
-  .fashion-section {
-    @apply py-16 sm:py-24 lg:py-32;
+
+  body.admin-mode .admin-only {
+    display: block;
   }
 }
 
+@layer components {
+  /* === 컴포넌트 스타일 === */
+  
+  /* 버튼 시스템 */
+  .btn-primary {
+    @apply bg-black text-white px-6 py-3 font-medium tracking-wider uppercase transition-all duration-300 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black;
+  }
+  
+  .btn-secondary {
+    @apply border border-black text-black px-6 py-3 font-medium tracking-wider uppercase transition-all duration-300 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black;
+  }
+  
+  /* 링크 스타일 */
+  .link-primary {
+    @apply text-black underline-offset-4 hover:underline transition-all duration-300;
+  }
+  
+  /* 카드 컴포넌트 */
+  .card {
+    @apply bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300;
+  }
+  
+  /* 입력 필드 */
+  .input-primary {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300;
+  }
+}
+
+@layer utilities {
+  /* === 추가 유틸리티 === */
+  
+  /* 텍스트 그라디언트 */
+  .text-gradient {
+    background: linear-gradient(135deg, var(--primary-black), var(--accent-mocha));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* 글래스모피즘 효과 */
+  .glass {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  /* 믹스 블렌드 모드 */
+  .mix-difference {
+    mix-blend-mode: difference;
+  }
+  
+  /* 3D 변형 */
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+}
+
+/* === 디버그 및 개발 도구 === */
+@media (max-width: 768px) {
+  .debug-mobile::before {
+    content: 'MOBILE';
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: red;
+    color: white;
+    padding: 2px 5px;
+    font-size: 10px;
+    z-index: 99999;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .debug-tablet::before {
+    content: 'TABLET';
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: orange;
+    color: white;
+    padding: 2px 5px;
+    font-size: 10px;
+    z-index: 99999;
+  }
+}
+
+/* === 프린트 스타일 === */
+@media print {
+  .noise-overlay,
+  .loading-screen,
+  nav,
+  footer {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .gallery-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
