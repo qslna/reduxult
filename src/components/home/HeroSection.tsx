@@ -109,7 +109,7 @@ export default function HeroSection() {
         style={{ y, scale }}
       >
         <EditableVideo
-          src={heroVideo || '/video/main.mp4'}
+          src={heroVideo || '/video/main.mp4.mp4'}
           className="absolute inset-0 w-full h-full object-cover"
           onUpdate={setHeroVideo}
           category="hero"
