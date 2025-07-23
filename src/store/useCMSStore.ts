@@ -20,7 +20,7 @@ export interface CMSMedia {
   uploadedAt: string;
   updatedAt: string;
   tags: string[];
-  metadata: Record<string, any>;
+  metadata: Record<string, string | number | boolean | null>;
 }
 
 export interface CMSFolder {
@@ -397,7 +397,7 @@ const useCMSStore = create<CMSState>()(
         };
       }),
       
-      clearUploads: () => set((state) => ({
+      clearUploads: () => set(() => ({
         uploads: {
           inProgress: {},
           completed: [],

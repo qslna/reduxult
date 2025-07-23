@@ -2,12 +2,15 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { GSAPAnimations, fadeInUp, textReveal, staggerContainer, staggerItem, createTimeline } from '@/lib/animations';
+import { Play, X } from 'lucide-react';
+import Link from 'next/link';
+import { GSAPAnimations, staggerContainer, staggerItem, createTimeline } from '@/lib/animations';
 import EditableVideo from '@/components/admin/EditableVideo';
 import useContentStore from '@/store/useContentStore';
 
 export default function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const { heroVideo, setHeroVideo } = useContentStore();
   const heroRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
@@ -102,11 +105,11 @@ export default function HeroSection() {
       {/* Background Video with Parallax */}
       <motion.div 
         ref={videoRef}
-        className="absolute inset-0 w-full h-full"
+        className={`absolute inset-0 w-full h-full transition-opacity duration-800 ${isVideoPlaying ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         style={{ y, scale }}
       >
         <EditableVideo
-          src={heroVideo}
+          src={heroVideo || '/video/main.mp4'}
           className="absolute inset-0 w-full h-full object-cover"
           onUpdate={setHeroVideo}
           category="hero"
@@ -115,6 +118,25 @@ export default function HeroSection() {
           loop
         />
       </motion.div>
+      
+      {/* Video Controls */}
+      {isVideoPlaying && (
+        <button
+          className="absolute top-10 right-10 z-30 w-16 h-16 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center transition-all hover:bg-white/20 hover:scale-110"
+          onClick={() => setIsVideoPlaying(false)}
+        >
+          <X className="w-6 h-6 text-white" />
+        </button>
+      )}
+      
+      {!isVideoPlaying && (
+        <button
+          className="absolute top-10 right-10 z-30 w-16 h-16 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center transition-all hover:bg-white/20 hover:scale-110"
+          onClick={() => setIsVideoPlaying(true)}
+        >
+          <Play className="w-6 h-6 text-white ml-1" />
+        </button>
+      )}
       
       {/* Dynamic Gradient Overlay */}
       <motion.div 
@@ -166,12 +188,14 @@ export default function HeroSection() {
             variants={staggerItem}
           >
             <motion.p 
-              className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-gray-200 tracking-wider"
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light tracking-[0.3em] uppercase"
               initial={{ clipPath: 'inset(0 100% 0 0)' }}
               animate={{ clipPath: 'inset(0 0% 0 0)' }}
               transition={{ duration: 1.2, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              Creative Collective
+              <span className="inline-block bg-black/40 backdrop-blur-sm px-4 py-2 rounded text-white">
+                THE ROOM OF <span className="text-purple-400">[</span>  <span className="text-purple-400">]</span>
+              </span>
             </motion.p>
           </motion.div>
         </div>
@@ -198,47 +222,51 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 2.8 }}
         >
-          <motion.button
-            className="magnetic-btn group relative px-6 sm:px-8 py-3 sm:py-4 bg-white text-black font-semibold rounded-full overflow-hidden text-sm sm:text-base w-full sm:w-auto"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onMouseEnter={(e) => {
-              GSAPAnimations.magneticEffect(e.currentTarget, {
-                strength: 0.5,
-                distance: 80
-              });
-            }}
-          >
-            <motion.span
-              className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100"
-              initial={false}
-              animate={{ scale: [0, 1.2, 1] }}
-              transition={{ duration: 0.6 }}
-            />
-            <span className="relative z-10 group-hover:text-white transition-colors duration-300">
-              Explore Work
-            </span>
-          </motion.button>
+          <Link href="/about">
+            <motion.button
+              className="magnetic-btn group relative px-6 sm:px-8 py-3 sm:py-4 bg-white text-black font-semibold rounded-full overflow-hidden text-sm sm:text-base w-full sm:w-auto uppercase tracking-wider"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onMouseEnter={(e) => {
+                GSAPAnimations.magneticEffect(e.currentTarget, {
+                  strength: 0.5,
+                  distance: 80
+                });
+              }}
+            >
+              <motion.span
+                className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100"
+                initial={false}
+                animate={{ scale: [0, 1.2, 1] }}
+                transition={{ duration: 0.6 }}
+              />
+              <span className="relative z-10 group-hover:text-white transition-colors duration-300">
+                Discover Redux
+              </span>
+            </motion.button>
+          </Link>
           
-          <motion.button
-            className="magnetic-btn group relative px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-semibold rounded-full overflow-hidden backdrop-blur-sm text-sm sm:text-base w-full sm:w-auto"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onMouseEnter={(e) => {
-              GSAPAnimations.magneticEffect(e.currentTarget, {
-                strength: 0.3,
-                distance: 60
-              });
-            }}
-          >
-            <motion.span
-              className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10"
-              initial={false}
-              whileHover={{ opacity: 0.1 }}
-              transition={{ duration: 0.3 }}
-            />
-            <span className="relative z-10">Meet Designers</span>
-          </motion.button>
+          <Link href="/exhibitions">
+            <motion.button
+              className="magnetic-btn group relative px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-semibold rounded-full overflow-hidden backdrop-blur-sm text-sm sm:text-base w-full sm:w-auto uppercase tracking-wider"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onMouseEnter={(e) => {
+                GSAPAnimations.magneticEffect(e.currentTarget, {
+                  strength: 0.3,
+                  distance: 60
+                });
+              }}
+            >
+              <motion.span
+                className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10"
+                initial={false}
+                whileHover={{ opacity: 0.1 }}
+                transition={{ duration: 0.3 }}
+              />
+              <span className="relative z-10">View Exhibitions</span>
+            </motion.button>
+          </Link>
         </motion.div>
         
         {/* Floating elements */}

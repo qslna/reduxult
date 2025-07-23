@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
-import { Trash2, Edit2, Upload, Check, X, AlertCircle, Copy, Move, Eye } from 'lucide-react';
+import { Trash2, Edit2, Upload, Check, X, AlertCircle, Copy, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useContentStore from '@/store/useContentStore';
 import useCMSStore from '@/store/useCMSStore';
@@ -46,10 +46,10 @@ export default function EditableImage({
   const { isAdmin } = useContentStore();
   const { 
     addMedia, 
-    updateMedia, 
+    // updateMedia,  // TODO: Use when updating existing media
     deleteMedia, 
     addActivity,
-    setLoading,
+    // setLoading,  // TODO: Use for global loading state
     addError 
   } = useCMSStore();
   

@@ -48,7 +48,7 @@ export interface UploadOptions {
   fileName?: string;
   useUniqueFileName?: boolean;
   tags?: string[];
-  customMetadata?: Record<string, any>;
+  customMetadata?: Record<string, string | number | boolean>;
   onProgress?: (progress: number) => void;
 }
 
@@ -128,7 +128,7 @@ export async function uploadToImageKit(file: File, options: UploadOptions = {}):
               error: errorResponse.message || 'Upload failed'
             });
           }
-        } catch (error) {
+        } catch {
           resolve({
             success: false,
             error: 'Failed to parse response'

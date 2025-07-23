@@ -7,25 +7,9 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { GSAPAnimations } from '@/lib/animations';
+import { navigationItems } from '@/data/navigation';
 
-const navItems = [
-  { href: '/', label: 'Home' },
-  { 
-    href: '/about', 
-    label: 'About',
-    submenu: [
-      { href: '/about/collective', label: 'Collective' },
-      { href: '/about/visual-art', label: 'Visual Art' },
-      { href: '/about/fashion-film', label: 'Fashion Film' },
-      { href: '/about/installation', label: 'Installation' },
-      { href: '/about/memory', label: 'Memory' }
-    ]
-  },
-  { href: '/designers', label: 'Designers' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/exhibitions', label: 'Exhibitions' },
-  { href: '/contact', label: 'Contact' },
-];
+const navItems = navigationItems;
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -213,7 +197,7 @@ export default function Navigation() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 + 0.3 }}
                 >
-                  {item.submenu ? (
+                  {item.dropdown ? (
                     <button
                       className="nav-item flex items-center space-x-1 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-300 rounded-lg hover:bg-white/10"
                       onMouseEnter={() => setActiveSubmenu(item.label)}
@@ -253,7 +237,7 @@ export default function Navigation() {
 
                 {/* Submenu */}
                 <AnimatePresence>
-                  {item.submenu && activeSubmenu === item.label && (
+                  {item.dropdown && activeSubmenu === item.label && (
                     <motion.div
                       variants={submenuVariants}
                       initial="closed"
@@ -263,7 +247,7 @@ export default function Navigation() {
                       onMouseEnter={() => setActiveSubmenu(item.label)}
                       onMouseLeave={() => setActiveSubmenu(null)}
                     >
-                      {item.submenu.map((subitem, subIndex) => (
+                      {item.dropdown.map((subitem, subIndex) => (
                         <motion.div
                           key={subitem.href}
                           initial={{ opacity: 0, x: -10 }}
@@ -334,7 +318,7 @@ export default function Navigation() {
               <div className="px-4 py-6 space-y-2">
                 {navItems.map((item) => (
                   <motion.div key={item.href} variants={mobileItemVariants}>
-                    {item.submenu ? (
+                    {item.dropdown ? (
                       <div>
                         <button
                           onClick={() => handleSubmenuToggle(item.label)}
@@ -358,7 +342,7 @@ export default function Navigation() {
                               transition={{ duration: 0.3 }}
                               className="ml-4 mt-2 space-y-1"
                             >
-                              {item.submenu.map((subitem) => (
+                              {item.dropdown.map((subitem) => (
                                 <Link
                                   key={subitem.href}
                                   href={subitem.href}

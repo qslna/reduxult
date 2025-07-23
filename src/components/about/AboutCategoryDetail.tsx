@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Grid, Plus, Trash2, Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Grid, Plus, Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Category } from '@/types';
 import EditableImage from '@/components/admin/EditableImage';
 import EditableVideo from '@/components/admin/EditableVideo';

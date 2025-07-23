@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { 
-  X, Settings, Image, Video, Users, Briefcase, Info, Eye, EyeOff, 
-  RefreshCw, Upload, Search, Filter, Grid, List, FolderPlus, 
+  X, Settings, Image, Video, Briefcase, Eye, EyeOff, 
+  Upload, Search, Grid, List, 
   Download, Trash2, Move, Copy, BarChart3, Activity
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,7 +16,7 @@ interface MediaGridProps {
 
 function MediaGrid({ onUpload }: MediaGridProps) {
   const {
-    media,
+    // media, // Commented out as it's not used directly
     selectedMedia,
     currentFolder,
     searchQuery,

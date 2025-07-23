@@ -38,7 +38,7 @@ export default function EditableVideo({
   const { isAdmin } = useContentStore();
   const { 
     addMedia, 
-    updateMedia, 
+    // updateMedia,  // TODO: Use when updating existing media
     deleteMedia, 
     addActivity,
     addError 

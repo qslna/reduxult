@@ -1,6 +1,46 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+// Type definitions
+interface AnimationOptions {
+  duration?: number;
+  ease?: string;
+  delay?: number;
+  stagger?: number | {
+    amount?: number;
+    from?: number | "start" | "center" | "end" | "edges" | "random" | [number, number];
+    each?: number;
+    grid?: [number, number] | "auto";
+    axis?: "x" | "y";
+    ease?: string;
+  };
+  scrollTrigger?: ScrollTrigger.Vars;
+  onComplete?: () => void;
+  onStart?: () => void;
+  [key: string]: unknown;
+}
+
+interface MagneticOptions {
+  strength?: number;
+  distance?: number;
+}
+
+interface TypewriterOptions {
+  text?: string;
+  speed?: number;
+  delay?: number;
+  cursor?: boolean;
+}
+
+interface ScrollAnimationOptions extends AnimationOptions {
+  trigger?: string | Element;
+  start?: string;
+  end?: string;
+  scrub?: boolean | number;
+  pin?: boolean | string | Element;
+  markers?: boolean;
+}
+
 // Register GSAP plugins
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -119,7 +159,7 @@ export const modalTransition = {
 
 // GSAP Animation Functions
 export class GSAPAnimations {
-  static fadeIn(element: string | Element, options: any = {}) {
+  static fadeIn(element: string | Element, options: AnimationOptions = {}) {
     return gsap.fromTo(
       element,
       { opacity: 0, y: 30 },
@@ -133,7 +173,7 @@ export class GSAPAnimations {
     );
   }
 
-  static fadeInUp(element: string | Element, options: any = {}) {
+  static fadeInUp(element: string | Element, options: AnimationOptions = {}) {
     return gsap.fromTo(
       element,
       { opacity: 0, y: 60 },
@@ -147,7 +187,7 @@ export class GSAPAnimations {
     );
   }
 
-  static slideInLeft(element: string | Element, options: any = {}) {
+  static slideInLeft(element: string | Element, options: AnimationOptions = {}) {
     return gsap.fromTo(
       element,
       { opacity: 0, x: -100 },
@@ -161,7 +201,7 @@ export class GSAPAnimations {
     );
   }
 
-  static slideInRight(element: string | Element, options: any = {}) {
+  static slideInRight(element: string | Element, options: AnimationOptions = {}) {
     return gsap.fromTo(
       element,
       { opacity: 0, x: 100 },
@@ -175,7 +215,7 @@ export class GSAPAnimations {
     );
   }
 
-  static scaleIn(element: string | Element, options: any = {}) {
+  static scaleIn(element: string | Element, options: AnimationOptions = {}) {
     return gsap.fromTo(
       element,
       { opacity: 0, scale: 0.8 },
@@ -189,7 +229,7 @@ export class GSAPAnimations {
     );
   }
 
-  static textReveal(element: string | Element, options: any = {}) {
+  static textReveal(element: string | Element, options: AnimationOptions = {}) {
     const tl = gsap.timeline();
     
     tl.set(element, { overflow: 'hidden' })
@@ -208,7 +248,7 @@ export class GSAPAnimations {
     return tl;
   }
 
-  static imageParallax(element: string | Element, options: any = {}) {
+  static imageParallax(element: string | Element, options: ScrollAnimationOptions = {}) {
     return gsap.to(element, {
       yPercent: -50,
       ease: 'none',
@@ -223,7 +263,7 @@ export class GSAPAnimations {
     });
   }
 
-  static fadeInStagger(elements: string | Element[], options: any = {}) {
+  static fadeInStagger(elements: string | Element[], options: AnimationOptions = {}) {
     return gsap.fromTo(
       elements,
       { opacity: 0, y: 30 },
@@ -238,7 +278,7 @@ export class GSAPAnimations {
     );
   }
 
-  static revealOnScroll(element: string | Element, options: any = {}) {
+  static revealOnScroll(element: string | Element, options: ScrollAnimationOptions = {}) {
     return gsap.fromTo(
       element,
       { opacity: 0, y: 60 },
@@ -259,7 +299,7 @@ export class GSAPAnimations {
     );
   }
 
-  static horizontalScroll(container: string | Element, options: any = {}) {
+  static horizontalScroll(container: string | Element, options: ScrollAnimationOptions = {}) {
     const sections = gsap.utils.toArray(`${container} > *`);
     
     return gsap.to(sections, {
@@ -277,7 +317,7 @@ export class GSAPAnimations {
     });
   }
 
-  static magneticEffect(element: string | Element, options: any = {}) {
+  static magneticEffect(element: string | Element, options: MagneticOptions = {}) {
     const el = typeof element === 'string' ? document.querySelector(element) : element;
     if (!el) return;
 
@@ -322,7 +362,7 @@ export class GSAPAnimations {
     };
   }
 
-  static morphingBackground(element: string | Element, options: any = {}) {
+  static morphingBackground(element: string | Element, options: AnimationOptions & { colors?: string[] } = {}) {
     const colors = options.colors || ['#000000', '#111111', '#222222'];
     
     return gsap.to(element, {
@@ -335,7 +375,7 @@ export class GSAPAnimations {
     });
   }
 
-  static typewriterEffect(element: string | Element, options: any = {}) {
+  static typewriterEffect(element: string | Element, options: TypewriterOptions = {}) {
     const el = typeof element === 'string' ? document.querySelector(element) : element;
     if (!el) return;
 
@@ -344,20 +384,22 @@ export class GSAPAnimations {
     
     el.textContent = '';
     
+    const { delay } = options;
+    
     return gsap.to(el, {
       duration: text.length * speed,
       ease: 'none',
+      delay,
       onUpdate: function() {
         const progress = this.progress();
         const currentLength = Math.floor(progress * text.length);
         el.textContent = text.slice(0, currentLength);
-      },
-      ...options,
+      }
     });
   }
 
-  static smoothScroll(options: any = {}) {
-    const lenis = new (window as any).Lenis({
+  static smoothScroll(options: { duration?: number; easing?: (t: number) => number; smooth?: boolean } = {}) {
+    const lenis = new (window as { Lenis?: any }).Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smooth: true,
@@ -373,7 +415,7 @@ export class GSAPAnimations {
     return lenis;
   }
 
-  static cursorFollow(options: any = {}) {
+  static cursorFollow(options: { color?: string } = {}) {
     const cursor = document.createElement('div');
     cursor.className = 'custom-cursor';
     cursor.style.cssText = `
@@ -433,7 +475,7 @@ export class GSAPAnimations {
 }
 
 // Animation utilities
-export const createTimeline = (options: any = {}) => {
+export const createTimeline = (options: gsap.TimelineVars = {}) => {
   return gsap.timeline(options);
 };
 
@@ -447,7 +489,7 @@ export const refreshScrollTrigger = () => {
 };
 
 // React hook for GSAP animations
-export const useGSAP = (callback: () => void | (() => void), deps: any[] = []) => {
+export const useGSAP = (callback: () => void | (() => void), deps: unknown[] = []) => {
   if (typeof window === 'undefined') return;
   
   const cleanup = callback();
