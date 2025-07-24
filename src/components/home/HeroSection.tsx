@@ -122,7 +122,7 @@ export default function HeroSection() {
           playsInline
           preload="auto"
         >
-          <source src="/video/main.mp4.mp4" type="video/mp4" />
+          <source src="/VIDEO/main.mp4.mp4" type="video/mp4" />
           브라우저가 비디오 태그를 지원하지 않습니다.
         </video>
         

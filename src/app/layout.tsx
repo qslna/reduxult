@@ -60,6 +60,16 @@ export default function RootLayout({
           rel="stylesheet" 
         />
         
+        {/* GSAP Library - HTML 버전과 동일 */}
+        <Script 
+          src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
+          strategy="beforeInteractive"
+        />
+        <Script 
+          src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"
+          strategy="beforeInteractive"
+        />
+        
         {/* Structured Data */}
         <Script
           id="organization-structured-data"
@@ -78,7 +88,7 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-black text-white overflow-x-hidden">
         <Navigation />
-        <main className="pt-16 sm:pt-20">
+        <main>
           <PageTransition>
             {children}
           </PageTransition>
