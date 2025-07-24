@@ -64,7 +64,7 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/designer-placeholder.jpg" 
+              src="/images/profile/Kim Bomin.webp" 
               alt="Kim Bomin" 
               fill={true}
               priority={true}
@@ -90,7 +90,7 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/designer-placeholder.jpg" 
+              src="/images/profile/Park Parang.jpg" 
               alt="Park Parang" 
               fill={true}
               priority={true}
@@ -168,7 +168,7 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/designer-placeholder.jpg" 
+              src="/images/profile/Hwang Jinsu.jpg" 
               alt="Hwang Jinsu" 
               fill={true}
               priority={true}
@@ -194,7 +194,7 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/designer-placeholder.jpg" 
+              src="/images/profile/Kim Gyeongsu.webp" 
               alt="Kim Gyeongsu" 
               fill={true}
               priority={true}
@@ -220,7 +220,7 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/exhibition-placeholder.jpg" 
+              src="/images/exhibitions/cinemode/1.jpg" 
               alt="CINE MODE" 
               fill={true}
               priority={true}
@@ -262,7 +262,7 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/exhibition-placeholder.jpg" 
+              src="/images/exhibitions/theroom/1.jpg" 
               alt="THE ROOM" 
               fill={true}
               priority={true}

@@ -14,7 +14,15 @@ export default function ContactPage() {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    show: boolean;
+    type: 'success' | 'error';
+    message: string;
+  }>({
+    show: false,
+    type: 'success',
+    message: ''
+  });
 
   useEffect(() => {
     // HTML 버전과 동일한 스크롤 네비게이션 효과
@@ -88,32 +96,104 @@ export default function ContactPage() {
     submenu?.classList.toggle('active');
   };
 
-  // 폼 데이터 처리
+  // 폼 데이터 처리 및 실시간 검증
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+    
+    // 에러 상태가 있다면 사용자가 입력을 시작할 때 클리어
+    if (submitStatus.show && submitStatus.type === 'error') {
+      setSubmitStatus({ show: false, type: 'success', message: '' });
+    }
+  };
+
+  // 폼 검증 함수
+  const validateForm = () => {
+    const { name, email, subject, message } = formData;
+    
+    if (!name.trim() || !email.trim() || !subject.trim() || !message.trim()) {
+      return 'All fields are required.';
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address.';
+    }
+    
+    if (message.trim().length < 10) {
+      return 'Message should be at least 10 characters long.';
+    }
+    
+    return null;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    // 시뮤레이션: 실제 서버로 전송
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setShowMessage(true);
+    // 클라이언트 사이드 검증
+    const validationError = validateForm();
+    if (validationError) {
+      setSubmitStatus({
+        show: true,
+        type: 'error',
+        message: validationError
+      });
       
-      // 폼 초기화
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      // 메시지 숨기기
       setTimeout(() => {
-        setShowMessage(false);
+        setSubmitStatus(prev => ({ ...prev, show: false }));
       }, 5000);
-    }, 1000);
+      
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setSubmitStatus({ show: false, type: 'success', message: '' });
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSubmitStatus({
+          show: true,
+          type: 'success',
+          message: data.message || 'Thank you! Your message has been sent successfully.'
+        });
+        
+        // 폼 초기화
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setSubmitStatus({
+          show: true,
+          type: 'error',
+          message: data.error || 'Something went wrong. Please try again.'
+        });
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitStatus({
+        show: true,
+        type: 'error',
+        message: 'Network error. Please check your connection and try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+      
+      // 메시지를 5초 후 숨기기
+      setTimeout(() => {
+        setSubmitStatus(prev => ({ ...prev, show: false }));
+      }, 5000);
+    }
   };
 
   return (
@@ -318,20 +398,76 @@ export default function ContactPage() {
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
               
-              <p className={`form-message mt-5 text-xs text-[--gray-medium] text-center transition-opacity duration-300 ease-in-out ${
-                showMessage ? 'opacity-100' : 'opacity-0'
+              <div className={`form-message mt-5 text-center transition-all duration-300 ease-in-out ${
+                submitStatus.show ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-2'
               }`}>
-                Thank you! Your message has been sent.
-              </p>
+                <p className={`text-sm font-medium tracking-wider ${
+                  submitStatus.type === 'success' 
+                    ? 'text-green-400' 
+                    : 'text-red-400'
+                }`}>
+                  {submitStatus.message}
+                </p>
+              </div>
             </form>
           </div>
         </div>
       </section>
 
-      {/* Map Section - HTML 버전과 완전 동일 */}
+      {/* Map Section - Enhanced with Professional Design */}
       <section className="map-section h-[500px] bg-[--gray-dark] relative overflow-hidden max-[768px]:h-[300px]">
-        <div className="map-placeholder w-full h-full flex items-center justify-center bg-[linear-gradient(135deg,#1a1a1a_0%,#2a2a2a_100%)] text-[--gray-medium] text-lg tracking-[2px] max-[768px]:text-base">
-          Seoul, South Korea
+        <div className="map-container w-full h-full relative bg-[linear-gradient(135deg,#1a1a1a_0%,#2a2a2a_100%)]">
+          {/* Map Grid Background */}
+          <div 
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '40px 40px'
+            }}
+          />
+          
+          {/* Location Pin */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+            <div className="location-pin relative animate-pulse">
+              {/* Pin Icon */}
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110">
+                <div className="w-4 h-4 bg-black rounded-full"></div>
+              </div>
+              {/* Pin Shadow */}
+              <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-4 h-2 bg-black/20 rounded-full blur-sm"></div>
+              {/* Ripple Effect */}
+              <div className="absolute inset-0 rounded-full border-2 border-white/30 animate-ping"></div>
+              <div className="absolute inset-0 rounded-full border-2 border-white/20 animate-ping" style={{ animationDelay: '0.5s' }}></div>
+            </div>
+          </div>
+          
+          {/* Location Info */}
+          <div className="absolute bottom-8 left-8 max-[768px]:bottom-4 max-[768px]:left-4">
+            <div className="bg-black/80 backdrop-blur-sm border border-white/10 rounded-lg p-4 max-w-xs">
+              <h3 className="text-white font-medium text-lg mb-2">REDUX Studio</h3>
+              <p className="text-white/70 text-sm leading-relaxed">
+                Seoul, South Korea<br />
+                Creative Fashion Collective
+              </p>
+            </div>
+          </div>
+          
+          {/* Decorative Elements */}
+          <div className="absolute top-4 right-4 text-white/20 text-xs font-mono tracking-wider">
+            37.5665° N, 126.9780° E
+          </div>
+          
+          {/* Click to View Message */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="bg-black/60 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3">
+              <p className="text-white/80 text-sm font-light tracking-wider">
+                Seoul, South Korea
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 

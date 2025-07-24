@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { initGSAPAnimations, animations, gsap } from '@/lib/gsap';
 import OptimizedImage from '@/components/ui/OptimizedImage';
@@ -8,6 +8,9 @@ import OptimizedImage from '@/components/ui/OptimizedImage';
 // HTML redux6 exhibitions.html과 완전 동일한 Exhibitions 페이지 구현
 export default function ExhibitionsPage() {
   const router = useRouter();
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState('');
+  const [currentAlt, setCurrentAlt] = useState('');
 
   useEffect(() => {
     // HTML 버전과 동일한 스크롤 네비게이션 효과
@@ -65,6 +68,35 @@ export default function ExhibitionsPage() {
     return false;
   };
 
+  const openLightbox = (imageSrc: string, imageAlt: string) => {
+    setCurrentImage(imageSrc);
+    setCurrentAlt(imageAlt);
+    setLightboxOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    document.body.style.overflow = '';
+  };
+
+  const handleLightboxClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      closeLightbox();
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && lightboxOpen) {
+        closeLightbox();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen]);
+
   return (
     <>
 
@@ -92,7 +124,7 @@ export default function ExhibitionsPage() {
           <div className="exhibition-content grid grid-cols-2 min-h-screen items-center max-[1024px]:grid-cols-1">
             <div className="exhibition-visual relative h-screen overflow-hidden bg-[--gray-dark] max-[1024px]:h-[60vh] max-[768px]:h-[50vh]">
               <OptimizedImage 
-                src="/images/exhibition-cinemode.jpg" 
+                src="/images/exhibitions/cinemode/1.jpg" 
                 alt="CINE MODE Exhibition" 
                 fill={true}
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -142,13 +174,78 @@ export default function ExhibitionsPage() {
             </div>
           </div>
         </div>
+
+        {/* CINE MODE Gallery Section */}
+        <div className="exhibition-gallery relative mb-0 bg-black py-20">
+          <div className="gallery-content max-w-7xl mx-auto px-10">
+            <div className="text-center mb-16">
+              <h3 className="text-3xl font-light tracking-wider text-white mb-4">
+                CINE MODE Gallery
+              </h3>
+              <p className="text-lg text-gray-400 tracking-wider">
+                Behind The Scenes & Exhibition Moments
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div 
+                className="aspect-square overflow-hidden rounded-lg group cursor-pointer"
+                onClick={() => openLightbox('/images/exhibitions/cinemode/1.jpg', 'CINE MODE Gallery 1')}
+              >
+                <OptimizedImage 
+                  src="/images/exhibitions/cinemode/1.jpg" 
+                  alt="CINE MODE Gallery 1" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              <div 
+                className="aspect-square overflow-hidden rounded-lg group cursor-pointer"
+                onClick={() => openLightbox('/images/exhibitions/cinemode/2.jpg', 'CINE MODE Gallery 2')}
+              >
+                <OptimizedImage 
+                  src="/images/exhibitions/cinemode/2.jpg" 
+                  alt="CINE MODE Gallery 2" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              <div 
+                className="aspect-square overflow-hidden rounded-lg group cursor-pointer"
+                onClick={() => openLightbox('/images/exhibitions/cinemode/3.jpg', 'CINE MODE Gallery 3')}
+              >
+                <OptimizedImage 
+                  src="/images/exhibitions/cinemode/3.jpg" 
+                  alt="CINE MODE Gallery 3" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              <div 
+                className="aspect-square overflow-hidden rounded-lg group cursor-pointer"
+                onClick={() => openLightbox('/images/exhibitions/cinemode/4.jpg', 'CINE MODE Gallery 4')}
+              >
+                <OptimizedImage 
+                  src="/images/exhibitions/cinemode/4.jpg" 
+                  alt="CINE MODE Gallery 4" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
         
         {/* Exhibition 2: THE ROOM OF [ ] */}
         <div className="exhibition-item relative mb-0" id="the-room">
           <div className="exhibition-content grid grid-cols-2 min-h-screen items-center [direction:rtl] max-[1024px]:grid-cols-1 max-[1024px]:[direction:ltr]">
             <div className="exhibition-visual relative h-screen overflow-hidden bg-[--gray-dark] [direction:ltr] max-[1024px]:h-[60vh] max-[768px]:h-[50vh]">
               <OptimizedImage 
-                src="/images/exhibition-theroom.jpg" 
+                src="/images/exhibitions/theroom/1.jpg" 
                 alt="THE ROOM OF [ ] Exhibition" 
                 fill={true}
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -198,6 +295,59 @@ export default function ExhibitionsPage() {
             </div>
           </div>
         </div>
+
+        {/* THE ROOM Gallery Section */}
+        <div className="exhibition-gallery relative mb-0 bg-gray-100 py-20">
+          <div className="gallery-content max-w-7xl mx-auto px-10">
+            <div className="text-center mb-16">
+              <h3 className="text-3xl font-light tracking-wider text-black mb-4">
+                THE ROOM OF [&nbsp;&nbsp;] Preview
+              </h3>
+              <p className="text-lg text-gray-600 tracking-wider">
+                Conceptual Visualizations & Artistic Explorations
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div 
+                className="aspect-[4/3] overflow-hidden rounded-lg group cursor-pointer"
+                onClick={() => openLightbox('/images/exhibitions/theroom/1.jpg', 'THE ROOM Gallery 1')}
+              >
+                <OptimizedImage 
+                  src="/images/exhibitions/theroom/1.jpg" 
+                  alt="THE ROOM Gallery 1" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              <div 
+                className="aspect-[4/3] overflow-hidden rounded-lg group cursor-pointer"
+                onClick={() => openLightbox('/images/exhibitions/theroom/2.jpg', 'THE ROOM Gallery 2')}
+              >
+                <OptimizedImage 
+                  src="/images/exhibitions/theroom/2.jpg" 
+                  alt="THE ROOM Gallery 2" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              <div 
+                className="aspect-[4/3] overflow-hidden rounded-lg group cursor-pointer"
+                onClick={() => openLightbox('/images/exhibitions/theroom/3.jpg', 'THE ROOM Gallery 3')}
+              >
+                <OptimizedImage 
+                  src="/images/exhibitions/theroom/3.jpg" 
+                  alt="THE ROOM Gallery 3" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Coming Soon Section - HTML 버전과 완전 동일 */}
@@ -218,6 +368,41 @@ export default function ExhibitionsPage() {
       <footer className="py-[60px] px-10 bg-white text-black text-center border-t border-black/10">
         <p>&copy; 2025 REDUX. All rights reserved.</p>
       </footer>
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && (
+        <div 
+          className="fixed inset-0 bg-black/95 backdrop-blur-xl z-[10000] flex items-center justify-center transition-opacity duration-400"
+          onClick={handleLightboxClick}
+        >
+          <div className="lightbox-content max-w-[90vw] max-h-[90vh] relative">
+            {/* Close button */}
+            <button 
+              className="absolute -top-16 right-0 text-white text-2xl w-12 h-12 flex items-center justify-center transition-all duration-300 hover:text-gray-300 hover:scale-110 z-50"
+              onClick={closeLightbox}
+            >
+              ×
+            </button>
+            
+            <div className="relative">
+              <OptimizedImage 
+                src={currentImage}
+                alt={currentAlt}
+                width={1200}
+                height={800}
+                priority={true}
+                sizes="90vw"
+                className="max-w-full max-h-[90vh] object-contain shadow-2xl rounded-lg"
+              />
+              
+              {/* Image title */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full text-white text-sm font-light tracking-wider">
+                {currentAlt}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </>
   );

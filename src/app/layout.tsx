@@ -27,8 +27,8 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 };
 
-import { Navigation } from '@/components/layout/ModernNavigation';
-import { Footer } from '@/components/layout/ModernFooter';
+import Navigation from '@/components/layout/Navigation';
+import Footer from '@/components/layout/Footer';
 import AdminButton from '@/components/admin/AdminButton';
 import PageTransition from '@/components/ui/PageTransition';
 

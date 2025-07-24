@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCMSAuthStore } from '@/store/useCMSAuthStore';
 import { DESIGN_TOKENS, layoutUtils } from '@/lib/design-system';
-import { LogOut, User, Settings, Database, Image, FileText, Menu } from 'lucide-react';
+import { LogOut, Settings, Database, Image, FileText, Menu } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -15,21 +15,17 @@ interface CMSLayoutProps {
 
 export default function CMSLayout({ children, title = 'CMS Dashboard' }: CMSLayoutProps) {
   const router = useRouter();
-  const { user, isAuthenticated, isLoading, logout, refreshAuth } = useCMSAuthStore();
+  const { isAuthenticated, isLoading, logout } = useCMSAuthStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      if (!isAuthenticated) {
-        router.push('/admin/login');
-      } else {
-        refreshAuth();
-      }
+    if (!isLoading && !isAuthenticated) {
+      router.push('/admin/login');
     }
-  }, [isAuthenticated, isLoading, router, refreshAuth]);
+  }, [isAuthenticated, isLoading, router]);
 
-  const handleLogout = async () => {
-    await logout();
+  const handleLogout = () => {
+    logout();
     router.push('/admin/login');
   };
 
@@ -41,7 +37,7 @@ export default function CMSLayout({ children, title = 'CMS Dashboard' }: CMSLayo
     );
   }
 
-  if (!isAuthenticated || !user) {
+  if (!isAuthenticated) {
     return null;
   }
 
@@ -65,26 +61,12 @@ export default function CMSLayout({ children, title = 'CMS Dashboard' }: CMSLayo
       active: false
     },
     {
-      label: 'Users',
-      href: '/admin/users',
-      icon: User,
-      active: false,
-      adminOnly: true
-    },
-    {
       label: 'Settings',
       href: '/admin/settings',
       icon: Settings,
-      active: false,
-      superAdminOnly: true
+      active: false
     }
   ];
-
-  const filteredSidebarItems = sidebarItems.filter(item => {
-    if (item.superAdminOnly && user.role !== 'SUPER_ADMIN') return false;
-    if (item.adminOnly && !['SUPER_ADMIN', 'ADMIN'].includes(user.role)) return false;
-    return true;
-  });
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -108,7 +90,7 @@ export default function CMSLayout({ children, title = 'CMS Dashboard' }: CMSLayo
         </div>
 
         <nav className="p-4 space-y-2">
-          {filteredSidebarItems.map((item) => {
+          {sidebarItems.map((item) => {
             const Icon = item.icon;
             return (
               <Link
@@ -131,11 +113,11 @@ export default function CMSLayout({ children, title = 'CMS Dashboard' }: CMSLayo
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-              <User className="w-4 h-4" />
+              <div className="w-4 h-4 bg-white rounded-full"></div>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{user.name}</p>
-              <p className="text-xs text-gray-400 truncate">{user.role}</p>
+              <p className="text-sm font-medium text-white truncate">REDUX Admin</p>
+              <p className="text-xs text-gray-400 truncate">Administrator</p>
             </div>
           </div>
           <button
@@ -165,7 +147,7 @@ export default function CMSLayout({ children, title = 'CMS Dashboard' }: CMSLayo
             
             <div className="flex items-center gap-4">
               <span className="text-sm text-gray-400">
-                Welcome, {user.name}
+                Welcome, Admin
               </span>
             </div>
           </div>

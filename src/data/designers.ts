@@ -2,14 +2,14 @@ import { Designer } from '@/types';
 
 export const designers: Designer[] = [
   {
-    id: 'kim-bomin',
+    id: 'kimbomin',
     name: 'Kim Bomin',
     nameKo: '김보민',
-    role: 'Creative Director',
-    bio: 'Exploring the boundaries between fashion and art through innovative design approaches.',
+    role: 'Film Director',
+    bio: 'REDUX의 필름 디렉터로서 색채와 텍스처를 통해 감정을 표현하는 크리에이티브 디자이너입니다. 패션 필름이라는 매체를 통해 의상의 움직임과 감정을 영상 언어로 번역하여 관객에게 전달하며, 시각적 스토리텔링의 새로운 가능성을 탐구합니다.',
     profileImage: '/images/designers/kimbomin/cinemode/김보민 사진.jpg',
     coverImage: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
-    instagramHandle: '@kimbomin_redux',
+    instagramHandle: '@minectivbe',
     portfolioImages: [
       '/images/designers/kimbomin/portfolio/KakaoTalk_Photo_2025-06-28-13-18-36 001.jpeg',
       '/images/designers/kimbomin/portfolio/KakaoTalk_Photo_2025-06-28-13-18-36 002.jpeg',
@@ -18,51 +18,60 @@ export const designers: Designer[] = [
       '/images/designers/kimbomin/cinemode/KakaoTalk_20250626_002430368_14.jpg',
       '/images/designers/kimbomin/cinemode/KakaoTalk_20250626_002430368_15.jpg'
     ],
+    filmTitle: 'CHASING VOWS',
+    videoUrl: 'https://drive.google.com/file/d/1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X/preview',
+    googleDriveFileId: '1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X',
     featured: true,
     order: 1
   },
   {
-    id: 'park-parang',
+    id: 'parkparang',
     name: 'Park Parang',
-    nameKo: '박파렁',
-    role: 'Visual Artist',
-    bio: 'Creating visual narratives that challenge conventional fashion aesthetics.',
+    nameKo: '박파랑',
+    role: 'Digital Designer',
+    bio: '시각 예술과 패션의 경계를 넘나드는 멀티미디어 아티스트입니다. 디지털 매체를 통해 패션의 경계를 확장하고, 온라인 공간에서의 새로운 패션 경험을 디자인하며, 가상과 현실을 잇는 혁신적인 작업을 선보입니다.',
     profileImage: '/images/profile/Park Parang.jpg',
     coverImage: '/images/profile/Park Parang.jpg',
-    instagramHandle: '@parkparang_redux',
+    instagramHandle: '@rannx8m',
     portfolioImages: [
       '/images/profile/Park Parang.jpg'
     ],
+    filmTitle: 'THE TIME BETWEEN',
+    videoUrl: 'https://drive.google.com/file/d/15d901XRElkF5p7xiJYelIyblYFb-PtsD/preview',
+    googleDriveFileId: '15d901XRElkF5p7xiJYelIyblYFb-PtsD',
     featured: true,
     order: 2
   },
   {
-    id: 'lee-taehyeon',
+    id: 'leetaehyeon',
     name: 'Lee Taehyeon',
     nameKo: '이태현',
-    role: 'Fashion Designer',
-    bio: 'Blending traditional Korean aesthetics with contemporary fashion design.',
+    role: 'Creative Director',
+    bio: 'REDUX의 창립자이자 크리에이티브 디렉터로, 실험적인 패션과 예술의 경계를 탐구합니다. 미니멀리즘과 구조적 실루엣을 바탕으로 독창적인 작품 세계를 구축하며, 패션을 통해 새로운 이야기를 만들어가는 비전을 제시합니다.',
     profileImage: '/images/designers/leetaehyeon/leetaehyeon-Profile.jpg',
     coverImage: '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
-    instagramHandle: '@leetaehyeon_redux',
+    instagramHandle: '@tododope',
     portfolioImages: [
       '/images/designers/leetaehyeon/portfolio/15.png',
       '/images/designers/leetaehyeon/portfolio/21.png',
       '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
       '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_02.jpg'
     ],
+    filmTitle: 'POLYHEDRON',
+    videoUrl: 'https://drive.google.com/file/d/1fG2fchKvEG7i7Lo79K7250mgiVTse6ks/preview',
+    googleDriveFileId: '1fG2fchKvEG7i7Lo79K7250mgiVTse6ks',
     featured: true,
     order: 3
   },
   {
-    id: 'choi-eunsol',
+    id: 'choieunsol',
     name: 'Choi Eunsol',
     nameKo: '최은솔',
-    role: 'Art Director',
-    bio: 'Directing visual experiences that merge fashion with multimedia art.',
+    role: 'Fashion Designer',
+    bio: '전통과 현대를 융합한 독특한 미학을 추구하는 패션 디자이너입니다. 지속가능한 패션에 대한 깊은 관심을 바탕으로 환경을 생각하는 창작 활동을 이어가며, 한국적 정서와 현대적 감각을 조화롭게 표현합니다.',
     profileImage: '/images/designers/choieunsol/choieunsol-Profile.jpeg',
     coverImage: '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
-    instagramHandle: '@choieunsol_redux',
+    instagramHandle: '@choieunsol.of',
     portfolioImages: [
       '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
       '/images/designers/choieunsol/cinemode/IMG_8618.jpeg',
@@ -70,18 +79,21 @@ export const designers: Designer[] = [
       '/images/designers/choieunsol/cinemode/IMG_8620.jpeg',
       '/images/designers/choieunsol/cinemode/IMG_8621.jpeg'
     ],
+    filmTitle: 'SOUL SUCKER',
+    videoUrl: 'https://drive.google.com/file/d/1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3/preview',
+    googleDriveFileId: '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3',
     featured: true,
     order: 4
   },
   {
-    id: 'hwang-jinsu',
+    id: 'hwangjinsu',
     name: 'Hwang Jinsu',
     nameKo: '황진수',
-    role: 'Film Director',
-    bio: 'Capturing fashion through cinematic storytelling and visual poetry.',
+    role: 'Visual Director',
+    bio: 'REDUX의 비주얼 디렉터로서 실험적인 패션과 예술의 경계를 탐구합니다. 독창적인 시각적 언어를 통해 패션의 새로운 가능성을 제시하며, 혁신적인 크리에이티브 작업을 선도하고 시각적 완성도를 추구합니다.',
     profileImage: '/images/profile/Hwang Jinsu.jpg',
     coverImage: '/images/designers/hwangjinsu/cinemode/NOR_7743.jpg',
-    instagramHandle: '@hwangjinsu_redux',
+    instagramHandle: '@j_j_j_j_j_h',
     portfolioImages: [
       '/images/designers/hwangjinsu/cinemode/NOR_7743.jpg',
       '/images/designers/hwangjinsu/cinemode/⭐️NOR_7677.jpg',
@@ -93,18 +105,21 @@ export const designers: Designer[] = [
       '/images/designers/hwangjinsu/cinemode/📌NOR_7709.jpg',
       '/images/designers/hwangjinsu/cinemode/📌NOR_7716.jpg'
     ],
+    filmTitle: 'WHO AM I ?!',
+    videoUrl: 'https://drive.google.com/file/d/1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d/preview',
+    googleDriveFileId: '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d',
     featured: true,
     order: 5
   },
   {
-    id: 'kim-gyeongsu',
+    id: 'kimgyeongsu',
     name: 'Kim Gyeongsu',
     nameKo: '김경수',
-    role: 'Installation Artist',
-    bio: 'Creating immersive fashion installations that transform spaces.',
+    role: 'Brand Manager',
+    bio: '기능성과 예술성을 결합한 혁신적인 패션을 선보이는 디자이너입니다. 브랜드 매니저로서 REDUX의 아이덴티티를 구축하고 체계적인 브랜드 전략을 수립하는 역할을 담당하며, 브랜드의 일관성과 발전을 추진합니다.',
     profileImage: '/images/profile/Kim Gyeongsu.webp',
     coverImage: '/images/designers/kimgyeongsu/Showcase/IMG_5568.JPG',
-    instagramHandle: '@kimgyeongsu_redux',
+    instagramHandle: '@gang._.soo__',
     portfolioImages: [
       '/images/designers/kimgyeongsu/portfolio/IMG_5488.JPG',
       '/images/designers/kimgyeongsu/portfolio/IMG_5489.JPG',
@@ -132,6 +147,9 @@ export const designers: Designer[] = [
       '/images/designers/kimgyeongsu/portfolio/IMG_5566.JPG',
       '/images/designers/kimgyeongsu/portfolio/IMG_5567.JPG'
     ],
+    filmTitle: 'TO BE REVEALED',
+    videoUrl: 'https://drive.google.com/file/d/1Hl594dd_MY714hZwmklTAPTc-pofe9bY/preview',
+    googleDriveFileId: '1Hl594dd_MY714hZwmklTAPTc-pofe9bY',
     featured: true,
     order: 6
   }

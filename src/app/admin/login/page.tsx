@@ -7,8 +7,8 @@ import { useCMSAuthStore } from '@/store/useCMSAuthStore';
 import { layoutUtils } from '@/lib/design-system';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 
+// Simplified login form - only password needed
 interface LoginForm {
-  email: string;
   password: string;
 }
 
@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
   }, [clearError]);
 
   const onSubmit = async (data: LoginForm) => {
-    const success = await login(data.email, data.password);
+    const success = await login(data.password);
     if (success) {
       router.push('/admin');
     }
@@ -56,47 +56,16 @@ export default function AdminLoginPage() {
         {/* Login Form */}
         <div className="bg-gray-800 rounded-lg shadow-xl p-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {/* Email Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Email Address
-              </label>
-              <input
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Invalid email address'
-                  }
-                })}
-                type="email"
-                className={layoutUtils.combineClasses(
-                  'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md',
-                  'text-white placeholder-gray-400',
-                  'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-                  errors.email ? 'border-red-500' : ''
-                )}
-                placeholder="admin@redux.com"
-                autoComplete="email"
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-400">{errors.email.message}</p>
-              )}
-            </div>
 
-            {/* Password Field */}
+            {/* Admin Password Field */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Password
+                Admin Password
               </label>
               <div className="relative">
                 <input
                   {...register('password', {
-                    required: 'Password is required',
-                    minLength: {
-                      value: 6,
-                      message: 'Password must be at least 6 characters'
-                    }
+                    required: 'Password is required'
                   })}
                   type={showPassword ? 'text' : 'password'}
                   className={layoutUtils.combineClasses(
@@ -105,7 +74,7 @@ export default function AdminLoginPage() {
                     'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
                     errors.password ? 'border-red-500' : ''
                   )}
-                  placeholder="Enter your password"
+                  placeholder="Enter admin password"
                   autoComplete="current-password"
                 />
                 <button
@@ -158,13 +127,12 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          {/* Demo Credentials */}
+          {/* Password Hint */}
           {process.env.NODE_ENV === 'development' && (
             <div className="mt-6 p-4 bg-gray-700 rounded-md">
-              <p className="text-xs text-gray-400 mb-2">Demo Credentials:</p>
+              <p className="text-xs text-gray-400 mb-2">Admin Access:</p>
               <p className="text-xs text-gray-300">
-                <strong>Email:</strong> admin@redux.com<br />
-                <strong>Password:</strong> admin123!
+                Enter the admin password to access the CMS
               </p>
             </div>
           )}

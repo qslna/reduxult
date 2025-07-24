@@ -10,6 +10,9 @@ export interface Designer {
   coverImage: string;
   instagramHandle: string;
   portfolioImages: string[];
+  filmTitle?: string;
+  videoUrl?: string;
+  googleDriveFileId?: string;
   featured: boolean;
   order: number;
 }
