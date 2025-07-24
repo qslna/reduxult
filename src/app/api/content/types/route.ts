@@ -13,7 +13,7 @@ import {
   createPaginationMeta,
   getSkipValue
 } from '@/lib/api-response';
-import { UserRole } from '@prisma/client';
+import { UserRole } from '@/types/prisma-types';
 
 // Content type schema validation
 const ContentTypeSchema = z.object({

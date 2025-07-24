@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import { jwtVerify, SignJWT } from 'jose';
 import bcrypt from 'bcryptjs';
 import { prisma } from './db';
-import { UserRole } from '@prisma/client';
+import { UserRole } from '@/types/prisma-types';
 
 // JWT configuration
 const JWT_SECRET = new TextEncoder().encode(

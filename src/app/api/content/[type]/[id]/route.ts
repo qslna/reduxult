@@ -11,7 +11,7 @@ import {
   setCorsHeaders,
   transformContentItemForAPI
 } from '@/lib/api-response';
-import { ContentStatus } from '@prisma/client';
+import { ContentStatus } from '@/types/prisma-types';
 
 // Content item update schema
 const ContentItemUpdateSchema = z.object({

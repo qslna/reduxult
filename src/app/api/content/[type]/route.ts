@@ -14,7 +14,7 @@ import {
   getSkipValue,
   transformContentItemForAPI
 } from '@/lib/api-response';
-import { ContentStatus } from '@prisma/client';
+import { ContentStatus } from '@/types/prisma-types';
 
 // Content item validation schema
 const ContentItemSchema = z.object({
