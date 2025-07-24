@@ -154,38 +154,22 @@ export async function verifyToken(token: string): Promise<UserSession | null> {
 // Authenticate user with email and password
 export async function authenticateUser(email: string, password: string): Promise<AuthResult | null> {
   try {
-    // Find user by email
-    const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() }
-    });
-    
-    if (!user) {
+    // Mock authentication - in production you would check against database
+    if (email !== 'admin@redux.com' || password !== 'admin123!') {
       return null;
     }
-    
-    // Verify password
-    const isValidPassword = await verifyPassword(password, user.passwordHash);
-    if (!isValidPassword) {
-      return null;
-    }
-    
-    // Update last login
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { lastLoginAt: new Date() }
-    });
     
     // Create user session
     const userSession: Omit<UserSession, 'iat' | 'exp'> = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role
+      id: 'mock-admin-id',
+      email: 'admin@redux.com',
+      name: 'REDUX Admin',
+      role: UserRole.SUPER_ADMIN
     };
     
     // Generate tokens
     const token = await generateToken(userSession);
-    const refreshToken = await generateRefreshToken(user.id);
+    const refreshToken = await generateRefreshToken('mock-admin-id');
     
     return {
       user: { ...userSession, iat: 0, exp: 0 }, // iat and exp will be set by JWT
@@ -317,7 +301,7 @@ export function createAuthMiddleware(requiredPermission?: Permission, requiredRo
   };
 }
 
-// Refresh token
+// Refresh token (mock)
 export async function refreshUserToken(refreshToken: string): Promise<AuthResult | null> {
   try {
     // Verify refresh token
@@ -327,26 +311,17 @@ export async function refreshUserToken(refreshToken: string): Promise<AuthResult
       return null;
     }
     
-    // Get user from database
-    const user = await prisma.user.findUnique({
-      where: { id: payload.userId as string }
-    });
-    
-    if (!user) {
-      return null;
-    }
-    
-    // Create new user session
+    // Create new user session (mock)
     const userSession: Omit<UserSession, 'iat' | 'exp'> = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role
+      id: 'mock-admin-id',
+      email: 'admin@redux.com',
+      name: 'REDUX Admin',
+      role: UserRole.SUPER_ADMIN
     };
     
     // Generate new tokens
     const newToken = await generateToken(userSession);
-    const newRefreshToken = await generateRefreshToken(user.id);
+    const newRefreshToken = await generateRefreshToken('mock-admin-id');
     
     return {
       user: { ...userSession, iat: 0, exp: 0 },
@@ -359,72 +334,38 @@ export async function refreshUserToken(refreshToken: string): Promise<AuthResult
   }
 }
 
-// Create new user (admin only)
+// Create new user (admin only) - mock
 export async function createUser(userData: {
   email: string;
   password: string;
   name: string;
   role: UserRole;
 }) {
-  // Validate password
-  const passwordValidation = validatePassword(userData.password);
-  if (!passwordValidation.valid) {
-    throw new Error(`Password validation failed: ${passwordValidation.errors.join(', ')}`);
-  }
-  
-  // Hash password
-  const passwordHash = await hashPassword(userData.password);
-  
-  // Create user
-  const user = await prisma.user.create({
-    data: {
-      email: userData.email.toLowerCase(),
-      passwordHash,
-      name: userData.name,
-      role: userData.role
-    },
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      role: true,
-      createdAt: true
-    }
-  });
-  
-  return user;
+  // Mock user creation
+  return {
+    id: 'mock-user-id',
+    email: userData.email.toLowerCase(),
+    name: userData.name,
+    role: userData.role,
+    createdAt: new Date()
+  };
 }
 
-// Update user password
+// Update user password - mock
 export async function updateUserPassword(userId: string, newPassword: string) {
-  // Validate password
-  const passwordValidation = validatePassword(newPassword);
-  if (!passwordValidation.valid) {
-    throw new Error(`Password validation failed: ${passwordValidation.errors.join(', ')}`);
-  }
-  
-  // Hash password
-  const passwordHash = await hashPassword(newPassword);
-  
-  // Update user
-  await prisma.user.update({
-    where: { id: userId },
-    data: { passwordHash }
-  });
+  // Mock password update
+  console.log(`Mock: Password updated for user ${userId}`);
 }
 
-// Get user profile
+// Get user profile (mock)
 export async function getUserProfile(userId: string) {
-  return await prisma.user.findUnique({
-    where: { id: userId },
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      role: true,
-      avatarUrl: true,
-      createdAt: true,
-      lastLoginAt: true
-    }
-  });
+  return {
+    id: userId,
+    email: 'admin@redux.com',
+    name: 'REDUX Admin',
+    role: 'SUPER_ADMIN' as const,
+    avatarUrl: null,
+    createdAt: new Date(),
+    lastLoginAt: new Date()
+  };
 }

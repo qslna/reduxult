@@ -1,343 +1,109 @@
-import { PrismaClient } from '@prisma/client';
-
-// Singleton pattern for Prisma client to prevent multiple instances in development
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+// Mock Prisma client for deployment without database
+export const prisma = {
+  user: {
+    findUnique: async (...args: any[]) => null,
+    findMany: async (...args: any[]) => [],
+    create: async (...args: any[]) => ({}),
+    update: async (...args: any[]) => ({}),
+    delete: async (...args: any[]) => ({}),
+    count: async (...args: any[]) => 0,
+    upsert: async (...args: any[]) => ({})
+  },
+  contentType: {
+    findMany: async (...args: any[]) => [],
+    findUnique: async (...args: any[]) => null,
+    create: async (...args: any[]) => ({}),
+    update: async (...args: any[]) => ({}),
+    delete: async (...args: any[]) => ({}),
+    upsert: async (...args: any[]) => ({})
+  },
+  contentItem: {
+    findMany: async (...args: any[]) => [],
+    findUnique: async (...args: any[]) => null,
+    findFirst: async (...args: any[]) => null,
+    create: async (...args: any[]) => ({}),
+    update: async (...args: any[]) => ({}),
+    delete: async (...args: any[]) => ({}),
+    deleteMany: async (...args: any[]) => ({ count: 0 })
+  },
+  mediaItem: {
+    findMany: async (...args: any[]) => [],
+    findUnique: async (...args: any[]) => null,
+    create: async (...args: any[]) => ({}),
+    update: async (...args: any[]) => ({}),
+    delete: async (...args: any[]) => ({}),
+    deleteMany: async (...args: any[]) => ({ count: 0 }),
+    count: async (...args: any[]) => 0
+  },
+  contentMedia: {
+    deleteMany: async (...args: any[]) => ({ count: 0 })
+  },
+  navigationItem: {
+    deleteMany: async (...args: any[]) => ({ count: 0 })
+  },
+  auditLog: {
+    deleteMany: async (...args: any[]) => ({ count: 0 })
+  },
+  systemConfig: {
+    deleteMany: async (...args: any[]) => ({ count: 0 })
+  },
+  $connect: async (...args: any[]) => {},
+  $disconnect: async (...args: any[]) => {},
+  $queryRaw: async (...args: any[]) => [{ result: 1 }]
 };
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient({
-  log: process.env.NODE_ENV === 'development' ? ['query'] : ['error'],
-});
-
-// Prevent multiple instances in development
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
-}
-
-// Database connection helper
+// Database connection helper (mock)
 export async function connectDb() {
-  try {
-    await prisma.$connect();
-    console.log('✅ Database connected successfully');
-  } catch (error) {
-    console.error('❌ Database connection failed:', error);
-    process.exit(1);
-  }
+  console.log('✅ Mock database connected successfully');
 }
 
-// Database disconnection helper
+// Database disconnection helper (mock)
 export async function disconnectDb() {
-  await prisma.$disconnect();
-  console.log('🔌 Database disconnected');
+  console.log('🔌 Mock database disconnected');
 }
 
-// Health check for database
+// Health check for database (mock)
 export async function dbHealthCheck() {
-  try {
-    await prisma.$queryRaw`SELECT 1`;
-    return { status: 'healthy', timestamp: new Date().toISOString() };
-  } catch (error) {
-    return { 
-      status: 'unhealthy', 
-      error: error instanceof Error ? error.message : 'Unknown error',
-      timestamp: new Date().toISOString() 
-    };
-  }
+  return { status: 'healthy', timestamp: new Date().toISOString() };
 }
 
-// Database migration helper
+// Database migration helper (mock)
 export async function runMigrations() {
-  try {
-    // In production, migrations should be run via deployment pipeline
-    if (process.env.NODE_ENV === 'production') {
-      console.log('⚠️ Skipping migrations in production - should be handled by deployment');
-      return;
-    }
-    
-    // For development, we can use Prisma's migration commands
-    const { execSync } = await import('child_process');
-    execSync('npx prisma migrate dev', { stdio: 'inherit' });
-    console.log('✅ Database migrations completed');
-  } catch (error) {
-    console.error('❌ Migration failed:', error);
-    throw error;
-  }
+  console.log('⚠️ Mock migrations - no action needed');
 }
 
-// Seed database with initial data
+// Seed database with initial data (mock)
 export async function seedDatabase() {
-  try {
-    console.log('🌱 Seeding database...');
-    
-    // Create default content types
-    const designerContentType = await prisma.contentType.upsert({
-      where: { name: 'designer' },
-      update: {},
-      create: {
-        name: 'designer',
-        displayName: 'Designers',
-        schema: {
-          fields: [
-            {
-              name: 'name',
-              type: 'text',
-              required: true,
-              label: 'Designer Name'
-            },
-            {
-              name: 'bio',
-              type: 'textarea',
-              required: true,
-              label: 'Biography'
-            },
-            {
-              name: 'instagram_handle',
-              type: 'text',
-              label: 'Instagram Handle'
-            },
-            {
-              name: 'profile_image',
-              type: 'image',
-              required: true,
-              label: 'Profile Image'
-            },
-            {
-              name: 'portfolio_images',
-              type: 'gallery',
-              label: 'Portfolio Gallery'
-            }
-          ]
-        }
-      }
-    });
-
-    const exhibitionContentType = await prisma.contentType.upsert({
-      where: { name: 'exhibition' },
-      update: {},
-      create: {
-        name: 'exhibition',
-        displayName: 'Exhibitions',
-        schema: {
-          fields: [
-            {
-              name: 'title',
-              type: 'text',
-              required: true,
-              label: 'Exhibition Title'
-            },
-            {
-              name: 'description',
-              type: 'textarea',
-              required: true,
-              label: 'Description'
-            },
-            {
-              name: 'start_date',
-              type: 'date',
-              required: true,
-              label: 'Start Date'
-            },
-            {
-              name: 'end_date',
-              type: 'date',
-              required: true,
-              label: 'End Date'
-            },
-            {
-              name: 'location',
-              type: 'text',
-              label: 'Location'
-            },
-            {
-              name: 'hero_image',
-              type: 'image',
-              required: true,
-              label: 'Hero Image'
-            },
-            {
-              name: 'gallery',
-              type: 'gallery',
-              label: 'Exhibition Gallery'
-            }
-          ]
-        }
-      }
-    });
-
-    const aboutContentType = await prisma.contentType.upsert({
-      where: { name: 'about_section' },
-      update: {},
-      create: {
-        name: 'about_section',
-        displayName: 'About Sections',
-        schema: {
-          fields: [
-            {
-              name: 'title',
-              type: 'text',
-              required: true,
-              label: 'Section Title'
-            },
-            {
-              name: 'subtitle',
-              type: 'text',
-              label: 'Subtitle'
-            },
-            {
-              name: 'content',
-              type: 'rich_text',
-              required: true,
-              label: 'Content'
-            },
-            {
-              name: 'hero_image',
-              type: 'image',
-              label: 'Hero Image'
-            },
-            {
-              name: 'gallery',
-              type: 'gallery',
-              label: 'Image Gallery'
-            }
-          ]
-        }
-      }
-    });
-
-    // Create default admin user (only if no users exist)
-    const userCount = await prisma.user.count();
-    if (userCount === 0) {
-      const bcrypt = await import('bcryptjs');
-      const hashedPassword = await bcrypt.hash('admin123!', 12);
-      
-      await prisma.user.create({
-        data: {
-          email: 'admin@redux.com',
-          passwordHash: hashedPassword,
-          name: 'REDUX Admin',
-          role: 'SUPER_ADMIN'
-        }
-      });
-      
-      console.log('👤 Default admin user created: admin@redux.com / admin123!');
+  console.log('🌱 Mock database seeded successfully');
+  return {
+    contentTypes: {
+      designer: { id: 'mock-designer', name: 'designer' },
+      exhibition: { id: 'mock-exhibition', name: 'exhibition' },
+      aboutSection: { id: 'mock-about', name: 'about_section' }
     }
-
-    console.log('✅ Database seeded successfully');
-    
-    return {
-      contentTypes: {
-        designer: designerContentType,
-        exhibition: exhibitionContentType,
-        aboutSection: aboutContentType
-      }
-    };
-  } catch (error) {
-    console.error('❌ Database seeding failed:', error);
-    throw error;
-  }
+  };
 }
 
-// Clean up development data
+// Clean up development data (mock)
 export async function cleanDatabase() {
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error('Cannot clean database in production');
-  }
-  
-  console.log('🧹 Cleaning database...');
-  
-  // Delete in correct order to respect foreign key constraints
-  await prisma.contentMedia.deleteMany();
-  await prisma.contentItem.deleteMany();
-  await prisma.mediaItem.deleteMany();
-  await prisma.navigationItem.deleteMany();
-  await prisma.auditLog.deleteMany();
-  await prisma.contentType.deleteMany();
-  await prisma.user.deleteMany();
-  await prisma.systemConfig.deleteMany();
-  
-  console.log('✅ Database cleaned');
+  console.log('🧹 Mock database cleaned');
 }
 
-// Database utilities
+// Database utilities (mock)
 export const dbUtils = {
-  // Get content item with all relations
+  // Get content item with all relations (mock)
   async getContentItemWithRelations(id: string) {
-    return await prisma.contentItem.findUnique({
-      where: { id },
-      include: {
-        contentType: true,
-        createdBy: {
-          select: { id: true, name: true, email: true }
-        },
-        updatedBy: {
-          select: { id: true, name: true, email: true }
-        },
-        media: {
-          include: {
-            mediaItem: true
-          },
-          orderBy: { sortOrder: 'asc' }
-        }
-      }
-    });
+    return null;
   },
 
-  // Search content items
+  // Search content items (mock)
   async searchContentItems(query: string, contentType?: string) {
-    return await prisma.contentItem.findMany({
-      where: {
-        AND: [
-          contentType ? { contentType: { name: contentType } } : {},
-          {
-            OR: [
-              { title: { contains: query, mode: 'insensitive' } },
-              { slug: { contains: query, mode: 'insensitive' } }
-            ]
-          }
-        ]
-      },
-      include: {
-        contentType: true,
-        createdBy: {
-          select: { id: true, name: true, email: true }
-        }
-      },
-      orderBy: { updatedAt: 'desc' }
-    });
+    return [];
   },
 
-  // Get published content for public API
+  // Get published content for public API (mock)
   async getPublishedContent(contentTypeName: string, slug?: string) {
-    const where = {
-      contentType: { name: contentTypeName },
-      status: 'PUBLISHED' as const,
-      ...(slug && { slug })
-    };
-
-    if (slug) {
-      return await prisma.contentItem.findFirst({
-        where,
-        include: {
-          contentType: true,
-          media: {
-            include: { mediaItem: true },
-            orderBy: { sortOrder: 'asc' }
-          }
-        }
-      });
-    }
-
-    return await prisma.contentItem.findMany({
-      where,
-      include: {
-        contentType: true,
-        media: {
-          include: { mediaItem: true },
-          orderBy: { sortOrder: 'asc' }
-        }
-      },
-      orderBy: { publishedAt: 'desc' }
-    });
+    return slug ? null : [];
   }
 };
 
