@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCMSAuthStore } from '@/store/useCMSAuthStore';
 import { DESIGN_TOKENS, layoutUtils } from '@/lib/design-system';
-import { LogOut, Settings, Database, Image, FileText, Menu } from 'lucide-react';
+import { LogOut, Settings, Database, Image, FileText, Menu, Video } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -58,6 +58,12 @@ export default function CMSLayout({ children, title = 'CMS Dashboard' }: CMSLayo
       label: 'Media',
       href: '/admin/media',
       icon: Image,
+      active: false
+    },
+    {
+      label: 'Videos',
+      href: '/admin/videos',
+      icon: Video,
       active: false
     },
     {

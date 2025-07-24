@@ -233,7 +233,7 @@ export default function Navigation() {
               position: 'relative'
             }}>
               <Link href="/designers" style={{
-                color: 'var(--primary-white)',
+                color: isHomePage ? 'var(--primary-white)' : '#000',
                 textDecoration: 'none',
                 display: 'block',
                 padding: '5px 0',
@@ -365,7 +365,7 @@ export default function Navigation() {
               position: 'relative'
             }}>
               <Link href="/exhibitions" style={{
-                color: 'var(--primary-white)',
+                color: isHomePage ? 'var(--primary-white)' : '#000',
                 textDecoration: 'none',
                 display: 'block',
                 padding: '5px 0',
@@ -433,7 +433,7 @@ export default function Navigation() {
               position: 'relative'
             }}>
               <Link href="/contact" style={{
-                color: 'var(--primary-white)',
+                color: isHomePage ? 'var(--primary-white)' : '#000',
                 textDecoration: 'none',
                 display: 'block',
                 padding: '5px 0',
@@ -452,7 +452,7 @@ export default function Navigation() {
               position: 'relative'
             }}>
               <Link href="/admin" style={{
-                color: 'var(--primary-white)',
+                color: isHomePage ? 'var(--primary-white)' : '#000',
                 textDecoration: 'none',
                 display: 'block',
                 padding: '5px 0',

@@ -314,6 +314,13 @@ class CMSClient {
     });
   }
 
+  async updateMediaItem(id: string, data: Partial<Pick<MediaItem, 'altText' | 'caption' | 'tags'>>) {
+    return this.request<MediaItem>(`/media/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
   async deleteMediaItem(id: string) {
     return this.request<{ success: boolean }>(`/media/${id}`, {
       method: 'DELETE',
