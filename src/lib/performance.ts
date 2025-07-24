@@ -351,7 +351,7 @@ export const splitPoints = {
 };
 
 // 웹 워커 유틸리티
-export const createWebWorker = (workerFunction: Function): Worker => {
+export const createWebWorker = (workerFunction: () => void): Worker => {
   const blob = new Blob([`(${workerFunction.toString()})()`], { type: 'application/javascript' });
   return new Worker(URL.createObjectURL(blob));
 };

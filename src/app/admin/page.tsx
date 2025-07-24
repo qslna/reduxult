@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import CMSLayout from '@/components/cms/CMSLayout';
 import { cmsClient } from '@/lib/cms-client';
 import { layoutUtils } from '@/lib/design-system';
@@ -162,20 +163,20 @@ export default function AdminDashboardPage() {
           <div className="bg-gray-800 rounded-lg p-6">
             <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
             <div className="space-y-3">
-              <a
+              <Link
                 href="/admin/content/designer/new"
                 className="flex items-center gap-3 p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
               >
                 <User className="w-5 h-5 text-blue-400" />
                 <span className="text-white">Add New Designer</span>
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/admin/content/exhibition/new"
                 className="flex items-center gap-3 p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
               >
                 <FileText className="w-5 h-5 text-green-400" />
                 <span className="text-white">Create Exhibition</span>
-              </a>
+              </Link>
               <a
                 href="/admin/media"
                 className="flex items-center gap-3 p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
