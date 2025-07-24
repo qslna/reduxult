@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { Metadata } from 'next';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 about.html과 완전 동일한 About 페이지 구현
 export default function AboutPage() {
@@ -92,19 +93,29 @@ export default function AboutPage() {
            className="grid-item col-span-7 row-span-2 relative overflow-visible bg-[--gray-light] transition-all duration-500 ease-in-out cursor-pointer [perspective:1000px] max-[1024px]:col-span-3 max-[1024px]:row-span-2 max-[768px]:col-span-1 max-[768px]:row-span-1">
           <div className="grid-stack relative w-full h-full [transform-style:preserve-3d] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:[transform:rotateY(12deg)_rotateX(3deg)]">
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(0px)_rotate(-1deg)] z-[3]">
-              <img src="/images/designers/choieunsol/cinemode/IMG_8617.jpeg" 
-                   alt="Fashion Film - Choi Eunsol" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/designers/choieunsol/cinemode/IMG_8617.jpeg" 
+                alt="Fashion Film - Choi Eunsol" 
+                fill={true}
+                priority={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(-12px)_rotate(2deg)] z-[2] opacity-85">
-              <img src="/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg" 
-                   alt="Fashion Film - Hwang Jinsu" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg" 
+                alt="Fashion Film - Hwang Jinsu" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(-24px)_rotate(-0.5deg)] z-[1] opacity-70">
-              <img src="/images/designers/kimbomin/cinemode/NOR_7419-11.jpg" 
-                   alt="Fashion Film - Kim Bomin" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/designers/kimbomin/cinemode/NOR_7419-11.jpg" 
+                alt="Fashion Film - Kim Bomin" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
           </div>
           <div className="grid-item-overlay absolute -bottom-20 left-0 right-0 p-[25px_30px] bg-[linear-gradient(135deg,rgba(0,0,0,0.95),rgba(0,0,0,0.85))] text-white transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] z-10 rounded-[0_0_12px_12px] [backdrop-filter:blur(10px)]">
@@ -122,19 +133,28 @@ export default function AboutPage() {
            className="grid-item col-span-5 row-span-3 relative overflow-visible bg-[--gray-light] transition-all duration-500 ease-in-out cursor-pointer [perspective:1000px] max-[1024px]:col-span-3 max-[1024px]:row-span-2 max-[768px]:col-span-1 max-[768px]:row-span-1">
           <div className="grid-stack relative w-full h-full [transform-style:preserve-3d] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:[transform:rotateY(12deg)_rotateX(3deg)]">
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(0px)_rotate(-1deg)] z-[3]">
-              <img src="/images/about-memory.jpg" 
-                   alt="Memory" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/about-memory.jpg" 
+                alt="Memory" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(-12px)_rotate(2deg)] z-[2] opacity-85">
-              <img src="/images/about-memory.jpg" 
-                   alt="Memory" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/about-memory.jpg" 
+                alt="Memory" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(-24px)_rotate(-0.5deg)] z-[1] opacity-70">
-              <img src="/images/about-memory.jpg" 
-                   alt="Memory" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/about-memory.jpg" 
+                alt="Memory" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
           </div>
           <div className="grid-item-overlay absolute -bottom-20 left-0 right-0 p-[25px_30px] bg-[linear-gradient(135deg,rgba(0,0,0,0.95),rgba(0,0,0,0.85))] text-white transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] z-10 rounded-[0_0_12px_12px] [backdrop-filter:blur(10px)]">
@@ -152,19 +172,28 @@ export default function AboutPage() {
            className="grid-item col-span-4 row-span-2 relative overflow-visible bg-[--gray-light] transition-all duration-500 ease-in-out cursor-pointer [perspective:1000px] max-[1024px]:col-span-3 max-[1024px]:row-span-2 max-[768px]:col-span-1 max-[768px]:row-span-1">
           <div className="grid-stack relative w-full h-full [transform-style:preserve-3d] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:[transform:rotateY(12deg)_rotateX(3deg)]">
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(0px)_rotate(-1deg)] z-[3]">
-              <img src="/images/visual-art/METAMORPHOSIS.jpg" 
-                   alt="Visual Art" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/visual-art/METAMORPHOSIS.jpg" 
+                alt="Visual Art" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(-12px)_rotate(2deg)] z-[2] opacity-85">
-              <img src="/images/visual-art/SHADOW PLAY.jpg" 
-                   alt="Visual Art" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/visual-art/SHADOW PLAY.jpg" 
+                alt="Visual Art" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(-24px)_rotate(-0.5deg)] z-[1] opacity-70">
-              <img src="/images/visual-art/DIGITAL DREAMS.jpg" 
-                   alt="Visual Art" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/visual-art/DIGITAL DREAMS.jpg" 
+                alt="Visual Art" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
           </div>
           <div className="grid-item-overlay absolute -bottom-20 left-0 right-0 p-[25px_30px] bg-[linear-gradient(135deg,rgba(0,0,0,0.95),rgba(0,0,0,0.85))] text-white transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] z-10 rounded-[0_0_12px_12px] [backdrop-filter:blur(10px)]">
@@ -182,19 +211,28 @@ export default function AboutPage() {
            className="grid-item col-span-4 row-span-2 relative overflow-visible bg-[--gray-light] transition-all duration-500 ease-in-out cursor-pointer [perspective:1000px] max-[1024px]:col-span-3 max-[1024px]:row-span-2 max-[768px]:col-span-1 max-[768px]:row-span-1">
           <div className="grid-stack relative w-full h-full [transform-style:preserve-3d] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:[transform:rotateY(12deg)_rotateX(3deg)]">
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(0px)_rotate(-1deg)] z-[3]">
-              <img src="/images/process/창작자.png" 
-                   alt="Process" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/process/창작자.png" 
+                alt="Process" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(-12px)_rotate(2deg)] z-[2] opacity-85">
-              <img src="/images/process/큐레이터.png" 
-                   alt="Process" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/process/큐레이터.png" 
+                alt="Process" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(-24px)_rotate(-0.5deg)] z-[1] opacity-70">
-              <img src="/images/process/진행자.png" 
-                   alt="Process" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/process/진행자.png" 
+                alt="Process" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
           </div>
           <div className="grid-item-overlay absolute -bottom-20 left-0 right-0 p-[25px_30px] bg-[linear-gradient(135deg,rgba(0,0,0,0.95),rgba(0,0,0,0.85))] text-white transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] z-10 rounded-[0_0_12px_12px] [backdrop-filter:blur(10px)]">
@@ -212,19 +250,28 @@ export default function AboutPage() {
            className="grid-item col-span-4 row-span-2 relative overflow-visible bg-[--gray-light] transition-all duration-500 ease-in-out cursor-pointer [perspective:1000px] max-[1024px]:col-span-3 max-[1024px]:row-span-2 max-[768px]:col-span-1 max-[768px]:row-span-1">
           <div className="grid-stack relative w-full h-full [transform-style:preserve-3d] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:[transform:rotateY(12deg)_rotateX(3deg)]">
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(0px)_rotate(-1deg)] z-[3]">
-              <img src="/images/about-collective.jpg" 
-                   alt="Collective" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/about-collective.jpg" 
+                alt="Collective" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(-12px)_rotate(2deg)] z-[2] opacity-85">
-              <img src="/images/about-collective.jpg" 
-                   alt="Collective" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/about-collective.jpg" 
+                alt="Collective" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
             <div className="stack-layer absolute w-full h-full rounded-[12px] border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] overflow-hidden [transform:translateZ(-24px)_rotate(-0.5deg)] z-[1] opacity-70">
-              <img src="/images/about-collective.jpg" 
-                   alt="Collective" 
-                   className="w-full h-full object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
+              <OptimizedImage 
+                src="/images/about-collective.jpg" 
+                alt="Collective" 
+                fill={true}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(50%)_brightness(0.9)] transition-all duration-[800ms] ease-in-out" />
             </div>
           </div>
           <div className="grid-item-overlay absolute -bottom-20 left-0 right-0 p-[25px_30px] bg-[linear-gradient(135deg,rgba(0,0,0,0.95),rgba(0,0,0,0.85))] text-white transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] z-10 rounded-[0_0_12px_12px] [backdrop-filter:blur(10px)]">

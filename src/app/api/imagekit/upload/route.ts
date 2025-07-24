@@ -9,26 +9,35 @@ const imagekit = new ImageKit({
 
 export async function POST(request: NextRequest) {
   try {
-    const { file, fileName, folder } = await request.json();
+    const formData = await request.formData();
+    const file = formData.get('file') as File;
+    const fileName = formData.get('fileName') as string;
+    const folder = formData.get('folder') as string || '/redux-uploads';
+    const tags = formData.get('tags') as string;
 
-    if (!file || !fileName) {
+    if (!file) {
       return NextResponse.json(
-        { error: 'File and fileName are required' },
+        { error: 'No file provided' },
         { status: 400 }
       );
     }
 
-    const response = await imagekit.upload({
-      file,
-      fileName,
-      folder: folder || '/redux',
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const uploadResponse = await imagekit.upload({
+      file: buffer,
+      fileName: fileName || file.name,
+      folder,
+      tags: tags ? tags.split(',') : undefined,
+      useUniqueFileName: true
     });
 
-    return NextResponse.json(response);
+    return NextResponse.json(uploadResponse);
   } catch (error) {
     console.error('ImageKit upload error:', error);
     return NextResponse.json(
-      { error: 'Failed to upload image' },
+      { error: 'Upload failed' },
       { status: 500 }
     );
   }

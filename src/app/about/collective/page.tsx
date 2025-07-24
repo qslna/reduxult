@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 about-collective.html과 완전 동일한 Collective 페이지 구현
 export default function CollectivePage() {
@@ -111,7 +112,7 @@ export default function CollectivePage() {
           loop 
           playsInline
         >
-          <source src="/video/collective-bg.mp4" type="video/mp4" />
+          <source src="/VIDEO/main.mp4.mp4" type="video/mp4" />
         </video>
         <div className="hero-content text-center z-[1] text-white">
           <h1 
@@ -165,10 +166,13 @@ export default function CollectivePage() {
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 01
               </div>
-              <img 
+              <OptimizedImage 
                 src="/images/designer-placeholder.jpg" 
                 alt="Kim Bomin" 
-                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                fill={true}
+                priority={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
@@ -188,10 +192,12 @@ export default function CollectivePage() {
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 02
               </div>
-              <img 
+              <OptimizedImage 
                 src="/images/designer-placeholder.jpg" 
                 alt="Park Parang" 
-                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                fill={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
@@ -211,10 +217,12 @@ export default function CollectivePage() {
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 03
               </div>
-              <img 
+              <OptimizedImage 
                 src="/images/designers/leetaehyeon/leetaehyeon-Profile.jpg" 
                 alt="Lee Taehyeon" 
-                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                fill={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
@@ -234,10 +242,12 @@ export default function CollectivePage() {
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 04
               </div>
-              <img 
+              <OptimizedImage 
                 src="/images/designers/choieunsol/choieunsol-Profile.jpeg" 
                 alt="Choi Eunsol" 
-                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                fill={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
@@ -257,10 +267,12 @@ export default function CollectivePage() {
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 05
               </div>
-              <img 
+              <OptimizedImage 
                 src="/images/designer-placeholder.jpg" 
                 alt="Hwang Jinsu" 
-                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                fill={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
@@ -280,10 +292,12 @@ export default function CollectivePage() {
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 06
               </div>
-              <img 
+              <OptimizedImage 
                 src="/images/designer-placeholder.jpg" 
                 alt="Kim Gyeongsu" 
-                className="w-full h-full object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                fill={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
@@ -375,54 +389,6 @@ export default function CollectivePage() {
         </a>
       </section>
 
-      {/* CSS for animations matching HTML version */}
-      <style jsx>{`
-        @keyframes heroFade {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes revealMember {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .member-card.revealed {
-          animation: revealMember 0.8s ease forwards;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-          .hero-title {
-            font-size: clamp(50px, 10vw, 100px) !important;
-            letter-spacing: 0.2em !important;
-          }
-          
-          .philosophy-section {
-            padding: 100px 20px;
-          }
-          
-          .philosophy-text {
-            font-size: 18px;
-          }
-          
-          .members-section {
-            padding: 80px 20px;
-          }
-          
-          .values-section {
-            padding: 80px 20px;
-          }
-          
-          .cta-section {
-            padding: 100px 20px;
-          }
-        }
-      `}</style>
     </>
   );
 }

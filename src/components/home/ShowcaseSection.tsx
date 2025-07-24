@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 index.html의 showcase-preview 섹션과 완전 동일한 구현
 export default function ShowcaseSection() {
@@ -62,11 +63,13 @@ export default function ShowcaseSection() {
             style={{ '--index': 0 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <img 
+            <OptimizedImage 
               src="/images/designer-placeholder.jpg" 
               alt="Kim Bomin" 
-              className="w-full h-full object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-              data-optimize="high" 
+              fill={true}
+              priority={true}
+              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
@@ -86,11 +89,13 @@ export default function ShowcaseSection() {
             style={{ '--index': 1 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <img 
+            <OptimizedImage 
               src="/images/designer-placeholder.jpg" 
               alt="Park Parang" 
-              className="w-full h-full object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-              data-optimize="high" 
+              fill={true}
+              priority={true}
+              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
@@ -110,11 +115,13 @@ export default function ShowcaseSection() {
             style={{ '--index': 2 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <img 
+            <OptimizedImage 
               src="/images/designers/leetaehyeon/leetaehyeon-Profile.jpg" 
               alt="Lee Taehyeon" 
-              className="w-full h-full object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-              data-optimize="high" 
+              fill={true}
+              priority={true}
+              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
@@ -134,11 +141,13 @@ export default function ShowcaseSection() {
             style={{ '--index': 3 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <img 
+            <OptimizedImage 
               src="/images/designers/choieunsol/choieunsol-Profile.jpeg" 
               alt="Choi Eunsol" 
-              className="w-full h-full object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-              data-optimize="high" 
+              fill={true}
+              priority={true}
+              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
@@ -158,11 +167,13 @@ export default function ShowcaseSection() {
             style={{ '--index': 4 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <img 
+            <OptimizedImage 
               src="/images/designer-placeholder.jpg" 
               alt="Hwang Jinsu" 
-              className="w-full h-full object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-              data-optimize="high" 
+              fill={true}
+              priority={true}
+              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
@@ -182,11 +193,13 @@ export default function ShowcaseSection() {
             style={{ '--index': 5 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <img 
+            <OptimizedImage 
               src="/images/designer-placeholder.jpg" 
               alt="Kim Gyeongsu" 
-              className="w-full h-full object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-              data-optimize="high" 
+              fill={true}
+              priority={true}
+              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
@@ -206,11 +219,13 @@ export default function ShowcaseSection() {
             style={{ '--index': 6 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <img 
+            <OptimizedImage 
               src="/images/exhibition-placeholder.jpg" 
               alt="CINE MODE" 
-              className="w-full h-full object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-              data-optimize="high" 
+              fill={true}
+              priority={true}
+              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div 
@@ -246,11 +261,13 @@ export default function ShowcaseSection() {
             style={{ '--index': 7 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <img 
+            <OptimizedImage 
               src="/images/exhibition-placeholder.jpg" 
               alt="THE ROOM" 
-              className="w-full h-full object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-              data-optimize="high" 
+              fill={true}
+              priority={true}
+              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { notFound } from 'next/navigation';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // 디자이너 데이터 - designers.html과 일관된 구조
 const designersData = {
@@ -274,10 +275,13 @@ export default function DesignerPage({ params }: Props) {
       {/* Hero Section */}
       <section className="hero-section h-screen relative overflow-hidden bg-black">
         <div className="hero-background absolute inset-0">
-          <img 
+          <OptimizedImage 
             src={designer.profileImage}
             alt={designer.name}
-            className="w-full h-full object-cover [filter:grayscale(100%)_brightness(0.3)]"
+            fill={true}
+            priority={true}
+            sizes="100vw"
+            className="object-cover [filter:grayscale(100%)_brightness(0.3)]"
           />
           <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(0,0,0,0.8)_0%,rgba(0,0,0,0.4)_50%,rgba(0,0,0,0.8)_100%)]"></div>
         </div>
@@ -346,10 +350,13 @@ export default function DesignerPage({ params }: Props) {
                 onClick={() => openLightbox(index)}
               >
                 <div className="aspect-[4/3] bg-gray-800 overflow-hidden">
-                  <img 
+                  <OptimizedImage 
                     src={image}
                     alt={`${designer.name} Portfolio ${index + 1}`}
-                    className="w-full h-full object-cover [filter:grayscale(70%)_brightness(0.8)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] hover:[filter:grayscale(0%)_brightness(1)_contrast(1.1)] hover:transform hover:scale-110"
+                    fill={true}
+                    priority={index < 3}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover [filter:grayscale(70%)_brightness(0.8)] transition-all duration-[800ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] hover:[filter:grayscale(0%)_brightness(1)_contrast(1.1)] hover:transform hover:scale-110"
                   />
                 </div>
                 
@@ -417,10 +424,14 @@ export default function DesignerPage({ params }: Props) {
               ‹
             </button>
             
-            <img 
-              className="lightbox-image max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+            <OptimizedImage 
               src={designer.portfolioImages[currentImageIndex]}
               alt={`${designer.name} Portfolio ${currentImageIndex + 1}`}
+              width={1200}
+              height={800}
+              priority={true}
+              sizes="90vw"
+              className="lightbox-image max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
             />
             
             <button 

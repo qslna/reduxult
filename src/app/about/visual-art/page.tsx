@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 about-visual-art.html과 완전 동일한 Visual Art 페이지 구현
 export default function VisualArtPage() {
@@ -122,10 +123,13 @@ export default function VisualArtPage() {
           
           {/* Visual Item 1: METAMORPHOSIS */}
           <div className="visual-item col-span-8 [aspect-ratio:16/9] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <img 
+            <OptimizedImage 
               src="/images/visual-art/METAMORPHOSIS.jpg" 
               alt="Visual Art 1" 
-              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+              fill={true}
+              priority={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 67vw"
+              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
             />
             <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
               <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
@@ -139,10 +143,12 @@ export default function VisualArtPage() {
 
           {/* Visual Item 2: SHADOW PLAY */}
           <div className="visual-item col-span-4 [aspect-ratio:3/4] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <img 
+            <OptimizedImage 
               src="/images/visual-art/SHADOW PLAY.jpg" 
               alt="Visual Art 2" 
-              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+              fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
             />
             <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
               <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
@@ -156,10 +162,12 @@ export default function VisualArtPage() {
 
           {/* Visual Item 3: TEXTURE STUDY */}
           <div className="visual-item col-span-4 [aspect-ratio:1] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <img 
+            <OptimizedImage 
               src="/images/visual-art/TEXTURE STUDY.jpg" 
               alt="Visual Art 3" 
-              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+              fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
             />
             <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
               <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
@@ -173,10 +181,12 @@ export default function VisualArtPage() {
 
           {/* Visual Item 4: COLOR THEORY */}
           <div className="visual-item col-span-4 [aspect-ratio:1] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <img 
+            <OptimizedImage 
               src="/images/visual-art/COLOR THEORY.jpg" 
               alt="Visual Art 4" 
-              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+              fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
             />
             <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
               <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
@@ -190,10 +200,12 @@ export default function VisualArtPage() {
 
           {/* Visual Item 5: FORM & VOID */}
           <div className="visual-item col-span-4 [aspect-ratio:3/4] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <img 
+            <OptimizedImage 
               src="/images/visual-art/FORM & VOID.jpg" 
               alt="Visual Art 5" 
-              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+              fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
             />
             <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
               <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
@@ -207,10 +219,12 @@ export default function VisualArtPage() {
 
           {/* Visual Item 6: DIGITAL DREAMS */}
           <div className="visual-item col-span-6 [aspect-ratio:4/3] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <img 
+            <OptimizedImage 
               src="/images/visual-art/DIGITAL DREAMS.jpg" 
               alt="Visual Art 6"
-              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+              fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
+              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
             />
             <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
               <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
@@ -224,10 +238,12 @@ export default function VisualArtPage() {
 
           {/* Visual Item 7: ANALOG MEMORIES */}
           <div className="visual-item col-span-6 [aspect-ratio:4/3] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <img 
+            <OptimizedImage 
               src="/images/visual-art/ANALOG MEMORIES.jpg" 
               alt="Visual Art 7"
-              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+              fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
+              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
             />
             <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
               <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
@@ -241,10 +257,12 @@ export default function VisualArtPage() {
 
           {/* Visual Item 8: COLLECTIVE VISION */}
           <div className="visual-item col-span-12 [aspect-ratio:21/9] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <img 
+            <OptimizedImage 
               src="/images/visual-art/COLLECTIVE VISION.jpg" 
               alt="Visual Art 8"
-              className="w-full h-full object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+              fill={true}
+              sizes="100vw"
+              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
             />
             <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
               <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">

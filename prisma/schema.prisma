@@ -1,0 +1,171 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // For development, you can use SQLite:
+  // provider = "sqlite"
+  // url      = "file:./dev.db"
+}
+
+// User roles enumeration
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+// Content status enumeration
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// Users table for authentication and authorization
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String    @map("password_hash")
+  name          String
+  role          UserRole  @default(VIEWER)
+  avatarUrl     String?   @map("avatar_url")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  lastLoginAt   DateTime? @map("last_login_at")
+
+  // Relations
+  createdContentItems ContentItem[] @relation("CreatedBy")
+  updatedContentItems ContentItem[] @relation("UpdatedBy")
+  uploadedMedia       MediaItem[]   @relation("UploadedBy")
+
+  @@map("users")
+}
+
+// Content types define the structure of different content
+model ContentType {
+  id          String   @id @default(cuid())
+  name        String   @unique // 'designer', 'exhibition', 'about_section'
+  displayName String   @map("display_name")
+  schema      Json     // Field definitions
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  contentItems ContentItem[]
+
+  @@map("content_types")
+}
+
+// Individual content items
+model ContentItem {
+  id            String        @id @default(cuid())
+  contentTypeId String        @map("content_type_id")
+  slug          String
+  title         String
+  data          Json          // Flexible content data
+  meta          Json?         // SEO meta tags, description, etc.
+  status        ContentStatus @default(DRAFT)
+  publishedAt   DateTime?     @map("published_at")
+  createdById   String        @map("created_by")
+  updatedById   String        @map("updated_by")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  contentType ContentType    @relation(fields: [contentTypeId], references: [id], onDelete: Cascade)
+  createdBy   User           @relation("CreatedBy", fields: [createdById], references: [id])
+  updatedBy   User           @relation("UpdatedBy", fields: [updatedById], references: [id])
+  media       ContentMedia[]
+
+  @@unique([contentTypeId, slug])
+  @@map("content_items")
+}
+
+// Media items for images, videos, documents
+model MediaItem {
+  id               String   @id @default(cuid())
+  filename         String
+  originalFilename String   @map("original_filename")
+  mimeType         String   @map("mime_type")
+  fileSize         Int      @map("file_size")
+  imagekitFileId   String?  @map("imagekit_file_id")
+  imagekitUrl      String   @map("imagekit_url")
+  thumbnailUrl     String?  @map("thumbnail_url")
+  altText          String?  @map("alt_text")
+  caption          String?
+  tags             String[]
+  metadata         Json?    // EXIF data, dimensions, etc.
+  uploadedById     String   @map("uploaded_by")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  // Relations
+  uploadedBy User           @relation("UploadedBy", fields: [uploadedById], references: [id])
+  content    ContentMedia[]
+
+  @@map("media_items")
+}
+
+// Many-to-many relationship between content and media
+model ContentMedia {
+  contentItemId String @map("content_item_id")
+  mediaItemId   String @map("media_item_id")
+  fieldName     String @map("field_name") // 'hero_image', 'gallery', etc.
+  sortOrder     Int    @default(0) @map("sort_order")
+
+  // Relations
+  contentItem ContentItem @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+  mediaItem   MediaItem   @relation(fields: [mediaItemId], references: [id], onDelete: Cascade)
+
+  @@id([contentItemId, mediaItemId, fieldName])
+  @@map("content_media")
+}
+
+// Navigation structure
+model NavigationItem {
+  id            String  @id @default(cuid())
+  parentId      String? @map("parent_id")
+  label         String
+  href          String?
+  contentItemId String? @map("content_item_id")
+  sortOrder     Int     @default(0) @map("sort_order")
+  isActive      Boolean @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relations
+  parent   NavigationItem?  @relation("NavigationHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children NavigationItem[] @relation("NavigationHierarchy")
+
+  @@map("navigation_items")
+}
+
+// API keys and configuration
+model SystemConfig {
+  id    String @id @default(cuid())
+  key   String @unique
+  value Json
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("system_config")
+}
+
+// Audit log for tracking changes
+model AuditLog {
+  id       String   @id @default(cuid())
+  userId   String   @map("user_id")
+  action   String   // 'create', 'update', 'delete', 'publish', etc.
+  resource String   // 'content_item', 'media_item', etc.
+  resourceId String @map("resource_id")
+  oldData  Json?    @map("old_data")
+  newData  Json?    @map("new_data")
+  ipAddress String? @map("ip_address")
+  userAgent String? @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("audit_logs")
+}

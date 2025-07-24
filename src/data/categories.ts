@@ -15,7 +15,7 @@ export const aboutCategories: Category[] = [
     titleKo: '패션 필름',
     description: 'Exploring the intersection of fashion and cinema through experimental filmmaking.',
     coverImage: '/images/about/process/영상 & 편집.png',
-    videoUrl: '/video/main.mp4.mp4',
+    videoUrl: '/VIDEO/main.mp4.mp4',
     images: []
   },
   {

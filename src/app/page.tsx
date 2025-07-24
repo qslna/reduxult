@@ -3,55 +3,83 @@
 import { useState, useEffect } from 'react';
 import HeroSection from '@/components/home/HeroSection';
 import ShowcaseSection from '@/components/home/ShowcaseSection';
+import { useResponsive, useReducedMotion } from '@/hooks/useResponsive';
+import { RESPONSIVE_CLASSES } from '@/lib/responsive-design';
 
 // HTML redux6 index.html과 완전 동일한 홈페이지 구현
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
+  
+  // 반응형 상태 및 접근성 설정
+  const { isMobile, isTablet, isDesktop } = useResponsive();
+  const prefersReducedMotion = useReducedMotion();
 
-  // 페이지 로드 시 로딩 화면 처리 (HTML 버전과 동일)
+  // 페이지 로드 시 로딩 화면 처리 (반응형 및 접근성 고려)
   useEffect(() => {
-    // 2초 후 로딩 완료 (HTML 버전과 동일한 타이밍)
+    // 모션 축소 모드에서는 로딩 시간 단축
+    const loadingDuration = prefersReducedMotion ? 500 : 2000;
+    const transitionDuration = prefersReducedMotion ? 100 : 300;
+    
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
-      // 로딩 화면 fade out 후 컨텐츠 표시
       setTimeout(() => {
         setShowContent(true);
-        // HTML 버전과 동일하게 애니메이션 초기화
+        // 디바이스별 최적화된 애니메이션 초기화
         initAnimations();
-      }, 300);
-    }, 2000);
+      }, transitionDuration);
+    }, loadingDuration);
 
     return () => clearTimeout(loadingTimer);
-  }, []);
+  }, [prefersReducedMotion]);
 
-  // HTML 버전과 동일한 애니메이션 초기화
+  // 반응형 및 접근성을 고려한 애니메이션 초기화
   const initAnimations = () => {
-    // Mobile detection (HTML 버전과 동일)
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // 모션 축소 모드에서는 애니메이션 비활성화
+    if (prefersReducedMotion) {
+      console.log('애니메이션이 접근성 설정에 의해 비활성화됨');
+      return;
+    }
     
-    if (!isMobile) {
-      // Desktop animations - HTML 버전과 동일한 GSAP 애니메이션
-      // 이 부분은 HeroSection과 ShowcaseSection 컴포넌트에서 처리
-      console.log('Desktop animations initialized');
+    // 데스크탑에서만 고급 애니메이션 활성화
+    if (isDesktop) {
+      console.log('데스크탑 애니메이션 초기화됨');
+      // GSAP 애니메이션은 각 컴포넌트에서 처리
+    } else if (isTablet) {
+      console.log('태블릿 최적화 애니메이션 초기화됨');
+    } else {
+      console.log('모바일 최적화 애니메이션 초기화됨');
     }
   };
 
   return (
     <>
-      {/* 로딩 스크린 - HTML 버전과 동일한 구조 */}
+      {/* 반응형 로딩 스크린 */}
       {isLoading && (
         <div 
           id="loadingScreen" 
           className={`loading-screen ${!isLoading ? 'hide' : ''}`}
+          role="status"
+          aria-label="페이지 로딩 중"
         >
           <div className="loading-content text-center">
-            <h1 className="loading-title font-['Playfair_Display'] text-6xl font-bold tracking-wider text-black mb-4">
+            <h1 className={`
+              loading-title font-['Playfair_Display'] font-bold tracking-wider text-black mb-4
+              ${isMobile ? 'text-4xl' : isTablet ? 'text-5xl' : 'text-6xl'}
+            `}>
               REDUX
             </h1>
-            <div className="loading-subtitle font-['Inter'] text-sm tracking-[3px] uppercase text-gray-500">
+            <div className={`
+              loading-subtitle font-['Inter'] uppercase text-gray-500
+              ${isMobile ? 'text-xs tracking-[2px]' : 'text-sm tracking-[3px]'}
+            `}>
               LOADING...
             </div>
+            {!prefersReducedMotion && (
+              <div className="loading-spinner mt-4" aria-hidden="true">
+                <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin mx-auto" />
+              </div>
+            )}
           </div>
         </div>
       )}

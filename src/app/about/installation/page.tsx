@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 about-installation.html과 완전 동일한 Process 페이지 구현
 export default function InstallationPage() {
@@ -210,10 +211,13 @@ export default function InstallationPage() {
               <div className={`installation-visual relative overflow-hidden bg-[--gray-dark] ${
                 index % 2 === 1 ? '[direction:ltr]' : ''
               }`}>
-                <img 
+                <OptimizedImage 
                   src={installation.image}
                   alt={installation.title}
-                  className="w-full h-full object-cover transition-transform duration-[1.5s] ease-in-out hover:transform hover:scale-110"
+                  fill={true}
+                  priority={index < 2}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-[1.5s] ease-in-out hover:transform hover:scale-110"
                 />
               </div>
               <div className={`installation-info flex flex-col justify-center py-20 px-20 bg-transparent ${
@@ -255,10 +259,13 @@ export default function InstallationPage() {
               key={index}
               className="gallery-slide min-w-full h-full relative bg-[--gray-dark]"
             >
-              <img 
+              <OptimizedImage 
                 src={slide.image}
                 alt={slide.title}
-                className="w-full h-full object-cover"
+                fill={true}
+                priority={index === 0}
+                sizes="100vw"
+                className="object-cover"
               />
               <div className="gallery-overlay absolute bottom-[60px] left-[60px] text-white max-[768px]:left-5 max-[768px]:bottom-10">
                 <h3 className="gallery-title text-4xl font-light tracking-[2px] mb-[10px]">

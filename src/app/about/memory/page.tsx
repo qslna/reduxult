@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 about-memory.html과 완전 동일한 Memory 페이지 구현
 export default function MemoryPage() {
@@ -172,9 +173,13 @@ export default function MemoryPage() {
               } as React.CSSProperties}
               onClick={() => openLightbox(index)}
             >
-              <img 
+              <OptimizedImage 
                 src={image}
                 alt={`Memory ${index + 1}`}
+                width={400}
+                height={600}
+                priority={index < 6}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 className="w-full h-auto block transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] [filter:brightness(0.9)_contrast(1.1)] hover:[filter:brightness(1)_contrast(1.2)_saturate(1.1)] hover:transform hover:scale-105"
               />
               <div className="gallery-overlay absolute top-0 left-0 right-0 bottom-0 bg-[linear-gradient(45deg,rgba(0,0,0,0.7)_0%,transparent_30%,transparent_70%,rgba(183,175,163,0.3)_100%)] opacity-0 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] flex items-end p-5 hover:opacity-100">
@@ -208,10 +213,14 @@ export default function MemoryPage() {
               ‹
             </button>
             
-            <img 
-              className="lightbox-image max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+            <OptimizedImage 
               src={galleryImages[currentImageIndex]}
               alt={`Memory ${currentImageIndex + 1}`}
+              width={1200}
+              height={800}
+              priority={true}
+              sizes="90vw"
+              className="lightbox-image max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
             />
             
             <button 
