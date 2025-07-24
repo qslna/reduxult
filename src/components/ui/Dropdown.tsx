@@ -134,32 +134,56 @@ export function MobileAccordion({
   const triggerClass = layoutUtils.combineClasses(
     'mobile-menu-item',
     'text-[clamp(20px,5vw,24px)] text-white tracking-[2px]',
-    'cursor-pointer transition-opacity duration-300 ease-in-out',
-    'text-center py-[10px] px-5 w-full max-w-[300px]'
+    'cursor-pointer transition-all duration-300 ease-in-out',
+    'text-center py-[15px] px-5 w-full max-w-[300px]',
+    'min-h-[44px] flex items-center justify-center', // Ensure 44px touch target
+    'rounded-md hover:bg-white/10 focus:bg-white/10',
+    'active:scale-95 active:bg-white/20' // Touch feedback
   );
 
   const submenuClass = layoutUtils.combineClasses(
     'mobile-submenu',
-    'flex-col gap-[15px] mt-5 pl-5 w-full',
-    isOpen ? 'active flex' : 'hidden'
+    'flex-col gap-[10px] mt-3 w-full',
+    'transition-all duration-300 ease-in-out',
+    isOpen ? 'active flex opacity-100 max-h-[500px]' : 'hidden opacity-0 max-h-0'
   );
 
   return (
     <div 
-      className={triggerClass}
+      className="w-full"
       style={{ 
         '--i': index + 1, 
         animationDelay: `calc(var(--i) * 0.1s)` 
       } as React.CSSProperties}
     >
-      <span onClick={onToggle}>{label}</span>
+      <button 
+        className={triggerClass}
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        aria-label={`${label} menu`}
+        type="button"
+      >
+        {label}
+        <span 
+          className={`ml-2 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        >
+          ▼
+        </span>
+      </button>
       <div className={submenuClass}>
         {items.map((item, itemIndex) => (
           <NavLink
             key={itemIndex}
             href={item.href}
             variant="mobile"
-            className="mobile-submenu-item text-base opacity-70 py-2 px-4 text-left hover:opacity-100"
+            className="mobile-submenu-item text-base text-white/70 
+                     py-3 px-6 text-center 
+                     min-h-[44px] flex items-center justify-center
+                     rounded-md transition-all duration-300 ease-in-out
+                     hover:text-white hover:bg-white/10 
+                     focus:text-white focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30
+                     active:scale-95 active:bg-white/20"
           >
             {item.label}
           </NavLink>
@@ -184,22 +208,26 @@ export function MobileMenuToggle({
   className 
 }: MobileMenuToggleProps) {
   const toggleClass = layoutUtils.combineClasses(
-    'menu-toggle hidden flex-col gap-[5px] relative w-[30px] h-5',
-    'cursor-pointer p-[10px] -m-[10px]',
-    `z-[${DESIGN_TOKENS.zIndex.modal + 1}]`,
+    'menu-toggle hidden flex-col justify-center items-center relative',
+    'w-[44px] h-[44px] min-w-[44px] min-h-[44px]', // Ensure 44px minimum touch target
+    'cursor-pointer rounded-md',
+    'z-[10000]',
     'max-[768px]:flex',
+    'hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30',
+    'transition-all duration-300 ease-in-out',
+    'active:scale-95', // Touch feedback
     className
   );
 
-  const lineClass = 'w-full h-[2px] bg-white transition-all duration-300 ease-in-out absolute';
+  const lineClass = 'w-[24px] h-[2px] bg-white transition-all duration-300 ease-in-out absolute';
 
   return (
-    <div 
+    <button 
       className={toggleClass}
       onClick={onToggle}
-      style={{
-        mixBlendMode: isOpen ? 'normal' : 'difference'
-      }}
+      aria-label={isOpen ? "Close menu" : "Open menu"}
+      aria-expanded={isOpen}
+      type="button"
     >
       <span 
         className={layoutUtils.combineClasses(
@@ -224,6 +252,6 @@ export function MobileMenuToggle({
             : 'bottom-0'
         )}
       />
-    </div>
+    </button>
   );
 }

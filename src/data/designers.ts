@@ -7,7 +7,7 @@ export const designers: Designer[] = [
     nameKo: '김보민',
     role: 'Film Director',
     bio: 'REDUX의 필름 디렉터로서 색채와 텍스처를 통해 감정을 표현하는 크리에이티브 디자이너입니다. 패션 필름이라는 매체를 통해 의상의 움직임과 감정을 영상 언어로 번역하여 관객에게 전달하며, 시각적 스토리텔링의 새로운 가능성을 탐구합니다.',
-    profileImage: '/images/designers/kimbomin/cinemode/김보민 사진.jpg',
+    profileImage: '/images/profile/Kim Bomin.webp',
     coverImage: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
     instagramHandle: '@minectivbe',
     portfolioImages: [
@@ -48,7 +48,7 @@ export const designers: Designer[] = [
     nameKo: '이태현',
     role: 'Creative Director',
     bio: 'REDUX의 창립자이자 크리에이티브 디렉터로, 실험적인 패션과 예술의 경계를 탐구합니다. 미니멀리즘과 구조적 실루엣을 바탕으로 독창적인 작품 세계를 구축하며, 패션을 통해 새로운 이야기를 만들어가는 비전을 제시합니다.',
-    profileImage: '/images/designers/leetaehyeon/leetaehyeon-Profile.jpg',
+    profileImage: '/images/profile/Lee Taehyeon.jpg',
     coverImage: '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
     instagramHandle: '@tododope',
     portfolioImages: [
@@ -69,7 +69,7 @@ export const designers: Designer[] = [
     nameKo: '최은솔',
     role: 'Fashion Designer',
     bio: '전통과 현대를 융합한 독특한 미학을 추구하는 패션 디자이너입니다. 지속가능한 패션에 대한 깊은 관심을 바탕으로 환경을 생각하는 창작 활동을 이어가며, 한국적 정서와 현대적 감각을 조화롭게 표현합니다.',
-    profileImage: '/images/designers/choieunsol/choieunsol-Profile.jpeg',
+    profileImage: '/images/profile/Choi Eunsol.jpeg',
     coverImage: '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
     instagramHandle: '@choieunsol.of',
     portfolioImages: [

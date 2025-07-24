@@ -6,25 +6,28 @@ import { useEffect, useState, useRef } from 'react';
 export default function HeroSection() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [videoClosed, setVideoClosed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     // Mobile detection (HTML 버전과 동일)
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const mobileCheck = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    setIsMobile(mobileCheck);
     
     const video = videoRef.current;
     if (video) {
-      if (isMobile) {
+      if (mobileCheck) {
         // 모바일 비디오 처리 (HTML 버전과 동일)
         video.setAttribute('controls', 'false');
         video.setAttribute('playsinline', 'true');
         video.setAttribute('webkit-playsinline', 'true');
         
+        // 모바일에서 자동재생 시도
         const playPromise = video.play();
         if (playPromise !== undefined) {
           playPromise.catch(error => {
-            console.log('Auto-play was prevented');
+            console.log('Auto-play was prevented on mobile');
             handleVideoError();
           });
         }
@@ -35,12 +38,17 @@ export default function HeroSection() {
         });
         
         video.addEventListener('canplay', () => {
-          video.play().then(() => {
-            console.log('비디오 재생 성공');
-          }).catch(err => {
-            console.error('비디오 재생 실패:', err);
-            handleVideoError();
-          });
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              console.log('비디오 재생 성공');
+              setIsVideoPlaying(true);
+              setVideoClosed(false);
+            }).catch(err => {
+              console.error('비디오 재생 실패:', err);
+              handleVideoError();
+            });
+          }
         });
       }
       
@@ -60,7 +68,7 @@ export default function HeroSection() {
     }
   };
 
-  // 비디오 닫기 함수 (HTML 버전과 동일)
+  // 비디오 닫기 함수 (HTML 버전과 완전 동일)
   const closeVideo = () => {
     const video = videoRef.current;
     if (video) {
@@ -76,21 +84,24 @@ export default function HeroSection() {
     }
   };
 
-  // 비디오 재생 함수 (HTML 버전과 동일)
+  // 비디오 재생 함수 (HTML 버전과 완전 동일)
   const playVideo = () => {
     const video = videoRef.current;
     if (video) {
-      video.play().then(() => {
-        setIsVideoPlaying(true);
-        setVideoClosed(false);
-        
-        if (heroRef.current) {
-          heroRef.current.classList.remove('video-closed');
-        }
-      }).catch(err => {
-        console.error('비디오 재생 실패:', err);
-        handleVideoError();
-      });
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          setIsVideoPlaying(true);
+          setVideoClosed(false);
+          
+          if (heroRef.current) {
+            heroRef.current.classList.remove('video-closed');
+          }
+        }).catch(err => {
+          console.error('비디오 재생 실패:', err);
+          handleVideoError();
+        });
+      }
     }
   };
 
@@ -106,9 +117,9 @@ export default function HeroSection() {
           background: '#0a0a0a url("/images/hero-background/background.png") center/cover no-repeat'
         }}
       >
-        {/* 비디오 컨테이너 - HTML 버전과 동일 */}
+        {/* 비디오 컨테이너 - HTML 버전과 완전 동일 */}
         <div 
-          className={`hero-video-container ${!isVideoPlaying ? 'hidden' : ''}`}
+          className={`hero-video-container ${videoClosed ? 'hidden' : ''}`}
           id="heroVideoContainer"
           style={{
             position: 'absolute',
@@ -119,8 +130,8 @@ export default function HeroSection() {
             transition: 'opacity 0.8s ease',
             display: 'block',
             zIndex: 2,
-            opacity: !isVideoPlaying ? 0 : 1,
-            pointerEvents: !isVideoPlaying ? 'none' : 'auto'
+            opacity: videoClosed ? 0 : 1,
+            pointerEvents: videoClosed ? 'none' : 'auto'
           }}
         >
           <video
@@ -154,10 +165,10 @@ export default function HeroSection() {
             title="Close Video"
             style={{
               position: 'absolute',
-              top: '40px',
-              right: '40px',
-              width: '70px',
-              height: '70px',
+              top: isMobile ? '20px' : '40px',
+              right: isMobile ? '20px' : '40px',
+              width: isMobile ? '50px' : '70px',
+              height: isMobile ? '50px' : '70px',
               background: 'rgba(255, 255, 255, 0.1)',
               backdropFilter: 'blur(10px)',
               border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -173,7 +184,7 @@ export default function HeroSection() {
           >
             <span style={{
               color: 'var(--primary-white)',
-              fontSize: '40px',
+              fontSize: isMobile ? '30px' : '40px',
               fontWeight: 300,
               lineHeight: 1,
               display: 'flex',
@@ -185,19 +196,19 @@ export default function HeroSection() {
           </button>
         </div>
 
-        {/* 비디오 재생 버튼 - HTML 버전과 동일 */}
+        {/* 비디오 재생 버튼 - HTML 버전과 완전 동일 */}
         <button 
           className="video-play-btn"
           id="videoPlayBtn"
           onClick={playVideo}
           title="Play Video"
           style={{ 
-            display: isVideoPlaying ? 'none' : 'flex',
+            display: videoClosed ? 'flex' : 'none',
             position: 'absolute',
-            top: '40px',
-            right: '40px',
-            width: '70px',
-            height: '70px',
+            top: isMobile ? '20px' : '40px',
+            right: isMobile ? '20px' : '40px',
+            width: isMobile ? '50px' : '70px',
+            height: isMobile ? '50px' : '70px',
             background: 'rgba(255, 255, 255, 0.1)',
             backdropFilter: 'blur(10px)',
             border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -330,9 +341,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* 라디얼 그라디언트 오버레이 - HTML 버전과 동일 */}
-        <div style={{
-          content: '',
+        {/* 라디얼 그라디언트 오버레이 - HTML 버전과 완전 동일한 효과 */}
+        <div className="hero-gradient-overlay" style={{
           position: 'absolute',
           top: '-50%',
           left: '-50%',
@@ -342,7 +352,8 @@ export default function HeroSection() {
           zIndex: 1,
           opacity: videoClosed ? 1 : 0,
           transform: 'rotate(-15deg)',
-          transition: 'opacity 1.5s ease 0.3s'
+          transition: 'opacity 1.5s ease 0.3s',
+          pointerEvents: 'none'
         }}></div>
       </section>
 
@@ -420,7 +431,17 @@ export default function HeroSection() {
           width: 0 !important;
         }
 
-        /* Mobile responsive */
+        /* HTML 버전과 동일한 video-closed 상태 처리 */
+        .video-closed {
+          background-attachment: fixed;
+        }
+
+        .hero-video-container.hidden {
+          opacity: 0 !important;
+          pointer-events: none !important;
+        }
+
+        /* Mobile responsive - HTML 버전과 동일 */
         @media (max-width: 768px) {
           .video-close-btn,
           .video-play-btn {
@@ -435,14 +456,14 @@ export default function HeroSection() {
           }
           
           .video-play-btn svg {
-            width: 20px !important;
-            height: 20px !important;
+            width: 18px !important;
+            height: 18px !important;
           }
 
           .hero-cta {
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 40px;
+            flex-direction: column !important;
+            gap: 20px !important;
+            margin-top: 40px !important;
           }
 
           .cta-button {
@@ -450,7 +471,16 @@ export default function HeroSection() {
             min-width: 44px !important;
             padding: 16px 20px !important;
             margin: 8px 4px !important;
-            font-size: 12px;
+            font-size: 12px !important;
+          }
+
+          .hero-title {
+            font-size: clamp(2.5rem, 12vw, 5rem) !important;
+          }
+
+          .hero-subtitle {
+            font-size: clamp(0.75rem, 3vw, 1rem) !important;
+            letter-spacing: 0.2em !important;
           }
         }
 

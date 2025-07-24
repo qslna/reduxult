@@ -74,10 +74,10 @@ export default function ModernNavigation() {
   const mobileMenuClass = layoutUtils.combineClasses(
     'mobile-menu fixed top-0 left-0 w-full h-screen',
     'bg-black/95 backdrop-blur-[20px]',
-    `z-[${DESIGN_TOKENS.zIndex.modal}]`,
+    'z-[9999]',
     'transition-transform duration-500 ease-in-out overflow-y-auto',
     'hidden max-[768px]:block p-6',
-    mobileMenuActive ? 'transform-none' : 'translate-x-full'
+    mobileMenuActive ? 'translate-x-0' : 'translate-x-full'
   );
 
   const mobileContentClass = layoutUtils.combineClasses(
@@ -93,7 +93,13 @@ export default function ModernNavigation() {
       {/* Navigation */}
       <nav 
         className={navClass}
-        style={{ mixBlendMode: 'difference' }}
+        style={{ 
+          background: scrolled 
+            ? 'rgba(0, 0, 0, 0.95)' 
+            : 'linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 70%, transparent 100%)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)'
+        }}
       >
         <div className={containerClass}>
           {/* Logo */}
@@ -185,7 +191,7 @@ export default function ModernNavigation() {
             ) : (
               <div 
                 key={index}
-                className="mobile-menu-item text-[clamp(20px,5vw,24px)] text-white tracking-[2px] opacity-0 translate-y-5 cursor-pointer transition-opacity duration-300 ease-in-out text-center no-underline py-[10px] px-5 w-full max-w-[300px]"
+                className="mobile-menu-item w-full"
                 style={{ 
                   '--i': index + 1, 
                   animationDelay: `calc(var(--i) * 0.1s)` 
@@ -194,7 +200,13 @@ export default function ModernNavigation() {
                 <NavLink
                   href={item.href}
                   variant="mobile"
-                  className="no-underline text-inherit"
+                  className="text-[clamp(20px,5vw,24px)] text-white tracking-[2px] 
+                           min-h-[44px] flex items-center justify-center
+                           py-[15px] px-5 w-full max-w-[300px] mx-auto
+                           rounded-md transition-all duration-300 ease-in-out
+                           hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30
+                           active:scale-95 active:bg-white/20
+                           no-underline text-center"
                   onClick={() => setMobileMenuActive(false)}
                 >
                   {item.label}
@@ -205,7 +217,7 @@ export default function ModernNavigation() {
 
           {/* Admin Mobile Menu */}
           <div 
-            className="mobile-menu-item text-[clamp(20px,5vw,24px)] text-white tracking-[2px] opacity-0 translate-y-5 cursor-pointer transition-opacity duration-300 ease-in-out text-center no-underline py-[10px] px-5 w-full max-w-[300px]"
+            className="mobile-menu-item w-full"
             style={{ 
               '--i': mobileNavigationItems.length + 1, 
               animationDelay: `calc(var(--i) * 0.1s)` 
@@ -214,7 +226,13 @@ export default function ModernNavigation() {
             <NavLink
               href="/admin"
               variant="mobile"
-              className="no-underline text-inherit"
+              className="text-[clamp(20px,5vw,24px)] text-white tracking-[2px] 
+                       min-h-[44px] flex items-center justify-center
+                       py-[15px] px-5 w-full max-w-[300px] mx-auto
+                       rounded-md transition-all duration-300 ease-in-out
+                       hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30
+                       active:scale-95 active:bg-white/20
+                       no-underline text-center"
               onClick={() => setMobileMenuActive(false)}
             >
               Admin

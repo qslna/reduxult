@@ -86,7 +86,7 @@ export default function VisualArtPage() {
       </nav>
 
       {/* Hero Section - HTML 버전과 완전 동일 */}
-      <section className="hero-section h-screen relative flex items-center justify-center bg-[--gray-light] overflow-hidden">
+      <section className="hero-section h-screen relative flex items-center justify-center bg-[--gray-light] overflow-hidden pt-[100px]">
         <div className="hero-bg absolute top-0 left-0 w-full h-full opacity-10">
           <div className="hero-pattern absolute w-[200%] h-[200%] -top-1/2 -left-1/2 animate-[patternMove_20s_linear_infinite]"
                style={{
@@ -124,7 +124,7 @@ export default function VisualArtPage() {
           {/* Visual Item 1: METAMORPHOSIS */}
           <div className="visual-item col-span-8 [aspect-ratio:16/9] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
             <OptimizedImage 
-              src="/images/visual-art/METAMORPHOSIS.jpg" 
+              src="/images/about/visual-art/Metamorphosis.png" 
               alt="Visual Art 1" 
               fill={true}
               priority={true}
@@ -144,7 +144,7 @@ export default function VisualArtPage() {
           {/* Visual Item 2: SHADOW PLAY */}
           <div className="visual-item col-span-4 [aspect-ratio:3/4] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
             <OptimizedImage 
-              src="/images/visual-art/SHADOW PLAY.jpg" 
+              src="/images/about/visual-art/Shadow Play.png" 
               alt="Visual Art 2" 
               fill={true}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -163,7 +163,7 @@ export default function VisualArtPage() {
           {/* Visual Item 3: TEXTURE STUDY */}
           <div className="visual-item col-span-4 [aspect-ratio:1] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
             <OptimizedImage 
-              src="/images/visual-art/TEXTURE STUDY.jpg" 
+              src="/images/about/visual-art/Texture Study.png" 
               alt="Visual Art 3" 
               fill={true}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -182,7 +182,7 @@ export default function VisualArtPage() {
           {/* Visual Item 4: COLOR THEORY */}
           <div className="visual-item col-span-4 [aspect-ratio:1] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
             <OptimizedImage 
-              src="/images/visual-art/COLOR THEORY.jpg" 
+              src="/images/about/visual-art/Color Theory.png" 
               alt="Visual Art 4" 
               fill={true}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -201,7 +201,7 @@ export default function VisualArtPage() {
           {/* Visual Item 5: FORM & VOID */}
           <div className="visual-item col-span-4 [aspect-ratio:3/4] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
             <OptimizedImage 
-              src="/images/visual-art/FORM & VOID.jpg" 
+              src="/images/about/visual-art/Form & Void.png" 
               alt="Visual Art 5" 
               fill={true}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -220,7 +220,7 @@ export default function VisualArtPage() {
           {/* Visual Item 6: DIGITAL DREAMS */}
           <div className="visual-item col-span-6 [aspect-ratio:4/3] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
             <OptimizedImage 
-              src="/images/visual-art/DIGITAL DREAMS.jpg" 
+              src="/images/about/visual-art/Digital Dreams.png" 
               alt="Visual Art 6"
               fill={true}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
@@ -239,7 +239,7 @@ export default function VisualArtPage() {
           {/* Visual Item 7: ANALOG MEMORIES */}
           <div className="visual-item col-span-6 [aspect-ratio:4/3] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
             <OptimizedImage 
-              src="/images/visual-art/ANALOG MEMORIES.jpg" 
+              src="/images/about/visual-art/Analog Memories.png" 
               alt="Visual Art 7"
               fill={true}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
@@ -258,7 +258,7 @@ export default function VisualArtPage() {
           {/* Visual Item 8: COLLECTIVE VISION */}
           <div className="visual-item col-span-12 [aspect-ratio:21/9] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
             <OptimizedImage 
-              src="/images/visual-art/COLLECTIVE VISION.jpg" 
+              src="/images/about/visual-art/Collective Vision.png" 
               alt="Visual Art 8"
               fill={true}
               sizes="100vw"

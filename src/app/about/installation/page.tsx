@@ -166,7 +166,7 @@ export default function InstallationPage() {
       </nav>
 
       {/* Hero Section - HTML 버전과 완전 동일한 3D 효과 */}
-      <section className="hero-section h-screen relative overflow-hidden bg-[linear-gradient(45deg,#1a1a1a_0%,#2a2a2a_50%,#1a1a1a_100%)]">
+      <section className="hero-section h-screen relative overflow-hidden bg-[linear-gradient(45deg,#1a1a1a_0%,#2a2a2a_50%,#1a1a1a_100%)] pt-[100px]">
         <div className="hero-3d-container absolute top-0 left-0 w-full h-full [perspective:1000px]">
           <div className="hero-3d-element absolute w-[150px] h-[150px] bg-white/5 border border-white/10 [transform-style:preserve-3d] animate-[float3d_20s_infinite_ease-in-out] [animation-delay:0s] top-[20%] left-[10%]"></div>
           <div className="hero-3d-element absolute w-[200px] h-[200px] bg-white/5 border border-white/10 [transform-style:preserve-3d] animate-[float3d_20s_infinite_ease-in-out] [animation-delay:5s] top-[60%] right-[20%]"></div>

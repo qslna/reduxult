@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import CategoryPreview from '@/components/about/CategoryPreview';
+import { aboutGalleries } from '@/data/aboutGallery';
 
 // HTML redux6 about.html과 완전 동일한 About 페이지 구현
 export default function AboutPage() {
@@ -73,27 +75,73 @@ export default function AboutPage() {
 
   return (
     <>
-      {/* Hero Section - HTML 버전과 완전 동일 */}
+      {/* Hero Section - 비대칭 왜곡 디자이너 스타일 */}
       <section 
         className="hero-section"
         style={{
           marginTop: '80px',
           padding: '120px 40px',
-          background: '#f5f5f5',
-          textAlign: 'center'
+          background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%)',
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden'
         }}
       >
+        {/* 배경 노이즈 텍스처 */}
+        <div 
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.03"/%3E%3C/svg%3E")',
+            zIndex: 1
+          }}
+        />
+        
+        {/* 비대칭 기하학적 요소들 */}
+        <div 
+          style={{
+            position: 'absolute',
+            top: '10%',
+            right: '15%',
+            width: '150px',
+            height: '2px',
+            background: 'linear-gradient(90deg, transparent, #333, transparent)',
+            transform: 'rotate(-15deg)',
+            zIndex: 2
+          }}
+        />
+        <div 
+          style={{
+            position: 'absolute',
+            bottom: '20%',
+            left: '20%',
+            width: '100px',
+            height: '100px',
+            border: '1px solid rgba(255,255,255,0.1)',
+            borderRadius: '50%',
+            transform: 'rotate(45deg)',
+            zIndex: 2
+          }}
+        />
+        
         <h1 
-          className="hero-title"
+          className="hero-title glitch-text"
           style={{
             fontSize: 'clamp(48px, 8vw, 80px)',
-            fontWeight: 300,
-            letterSpacing: '0.2em',
+            fontWeight: 800,
+            letterSpacing: '0.1em',
             marginBottom: '20px',
             opacity: 0,
-            transform: 'translateY(30px)',
-            animation: 'fadeInUp 1s ease forwards',
-            color: '#000'
+            transform: 'translateY(30px) skew(-2deg)',
+            animation: 'fadeInUp 1s ease forwards, glitchText 3s ease-in-out infinite',
+            color: '#fff',
+            textShadow: '0 0 20px rgba(255,255,255,0.1), 2px 2px 0px rgba(255,255,255,0.05)',
+            fontFamily: "'Inter', 'Helvetica', sans-serif",
+            position: 'relative',
+            zIndex: 3
           }}
         >
           WHO REDUX?
@@ -103,59 +151,94 @@ export default function AboutPage() {
           style={{
             fontSize: '18px',
             color: '#999',
-            letterSpacing: '2px',
+            letterSpacing: '4px',
             opacity: 0,
             animation: 'fadeInUp 1s ease forwards',
-            animationDelay: '0.2s'
+            animationDelay: '0.2s',
+            textTransform: 'uppercase',
+            position: 'relative',
+            zIndex: 3,
+            transform: 'translateX(10px)'
           }}
         >
           Fashion Designer Collective
         </p>
       </section>
 
-      {/* About Intro - HTML 버전과 완전 동일한 한국어 텍스트 */}
+      {/* About Intro - 비대칭 레이아웃과 타이포그래피 강화 */}
       <section 
         className="about-intro"
         style={{
           padding: '120px 40px',
           maxWidth: '1200px',
           margin: '0 auto',
-          textAlign: 'center'
+          textAlign: 'left',
+          position: 'relative'
         }}
       >
-        <h2 
+        {/* 비대칭 배경 요소 */}
+        <div 
           style={{
-            fontSize: '36px',
-            fontWeight: 300,
-            letterSpacing: '3px',
-            marginBottom: '40px',
-            color: '#000'
+            position: 'absolute',
+            top: '20%',
+            right: '0',
+            width: '200px',
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent, #ddd, transparent)',
+            transform: 'rotate(-5deg)'
           }}
-        >
-          우리는 REDUX입니다
-        </h2>
-        <p 
-          style={{
-            fontSize: '18px',
-            lineHeight: 2,
-            color: '#333',
-            marginBottom: '20px'
-          }}
-        >
-          REDUX는 6인의 패션 디자이너가 모여 만든 크리에이티브 콜렉티브입니다.
-          우리는 패션을 넘어 다양한 예술적 매체를 통해 새로운 경험을 창조합니다.
-        </p>
-        <p 
-          style={{
-            fontSize: '18px',
-            lineHeight: 2,
-            color: '#333',
-            marginBottom: '20px'
-          }}
-        >
-          패션 필름, 설치 미술, 비주얼 아트, 공간 디자인 등 다양한 형태로
-          관객들에게 '기억에 남을 순간'을 선사하고자 합니다.
-        </p>
+        />
+        
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '80px', alignItems: 'start' }}>
+          <div>
+            <h2 
+              style={{
+                fontSize: 'clamp(28px, 4vw, 48px)',
+                fontWeight: 900,
+                letterSpacing: '-0.02em',
+                marginBottom: '40px',
+                color: '#000',
+                transform: 'rotate(-1deg)',
+                fontFamily: "'Inter', sans-serif",
+                lineHeight: 0.9
+              }}
+            >
+              우리는<br/>
+              <span style={{ color: '#666', fontWeight: 300, fontSize: '0.7em', letterSpacing: '0.1em' }}>REDUX</span><br/>
+              입니다
+            </h2>
+          </div>
+          
+          <div style={{ transform: 'translateY(20px)' }}>
+            <p 
+              style={{
+                fontSize: '18px',
+                lineHeight: 1.8,
+                color: '#333',
+                marginBottom: '30px',
+                fontWeight: 300,
+                borderLeft: '2px solid #000',
+                paddingLeft: '25px'
+              }}
+            >
+              REDUX는 6인의 패션 디자이너가 모여 만든 크리에이티브 콜렉티브입니다.
+              우리는 패션을 넘어 다양한 예술적 매체를 통해 새로운 경험을 창조합니다.
+            </p>
+            <p 
+              style={{
+                fontSize: '16px',
+                lineHeight: 1.8,
+                color: '#666',
+                marginBottom: '20px',
+                fontStyle: 'italic',
+                transform: 'translateX(20px)'
+              }}
+            >
+              패션 필름, 설치 미술, 비주얼 아트, 공간 디자인 등 다양한 형태로
+              관객들에게 '기억에 남을 순간'을 선사하고자 합니다.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Asymmetric Grid - HTML 버전과 완전 동일한 3D 스택 효과 */}
@@ -173,755 +256,54 @@ export default function AboutPage() {
       >
         
         {/* Fashion Film */}
-        <a 
-          href="/about/fashion-film" 
-          className="grid-item"
-          style={{
+        <CategoryPreview 
+          category={aboutGalleries.find(g => g.id === 'fashion-film')!}
+          gridStyle={{
             gridColumn: 'span 7',
-            gridRow: 'span 2',
-            position: 'relative',
-            overflow: 'visible',
-            background: '#f5f5f5',
-            transition: 'all 0.5s ease',
-            cursor: 'pointer',
-            textDecoration: 'none',
-            perspective: '1000px'
+            gridRow: 'span 2'
           }}
-        >
-          <div 
-            className="grid-stack"
-            style={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              transformStyle: 'preserve-3d',
-              transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)'
-            }}
-          >
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(0px) rotate(-1deg)',
-                zIndex: 3
-              }}
-            >
-              <OptimizedImage 
-                src="/images/designers/choieunsol/cinemode/IMG_8617.jpeg" 
-                alt="Fashion Film - Choi Eunsol" 
-                fill={true}
-                priority={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(-12px) rotate(2deg)',
-                zIndex: 2,
-                opacity: 0.85
-              }}
-            >
-              <OptimizedImage 
-                src="/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg" 
-                alt="Fashion Film - Hwang Jinsu" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(-24px) rotate(-0.5deg)',
-                zIndex: 1,
-                opacity: 0.7
-              }}
-            >
-              <OptimizedImage 
-                src="/images/designers/kimbomin/cinemode/NOR_7419-11.jpg" 
-                alt="Fashion Film - Kim Bomin" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-          </div>
-          <div 
-            className="grid-item-overlay"
-            style={{
-              position: 'absolute',
-              bottom: '-80px',
-              left: 0,
-              right: 0,
-              padding: '25px 30px',
-              background: 'linear-gradient(135deg, rgba(0,0,0,0.95), rgba(0,0,0,0.85))',
-              color: '#fff',
-              transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-              zIndex: 10,
-              borderRadius: '0 0 12px 12px',
-              backdropFilter: 'blur(10px)'
-            }}
-          >
-            <h3 
-              style={{
-                fontSize: '20px',
-                fontWeight: 400,
-                letterSpacing: '1.5px',
-                marginBottom: '8px',
-                textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-              }}
-            >
-              Fashion Film
-            </h3>
-            <p 
-              style={{
-                fontSize: '13px',
-                opacity: 0.9,
-                letterSpacing: '0.5px',
-                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-              }}
-            >
-              패션필름을 통한 스토리텔링
-            </p>
-          </div>
-        </a>
+          className="grid-item"
+        />
 
         {/* Memory */}
-        <a 
-          href="/about/memory" 
-          className="grid-item"
-          style={{
+        <CategoryPreview 
+          category={aboutGalleries.find(g => g.id === 'memory')!}
+          gridStyle={{
             gridColumn: 'span 5',
-            gridRow: 'span 3',
-            position: 'relative',
-            overflow: 'visible',
-            background: '#f5f5f5',
-            transition: 'all 0.5s ease',
-            cursor: 'pointer',
-            textDecoration: 'none',
-            perspective: '1000px'
+            gridRow: 'span 3'
           }}
-        >
-          <div 
-            className="grid-stack"
-            style={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              transformStyle: 'preserve-3d',
-              transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)'
-            }}
-          >
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(0px) rotate(-1deg)',
-                zIndex: 3
-              }}
-            >
-              <OptimizedImage 
-                src="/images/about-memory.jpg" 
-                alt="Memory" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(-12px) rotate(2deg)',
-                zIndex: 2,
-                opacity: 0.85
-              }}
-            >
-              <OptimizedImage 
-                src="/images/about-memory.jpg" 
-                alt="Memory" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(-24px) rotate(-0.5deg)',
-                zIndex: 1,
-                opacity: 0.7
-              }}
-            >
-              <OptimizedImage 
-                src="/images/about-memory.jpg" 
-                alt="Memory" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-          </div>
-          <div 
-            className="grid-item-overlay"
-            style={{
-              position: 'absolute',
-              bottom: '-80px',
-              left: 0,
-              right: 0,
-              padding: '25px 30px',
-              background: 'linear-gradient(135deg, rgba(0,0,0,0.95), rgba(0,0,0,0.85))',
-              color: '#fff',
-              transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-              zIndex: 10,
-              borderRadius: '0 0 12px 12px',
-              backdropFilter: 'blur(10px)'
-            }}
-          >
-            <h3 
-              style={{
-                fontSize: '20px',
-                fontWeight: 400,
-                letterSpacing: '1.5px',
-                marginBottom: '8px',
-                textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-              }}
-            >
-              Memory
-            </h3>
-            <p 
-              style={{
-                fontSize: '13px',
-                opacity: 0.9,
-                letterSpacing: '0.5px',
-                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-              }}
-            >
-              기억에 남을 순간
-            </p>
-          </div>
-        </a>
+          className="grid-item"
+        />
 
         {/* Visual Art */}
-        <a 
-          href="/about/visual-art" 
-          className="grid-item"
-          style={{
+        <CategoryPreview 
+          category={aboutGalleries.find(g => g.id === 'visual-art')!}
+          gridStyle={{
             gridColumn: 'span 4',
-            gridRow: 'span 2',
-            position: 'relative',
-            overflow: 'visible',
-            background: '#f5f5f5',
-            transition: 'all 0.5s ease',
-            cursor: 'pointer',
-            textDecoration: 'none',
-            perspective: '1000px'
+            gridRow: 'span 2'
           }}
-        >
-          <div 
-            className="grid-stack"
-            style={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              transformStyle: 'preserve-3d',
-              transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)'
-            }}
-          >
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(0px) rotate(-1deg)',
-                zIndex: 3
-              }}
-            >
-              <OptimizedImage 
-                src="/images/visual-art/METAMORPHOSIS.jpg" 
-                alt="Visual Art" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(-12px) rotate(2deg)',
-                zIndex: 2,
-                opacity: 0.85
-              }}
-            >
-              <OptimizedImage 
-                src="/images/visual-art/SHADOW PLAY.jpg" 
-                alt="Visual Art" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(-24px) rotate(-0.5deg)',
-                zIndex: 1,
-                opacity: 0.7
-              }}
-            >
-              <OptimizedImage 
-                src="/images/visual-art/DIGITAL DREAMS.jpg" 
-                alt="Visual Art" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-          </div>
-          <div 
-            className="grid-item-overlay"
-            style={{
-              position: 'absolute',
-              bottom: '-80px',
-              left: 0,
-              right: 0,
-              padding: '25px 30px',
-              background: 'linear-gradient(135deg, rgba(0,0,0,0.95), rgba(0,0,0,0.85))',
-              color: '#fff',
-              transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-              zIndex: 10,
-              borderRadius: '0 0 12px 12px',
-              backdropFilter: 'blur(10px)'
-            }}
-          >
-            <h3 
-              style={{
-                fontSize: '20px',
-                fontWeight: 400,
-                letterSpacing: '1.5px',
-                marginBottom: '8px',
-                textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-              }}
-            >
-              Visual Art
-            </h3>
-            <p 
-              style={{
-                fontSize: '13px',
-                opacity: 0.9,
-                letterSpacing: '0.5px',
-                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-              }}
-            >
-              시각적 경험의 확장
-            </p>
-          </div>
-        </a>
+          className="grid-item"
+        />
 
-        {/* Process (Installation) */}
-        <a 
-          href="/about/installation" 
-          className="grid-item"
-          style={{
+        {/* Installation */}
+        <CategoryPreview 
+          category={aboutGalleries.find(g => g.id === 'installation')!}
+          gridStyle={{
             gridColumn: 'span 4',
-            gridRow: 'span 2',
-            position: 'relative',
-            overflow: 'visible',
-            background: '#f5f5f5',
-            transition: 'all 0.5s ease',
-            cursor: 'pointer',
-            textDecoration: 'none',
-            perspective: '1000px'
+            gridRow: 'span 2'
           }}
-        >
-          <div 
-            className="grid-stack"
-            style={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              transformStyle: 'preserve-3d',
-              transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)'
-            }}
-          >
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(0px) rotate(-1deg)',
-                zIndex: 3
-              }}
-            >
-              <OptimizedImage 
-                src="/images/process/창작자.png" 
-                alt="Process" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(-12px) rotate(2deg)',
-                zIndex: 2,
-                opacity: 0.85
-              }}
-            >
-              <OptimizedImage 
-                src="/images/process/큐레이터.png" 
-                alt="Process" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(-24px) rotate(-0.5deg)',
-                zIndex: 1,
-                opacity: 0.7
-              }}
-            >
-              <OptimizedImage 
-                src="/images/process/진행자.png" 
-                alt="Process" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-          </div>
-          <div 
-            className="grid-item-overlay"
-            style={{
-              position: 'absolute',
-              bottom: '-80px',
-              left: 0,
-              right: 0,
-              padding: '25px 30px',
-              background: 'linear-gradient(135deg, rgba(0,0,0,0.95), rgba(0,0,0,0.85))',
-              color: '#fff',
-              transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-              zIndex: 10,
-              borderRadius: '0 0 12px 12px',
-              backdropFilter: 'blur(10px)'
-            }}
-          >
-            <h3 
-              style={{
-                fontSize: '20px',
-                fontWeight: 400,
-                letterSpacing: '1.5px',
-                marginBottom: '8px',
-                textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-              }}
-            >
-              Process
-            </h3>
-            <p 
-              style={{
-                fontSize: '13px',
-                opacity: 0.9,
-                letterSpacing: '0.5px',
-                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-              }}
-            >
-              전시를 만드는 6가지 역할
-            </p>
-          </div>
-        </a>
+          className="grid-item"
+        />
 
         {/* Collective */}
-        <a 
-          href="/about/collective" 
-          className="grid-item"
-          style={{
+        <CategoryPreview 
+          category={aboutGalleries.find(g => g.id === 'collective')!}
+          gridStyle={{
             gridColumn: 'span 4',
-            gridRow: 'span 2',
-            position: 'relative',
-            overflow: 'visible',
-            background: '#f5f5f5',
-            transition: 'all 0.5s ease',
-            cursor: 'pointer',
-            textDecoration: 'none',
-            perspective: '1000px'
+            gridRow: 'span 2'
           }}
-        >
-          <div 
-            className="grid-stack"
-            style={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              transformStyle: 'preserve-3d',
-              transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)'
-            }}
-          >
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(0px) rotate(-1deg)',
-                zIndex: 3
-              }}
-            >
-              <OptimizedImage 
-                src="/images/about-collective.jpg" 
-                alt="Collective" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(-12px) rotate(2deg)',
-                zIndex: 2,
-                opacity: 0.85
-              }}
-            >
-              <OptimizedImage 
-                src="/images/about-collective.jpg" 
-                alt="Collective" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-            <div 
-              className="stack-layer"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: '12px',
-                border: '2px solid #fff',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
-                overflow: 'hidden',
-                transform: 'translateZ(-24px) rotate(-0.5deg)',
-                zIndex: 1,
-                opacity: 0.7
-              }}
-            >
-              <OptimizedImage 
-                src="/images/about-collective.jpg" 
-                alt="Collective" 
-                fill={true}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{
-                  objectFit: 'cover',
-                  filter: 'grayscale(50%) brightness(0.9)',
-                  transition: 'all 0.8s ease'
-                }}
-              />
-            </div>
-          </div>
-          <div 
-            className="grid-item-overlay"
-            style={{
-              position: 'absolute',
-              bottom: '-80px',
-              left: 0,
-              right: 0,
-              padding: '25px 30px',
-              background: 'linear-gradient(135deg, rgba(0,0,0,0.95), rgba(0,0,0,0.85))',
-              color: '#fff',
-              transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-              zIndex: 10,
-              borderRadius: '0 0 12px 12px',
-              backdropFilter: 'blur(10px)'
-            }}
-          >
-            <h3 
-              style={{
-                fontSize: '20px',
-                fontWeight: 400,
-                letterSpacing: '1.5px',
-                marginBottom: '8px',
-                textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-              }}
-            >
-              Collective
-            </h3>
-            <p 
-              style={{
-                fontSize: '13px',
-                opacity: 0.9,
-                letterSpacing: '0.5px',
-                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-              }}
-            >
-              6인의 디자이너 크루
-            </p>
-          </div>
-        </a>
+          className="grid-item"
+        />
       </div>
 
       {/* Philosophy Section - HTML 버전과 완전 동일한 다크 섹션 */}
@@ -1174,9 +556,29 @@ export default function AboutPage() {
           }
         }
         
-        /* Grid hover effects - HTML 버전과 완전 동일 */
+        /* 글리치 애니메이션 */
+        @keyframes glitchText {
+          0%, 100% {
+            text-shadow: 0 0 20px rgba(255,255,255,0.1), 2px 2px 0px rgba(255,255,255,0.05);
+            transform: translateY(0) skew(-2deg);
+          }
+          20% {
+            text-shadow: 2px 0 0 rgba(255, 0, 0, 0.1), -2px 0 0 rgba(0, 255, 255, 0.1);
+            transform: translateY(-1px) skew(-2deg);
+          }
+          40% {
+            text-shadow: -1px 0 0 rgba(255, 0, 0, 0.1), 1px 0 0 rgba(0, 255, 255, 0.1);
+            transform: translateY(1px) skew(-2deg);
+          }
+          60% {
+            text-shadow: 0 0 20px rgba(255,255,255,0.1), 2px 2px 0px rgba(255,255,255,0.05);
+            transform: translateY(0) skew(-2deg);
+          }
+        }
+        
+        /* Grid hover effects - 디자이너 스타일 강화 */
         .grid-item:hover .grid-stack {
-          transform: rotateY(12deg) rotateX(3deg);
+          transform: rotateY(12deg) rotateX(3deg) scale(1.02);
         }
         
         .grid-item:hover .stack-layer:nth-child(1) {
@@ -1194,8 +596,17 @@ export default function AboutPage() {
         }
         
         .grid-item:hover .stack-layer img {
-          filter: grayscale(0%) brightness(1);
+          filter: grayscale(0%) brightness(1.1) contrast(1.2) saturate(1.1);
           transform: scale(1.05);
+        }
+        
+        /* 비대칭 글리치 효과 */
+        .grid-item:nth-child(odd):hover .stack-layer:nth-child(1) {
+          filter: hue-rotate(5deg);
+        }
+        
+        .grid-item:nth-child(even):hover .stack-layer:nth-child(1) {
+          filter: hue-rotate(-5deg);
         }
         
         .grid-item:hover .grid-item-overlay {
@@ -1234,13 +645,27 @@ export default function AboutPage() {
         /* Mobile grid simplification */
         @media (max-width: 1024px) {
           .asymmetric-grid {
-            grid-template-columns: repeat(6, 1fr) !important;
-            grid-auto-rows: 180px !important;
+            grid-template-columns: repeat(4, 1fr) !important;
+            grid-auto-rows: 200px !important;
+            gap: 15px !important;
+            margin-bottom: 100px !important;
           }
           
           .grid-item {
-            grid-column: span 3 !important;
+            grid-column: span 2 !important;
             grid-row: span 2 !important;
+          }
+          
+          /* Fashion Film takes more space on tablet */
+          .grid-item:nth-child(1) {
+            grid-column: span 4 !important;
+            grid-row: span 2 !important;
+          }
+          
+          /* Memory takes full width on tablet */
+          .grid-item:nth-child(2) {
+            grid-column: span 4 !important;
+            grid-row: span 3 !important;
           }
           
           .values-grid {
@@ -1272,6 +697,11 @@ export default function AboutPage() {
             padding: 60px 20px !important;
           }
           
+          .about-intro > div {
+            display: block !important;
+            gap: 40px !important;
+          }
+          
           .about-intro h2 {
             font-size: 28px !important;
             margin-bottom: 30px !important;
@@ -1280,35 +710,52 @@ export default function AboutPage() {
           .about-intro p {
             font-size: 16px !important;
             line-height: 1.8 !important;
+            transform: none !important;
+            padding-left: 15px !important;
           }
           
           .asymmetric-grid {
             grid-template-columns: 1fr !important;
-            grid-auto-rows: 250px !important;
+            grid-auto-rows: 280px !important;
             padding: 0 20px !important;
-            gap: 10px !important;
+            gap: 20px !important;
             margin-bottom: 80px !important;
           }
           
           .grid-item {
             grid-column: span 1 !important;
             grid-row: span 1 !important;
+            min-height: 280px !important;
+          }
+          
+          /* Maintain some visual hierarchy on mobile */
+          .grid-item:nth-child(1),
+          .grid-item:nth-child(2) {
+            grid-row: span 1 !important;
+            min-height: 320px !important;
           }
           
           .grid-stack {
-            border-radius: 8px !important;
+            border-radius: 12px !important;
             overflow: hidden !important;
           }
           
           .stack-layer {
-            border-radius: 8px !important;
-            position: relative !important;
-            transform: none !important;
+            border-radius: 12px !important;
+            position: absolute !important;
+            transform: translateZ(0) !important;
             opacity: 1 !important;
-            border: 1px solid #fff !important;
+            border: 2px solid #fff !important;
           }
           
-          .stack-layer:nth-child(2),
+          /* Keep first two layers visible on mobile for depth */
+          .stack-layer:nth-child(2) {
+            display: block !important;
+            transform: translateZ(-8px) rotate(1deg) !important;
+            opacity: 0.7 !important;
+            z-index: 2 !important;
+          }
+          
           .stack-layer:nth-child(3) {
             display: none !important;
           }
@@ -1316,8 +763,8 @@ export default function AboutPage() {
           .grid-item-overlay {
             padding: 20px !important;
             bottom: 0 !important;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4)) !important;
-            border-radius: 0 !important;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.6)) !important;
+            border-radius: 0 0 12px 12px !important;
           }
           
           .grid-item-overlay h3 {

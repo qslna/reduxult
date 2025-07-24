@@ -104,7 +104,7 @@ export default function CollectivePage() {
       </nav>
 
       {/* Hero Section - HTML 버전과 완전 동일 */}
-      <section className="hero-section h-screen relative flex items-center justify-center bg-black overflow-hidden">
+      <section className="hero-section h-screen relative flex items-center justify-center bg-black overflow-hidden pt-[100px]">
         <video 
           className="hero-video absolute top-0 left-0 w-full h-full object-cover opacity-30"
           autoPlay 
