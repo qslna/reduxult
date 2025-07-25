@@ -3,10 +3,22 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { initGSAPAnimations, animations, isMobile } from '@/lib/gsap';
+import { useTextContent } from '@/hooks/usePageContent';
 
 // HTML redux6 contact.html과 완전 동일한 Contact 페이지 구현
 export default function ContactPage() {
   const router = useRouter();
+  
+  // Dynamic content loading
+  const { text: heroTitle } = useTextContent('contact', 'hero-title', 'CONNECT');
+  const { text: heroSubtitle } = useTextContent('contact', 'hero-subtitle', "Let's Create Something Extraordinary");
+  const { text: ctaText } = useTextContent('contact', 'cta-text', 'Ready to Connect');
+  const { text: sectionTitle } = useTextContent('contact', 'section-title', "Let's\\nConnect");
+  const { text: sectionDescription } = useTextContent('contact', 'section-description', '우리와 함께 만들어갈\\n새로운 프로젝트를 이야기해보세요');
+  const { text: formTitle } = useTextContent('contact', 'form-title', 'Start a\\nConversation');
+  const { text: formDescription } = useTextContent('contact', 'form-description', '당신의 아이디어를 들려주세요. 함께 만들어갈 이야기가 기다리고 있습니다.');
+  const { text: submitText } = useTextContent('contact', 'submit-text', 'Send Message');
+  const { text: socialText } = useTextContent('contact', 'social-text', 'Follow Our Journey');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -225,13 +237,18 @@ export default function ContactPage() {
                 letterSpacing: '-0.02em',
                 textShadow: '0 0 40px rgba(255,255,255,0.1), 4px 4px 0px rgba(255,255,255,0.03)'
               }}>
-            <span className="inline-block animate-[letterSlide_0.8s_ease_forwards] [animation-delay:0.3s]" style={{'--i': 1} as React.CSSProperties}>C</span>
-            <span className="inline-block animate-[letterSlide_0.8s_ease_forwards] [animation-delay:0.4s]" style={{'--i': 2} as React.CSSProperties}>O</span>
-            <span className="inline-block animate-[letterSlide_0.8s_ease_forwards] [animation-delay:0.5s]" style={{'--i': 3} as React.CSSProperties}>N</span>
-            <span className="inline-block animate-[letterSlide_0.8s_ease_forwards] [animation-delay:0.6s]" style={{'--i': 4} as React.CSSProperties}>N</span>
-            <span className="inline-block animate-[letterSlide_0.8s_ease_forwards] [animation-delay:0.7s]" style={{'--i': 5} as React.CSSProperties}>E</span>
-            <span className="inline-block animate-[letterSlide_0.8s_ease_forwards] [animation-delay:0.8s]" style={{'--i': 6} as React.CSSProperties}>C</span>
-            <span className="inline-block animate-[letterSlide_0.8s_ease_forwards] [animation-delay:0.9s]" style={{'--i': 7} as React.CSSProperties}>T</span>
+            {heroTitle.split('').map((letter: string, index: number) => (
+              <span 
+                key={index}
+                className="inline-block animate-[letterSlide_0.8s_ease_forwards]" 
+                style={{
+                  '--i': index + 1,
+                  animationDelay: `${0.3 + index * 0.1}s`
+                } as React.CSSProperties}
+              >
+                {letter}
+              </span>
+            ))}
           </h1>
           
           {/* 비대칭 서브타이틀 */}
@@ -242,7 +259,7 @@ export default function ContactPage() {
                  fontSize: 'clamp(14px, 2vw, 18px)',
                  fontWeight: 300
                }}>
-              Let's Create Something Extraordinary
+              {heroSubtitle}
             </p>
             <div className="absolute -right-[200px] top-1/2 transform -translate-y-1/2 w-[120px] h-[1px] bg-gradient-to-l from-transparent to-white/30 opacity-0 animate-[slideInRight_1s_ease_forwards] [animation-delay:1.8s] max-[768px]:hidden"></div>
           </div>
@@ -252,7 +269,7 @@ export default function ContactPage() {
             <div className="inline-flex items-center gap-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-full px-8 py-4 transition-all duration-500 hover:bg-white/10 hover:scale-[1.02] hover:border-white/30">
               <div className="w-[8px] h-[8px] bg-white/60 rounded-full animate-pulse"></div>
               <span className="text-white/90 font-['Inter'] text-sm tracking-[2px] uppercase font-light">
-                Ready to Connect
+                {ctaText}
               </span>
               <svg className="w-4 h-4 text-white/60 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -286,12 +303,20 @@ export default function ContactPage() {
               <div className="relative mb-16">
                 <div className="absolute -left-4 top-0 w-[2px] h-[80px] bg-gradient-to-b from-white/30 to-transparent"></div>
                 <h2 className="contact-info-title font-['Playfair_Display'] font-bold text-white mb-4 leading-[0.9]" style={{ fontSize: 'clamp(32px, 5vw, 48px)' }}>
-                  Let's<br />
-                  <span className="text-white/70 font-light">Connect</span>
+                  {sectionTitle.split('\\n').map((line: string, index: number) => (
+                    <span key={index}>
+                      {index === 0 ? line : <span className="text-white/70 font-light">{line}</span>}
+                      {index < sectionTitle.split('\\n').length - 1 && <br />}
+                    </span>
+                  ))}
                 </h2>
                 <p className="font-['Inter'] text-white/60 text-sm leading-[1.6]">
-                  우리와 함께 만들어갈<br />
-                  새로운 프로젝트를 이야기해보세요
+                  {sectionDescription.split('\\n').map((line: string, index: number) => (
+                    <span key={index}>
+                      {line}
+                      {index < sectionDescription.split('\\n').length - 1 && <br />}
+                    </span>
+                  ))}
                 </p>
               </div>
               
@@ -377,7 +402,7 @@ export default function ContactPage() {
               {/* 소셜 링크 */}
               <div className="social-links mt-16">
                 <p className="text-xs tracking-[2px] uppercase text-white/50 mb-6 font-medium">
-                  Follow Our Journey
+                  {socialText}
                 </p>
                 <div className="flex gap-4">
                   <a 
@@ -431,11 +456,15 @@ export default function ContactPage() {
                       <div className="text-white/60 font-['JetBrains_Mono'] text-xs tracking-[2px] uppercase">Send Message</div>
                     </div>
                     <h3 className="form-title font-['Playfair_Display'] font-bold text-white mb-4 leading-[0.9]" style={{ fontSize: 'clamp(28px, 4vw, 42px)' }}>
-                      Start a<br />
-                      <span className="text-white/70 font-light">Conversation</span>
+                      {formTitle.split('\\n').map((line: string, index: number) => (
+                        <span key={index}>
+                          {index === 0 ? line : <span className="text-white/70 font-light">{line}</span>}
+                          {index < formTitle.split('\\n').length - 1 && <br />}
+                        </span>
+                      ))}
                     </h3>
                     <p className="font-['Inter'] text-white/60 text-sm leading-[1.6]">
-                      당신의 아이디어를 들려주세요. 함께 만들어갈 이야기가 기다리고 있습니다.
+                      {formDescription}
                     </p>
                   </div>
                   
@@ -553,7 +582,7 @@ export default function ContactPage() {
                           </>
                         ) : (
                           <>
-                            <span>Send Message</span>
+                            <span>{submitText}</span>
                             <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                             </svg>

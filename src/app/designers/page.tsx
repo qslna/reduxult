@@ -4,10 +4,15 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { designers } from '@/data/designers';
+import { useTextContent } from '@/hooks/usePageContent';
 
 // HTML redux6 designers.html과 완전 동일한 Designers 페이지 구현
 export default function DesignersPage() {
   const router = useRouter();
+  
+  // Dynamic content loading
+  const { text: heroTitle } = useTextContent('designers', 'hero-title', 'SIX DESIGNERS');
+  const { text: heroSubtitle } = useTextContent('designers', 'hero-subtitle', 'One Collective Vision');
 
   useEffect(() => {
     // HTML 버전과 동일한 GSAP 애니메이션 초기화
@@ -130,7 +135,7 @@ export default function DesignersPage() {
               animation: 'fadeInUp 1s ease forwards'
             }}
           >
-            SIX DESIGNERS
+            {heroTitle}
           </h1>
           <p 
             className="hero-subtitle"
@@ -143,7 +148,7 @@ export default function DesignersPage() {
               animationDelay: '0.2s'
             }}
           >
-            One Collective Vision
+            {heroSubtitle}
           </p>
         </div>
       </section>

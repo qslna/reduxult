@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import CMSLayout from '@/components/cms/CMSLayout';
+import { useEffect } from 'react';
+import { useCMSAuthStore } from '@/store/useCMSAuthStore';
 import ImageSlotManager, { ImageSlot } from '@/components/cms/ImageSlotManager';
 import { useImageSlotsStore, useImageSlotsStats } from '@/store/useImageSlotsStore';
 import { imageSlotUtils } from '@/data/imageSlots';
@@ -30,6 +31,7 @@ type ViewMode = 'grid' | 'list';
 type FilterType = 'all' | 'with-images' | 'empty' | 'errors';
 
 export default function ImageSlotsPage() {
+  const { isAuthenticated, isLoading } = useCMSAuthStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -85,6 +87,28 @@ export default function ImageSlotsPage() {
     })).filter(({ slots }) => slots.length > 0);
   }, [allSlotsGrouped, searchQuery, filterType]);
 
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      window.location.href = '/admin/login';
+    }
+  }, [isAuthenticated, isLoading]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white/70 font-medium">Loading image slots...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   function getPageDisplayName(pageId: string): string {
     const displayNames: Record<string, string> = {
       'home': 'Home Page',
@@ -128,31 +152,33 @@ export default function ImageSlotsPage() {
   };
 
   return (
-    <CMSLayout title="Image Slots Management">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center">
-                <ImageIcon className="w-5 h-5 text-white" />
-              </div>
-              Image Slots Manager
-            </h1>
-            <p className="text-white/70 mt-2">
-              Manage all image slots throughout the REDUX website from one central location
-            </p>
-          </div>
+    <div className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <div className="sticky top-0 z-50 bg-gray-900/80 backdrop-blur-sm border-b border-white/10 p-6">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center">
+              <ImageIcon className="w-5 h-5 text-white" />
+            </div>
+            Image Slots Manager
+          </h1>
+          <p className="text-white/60">
+            Manage all image slots throughout the REDUX website from one central location
+          </p>
+        </div>
+      </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setShowStats(!showStats)}
-              className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
-            >
-              {showStats ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              {showStats ? 'Hide Stats' : 'Show Stats'}
-            </button>
-          </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
+        {/* Stats Toggle */}
+        <div className="flex justify-end">
+          <button
+            onClick={() => setShowStats(!showStats)}
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
+          >
+            {showStats ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            {showStats ? 'Hide Stats' : 'Show Stats'}
+          </button>
         </div>
 
         {/* Statistics Cards */}
@@ -381,6 +407,6 @@ export default function ImageSlotsPage() {
           )}
         </div>
       </div>
-    </CMSLayout>
+    </div>
   );
 }

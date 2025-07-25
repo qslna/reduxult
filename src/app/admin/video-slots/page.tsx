@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import CMSLayout from '@/components/cms/CMSLayout';
+import { useState, useMemo, useEffect } from 'react';
+import { useCMSAuthStore } from '@/store/useCMSAuthStore';
 import VideoSlotManager, { VideoSlot } from '@/components/cms/VideoSlotManager';
 import { useVideoSlotsStore, useVideoSlotsStats } from '@/store/useVideoSlotsStore';
 import { videoSlotUtils } from '@/data/videoSlots';
@@ -35,6 +35,7 @@ type ViewMode = 'grid' | 'list';
 type FilterType = 'all' | 'with-videos' | 'empty' | 'errors' | 'google-drive' | 'youtube' | 'upload';
 
 export default function VideoSlotsPage() {
+  const { isAuthenticated, isLoading } = useCMSAuthStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -43,6 +44,28 @@ export default function VideoSlotsPage() {
 
   const store = useVideoSlotsStore();
   const stats = useVideoSlotsStats();
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      window.location.href = '/admin/login';
+    }
+  }, [isAuthenticated, isLoading]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white/70 font-medium">Loading video slots...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   // Get all slots grouped by page
   const allSlotsGrouped = useMemo(() => {
@@ -152,34 +175,36 @@ export default function VideoSlotsPage() {
   };
 
   return (
-    <CMSLayout title="Video Slots Management">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl flex items-center justify-center">
-                <VideoIcon className="w-5 h-5 text-white" />
-              </div>
-              Video Slots Manager
-            </h1>
-            <p className="text-white/70 mt-2">
-              Manage video content throughout the REDUX website with support for Google Drive, YouTube, and uploads
-            </p>
-          </div>
+    <div className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <div className="sticky top-0 z-50 bg-gray-900/80 backdrop-blur-sm border-b border-white/10 p-6">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl flex items-center justify-center">
+              <VideoIcon className="w-5 h-5 text-white" />
+            </div>
+            Video Slots Manager
+          </h1>
+          <p className="text-white/60">
+            Manage video content throughout the REDUX website with support for Google Drive, YouTube, and uploads
+          </p>
+        </div>
+      </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setShowStats(!showStats)}
-              className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
-            >
-              {showStats ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              {showStats ? 'Hide Stats' : 'Show Stats'}
-            </button>
-          </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
+        {/* Stats Toggle */}
+        <div className="flex justify-end">
+          <button
+            onClick={() => setShowStats(!showStats)}
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
+          >
+            {showStats ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            {showStats ? 'Hide Stats' : 'Show Stats'}
+          </button>
         </div>
 
-        {/* Enhanced Statistics Cards */}
+        {/* Statistics Cards */}
         {showStats && (
           <div className="space-y-4">
             {/* Primary Stats */}
@@ -447,6 +472,6 @@ export default function VideoSlotsPage() {
           )}
         </div>
       </div>
-    </CMSLayout>
+    </div>
   );
 }

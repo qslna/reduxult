@@ -4,10 +4,31 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { initGSAPAnimations, animations, gsap } from '@/lib/gsap';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import { useTextContent } from '@/hooks/usePageContent';
 
 // HTML redux6 exhibitions.html과 완전 동일한 Exhibitions 페이지 구현
 export default function ExhibitionsPage() {
   const router = useRouter();
+  
+  // Dynamic content loading
+  const { text: heroTitle } = useTextContent('exhibitions', 'hero-title', 'EXHIBITIONS');
+  const { text: heroSubtitle } = useTextContent('exhibitions', 'hero-subtitle', 'Redefining Fashion Through Space');
+  const { text: cineTitle } = useTextContent('exhibitions', 'cine-title', 'CINE\\nMODE');
+  const { text: cineDescription1 } = useTextContent('exhibitions', 'cine-description-1', 'REDUX의 \'CINE MODE\' 패션 필름 전시회는 단순한 스타일 전시를 넘어 영상에 각자의 이야기를 담아 관객들과의 유대감 형성에 집중한 전시입니다.');
+  const { text: cineDescription2 } = useTextContent('exhibitions', 'cine-description-2', '6인의 디자이너가 각자의 관점으로 풀어낸 패션 필름을 통해 시각적 서사를 경험할 수 있습니다.');
+  const { text: cineCTA } = useTextContent('exhibitions', 'cine-cta', 'Explore Exhibition');
+  const { text: cineGalleryTitle } = useTextContent('exhibitions', 'cine-gallery-title', 'CINE MODE\\nGallery');
+  const { text: cineGalleryDescription } = useTextContent('exhibitions', 'cine-gallery-description', 'Behind The Scenes &\\nExhibition Moments');
+  const { text: roomTitle } = useTextContent('exhibitions', 'room-title', 'THE ROOM\\nOF [ ]');
+  const { text: roomDescription1 } = useTextContent('exhibitions', 'room-description-1', '패션 필름, 텍스타일 아트, 인터랙션 디자인, 공간 인스톨레이션 등 다양한 매체를 통해 각 디자이너의 서로 다른 컨셉으로 전시를 풀어냅니다.');
+  const { text: roomDescription2 } = useTextContent('exhibitions', 'room-description-2', '빈 공간 [ ] 안에 각자의 이야기를 채워나가는 실험적인 전시입니다.');
+  const { text: roomCTA } = useTextContent('exhibitions', 'room-cta', 'Coming Soon');
+  const { text: roomGalleryTitle } = useTextContent('exhibitions', 'room-gallery-title', 'THE ROOM OF [ ]\\nConceptual Preview');
+  const { text: roomGalleryDescription } = useTextContent('exhibitions', 'room-gallery-description', 'Conceptual Visualizations & Artistic Explorations\\n예술적 가능성을 탐구하는 컨셉추얼 비주얼리제이션');
+  const { text: futureTitle } = useTextContent('exhibitions', 'future-title', 'FUTURE\\nEXHIBITIONS');
+  const { text: futureDescription1 } = useTextContent('exhibitions', 'future-description-1', 'REDUX는 계속해서 새로운 형태의 전시를 준비하고 있습니다.');
+  const { text: futureDescription2 } = useTextContent('exhibitions', 'future-description-2', '패션과 예술의 경계를 넘나들며, 관객과 함께 만들어가는 특별한 경험을 선사하겠습니다.');
+  const { text: futureCTA } = useTextContent('exhibitions', 'future-cta', 'Stay Updated');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState('');
   const [currentAlt, setCurrentAlt] = useState('');
@@ -124,17 +145,18 @@ export default function ExhibitionsPage() {
                 letterSpacing: '-0.02em',
                 textShadow: '0 0 30px rgba(255,255,255,0.1), 3px 3px 0px rgba(255,255,255,0.03)'
               }}>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:0.2s]" style={{'--i': 1} as React.CSSProperties}>E</span>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:0.3s]" style={{'--i': 2} as React.CSSProperties}>X</span>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:0.4s]" style={{'--i': 3} as React.CSSProperties}>H</span>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:0.5s]" style={{'--i': 4} as React.CSSProperties}>I</span>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:0.6s]" style={{'--i': 5} as React.CSSProperties}>B</span>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:0.7s]" style={{'--i': 6} as React.CSSProperties}>I</span>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:0.8s]" style={{'--i': 7} as React.CSSProperties}>T</span>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:0.9s]" style={{'--i': 8} as React.CSSProperties}>I</span>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:1.0s]" style={{'--i': 9} as React.CSSProperties}>O</span>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:1.1s]" style={{'--i': 10} as React.CSSProperties}>N</span>
-            <span className="inline-block animate-[letterReveal_0.8s_ease_forwards] [animation-delay:1.2s]" style={{'--i': 11} as React.CSSProperties}>S</span>
+            {heroTitle.split('').map((letter: string, index: number) => (
+              <span 
+                key={index}
+                className="inline-block animate-[letterReveal_0.8s_ease_forwards]" 
+                style={{
+                  '--i': index + 1,
+                  animationDelay: `${0.2 + index * 0.1}s`
+                } as React.CSSProperties}
+              >
+                {letter}
+              </span>
+            ))}
           </h1>
           
           {/* 비대칭 서브타이틀 */}
@@ -144,7 +166,7 @@ export default function ExhibitionsPage() {
               fontSize: 'clamp(14px, 2vw, 18px)',
               fontWeight: 300
             }}>
-              Redefining Fashion Through Space
+              {heroSubtitle}
             </p>
             <div className="absolute -right-[150px] top-1/2 transform -translate-y-1/2 w-[100px] h-[1px] bg-gradient-to-l from-transparent to-white/40 opacity-0 animate-[slideInRight_1s_ease_forwards] [animation-delay:1.5s] max-[768px]:hidden"></div>
           </div>
@@ -223,18 +245,21 @@ export default function ExhibitionsPage() {
                   {/* 전시 제목 */}
                   <h2 className="exhibition-title font-['Playfair_Display'] font-bold text-black mb-8 leading-[0.9] tracking-[-0.02em]" 
                       style={{ fontSize: 'clamp(42px, 6vw, 72px)' }}>
-                    CINE<br />
-                    <span className="text-gray-600">MODE</span>
+                    {cineTitle.split('\\n').map((line: string, index: number) => (
+                      <span key={index}>
+                        {index === 0 ? line : <span className="text-gray-600">{line}</span>}
+                        {index < cineTitle.split('\\n').length - 1 && <br />}
+                      </span>
+                    ))}
                   </h2>
                   
                   {/* 설명 */}
                   <div className="space-y-4 mb-10">
                     <p className="exhibition-description font-['Inter'] text-gray-700 leading-[1.7] font-light" style={{ fontSize: 'clamp(15px, 2vw, 17px)' }}>
-                      REDUX의 'CINE MODE' 패션 필름 전시회는 단순한 스타일 전시를 넘어 
-                      영상에 각자의 이야기를 담아 관객들과의 유대감 형성에 집중한 전시입니다.
+                      {cineDescription1}
                     </p>
                     <p className="font-['Inter'] text-gray-600 leading-[1.7] font-light text-sm">
-                      6인의 디자이너가 각자의 관점으로 풀어낸 패션 필름을 통해 시각적 서사를 경험할 수 있습니다.
+                      {cineDescription2}
                     </p>
                   </div>
                   
@@ -263,7 +288,7 @@ export default function ExhibitionsPage() {
                     href="/about/fashion-film" 
                     className="exhibition-cta group inline-flex items-center gap-3 bg-black text-white px-8 py-4 no-underline text-sm tracking-[1px] uppercase font-medium relative overflow-hidden transition-all duration-500 ease-out hover:bg-gray-900 hover:scale-[1.02] hover:shadow-xl"
                   >
-                    <span className="relative z-10">Explore Exhibition</span>
+                    <span className="relative z-10">{cineCTA}</span>
                     <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -293,15 +318,23 @@ export default function ExhibitionsPage() {
                       <div className="absolute -top-8 left-0 w-[200px] h-[1px] bg-gradient-to-r from-white/40 to-transparent"></div>
                       
                       <h3 className="font-['Playfair_Display'] text-white mb-6 leading-[0.9] font-bold" style={{ fontSize: 'clamp(36px, 6vw, 64px)' }}>
-                        CINE MODE<br />
-                        <span className="text-white/60 font-light">Gallery</span>
+                        {cineGalleryTitle.split('\\n').map((line: string, index: number) => (
+                          <span key={index}>
+                            {index === 0 ? line : <span className="text-white/60 font-light">{line}</span>}
+                            {index < cineGalleryTitle.split('\\n').length - 1 && <br />}
+                          </span>
+                        ))}
                       </h3>
                     </div>
                   </div>
                   <div className="col-span-4 max-[768px]:col-span-12">
                     <p className="font-['Inter'] text-white/70 leading-[1.6] text-right max-[768px]:text-left" style={{ fontSize: 'clamp(14px, 2vw, 16px)' }}>
-                      Behind The Scenes &<br />
-                      Exhibition Moments
+                      {cineGalleryDescription.split('\\n').map((line: string, index: number) => (
+                        <span key={index}>
+                          {line}
+                          {index < cineGalleryDescription.split('\\n').length - 1 && <br />}
+                        </span>
+                      ))}
                     </p>
                   </div>
                 </div>
@@ -449,10 +482,10 @@ export default function ExhibitionsPage() {
                   {/* 설명 - 개선된 타이포그래피 */}
                   <div className="space-y-4 mb-10">
                     <p className="exhibition-description font-['Inter'] text-gray-700 leading-[1.7] font-light" style={{ fontSize: 'clamp(15px, 2vw, 17px)' }}>
-                      패션 필름, 텍스타일 아트, 인터랙션 디자인, 공간 인스톨레이션 등 다양한 매체를 통해 각 디자이너의 서로 다른 컨셉으로 전시를 풀어냅니다.
+                      {roomDescription1}
                     </p>
                     <p className="font-['Inter'] text-gray-600 leading-[1.7] font-light text-sm">
-                      빈 공간 [ ] 안에 각자의 이야기를 채워나가는 실험적인 전시입니다.
+                      {roomDescription2}
                     </p>
                   </div>
                   
@@ -484,7 +517,7 @@ export default function ExhibitionsPage() {
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="relative z-10">Coming Soon</span>
+                    <span className="relative z-10">{roomCTA}</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                   </button>
                 </div>
@@ -701,18 +734,22 @@ export default function ExhibitionsPage() {
               </div>
               
               <h2 className="future-title font-['Playfair_Display'] font-bold text-white mb-8 leading-[0.9]" style={{ fontSize: 'clamp(48px, 8vw, 96px)' }}>
-                FUTURE<br />
-                <span className="text-white/70 font-light">EXHIBITIONS</span>
+                {futureTitle.split('\\n').map((line: string, index: number) => (
+                  <span key={index}>
+                    {index === 0 ? line : <span className="text-white/70 font-light">{line}</span>}
+                    {index < futureTitle.split('\\n').length - 1 && <br />}
+                  </span>
+                ))}
               </h2>
             </div>
             
             {/* 설명 섹션 */}
             <div className="mb-16">
               <p className="future-description font-['Inter'] text-white/80 leading-[1.8] max-w-3xl mx-auto mb-8" style={{ fontSize: 'clamp(16px, 2.5vw, 20px)' }}>
-                REDUX는 계속해서 새로운 형태의 전시를 준비하고 있습니다.
+                {futureDescription1}
               </p>
               <p className="font-['Inter'] text-white/60 leading-[1.7] max-w-2xl mx-auto" style={{ fontSize: 'clamp(14px, 2vw, 16px)' }}>
-                패션과 예술의 경계를 넘나들며, 관객과 함께 만들어가는 특별한 경험을 선사하겠습니다.
+                {futureDescription2}
               </p>
             </div>
             
@@ -764,7 +801,7 @@ export default function ExhibitionsPage() {
                 href="/contact" 
                 className="inline-flex items-center gap-3 bg-white/10 text-white px-8 py-4 backdrop-blur-sm border border-white/20 text-sm tracking-[1px] uppercase font-medium transition-all duration-500 hover:bg-white/20 hover:scale-[1.02] hover:border-white/40"
               >
-                <span>Stay Updated</span>
+                <span>{futureCTA}</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26c.3.16.67.16.97 0L20 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>

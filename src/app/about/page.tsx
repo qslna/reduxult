@@ -4,9 +4,21 @@ import { useEffect } from 'react';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import CategoryPreview from '@/components/about/CategoryPreview';
 import { aboutGalleries } from '@/data/aboutGallery';
+import { useTextContent } from '@/hooks/usePageContent';
 
 // HTML redux6 about.html과 완전 동일한 About 페이지 구현
 export default function AboutPage() {
+  // Dynamic content loading
+  const { text: heroTitle } = useTextContent('about', 'about-title', 'WHO REDUX?');
+  const { text: heroSubtitle } = useTextContent('about', 'about-subtitle', 'Fashion Designer Collective');
+  const { text: introTitle } = useTextContent('about', 'intro-title', '우리는\nREDUX\n입니다');
+  const { text: introDescription1 } = useTextContent('about', 'intro-description-1', 'REDUX는 6인의 패션 디자이너가 모여 만든 크리에이티브 콜렉티브입니다. 우리는 패션을 넘어 다양한 예술적 매체를 통해 새로운 경험을 창조합니다.');
+  const { text: introDescription2 } = useTextContent('about', 'intro-description-2', '패션 필름, 설치 미술, 비주얼 아트, 공간 디자인 등 다양한 형태로 관객들에게 \'기억에 남을 순간\'을 선사하고자 합니다.');
+  const { text: philosophyTitle } = useTextContent('about', 'philosophy-title', 'OUR PHILOSOPHY');
+  const { text: philosophyText1 } = useTextContent('about', 'philosophy-text-1', '우리는 경계를 넘어 새로운 가능성을 탐구합니다.');
+  const { text: philosophyText2 } = useTextContent('about', 'philosophy-text-2', '각자의 개성이 하나로 모여 더 큰 시너지를 만들어냅니다.');
+  const { text: philosophyText3 } = useTextContent('about', 'philosophy-text-3', '순간을 넘어 영원히 기억될 경험을 디자인합니다.');
+  const { text: valuesTitle } = useTextContent('about', 'values-title', 'OUR VALUES');
   useEffect(() => {
     // HTML 버전과 동일한 GSAP 애니메이션 초기화
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -144,7 +156,7 @@ export default function AboutPage() {
             zIndex: 3
           }}
         >
-          WHO REDUX?
+{heroTitle}
         </h1>
         <p 
           className="hero-subtitle"
@@ -161,7 +173,7 @@ export default function AboutPage() {
             transform: 'translateX(10px)'
           }}
         >
-          Fashion Designer Collective
+{heroSubtitle}
         </p>
       </section>
 
@@ -203,9 +215,18 @@ export default function AboutPage() {
                 lineHeight: 0.9
               }}
             >
-              우리는<br/>
-              <span style={{ color: '#666', fontWeight: 300, fontSize: '0.7em', letterSpacing: '0.1em' }}>REDUX</span><br/>
-              입니다
+{introTitle.split('\n').map((line: string, index: number) => (
+                <span key={index}>
+                  {line === 'REDUX' ? (
+                    <span style={{ color: '#666', fontWeight: 300, fontSize: '0.7em', letterSpacing: '0.1em' }}>
+                      {line}
+                    </span>
+                  ) : (
+                    line
+                  )}
+                  {index < introTitle.split('\n').length - 1 && <br />}
+                </span>
+              ))}
             </h2>
           </div>
           
@@ -221,8 +242,7 @@ export default function AboutPage() {
                 paddingLeft: '25px'
               }}
             >
-              REDUX는 6인의 패션 디자이너가 모여 만든 크리에이티브 콜렉티브입니다.
-              우리는 패션을 넘어 다양한 예술적 매체를 통해 새로운 경험을 창조합니다.
+{introDescription1}
             </p>
             <p 
               style={{
@@ -234,8 +254,7 @@ export default function AboutPage() {
                 transform: 'translateX(20px)'
               }}
             >
-              패션 필름, 설치 미술, 비주얼 아트, 공간 디자인 등 다양한 형태로
-              관객들에게 '기억에 남을 순간'을 선사하고자 합니다.
+{introDescription2}
             </p>
           </div>
         </div>
@@ -332,7 +351,7 @@ export default function AboutPage() {
               marginBottom: '60px'
             }}
           >
-            OUR PHILOSOPHY
+{philosophyTitle}
           </h2>
           <p 
             className="philosophy-text"
@@ -343,7 +362,12 @@ export default function AboutPage() {
               marginBottom: '40px'
             }}
           >
-            우리는 <span style={{ color: '#999', fontStyle: 'italic' }}>경계를 넘어</span> 새로운 가능성을 탐구합니다.
+{philosophyText1.split('경계를 넘어').map((part: string, index: number) => (
+              <span key={index}>
+                {part}
+                {index === 0 && <span style={{ color: '#999', fontStyle: 'italic' }}>경계를 넘어</span>}
+              </span>
+            ))}
           </p>
           <p 
             className="philosophy-text"
@@ -354,7 +378,12 @@ export default function AboutPage() {
               marginBottom: '40px'
             }}
           >
-            각자의 개성이 하나로 모여 <span style={{ color: '#999', fontStyle: 'italic' }}>더 큰 시너지</span>를 만들어냅니다.
+{philosophyText2.split('더 큰 시너지').map((part: string, index: number) => (
+              <span key={index}>
+                {part}
+                {index === 0 && <span style={{ color: '#999', fontStyle: 'italic' }}>더 큰 시너지</span>}
+              </span>
+            ))}
           </p>
           <p 
             className="philosophy-text"
@@ -365,7 +394,12 @@ export default function AboutPage() {
               marginBottom: '40px'
             }}
           >
-            순간을 넘어 <span style={{ color: '#999', fontStyle: 'italic' }}>영원히 기억될</span> 경험을 디자인합니다.
+{philosophyText3.split('영원히 기억될').map((part: string, index: number) => (
+              <span key={index}>
+                {part}
+                {index === 0 && <span style={{ color: '#999', fontStyle: 'italic' }}>영원히 기억될</span>}
+              </span>
+            ))}
           </p>
         </div>
       </section>
@@ -388,7 +422,7 @@ export default function AboutPage() {
             marginBottom: '80px'
           }}
         >
-          OUR VALUES
+{valuesTitle}
         </h2>
         <div 
           className="values-grid"
