@@ -5,6 +5,11 @@ import { useRouter } from 'next/navigation';
 import { initGSAPAnimations, animations, gsap } from '@/lib/gsap';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useTextContent } from '@/hooks/usePageContent';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import { useCMSSlot } from '@/hooks/useCMSSlot';
+import MediaSlot from '@/components/cms/MediaSlot';
+import FloatingCMSButton from '@/components/cms/FloatingCMSButton';
+import { Minus } from 'lucide-react';
 
 // HTML redux6 exhibitions.html과 완전 동일한 Exhibitions 페이지 구현
 export default function ExhibitionsPage() {
@@ -32,6 +37,13 @@ export default function ExhibitionsPage() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState('');
   const [currentAlt, setCurrentAlt] = useState('');
+  
+  // CMS 인증
+  const { isAuthenticated } = useSimpleAuth();
+  
+  // CMS 슬롯 - 전시 갤러리
+  const { slot: cineModeSlot, currentFiles: cineModeFiles, updateFiles: updateCineModeFiles } = useCMSSlot('exhibition-cinemode-gallery');
+  const { slot: theRoomSlot, currentFiles: theRoomFiles, updateFiles: updateTheRoomFiles } = useCMSSlot('exhibition-theroom-gallery');
 
   useEffect(() => {
     // HTML 버전과 동일한 스크롤 네비게이션 효과
@@ -368,91 +380,90 @@ export default function ExhibitionsPage() {
               </div>
             </div>
             
-            {/* 비대칭 갤러리 레이아웃 */}
-            <div className="gallery-grid px-10">
+            {/* 비대칭 갤러리 레이아웃 with CMS */}
+            <div className="gallery-grid px-10 relative">
+              {/* CMS 오버레이 - CINE MODE 갤러리 */}
+              {isAuthenticated && cineModeSlot && (
+                <div className="absolute -top-20 right-10 z-30">
+                  <div className="bg-black/90 backdrop-blur-sm border border-gray-700 rounded-lg p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="text-sm font-medium text-white">CINE MODE 갤러리</div>
+                      <div className="text-xs text-gray-400">
+                        {cineModeFiles.length}/{cineModeSlot.maxFiles || 10}
+                      </div>
+                    </div>
+                    <MediaSlot
+                      slot={cineModeSlot}
+                      currentFiles={cineModeFiles}
+                      onFilesUpdate={updateCineModeFiles}
+                      className="w-16 h-16"
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="max-w-7xl mx-auto">
-                {/* 비대칭 그리드 시스템 */}
+                {/* 동적 그리드 시스템 */}
                 <div className="grid grid-cols-12 gap-4 auto-rows-[200px] max-[768px]:auto-rows-[150px]">
-                  
-                  {/* 이미지 1 - 대형 */}
-                  <div 
-                    className="col-span-6 row-span-2 group cursor-pointer relative overflow-hidden max-[768px]:col-span-12 max-[768px]:row-span-1"
-                    onClick={() => openLightbox('/images/exhibitions/cinemode/1.jpg', 'CINE MODE 전시 메인 비주얼')}
-                  >
-                    <OptimizedImage 
-                      src="/images/exhibitions/cinemode/1.jpg" 
-                      alt="CINE MODE Gallery 1" 
-                      fill={true}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover transition-all duration-[1200ms] ease-out group-hover:scale-110 group-hover:rotate-[2deg]"
-                    />
-                    {/* 호버 오버레이 */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div className="absolute bottom-6 left-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <div className="text-sm font-medium tracking-wider uppercase">Main Exhibition</div>
-                      <div className="text-xs text-white/80 mt-1">Opening Night</div>
-                    </div>
-                    {/* 클릭 인디케이터 */}
-                    <div className="absolute top-6 right-6 w-8 h-8 border border-white/40 rounded-full flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  {/* 이미지 2 - 중형 */}
-                  <div 
-                    className="col-span-3 row-span-1 group cursor-pointer relative overflow-hidden max-[768px]:col-span-6"
-                    onClick={() => openLightbox('/images/exhibitions/cinemode/2.jpg', 'CINE MODE 전시 방문객 경험')}
-                  >
-                    <OptimizedImage 
-                      src="/images/exhibitions/cinemode/2.jpg" 
-                      alt="CINE MODE Gallery 2" 
-                      fill={true}
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                      className="object-cover transition-all duration-[1000ms] ease-out group-hover:scale-105 group-hover:brightness-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
-                    <div className="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-                      <div className="text-xs font-medium tracking-wide uppercase">Visitor Experience</div>
-                    </div>
-                  </div>
-                  
-                  {/* 이미지 3 - 중형 */}
-                  <div 
-                    className="col-span-3 row-span-1 group cursor-pointer relative overflow-hidden max-[768px]:col-span-6"
-                    onClick={() => openLightbox('/images/exhibitions/cinemode/3.jpg', 'CINE MODE 전시 디테일')}
-                  >
-                    <OptimizedImage 
-                      src="/images/exhibitions/cinemode/3.jpg" 
-                      alt="CINE MODE Gallery 3" 
-                      fill={true}
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                      className="object-cover transition-all duration-[1000ms] ease-out group-hover:scale-105 group-hover:brightness-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-bl from-transparent to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
-                    <div className="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-                      <div className="text-xs font-medium tracking-wide uppercase">Exhibition Detail</div>
-                    </div>
-                  </div>
-                  
-                  {/* 이미지 4 - 와이드 */}
-                  <div 
-                    className="col-span-6 row-span-1 group cursor-pointer relative overflow-hidden max-[768px]:col-span-12"
-                    onClick={() => openLightbox('/images/exhibitions/cinemode/4.jpg', 'CINE MODE 비하인드 심')}
-                  >
-                    <OptimizedImage 
-                      src="/images/exhibitions/cinemode/4.jpg" 
-                      alt="CINE MODE Gallery 4" 
-                      fill={true}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover transition-all duration-[1000ms] ease-out group-hover:scale-105 group-hover:brightness-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
-                    <div className="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-                      <div className="text-xs font-medium tracking-wide uppercase">Behind The Scenes</div>
-                    </div>
-                  </div>
+                  {(cineModeFiles.length > 0 ? cineModeFiles : [
+                    '/images/exhibitions/cinemode/1.jpg',
+                    '/images/exhibitions/cinemode/2.jpg',
+                    '/images/exhibitions/cinemode/3.jpg',
+                    '/images/exhibitions/cinemode/4.jpg'
+                  ]).map((image, index) => {
+                    // 동적 레이아웃 정의
+                    const layouts = [
+                      { cols: 'col-span-6', rows: 'row-span-2', mobile: 'max-[768px]:col-span-12 max-[768px]:row-span-1', title: 'Main Exhibition', subtitle: 'Opening Night' },
+                      { cols: 'col-span-3', rows: 'row-span-1', mobile: 'max-[768px]:col-span-6', title: 'Visitor Experience', subtitle: '' },
+                      { cols: 'col-span-3', rows: 'row-span-1', mobile: 'max-[768px]:col-span-6', title: 'Exhibition Detail', subtitle: '' },
+                      { cols: 'col-span-6', rows: 'row-span-1', mobile: 'max-[768px]:col-span-12', title: 'Behind The Scenes', subtitle: '' }
+                    ];
+                    
+                    const layout = layouts[index % layouts.length];
+                    
+                    return (
+                      <div 
+                        key={index}
+                        className={`${layout.cols} ${layout.rows} ${layout.mobile} group cursor-pointer relative overflow-hidden`}
+                        onClick={() => openLightbox(image, `CINE MODE 전시 이미지 ${index + 1}`)}
+                      >
+                        <OptimizedImage 
+                          src={image}
+                          alt={`CINE MODE Gallery ${index + 1}`} 
+                          fill={true}
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="object-cover transition-all duration-[1200ms] ease-out group-hover:scale-110 group-hover:rotate-[2deg]"
+                        />
+                        
+                        {/* CMS 개별 이미지 삭제 버튼 */}
+                        {isAuthenticated && cineModeFiles.length > 0 && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const newFiles = cineModeFiles.filter((_, i) => i !== index);
+                              updateCineModeFiles(newFiles);
+                            }}
+                            className="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100 z-20"
+                          >
+                            <Minus className="w-4 h-4" />
+                          </button>
+                        )}
+
+                        {/* 호버 오버레이 */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="absolute bottom-6 left-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                          <div className="text-sm font-medium tracking-wider uppercase">{layout.title}</div>
+                          {layout.subtitle && <div className="text-xs text-white/80 mt-1">{layout.subtitle}</div>}
+                        </div>
+                        {/* 클릭 인디케이터 */}
+                        <div className="absolute top-6 right-6 w-8 h-8 border border-white/40 rounded-full flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                          </svg>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -625,115 +636,123 @@ export default function ExhibitionsPage() {
               </div>
             </div>
             
-            {/* 컬셉추얼 갤러리 레이아웃 */}
-            <div className="gallery-grid px-10">
+            {/* 컬셉추얼 갤러리 레이아웃 with CMS */}
+            <div className="gallery-grid px-10 relative">
+              {/* CMS 오버레이 - THE ROOM 갤러리 */}
+              {isAuthenticated && theRoomSlot && (
+                <div className="absolute -top-20 right-10 z-30">
+                  <div className="bg-white/95 backdrop-blur-sm border border-gray-300 rounded-lg p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="text-sm font-medium text-black">THE ROOM 갤러리</div>
+                      <div className="text-xs text-gray-600">
+                        {theRoomFiles.length}/{theRoomSlot.maxFiles || 10}
+                      </div>
+                    </div>
+                    <MediaSlot
+                      slot={theRoomSlot}
+                      currentFiles={theRoomFiles}
+                      onFilesUpdate={updateTheRoomFiles}
+                      className="w-16 h-16"
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="max-w-6xl mx-auto">
-                {/* 미니멀한 그리드 */}
+                {/* 동적 미니멀한 그리드 */}
                 <div className="grid grid-cols-12 gap-8 max-[768px]:gap-4">
-                  
-                  {/* 이미지 1 - 직사각형 */}
-                  <div className="col-span-4 max-[768px]:col-span-12">
-                    <div 
-                      className="aspect-[3/4] group cursor-pointer relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200"
-                      onClick={() => openLightbox('/images/exhibitions/theroom/1.jpg', 'THE ROOM 컨셉추얼 비주얼 1')}
-                    >
-                      <OptimizedImage 
-                        src="/images/exhibitions/theroom/1.jpg" 
-                        alt="THE ROOM Gallery 1" 
-                        fill={true}
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover transition-all duration-[1200ms] ease-out group-hover:scale-105 group-hover:brightness-105"
-                      />
-                      
-                      {/* 비대칭 호버 오버레이 */}
-                      <div className="absolute inset-0">
-                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-500/0 via-transparent to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="absolute bottom-6 left-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          <div className="text-xs font-medium tracking-wider uppercase">Concept 01</div>
-                        </div>
-                        {/* 컨셉추얼 아이콘 */}
-                        <div className="absolute top-6 right-6 w-[24px] h-[24px] border border-white/50 rounded-sm flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          <div className="w-[8px] h-[8px] bg-white/70 rounded-sm"></div>
-                        </div>
-                      </div>
-                    </div>
+                  {(theRoomFiles.length > 0 ? theRoomFiles : [
+                    '/images/exhibitions/theroom/1.jpg',
+                    '/images/exhibitions/theroom/2.jpg',
+                    '/images/exhibitions/theroom/3.jpg'
+                  ]).map((image, index) => {
+                    // 동적 레이아웃 정의
+                    const layouts = [
+                      {
+                        cols: 'col-span-4 max-[768px]:col-span-12',
+                        aspect: 'aspect-[3/4]',
+                        title: 'Spatial Concept',
+                        subtitle: '공간의 비움과 채움을 통한 전시 컨셉',
+                        caption: 'Concept 01'
+                      },
+                      {
+                        cols: 'col-span-8 max-[768px]:col-span-12',
+                        aspect: 'aspect-[4/3]',
+                        title: 'Interactive Experience',
+                        subtitle: '관객 참여를 통한 다이나믹 전시 경험 디자인',
+                        caption: 'Interactive Design'
+                      },
+                      {
+                        cols: 'col-span-12 max-[768px]:col-span-12',
+                        aspect: 'aspect-[21/9] max-[768px]:aspect-[4/3]',
+                        title: 'Overall Vision',
+                        subtitle: '6인의 디자이너가 각자의 색깔로 채워나갈 빈 공간의 전체적인 비전과 공간 구성',
+                        caption: 'Installation Preview'
+                      }
+                    ];
                     
-                    {/* 컬셉추얼 설명 */}
-                    <div className="mt-4 px-2">
-                      <h4 className="font-['Inter'] text-sm font-medium text-black mb-2 tracking-wide uppercase">Spatial Concept</h4>
-                      <p className="font-['Inter'] text-xs text-gray-600 leading-[1.5]">
-                        공간의 비움과 채움을 통한 전시 컨셉
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* 이미지 2 - 가로형 */}
-                  <div className="col-span-8 max-[768px]:col-span-12">
-                    <div 
-                      className="aspect-[4/3] group cursor-pointer relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200"
-                      onClick={() => openLightbox('/images/exhibitions/theroom/2.jpg', 'THE ROOM 컨셉추얼 비주얼 2')}
-                    >
-                      <OptimizedImage 
-                        src="/images/exhibitions/theroom/2.jpg" 
-                        alt="THE ROOM Gallery 2" 
-                        fill={true}
-                        sizes="(max-width: 768px) 100vw, 67vw"
-                        className="object-cover transition-all duration-[1200ms] ease-out group-hover:scale-105 group-hover:brightness-105"
-                      />
-                      
-                      <div className="absolute inset-0">
-                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-orange-500/0 via-transparent to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="absolute bottom-6 left-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          <div className="text-xs font-medium tracking-wider uppercase">Interactive Design</div>
-                        </div>
-                      </div>
-                    </div>
+                    const layout = layouts[index % layouts.length];
                     
-                    <div className="mt-4 px-2">
-                      <h4 className="font-['Inter'] text-sm font-medium text-black mb-2 tracking-wide uppercase">Interactive Experience</h4>
-                      <p className="font-['Inter'] text-xs text-gray-600 leading-[1.5]">
-                        관객 참여를 통한 다이나믹 전시 경험 디자인
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* 이미지 3 - 사각형 */}
-                  <div className="col-span-12 max-[768px]:col-span-12">
-                    <div 
-                      className="aspect-[21/9] group cursor-pointer relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 max-[768px]:aspect-[4/3]"
-                      onClick={() => openLightbox('/images/exhibitions/theroom/3.jpg', 'THE ROOM 컨셉추얼 비주얼 3')}
-                    >
-                      <OptimizedImage 
-                        src="/images/exhibitions/theroom/3.jpg" 
-                        alt="THE ROOM Gallery 3" 
-                        fill={true}
-                        sizes="100vw"
-                        className="object-cover transition-all duration-[1200ms] ease-out group-hover:scale-105 group-hover:brightness-105"
-                      />
-                      
-                      <div className="absolute inset-0">
-                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-orange-500/0 via-transparent to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="absolute bottom-8 left-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          <div className="text-sm font-medium tracking-wider uppercase">Installation Preview</div>
-                          <div className="text-xs text-white/80 mt-1">전체적인 설치 공간 비전</div>
+                    return (
+                      <div key={index} className={layout.cols}>
+                        <div 
+                          className={`${layout.aspect} group cursor-pointer relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200`}
+                          onClick={() => openLightbox(image, `THE ROOM 컨셉추얼 비주얼 ${index + 1}`)}
+                        >
+                          <OptimizedImage 
+                            src={image}
+                            alt={`THE ROOM Gallery ${index + 1}`} 
+                            fill={true}
+                            sizes="(max-width: 768px) 100vw, 67vw"
+                            className="object-cover transition-all duration-[1200ms] ease-out group-hover:scale-105 group-hover:brightness-105"
+                          />
+                          
+                          {/* CMS 개별 이미지 삭제 버튼 */}
+                          {isAuthenticated && theRoomFiles.length > 0 && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const newFiles = theRoomFiles.filter((_, i) => i !== index);
+                                updateTheRoomFiles(newFiles);
+                              }}
+                              className="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100 z-20"
+                            >
+                              <Minus className="w-4 h-4" />
+                            </button>
+                          )}
+
+                          {/* 비대칭 호버 오버레이 */}
+                          <div className="absolute inset-0">
+                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-500/0 via-transparent to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div className="absolute bottom-6 left-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                              <div className="text-xs font-medium tracking-wider uppercase">{layout.caption}</div>
+                            </div>
+                            {/* 컨셉추얼 아이콘 */}
+                            <div className="absolute top-6 right-6 w-[24px] h-[24px] border border-white/50 rounded-sm flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                              {index === 2 ? (
+                                /* 파노라마 형태의 비주얼을 위한 전용 아이콘 */
+                                <div className="flex items-center gap-1">
+                                  <div className="w-[6px] h-[6px] bg-white/70 rounded-sm"></div>
+                                  <div className="w-[6px] h-[6px] bg-white/70 rounded-sm"></div>
+                                  <div className="w-[6px] h-[6px] bg-white/70 rounded-sm"></div>
+                                </div>
+                              ) : (
+                                <div className="w-[8px] h-[8px] bg-white/70 rounded-sm"></div>
+                              )}
+                            </div>
+                          </div>
                         </div>
                         
-                        {/* 파노라마 형태의 비주얼을 위한 전용 아이콘 */}
-                        <div className="absolute top-8 right-8 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          <div className="w-[20px] h-[20px] border border-white/50 rounded-sm"></div>
-                          <div className="w-[20px] h-[20px] border border-white/50 rounded-sm"></div>
-                          <div className="w-[20px] h-[20px] border border-white/50 rounded-sm"></div>
+                        {/* 컬셉추얼 설명 */}
+                        <div className={`mt-4 px-2 ${index === 2 ? 'text-center' : ''}`}>
+                          <h4 className="font-['Inter'] text-sm font-medium text-black mb-2 tracking-wide uppercase">{layout.title}</h4>
+                          <p className={`font-['Inter'] text-xs text-gray-600 leading-[1.5] ${index === 2 ? 'max-w-2xl mx-auto' : ''}`}>
+                            {layout.subtitle}
+                          </p>
                         </div>
                       </div>
-                    </div>
-                    
-                    <div className="mt-4 px-2 text-center">
-                      <h4 className="font-['Inter'] text-sm font-medium text-black mb-2 tracking-wide uppercase">Overall Vision</h4>
-                      <p className="font-['Inter'] text-xs text-gray-600 leading-[1.5] max-w-2xl mx-auto">
-                        6인의 디자이너가 각자의 색깔로 채워나갈 빈 공간의 전체적인 비전과 공간 구성
-                      </p>
-                    </div>
-                  </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -896,6 +915,9 @@ export default function ExhibitionsPage() {
           </div>
         </div>
       )}
+
+      {/* Floating CMS Button */}
+      <FloatingCMSButton />
       
       {/* CSS Animations */}
       <style jsx>{`

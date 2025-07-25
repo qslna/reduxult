@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { designers } from '@/data/designers';
 import { useTextContent } from '@/hooks/usePageContent';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import { useCMSSlot } from '@/hooks/useCMSSlot';
+import MediaSlot from '@/components/cms/MediaSlot';
+import FloatingCMSButton from '@/components/cms/FloatingCMSButton';
 
 // HTML redux6 designers.html과 완전 동일한 Designers 페이지 구현
 export default function DesignersPage() {
@@ -13,6 +17,17 @@ export default function DesignersPage() {
   // Dynamic content loading
   const { text: heroTitle } = useTextContent('designers', 'hero-title', 'SIX DESIGNERS');
   const { text: heroSubtitle } = useTextContent('designers', 'hero-subtitle', 'One Collective Vision');
+  
+  // CMS 인증
+  const { isAuthenticated } = useSimpleAuth();
+  
+  // CMS 슬롯 - 각 디자이너 프로필 이미지
+  const { slot: kimBominSlot, currentFiles: kimBominFiles, updateFiles: updateKimBominFiles } = useCMSSlot('main-designer-profile-kimbomin');
+  const { slot: parkParangSlot, currentFiles: parkParangFiles, updateFiles: updateParkParangFiles } = useCMSSlot('main-designer-profile-parkparang');
+  const { slot: leeTaehyeonSlot, currentFiles: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles } = useCMSSlot('main-designer-profile-leetaehyeon');
+  const { slot: choiEunsolSlot, currentFiles: choiEunsolFiles, updateFiles: updateChoiEunsolFiles } = useCMSSlot('main-designer-profile-choieunsol');
+  const { slot: hwangJinsuSlot, currentFiles: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles } = useCMSSlot('main-designer-profile-hwangjinsu');
+  const { slot: kimGyeongsuSlot, currentFiles: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles } = useCMSSlot('main-designer-profile-kimgyeongsu');
 
   useEffect(() => {
     // HTML 버전과 동일한 GSAP 애니메이션 초기화
@@ -71,18 +86,47 @@ export default function DesignersPage() {
     }
   }, []);
 
+  // CMS 이미지 파일 가져오기 함수
+  const getCMSImageForDesigner = (designerId: string) => {
+    switch (designerId) {
+      case 'kimbomin': return kimBominFiles[0];
+      case 'parkparang': return parkParangFiles[0];
+      case 'leetaehyeon': return leeTaehyeonFiles[0];
+      case 'choieunsol': return choiEunsolFiles[0];
+      case 'hwangjinsu': return hwangJinsuFiles[0];
+      case 'kimgyeongsu': return kimGyeongsuFiles[0];
+      default: return null;
+    }
+  };
+
+  // CMS 슬롯 가져오기 함수
+  const getCMSSlotForDesigner = (designerId: string) => {
+    switch (designerId) {
+      case 'kimbomin': return { slot: kimBominSlot, files: kimBominFiles, updateFiles: updateKimBominFiles };
+      case 'parkparang': return { slot: parkParangSlot, files: parkParangFiles, updateFiles: updateParkParangFiles };
+      case 'leetaehyeon': return { slot: leeTaehyeonSlot, files: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles };
+      case 'choieunsol': return { slot: choiEunsolSlot, files: choiEunsolFiles, updateFiles: updateChoiEunsolFiles };
+      case 'hwangjinsu': return { slot: hwangJinsuSlot, files: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles };
+      case 'kimgyeongsu': return { slot: kimGyeongsuSlot, files: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles };
+      default: return null;
+    }
+  };
+
   // 6인의 디자이너 데이터를 실제 데이터에서 가져와서 display용으로 변환
-  const designerDisplayData = designers.map((designer, index) => ({
-    id: designer.id,
-    number: String(designer.order).padStart(2, '0'),
-    name: designer.name.toUpperCase(),
-    mainRole: designer.mainRole,
-    role: designer.role,
-    brand: designer.filmTitle || 'REDUX COLLECTIVE',
-    profileImage: designer.profileImage,
-    hasImage: designer.profileImage !== '',
-    hasVideo: !!designer.videoUrl
-  }));
+  const designerDisplayData = designers.map((designer, index) => {
+    const cmsImage = getCMSImageForDesigner(designer.id);
+    return {
+      id: designer.id,
+      number: String(designer.order).padStart(2, '0'),
+      name: designer.name.toUpperCase(),
+      mainRole: designer.mainRole,
+      role: designer.role,
+      brand: designer.filmTitle || 'REDUX COLLECTIVE',
+      profileImage: cmsImage || designer.profileImage,
+      hasImage: !!(cmsImage || designer.profileImage),
+      hasVideo: !!designer.videoUrl
+    };
+  });
 
   const handleDesignerClick = (designerId: string) => {
     router.push(`/designers/${designerId}`);
@@ -172,49 +216,66 @@ export default function DesignersPage() {
             position: 'relative'
           }}
         >
-          {designerDisplayData.map((designer, index) => (
-            <div 
-              key={designer.id}
-              className="designer-card"
-              onClick={() => handleDesignerClick(designer.id)}
-              style={{
-                position: 'relative',
-                height: '65vh',
-                minHeight: '450px',
-                maxHeight: '600px',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                borderRight: (index + 1) % 3 !== 0 ? '1px solid rgba(255, 255, 255, 0.05)' : 'none',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-                transition: 'all 0.6s ease'
-              }}
-            >
+          {designerDisplayData.map((designer, index) => {
+            const cmsData = getCMSSlotForDesigner(designer.id);
+            return (
               <div 
-                className="designer-image"
+                key={designer.id}
+                className="designer-card"
+                onClick={() => handleDesignerClick(designer.id)}
                 style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundImage: designer.hasImage ? `url('${designer.profileImage}')` : 'none',
-                  background: !designer.hasImage ? 'linear-gradient(135deg, #2a2a2a, #4a4a4a)' : undefined,
-                  filter: 'grayscale(100%) contrast(1.2)',
-                  transition: 'all 0.8s ease',
-                  opacity: 0.7,
-                  display: !designer.hasImage ? 'flex' : 'block',
-                  alignItems: !designer.hasImage ? 'center' : 'normal',
-                  justifyContent: !designer.hasImage ? 'center' : 'normal',
-                  color: !designer.hasImage ? 'rgba(255, 255, 255, 0.3)' : 'transparent',
-                  fontSize: !designer.hasImage ? '48px' : '0',
-                  fontWeight: !designer.hasImage ? 100 : 'normal'
+                  position: 'relative',
+                  height: '65vh',
+                  minHeight: '450px',
+                  maxHeight: '600px',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  borderRight: (index + 1) % 3 !== 0 ? '1px solid rgba(255, 255, 255, 0.05)' : 'none',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                  transition: 'all 0.6s ease'
                 }}
               >
-                {!designer.hasImage && '📷'}
-              </div>
+                <div 
+                  className="designer-image"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundImage: designer.hasImage ? `url('${designer.profileImage}')` : 'none',
+                    background: !designer.hasImage ? 'linear-gradient(135deg, #2a2a2a, #4a4a4a)' : undefined,
+                    filter: 'grayscale(100%) contrast(1.2)',
+                    transition: 'all 0.8s ease',
+                    opacity: 0.7,
+                    display: !designer.hasImage ? 'flex' : 'block',
+                    alignItems: !designer.hasImage ? 'center' : 'normal',
+                    justifyContent: !designer.hasImage ? 'center' : 'normal',
+                    color: !designer.hasImage ? 'rgba(255, 255, 255, 0.3)' : 'transparent',
+                    fontSize: !designer.hasImage ? '48px' : '0',
+                    fontWeight: !designer.hasImage ? 100 : 'normal'
+                  }}
+                >
+                  {!designer.hasImage && '📷'}
+                </div>
+                
+                {/* CMS 오버레이 - 프로필 이미지 */}
+                {isAuthenticated && cmsData?.slot && (
+                  <div 
+                    className="absolute top-4 left-4 z-20"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <MediaSlot
+                      slot={cmsData.slot}
+                      currentFiles={cmsData.files}
+                      onFilesUpdate={cmsData.updateFiles}
+                      className="w-12 h-12"
+                    />
+                  </div>
+                )}
               
               <span 
                 className="designer-number"
@@ -335,9 +396,13 @@ export default function DesignersPage() {
                 </span>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
+
+      {/* Floating CMS Button */}
+      <FloatingCMSButton />
 
       {/* CSS for animations matching HTML version */}
       <style jsx>{`

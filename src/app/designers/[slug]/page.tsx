@@ -6,6 +6,11 @@ import { notFound } from 'next/navigation';
 import { designers } from '@/data/designers';
 import { Designer } from '@/types';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import { useCMSSlot } from '@/hooks/useCMSSlot';
+import MediaSlot from '@/components/cms/MediaSlot';
+import FloatingCMSButton from '@/components/cms/FloatingCMSButton';
+import { Plus, Minus } from 'lucide-react';
 
 interface Props {
   params: Promise<{
@@ -20,6 +25,13 @@ export default function DesignerPage({ params }: Props) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // CMS 인증
+  const { isAuthenticated } = useSimpleAuth();
+  
+  // CMS 슬롯 - 프로필 이미지와 포트폴리오 갤러리
+  const { slot: profileSlot, currentFiles: profileFiles, updateFiles: updateProfileFiles } = useCMSSlot(designer ? `main-designer-profile-${designer.id}` : '');
+  const { slot: portfolioSlot, currentFiles: portfolioFiles, updateFiles: updatePortfolioFiles } = useCMSSlot(designer ? `designer-${designer.id}-portfolio` : '');
 
   useEffect(() => {
     const getParams = async () => {
@@ -108,13 +120,15 @@ export default function DesignerPage({ params }: Props) {
 
   const nextImage = () => {
     if (designer) {
-      setCurrentImageIndex(prev => (prev + 1) % designer.portfolioImages.length);
+      const currentImages = portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages;
+      setCurrentImageIndex(prev => (prev + 1) % currentImages.length);
     }
   };
 
   const prevImage = () => {
     if (designer) {
-      setCurrentImageIndex(prev => (prev - 1 + designer.portfolioImages.length) % designer.portfolioImages.length);
+      const currentImages = portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages;
+      setCurrentImageIndex(prev => (prev - 1 + currentImages.length) % currentImages.length);
     }
   };
 
@@ -254,7 +268,7 @@ export default function DesignerPage({ params }: Props) {
                     style={{ aspectRatio: '3/4' }}
                   >
                     <OptimizedImage 
-                      src={designer.profileImage}
+                      src={profileFiles[0] || designer.profileImage}
                       alt={`${designer.name} Profile`}
                       fill={true}
                       priority={true}
@@ -265,6 +279,18 @@ export default function DesignerPage({ params }: Props) {
                         clipPath: 'polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%)'
                       }}
                     />
+                    
+                    {/* CMS 오버레이 - 프로필 이미지 */}
+                    {isAuthenticated && profileSlot && (
+                      <div className="absolute top-4 right-4 z-20">
+                        <MediaSlot
+                          slot={profileSlot}
+                          currentFiles={profileFiles}
+                          onFilesUpdate={updateProfileFiles}
+                          className="w-12 h-12"
+                        />
+                      </div>
+                    )}
                     
                     {/* Decorative elements */}
                     <div 
@@ -292,36 +318,73 @@ export default function DesignerPage({ params }: Props) {
               <div className="w-20 h-[1px] bg-[--accent-mocha] mx-auto"></div>
             </div>
             
-            {/* Masonry Grid */}
-            <div className="portfolio-grid [columns:4] [column-gap:20px] max-[1400px]:[columns:3] max-[1024px]:[columns:2] max-[768px]:[columns:1]">
-              {designer.portfolioImages.map((image: string, index: number) => (
-                <div 
-                  key={index}
-                  className="portfolio-item [break-inside:avoid] mb-5 relative overflow-hidden cursor-pointer opacity-0 transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:scale-[1.02] hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
-                  style={{ 
-                    animation: `revealItem 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards`,
-                    animationDelay: `${index * 100}ms`
-                  }}
-                  onClick={() => openLightbox(index)}
-                >
-                  <OptimizedImage 
-                    src={image}
-                    alt={`${designer.name} Portfolio ${index + 1}`}
-                    width={400}
-                    height={600}
-                    priority={index < 8}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="w-full h-auto block transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] [filter:grayscale(20%)_contrast(1.1)_brightness(0.9)] hover:[filter:grayscale(0%)_contrast(1.2)_brightness(1)]"
-                  />
-                  
-                  {/* Hover overlay */}
-                  <div className="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] flex items-end p-5 hover:opacity-100">
-                    <p className="portfolio-caption font-['Inter'] text-xs font-light tracking-[0.1em] text-white uppercase [text-shadow:0_2px_4px_rgba(0,0,0,0.7)]">
-                      {String(index + 1).padStart(2, '0')} / {String(designer.portfolioImages.length).padStart(2, '0')}
-                    </p>
+            {/* Portfolio Grid with CMS */}
+            <div className="relative">
+              {/* CMS 오버레이 - 포트폴리오 갤러리 */}
+              {isAuthenticated && portfolioSlot && (
+                <div className="absolute -top-16 right-0 z-20">
+                  <div className="bg-black/90 backdrop-blur-sm border border-gray-700 rounded-lg p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="text-sm font-medium text-white">포트폴리오 갤러리</div>
+                      <div className="text-xs text-gray-400">
+                        {portfolioFiles.length}/{portfolioSlot.maxFiles || 50}
+                      </div>
+                    </div>
+                    <MediaSlot
+                      slot={portfolioSlot}
+                      currentFiles={portfolioFiles}
+                      onFilesUpdate={updatePortfolioFiles}
+                      className="w-16 h-16"
+                    />
                   </div>
                 </div>
-              ))}
+              )}
+
+              {/* Masonry Grid */}
+              <div className="portfolio-grid [columns:4] [column-gap:20px] max-[1400px]:[columns:3] max-[1024px]:[columns:2] max-[768px]:[columns:1]">
+                {(portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages).map((image: string, index: number) => (
+                  <div 
+                    key={index}
+                    className="portfolio-item [break-inside:avoid] mb-5 relative overflow-hidden cursor-pointer opacity-0 transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:scale-[1.02] hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
+                    style={{ 
+                      animation: `revealItem 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards`,
+                      animationDelay: `${index * 100}ms`
+                    }}
+                    onClick={() => openLightbox(index)}
+                  >
+                    <OptimizedImage 
+                      src={image}
+                      alt={`${designer.name} Portfolio ${index + 1}`}
+                      width={400}
+                      height={600}
+                      priority={index < 8}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="w-full h-auto block transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] [filter:grayscale(20%)_contrast(1.1)_brightness(0.9)] hover:[filter:grayscale(0%)_contrast(1.2)_brightness(1)]"
+                    />
+                    
+                    {/* CMS 개별 이미지 삭제 버튼 */}
+                    {isAuthenticated && portfolioFiles.length > 0 && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const newFiles = portfolioFiles.filter((_, i) => i !== index);
+                          updatePortfolioFiles(newFiles);
+                        }}
+                        className="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100"
+                      >
+                        <Minus className="w-4 h-4" />
+                      </button>
+                    )}
+                    
+                    {/* Hover overlay */}
+                    <div className="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] flex items-end p-5 hover:opacity-100">
+                      <p className="portfolio-caption font-['Inter'] text-xs font-light tracking-[0.1em] text-white uppercase [text-shadow:0_2px_4px_rgba(0,0,0,0.7)]">
+                        {String(index + 1).padStart(2, '0')} / {String((portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages).length).padStart(2, '0')}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -349,7 +412,7 @@ export default function DesignerPage({ params }: Props) {
             </button>
             
             <OptimizedImage 
-              src={designer.portfolioImages[currentImageIndex]}
+              src={(portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages)[currentImageIndex]}
               alt={`${designer.name} Portfolio ${currentImageIndex + 1}`}
               width={1200}
               height={800}
@@ -368,12 +431,15 @@ export default function DesignerPage({ params }: Props) {
             {/* Image info */}
             <div className="absolute bottom-[-50px] left-0 text-white">
               <p className="text-sm font-['Inter'] tracking-[0.1em]">
-                {String(currentImageIndex + 1).padStart(2, '0')} / {String(designer.portfolioImages.length).padStart(2, '0')}
+                {String(currentImageIndex + 1).padStart(2, '0')} / {String((portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages).length).padStart(2, '0')}
               </p>
             </div>
           </div>
         </div>
       )}
+
+      {/* Floating CMS Button */}
+      <FloatingCMSButton />
 
       {/* Professional Styles */}
       <style jsx>{`

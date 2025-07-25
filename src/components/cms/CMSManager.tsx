@@ -241,8 +241,9 @@ export default function CMSManager({ isOpen, onClose }: CMSManagerProps) {
                           <MediaSlot
                             key={slot.id}
                             slot={slot}
+                            currentFiles={slot.currentFiles}
+                            onFilesUpdate={(files) => handleFileUpdate(slot.id, files)}
                             isAdminMode={true}
-                            onFileUpdate={handleFileUpdate}
                           />
                         ))}
                       </div>

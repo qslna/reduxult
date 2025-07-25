@@ -192,10 +192,9 @@ export default function MemoryPage() {
               
               <MediaSlot
                 slot={memorySlot}
+                currentFiles={galleryImages}
+                onFilesUpdate={updateGalleryImages}
                 isAdminMode={true}
-                onFileUpdate={(slotId, files) => {
-                  updateGalleryImages(files);
-                }}
                 className="memory-cms-slot"
               />
             </div>

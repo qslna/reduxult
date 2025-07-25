@@ -339,8 +339,8 @@ export const splitPoints = {
   components: {
     imageGallery: () => import('@/components/ui/ImageGallery'),
     lightbox: () => import('@/components/ui/Lightbox'),
-    cmsLayout: () => import('@/components/cms/CMSLayout'),
-    contentEditor: () => import('@/components/cms/ContentEditor')
+    mediaSlot: () => import('@/components/cms/MediaSlot'),
+    floatingCMSButton: () => import('@/components/cms/FloatingCMSButton')
   },
 
   // 라이브러리별 분할

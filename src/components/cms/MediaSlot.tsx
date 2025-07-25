@@ -7,15 +7,17 @@ import type { MediaSlot as MediaSlotType } from '@/lib/cms-config';
 
 interface MediaSlotProps {
   slot: MediaSlotType;
+  currentFiles: string[];
+  onFilesUpdate: (files: string[]) => void;
   isAdminMode?: boolean;
-  onFileUpdate?: (slotId: string, files: string[]) => void;
   className?: string;
 }
 
 export default function MediaSlot({ 
   slot, 
+  currentFiles,
+  onFilesUpdate,
   isAdminMode = false, 
-  onFileUpdate,
   className = '' 
 }: MediaSlotProps) {
   const [isUploading, setIsUploading] = useState(false);
@@ -56,7 +58,7 @@ export default function MediaSlot({
       
       let newFiles: string[];
       if (slot.type === 'gallery') {
-        newFiles = [...slot.currentFiles, ...uploadedUrls];
+        newFiles = [...currentFiles, ...uploadedUrls];
         if (slot.maxFiles && newFiles.length > slot.maxFiles) {
           newFiles = newFiles.slice(-slot.maxFiles);
         }
@@ -64,19 +66,19 @@ export default function MediaSlot({
         newFiles = [uploadedUrls[0]];
       }
 
-      onFileUpdate?.(slot.id, newFiles);
+      onFilesUpdate?.(newFiles);
     } catch (error) {
       console.error('Upload error:', error);
       alert(error instanceof Error ? error.message : 'Upload failed');
     } finally {
       setIsUploading(false);
     }
-  }, [slot, onFileUpdate]);
+  }, [slot, currentFiles, onFilesUpdate]);
 
   const handleFileRemove = useCallback((index: number) => {
-    const newFiles = slot.currentFiles.filter((_, i) => i !== index);
-    onFileUpdate?.(slot.id, newFiles);
-  }, [slot, onFileUpdate]);
+    const newFiles = currentFiles.filter((_, i) => i !== index);
+    onFilesUpdate?.(newFiles);
+  }, [currentFiles, onFilesUpdate]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -146,9 +148,9 @@ export default function MediaSlot({
     // 일반 사용자용 미디어 표시
     return (
       <div className={`media-slot ${className}`}>
-        {slot.currentFiles.length > 0 && (
+        {currentFiles.length > 0 && (
           <div className={slot.type === 'gallery' ? 'grid grid-cols-2 gap-2' : ''}>
-            {slot.currentFiles.map((url, index) => (
+            {currentFiles.map((url, index) => (
               <div key={index}>
                 {renderMedia(url, index)}
               </div>
@@ -187,16 +189,16 @@ export default function MediaSlot({
           
           {slot.type === 'gallery' && slot.maxFiles && (
             <span className="text-xs text-gray-500 dark:text-gray-400">
-              {slot.currentFiles.length}/{slot.maxFiles}
+              {currentFiles.length}/{slot.maxFiles}
             </span>
           )}
         </div>
       </div>
 
       {/* 현재 파일들 */}
-      {slot.currentFiles.length > 0 && (
+      {currentFiles.length > 0 && (
         <div className={`mb-3 ${slot.type === 'gallery' ? 'grid grid-cols-3 gap-2' : ''}`}>
-          {slot.currentFiles.map((url, index) => (
+          {currentFiles.map((url, index) => (
             <motion.div
               key={index}
               className="relative group"

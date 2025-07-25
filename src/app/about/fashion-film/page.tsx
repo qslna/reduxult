@@ -2,12 +2,34 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useCMSSlot } from '@/hooks/useCMSSlot';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import MediaSlot from '@/components/cms/MediaSlot';
 
 // HTML redux6 about-fashion-film.html과 완전 동일한 Fashion Film 페이지 구현
 export default function FashionFilmPage() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFilm, setCurrentFilm] = useState('');
+  
+  // CMS integration for fashion films
+  const { isAuthenticated } = useSimpleAuth();
+  
+  // Individual CMS slots for each designer's fashion film content
+  const { slot: kimBominSlot, currentFiles: kimBominFiles, updateFiles: updateKimBominFiles } = useCMSSlot('about-fashionfilm-kimbomin-thumbnail');
+  const { slot: parkParangSlot, currentFiles: parkParangFiles, updateFiles: updateParkParangFiles } = useCMSSlot('about-fashionfilm-parkparang-thumbnail');
+  const { slot: leeTaehyeonSlot, currentFiles: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles } = useCMSSlot('about-fashionfilm-leetaehyeon-thumbnail');
+  const { slot: choiEunsolSlot, currentFiles: choiEunsolFiles, updateFiles: updateChoiEunsolFiles } = useCMSSlot('about-fashionfilm-choieunsol-thumbnail');
+  const { slot: hwangJinsuSlot, currentFiles: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles } = useCMSSlot('about-fashionfilm-hwangjinsu-thumbnail');
+  const { slot: kimGyeongsuSlot, currentFiles: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles } = useCMSSlot('about-fashionfilm-kimgyeongsu-thumbnail');
+  
+  // Video slots for Google Drive links
+  const { slot: kimBominVideoSlot, currentFiles: kimBominVideoFiles, updateFiles: updateKimBominVideoFiles } = useCMSSlot('designer-kimbomin-film');
+  const { slot: parkParangVideoSlot, currentFiles: parkParangVideoFiles, updateFiles: updateParkParangVideoFiles } = useCMSSlot('designer-parkparang-film');
+  const { slot: leeTaehyeonVideoSlot, currentFiles: leeTaehyeonVideoFiles, updateFiles: updateLeeTaehyeonVideoFiles } = useCMSSlot('designer-leetaehyeon-film');
+  const { slot: choiEunsolVideoSlot, currentFiles: choiEunsolVideoFiles, updateFiles: updateChoiEunsolVideoFiles } = useCMSSlot('designer-choieunsol-film');
+  const { slot: hwangJinsuVideoSlot, currentFiles: hwangJinsuVideoFiles, updateFiles: updateHwangJinsuVideoFiles } = useCMSSlot('designer-hwangjinsu-film');
+  const { slot: kimGyeongsuVideoSlot, currentFiles: kimGyeongsuVideoFiles, updateFiles: updateKimGyeongsuVideoFiles } = useCMSSlot('designer-kimgyeongsu-film');
 
   useEffect(() => {
     // HTML 버전과 동일한 스크롤 네비게이션 효과
@@ -81,49 +103,49 @@ export default function FashionFilmPage() {
     document.body.style.overflow = 'auto';
   };
 
-  // 필름 데이터 - 실제 이미지와 구글 드라이브 비디오 링크 포함
+  // Dynamic films data from CMS - 각 디자이너별 개별 관리
   const films = [
     { 
       designer: 'KIM BOMIN', 
       title: 'CHASING VOWS', 
       id: 'kimbomin',
-      thumbnail: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
-      videoUrl: 'https://drive.google.com/file/d/1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X/preview'
+      thumbnail: kimBominFiles[0] || '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
+      videoUrl: kimBominVideoFiles[0] ? `https://drive.google.com/file/d/${kimBominVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X/preview'
     },
     { 
       designer: 'PARK PARANG', 
       title: 'THE TIME BETWEEN', 
       id: 'parkparang',
-      thumbnail: '/images/profile/Park Parang.jpg',
-      videoUrl: 'https://drive.google.com/file/d/15d901XRElkF5p7xiJYelIyblYFb-PtsD/preview'
+      thumbnail: parkParangFiles[0] || '/images/profile/Park Parang.jpg',
+      videoUrl: parkParangVideoFiles[0] ? `https://drive.google.com/file/d/${parkParangVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/15d901XRElkF5p7xiJYelIyblYFb-PtsD/preview'
     },
     { 
       designer: 'LEE TAEHYEON', 
       title: 'POLYHEDRON', 
       id: 'leetaehyeon',
-      thumbnail: '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
-      videoUrl: 'https://drive.google.com/file/d/1fG2fchKvEG7i7Lo79K7250mgiVTse6ks/preview'
+      thumbnail: leeTaehyeonFiles[0] || '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
+      videoUrl: leeTaehyeonVideoFiles[0] ? `https://drive.google.com/file/d/${leeTaehyeonVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/1fG2fchKvEG7i7Lo79K7250mgiVTse6ks/preview'
     },
     { 
       designer: 'CHOI EUNSOL', 
       title: 'SOUL SUCKER', 
       id: 'choieunsol',
-      thumbnail: '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
-      videoUrl: 'https://drive.google.com/file/d/1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3/preview'
+      thumbnail: choiEunsolFiles[0] || '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
+      videoUrl: choiEunsolVideoFiles[0] ? `https://drive.google.com/file/d/${choiEunsolVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3/preview'
     },
     { 
       designer: 'HWANG JINSU', 
       title: 'WHO AM I ?!', 
       id: 'hwangjinsu',
-      thumbnail: '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
-      videoUrl: 'https://drive.google.com/file/d/1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d/preview'
+      thumbnail: hwangJinsuFiles[0] || '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
+      videoUrl: hwangJinsuVideoFiles[0] ? `https://drive.google.com/file/d/${hwangJinsuVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d/preview'
     },
     { 
       designer: 'KIM GYEONGSU', 
       title: 'TO BE REVEALED', 
       id: 'kimgyeongsu',
-      thumbnail: '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg',
-      videoUrl: 'https://drive.google.com/file/d/1Hl594dd_MY714hZwmklTAPTc-pofe9bY/preview'
+      thumbnail: kimGyeongsuFiles[0] || '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg',
+      videoUrl: kimGyeongsuVideoFiles[0] ? `https://drive.google.com/file/d/${kimGyeongsuVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/1Hl594dd_MY714hZwmklTAPTc-pofe9bY/preview'
     }
   ];
 
@@ -334,6 +356,272 @@ export default function FashionFilmPage() {
         </div>
       </div>
 
+      {/* CMS Admin Interface - 비대칭 왜곡 빈티지 트렌디 스타일 */}
+      {isAuthenticated && (
+        <section className="cms-admin-section py-[120px] px-10 bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
+          {/* 배경 장식 요소들 - 비대칭 */}
+          <div 
+            className="absolute top-[10%] left-[5%] w-[300px] h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent"
+            style={{ transform: 'rotate(-15deg)' }}
+          />
+          <div 
+            className="absolute bottom-[20%] right-[8%] w-[200px] h-[200px] border border-cyan-500/10 rounded-full"
+            style={{ transform: 'rotate(25deg) scale(0.7)' }}
+          />
+          <div 
+            className="absolute top-[60%] left-[15%] w-[100px] h-[100px] border-l border-t border-yellow-500/15"
+            style={{ transform: 'rotate(-45deg)' }}
+          />
+          
+          <div className="max-w-[1400px] mx-auto relative z-10">
+            <div className="text-center mb-[80px]">
+              <h2 
+                className="text-5xl font-light text-white mb-6 glitch-title"
+                style={{ 
+                  fontFamily: "'Inter', monospace",
+                  letterSpacing: '0.3em',
+                  textShadow: '2px 2px 0 rgba(255,0,0,0.1), -2px -2px 0 rgba(0,255,255,0.1)'
+                }}
+              >
+                🎬 FILM MANAGEMENT
+              </h2>
+              <div 
+                className="w-[150px] h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent mx-auto mb-4"
+                style={{ transform: 'skew(-20deg)' }}
+              />
+              <p className="text-gray-400 text-sm tracking-[0.2em] uppercase">
+                Instagram-Style CMS for Fashion Films
+              </p>
+            </div>
+
+            {/* 각 디자이너별 CMS 슬롯들 - 비대칭 그리드 */}
+            <div className="cms-grid space-y-12">
+              {/* Kim Bomin */}
+              <div className="designer-cms-block relative">
+                <div 
+                  className="absolute -left-4 top-0 w-2 h-full bg-gradient-to-b from-red-500/30 to-transparent"
+                  style={{ transform: 'skew(5deg)' }}
+                />
+                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
+                     style={{ transform: 'rotate(0.5deg)' }}>
+                  <div>
+                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">KIM BOMIN</h3>
+                    <p className="text-gray-400 text-sm mb-6">CHASING VOWS - 썸네일 관리</p>
+                    {kimBominSlot && (
+                      <MediaSlot
+                        slot={kimBominSlot}
+                        currentFiles={kimBominFiles}
+                        onFilesUpdate={updateKimBominFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
+                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
+                    {kimBominVideoSlot && (
+                      <MediaSlot
+                        slot={kimBominVideoSlot}
+                        currentFiles={kimBominVideoFiles}
+                        onFilesUpdate={updateKimBominVideoFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Park Parang */}
+              <div className="designer-cms-block relative">
+                <div 
+                  className="absolute -right-4 top-0 w-2 h-full bg-gradient-to-b from-blue-500/30 to-transparent"
+                  style={{ transform: 'skew(-5deg)' }}
+                />
+                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
+                     style={{ transform: 'rotate(-0.3deg)' }}>
+                  <div>
+                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">PARK PARANG</h3>
+                    <p className="text-gray-400 text-sm mb-6">THE TIME BETWEEN - 썸네일 관리</p>
+                    {parkParangSlot && (
+                      <MediaSlot
+                        slot={parkParangSlot}
+                        currentFiles={parkParangFiles}
+                        onFilesUpdate={updateParkParangFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
+                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
+                    {parkParangVideoSlot && (
+                      <MediaSlot
+                        slot={parkParangVideoSlot}
+                        currentFiles={parkParangVideoFiles}
+                        onFilesUpdate={updateParkParangVideoFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Lee Taehyeon */}
+              <div className="designer-cms-block relative">
+                <div 
+                  className="absolute -left-4 top-0 w-2 h-full bg-gradient-to-b from-green-500/30 to-transparent"
+                  style={{ transform: 'skew(3deg)' }}
+                />
+                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
+                     style={{ transform: 'rotate(0.2deg)' }}>
+                  <div>
+                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">LEE TAEHYEON</h3>
+                    <p className="text-gray-400 text-sm mb-6">POLYHEDRON - 썸네일 관리</p>
+                    {leeTaehyeonSlot && (
+                      <MediaSlot
+                        slot={leeTaehyeonSlot}
+                        currentFiles={leeTaehyeonFiles}
+                        onFilesUpdate={updateLeeTaehyeonFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
+                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
+                    {leeTaehyeonVideoSlot && (
+                      <MediaSlot
+                        slot={leeTaehyeonVideoSlot}
+                        currentFiles={leeTaehyeonVideoFiles}
+                        onFilesUpdate={updateLeeTaehyeonVideoFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Choi Eunsol */}
+              <div className="designer-cms-block relative">
+                <div 
+                  className="absolute -right-4 top-0 w-2 h-full bg-gradient-to-b from-purple-500/30 to-transparent"
+                  style={{ transform: 'skew(-3deg)' }}
+                />
+                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
+                     style={{ transform: 'rotate(-0.4deg)' }}>
+                  <div>
+                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">CHOI EUNSOL</h3>
+                    <p className="text-gray-400 text-sm mb-6">SOUL SUCKER - 썸네일 관리</p>
+                    {choiEunsolSlot && (
+                      <MediaSlot
+                        slot={choiEunsolSlot}
+                        currentFiles={choiEunsolFiles}
+                        onFilesUpdate={updateChoiEunsolFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
+                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
+                    {choiEunsolVideoSlot && (
+                      <MediaSlot
+                        slot={choiEunsolVideoSlot}
+                        currentFiles={choiEunsolVideoFiles}
+                        onFilesUpdate={updateChoiEunsolVideoFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Hwang Jinsu */}
+              <div className="designer-cms-block relative">
+                <div 
+                  className="absolute -left-4 top-0 w-2 h-full bg-gradient-to-b from-yellow-500/30 to-transparent"
+                  style={{ transform: 'skew(4deg)' }}
+                />
+                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
+                     style={{ transform: 'rotate(0.3deg)' }}>
+                  <div>
+                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">HWANG JINSU</h3>
+                    <p className="text-gray-400 text-sm mb-6">WHO AM I ?! - 썸네일 관리</p>
+                    {hwangJinsuSlot && (
+                      <MediaSlot
+                        slot={hwangJinsuSlot}
+                        currentFiles={hwangJinsuFiles}
+                        onFilesUpdate={updateHwangJinsuFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
+                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
+                    {hwangJinsuVideoSlot && (
+                      <MediaSlot
+                        slot={hwangJinsuVideoSlot}
+                        currentFiles={hwangJinsuVideoFiles}
+                        onFilesUpdate={updateHwangJinsuVideoFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Kim Gyeongsu */}
+              <div className="designer-cms-block relative">
+                <div 
+                  className="absolute -right-4 top-0 w-2 h-full bg-gradient-to-b from-pink-500/30 to-transparent"
+                  style={{ transform: 'skew(-4deg)' }}
+                />
+                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
+                     style={{ transform: 'rotate(-0.2deg)' }}>
+                  <div>
+                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">KIM GYEONGSU</h3>
+                    <p className="text-gray-400 text-sm mb-6">TO BE REVEALED - 썸네일 관리</p>
+                    {kimGyeongsuSlot && (
+                      <MediaSlot
+                        slot={kimGyeongsuSlot}
+                        currentFiles={kimGyeongsuFiles}
+                        onFilesUpdate={updateKimGyeongsuFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
+                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
+                    {kimGyeongsuVideoSlot && (
+                      <MediaSlot
+                        slot={kimGyeongsuVideoSlot}
+                        currentFiles={kimGyeongsuVideoFiles}
+                        onFilesUpdate={updateKimGyeongsuVideoFiles}
+                        isAdminMode={true}
+                        className="vintage-cms-slot"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Footer - HTML 버전과 완전 동일 */}
       <footer className="py-[60px] px-10 bg-black text-white text-center border-t border-white/10">
         <p>&copy; 2025 REDUX. All rights reserved.</p>
@@ -427,6 +715,144 @@ export default function FashionFilmPage() {
           filter: grayscale(0%) contrast(1.2) brightness(1) !important;
         }
         
+        /* CMS Admin Section - 비대칭 왜곡 빈티지 트렌디 스타일 */
+        .cms-admin-section {
+          animation: slideInFromBottom 1.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+
+        @keyframes slideInFromBottom {
+          0% {
+            opacity: 0;
+            transform: translateY(60px) rotate(-0.5deg);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) rotate(0deg);
+          }
+        }
+
+        .glitch-title {
+          animation: glitchPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glitchPulse {
+          0%, 100% {
+            text-shadow: 2px 2px 0 rgba(255,0,0,0.1), -2px -2px 0 rgba(0,255,255,0.1);
+          }
+          25% {
+            text-shadow: -2px 2px 0 rgba(255,0,0,0.15), 2px -2px 0 rgba(0,255,255,0.15);
+          }
+          50% {
+            text-shadow: 2px -2px 0 rgba(255,0,0,0.1), -2px 2px 0 rgba(0,255,255,0.1);
+          }
+          75% {
+            text-shadow: -2px -2px 0 rgba(255,0,0,0.15), 2px 2px 0 rgba(0,255,255,0.15);
+          }
+        }
+
+        .designer-cms-block {
+          animation: blockReveal 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+          opacity: 0;
+          transform: translateY(30px) rotate(-1deg);
+        }
+
+        .designer-cms-block:nth-child(1) { animation-delay: 0.1s; }
+        .designer-cms-block:nth-child(2) { animation-delay: 0.2s; }
+        .designer-cms-block:nth-child(3) { animation-delay: 0.3s; }
+        .designer-cms-block:nth-child(4) { animation-delay: 0.4s; }
+        .designer-cms-block:nth-child(5) { animation-delay: 0.5s; }
+        .designer-cms-block:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes blockReveal {
+          0% {
+            opacity: 0;
+            transform: translateY(30px) rotate(-1deg) scale(0.95);
+            filter: blur(5px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) rotate(0deg) scale(1);
+            filter: blur(0);
+          }
+        }
+
+        .designer-cms-block:hover {
+          transform: translateY(-5px) rotate(0.2deg) !important;
+          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .vintage-cms-slot :global(.media-slot-admin) {
+          background: rgba(255, 255, 255, 0.02) !important;
+          border: 1px solid rgba(255, 255, 255, 0.08) !important;
+          border-radius: 16px !important;
+          backdrop-filter: blur(20px) !important;
+          transform: skew(-0.5deg) !important;
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        }
+
+        .vintage-cms-slot :global(.media-slot-admin:hover) {
+          transform: skew(0deg) scale(1.02) !important;
+          border-color: rgba(255, 255, 255, 0.15) !important;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .vintage-cms-slot :global(.media-slot-admin h4) {
+          color: var(--primary-white) !important;
+          font-family: 'Inter', monospace !important;
+          font-weight: 300 !important;
+          letter-spacing: 0.15em !important;
+          text-transform: uppercase !important;
+        }
+
+        .vintage-cms-slot :global(.media-slot-admin p) {
+          color: rgba(255, 255, 255, 0.6) !important;
+          font-size: 11px !important;
+          letter-spacing: 0.1em !important;
+        }
+
+        /* Vintage button styles */
+        .vintage-cms-slot :global(button) {
+          background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)) !important;
+          border: 1px solid rgba(255,255,255,0.2) !important;
+          border-radius: 12px !important;
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+          transform: skew(-1deg) !important;
+        }
+
+        .vintage-cms-slot :global(button:hover) {
+          background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1)) !important;
+          transform: skew(0deg) scale(1.05) !important;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        /* 글리치 노이즈 효과 */
+        .cms-admin-section::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: 
+            radial-gradient(circle at 20% 50%, rgba(255,0,0,0.01) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(0,255,255,0.01) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(255,255,0,0.01) 0%, transparent 50%);
+          pointer-events: none;
+          z-index: 1;
+          animation: noiseFloat 10s ease-in-out infinite;
+        }
+
+        @keyframes noiseFloat {
+          0%, 100% {
+            opacity: 0.3;
+            transform: scale(1) rotate(0deg);
+          }
+          50% {
+            opacity: 0.1;
+            transform: scale(1.05) rotate(0.5deg);
+          }
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
           .hero-title {
@@ -453,6 +879,19 @@ export default function FashionFilmPage() {
           
           .film-item:hover {
             transform: translateY(-4px) !important;
+          }
+
+          .cms-admin-section {
+            padding: 80px 15px !important;
+          }
+
+          .designer-cms-block .grid {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+          }
+
+          .glitch-title {
+            font-size: clamp(32px, 8vw, 48px) !important;
           }
         }
       `}</style>

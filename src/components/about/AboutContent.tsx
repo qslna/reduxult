@@ -81,7 +81,7 @@ export default function AboutContent() {
                           alt={category.title}
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          onUpdate={(newSrc) => handleImageUpdate(category.id, newSrc)}
+                          onImageUpdate={(newSrc) => handleImageUpdate(category.id, newSrc)}
                           category={`about/${category.id}`}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />

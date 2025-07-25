@@ -823,8 +823,8 @@ export default function HeroSection() {
             
             <MediaSlot
               slot={videoSlot}
-              isAdminMode={true}
-              onFileUpdate={(slotId, files) => {
+              currentFiles={videoFiles}
+              onFilesUpdate={(files) => {
                 updateVideoFiles(files);
                 // Reload video when files change
                 const video = videoRef.current;
@@ -833,6 +833,7 @@ export default function HeroSection() {
                   video.load();
                 }
               }}
+              isAdminMode={true}
               className="mini-cms-slot"
             />
           </div>

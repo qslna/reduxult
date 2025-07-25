@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dbHealthCheck } from '@/lib/db';
+import { db } from '@/lib/db';
 import { createSuccessResponse, createErrorResponse, setCorsHeaders } from '@/lib/api-response';
 
 // GET /api/health - System health check
 export async function GET(request: NextRequest) {
   try {
     // Check database health
-    const dbHealth = await dbHealthCheck();
+    const dbHealth = await db.healthCheck();
     
     // Check environment variables
     const requiredEnvVars = [
@@ -28,13 +28,13 @@ export async function GET(request: NextRequest) {
         missing: missingEnvVars
       },
       services: {
-        database: dbHealth.status,
+        database: dbHealth.status === 'ok' ? 'healthy' : 'unhealthy',
         imagekit: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT ? 'configured' : 'not_configured'
       }
     };
     
     // Determine overall status
-    const isHealthy = dbHealth.status === 'healthy' && missingEnvVars.length === 0;
+    const isHealthy = dbHealth.status === 'ok' && missingEnvVars.length === 0;
     const status = isHealthy ? 200 : 503;
     healthStatus.status = isHealthy ? 'healthy' : 'unhealthy';
     
