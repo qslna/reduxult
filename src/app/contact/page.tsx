@@ -210,9 +210,31 @@ export default function ContactPage() {
 
   return (
     <>
+      {/* Professional Navigation */}
+      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] border-b border-[--accent-mocha]/10">
+        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
+          <div className="nav-left flex items-center gap-10">
+            <span 
+              className="back-button font-['Inter'] text-xl cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:transform hover:-translate-x-[5px] hover:text-[--accent-mocha]"
+              onClick={() => router.back()}
+            >
+              ←
+            </span>
+            <span className="page-title font-['Inter'] text-lg font-light tracking-[0.2em] text-[--accent-mocha] uppercase max-[768px]:hidden">
+              Contact
+            </span>
+          </div>
+          <div 
+            className="logo font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:opacity-70 hover:transform hover:scale-[1.02]"
+            onClick={() => router.push('/')}
+          >
+            REDUX
+          </div>
+        </div>
+      </nav>
 
       {/* Contact Hero - 비대칭 아방가르드 디자인 */}
-      <section className="contact-hero relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+      <section className="contact-hero relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden pt-[120px]">
         {/* 비대칭 배경 요소들 */}
         <div className="absolute inset-0">
           <div className="absolute top-[12%] left-[8%] w-[250px] h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent transform rotate-[35deg] animate-[slideInLeft_2s_ease_forwards]"></div>
@@ -235,7 +257,7 @@ export default function ContactPage() {
               style={{ 
                 fontSize: 'clamp(50px, 12vw, 140px)', 
                 letterSpacing: '-0.02em',
-                textShadow: '0 0 40px rgba(255,255,255,0.1), 4px 4px 0px rgba(255,255,255,0.03)'
+                textShadow: '0 0 40px rgba(255,255,255,0.1)'
               }}>
             {heroTitle.split('').map((letter: string, index: number) => (
               <span 
@@ -625,7 +647,7 @@ export default function ContactPage() {
       </section>
 
       {/* Map Section - Enhanced with Professional Design */}
-      <section className="map-section h-[500px] bg-[--gray-dark] relative overflow-hidden max-[768px]:h-[300px]">
+      <section className="map-section h-[500px] bg-gray-900 relative overflow-hidden max-[768px]:h-[300px]">
         <div className="map-container w-full h-full relative bg-[linear-gradient(135deg,#1a1a1a_0%,#2a2a2a_100%)]">
           {/* Map Grid Background */}
           <div 
@@ -688,6 +710,19 @@ export default function ContactPage() {
 
       {/* Contact Page Animations */}
       <style jsx>{`
+        /* CSS Variables */
+        :root {
+          --primary-black: #000000;
+          --primary-white: #FFFFFF;
+          --accent-mocha: #B7AFA3;
+          --accent-warm: #D4CCC5;
+          --accent-deep: #9A9086;
+          --accent-neutral: #F8F6F4;
+          --gray-light: #F5F5F5;
+          --gray-medium: #999999;
+          --gray-dark: #1a1a1a;
+        }
+        
         /* Hero Animations */
         @keyframes glitchIn {
           0% { 

@@ -3,6 +3,9 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { DESIGNER_VIDEOS, getGoogleDriveEmbedUrl, getGoogleDriveThumbnailUrl } from '@/utils/drive-utils';
 import { useTextContent } from '@/hooks/usePageContent';
+import { useCMSSlot } from '@/hooks/useCMSSlot';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import MediaSlot from '@/components/cms/MediaSlot';
 
 /**
  * Phase 2.2: Revolutionary Hero Section
@@ -17,6 +20,10 @@ export default function HeroSection() {
   const { text: heroSubtitle } = useTextContent('home', 'hero-subtitle', 'THE ROOM OF [ ]');
   const { text: primaryCTAText } = useTextContent('home', 'hero-cta-primary', 'DISCOVER REDUX');
   const { text: secondaryCTAText } = useTextContent('home', 'hero-cta-secondary', 'VIEW EXHIBITIONS');
+  
+  // CMS integration
+  const { isAuthenticated } = useSimpleAuth();
+  const { slot: videoSlot, currentFiles: videoFiles, updateFiles: updateVideoFiles } = useCMSSlot('main-hero-video');
 
   // Video states
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -347,7 +354,7 @@ export default function HeroSection() {
             pointerEvents: videoClosed ? 'none' : 'auto'
           }}
         >
-          {/* Background Video */}
+          {/* Background Video - CMS Enabled */}
           <video
             ref={videoRef}
             className="redux-hero-video"
@@ -368,8 +375,7 @@ export default function HeroSection() {
               transition: 'filter 0.3s ease'
             }}
           >
-            <source src="/VIDEO/main.mp4" type="video/mp4" />
-            <source src="/VIDEO/main.webm" type="video/webm" />
+            <source src={videoFiles[0] || '/VIDEO/main.mp4'} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           
@@ -786,6 +792,51 @@ export default function HeroSection() {
             }}
           />
         </div>
+
+        {/* CMS Admin Interface - Only visible to authenticated users */}
+        {isAuthenticated && videoSlot && (
+          <div 
+            className="cms-admin-overlay"
+            style={{
+              position: 'absolute',
+              bottom: '20px',
+              left: '20px',
+              zIndex: 10,
+              background: 'rgba(0, 0, 0, 0.8)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              padding: '16px',
+              maxWidth: '300px'
+            }}
+          >
+            <div style={{
+              color: 'var(--primary-white)',
+              fontSize: '12px',
+              fontWeight: 500,
+              marginBottom: '12px',
+              letterSpacing: '1px',
+              textTransform: 'uppercase'
+            }}>
+              🎬 Hero Video Management
+            </div>
+            
+            <MediaSlot
+              slot={videoSlot}
+              isAdminMode={true}
+              onFileUpdate={(slotId, files) => {
+                updateVideoFiles(files);
+                // Reload video when files change
+                const video = videoRef.current;
+                if (video && files.length > 0) {
+                  video.src = files[0];
+                  video.load();
+                }
+              }}
+              className="mini-cms-slot"
+            />
+          </div>
+        )}
       </section>
 
       {/* Advanced CSS Animations and Styles */}
@@ -1125,6 +1176,39 @@ export default function HeroSection() {
           .redux-video-play-btn {
             width: 65px !important;
             height: 65px !important;
+          }
+        }
+
+        /* CMS Admin Overlay Styles */
+        .cms-admin-overlay {
+          animation: slideInFromLeft 0.5s ease-out;
+        }
+
+        .mini-cms-slot :global(.media-slot-admin) {
+          background: rgba(255, 255, 255, 0.05) !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          border-radius: 8px !important;
+          padding: 12px !important;
+        }
+
+        .mini-cms-slot :global(.media-slot-admin h4) {
+          color: var(--primary-white) !important;
+          font-size: 11px !important;
+        }
+
+        .mini-cms-slot :global(.media-slot-admin p) {
+          color: rgba(255, 255, 255, 0.7) !important;
+          font-size: 10px !important;
+        }
+
+        @keyframes slideInFromLeft {
+          0% {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
           }
         }
 

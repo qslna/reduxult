@@ -76,6 +76,7 @@ export default function DesignersPage() {
     id: designer.id,
     number: String(designer.order).padStart(2, '0'),
     name: designer.name.toUpperCase(),
+    mainRole: designer.mainRole,
     role: designer.role,
     brand: designer.filmTitle || 'REDUX COLLECTIVE',
     profileImage: designer.profileImage,
@@ -281,10 +282,23 @@ export default function DesignersPage() {
                   {designer.name}
                 </h3>
                 <p 
+                  className="designer-main-role"
+                  style={{
+                    fontSize: '16px',
+                    letterSpacing: '2px',
+                    color: '#fff',
+                    textTransform: 'uppercase',
+                    marginBottom: '8px',
+                    fontWeight: 500
+                  }}
+                >
+                  {designer.mainRole}
+                </p>
+                <p 
                   className="designer-role"
                   style={{
-                    fontSize: '14px',
-                    letterSpacing: '2px',
+                    fontSize: '12px',
+                    letterSpacing: '1px',
                     color: '#999',
                     textTransform: 'uppercase',
                     marginBottom: '20px'

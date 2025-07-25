@@ -88,42 +88,42 @@ export default function FashionFilmPage() {
       title: 'CHASING VOWS', 
       id: 'kimbomin',
       thumbnail: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
-      videoUrl: 'https://drive.google.com/file/d/1q2w3e4r5t6y7u8i9o0p/preview' // 실제 링크로 교체 필요
+      videoUrl: 'https://drive.google.com/file/d/1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X/preview'
     },
     { 
       designer: 'PARK PARANG', 
       title: 'THE TIME BETWEEN', 
       id: 'parkparang',
       thumbnail: '/images/profile/Park Parang.jpg',
-      videoUrl: 'https://drive.google.com/file/d/1a2s3d4f5g6h7j8k9l0/preview' // 실제 링크로 교체 필요
+      videoUrl: 'https://drive.google.com/file/d/15d901XRElkF5p7xiJYelIyblYFb-PtsD/preview'
     },
     { 
       designer: 'LEE TAEHYEON', 
       title: 'POLYHEDRON', 
       id: 'leetaehyeon',
       thumbnail: '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
-      videoUrl: 'https://drive.google.com/file/d/1z2x3c4v5b6n7m8q9w0e/preview' // 실제 링크로 교체 필요
+      videoUrl: 'https://drive.google.com/file/d/1fG2fchKvEG7i7Lo79K7250mgiVTse6ks/preview'
     },
     { 
       designer: 'CHOI EUNSOL', 
       title: 'SOUL SUCKER', 
       id: 'choieunsol',
       thumbnail: '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
-      videoUrl: 'https://drive.google.com/file/d/1r2t3y4u5i6o7p8a9s0d/preview' // 실제 링크로 교체 필요
+      videoUrl: 'https://drive.google.com/file/d/1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3/preview'
     },
     { 
       designer: 'HWANG JINSU', 
       title: 'WHO AM I ?!', 
       id: 'hwangjinsu',
       thumbnail: '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
-      videoUrl: 'https://drive.google.com/file/d/1f2g3h4j5k6l7z8x9c0v/preview' // 실제 링크로 교체 필요
+      videoUrl: 'https://drive.google.com/file/d/1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d/preview'
     },
     { 
       designer: 'KIM GYEONGSU', 
       title: 'TO BE REVEALED', 
       id: 'kimgyeongsu',
       thumbnail: '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg',
-      videoUrl: 'https://drive.google.com/file/d/1b2n3m4q5w6e7r8t9y0u/preview' // 실제 링크로 교체 필요
+      videoUrl: 'https://drive.google.com/file/d/1Hl594dd_MY714hZwmklTAPTc-pofe9bY/preview'
     }
   ];
 
@@ -203,7 +203,7 @@ export default function FashionFilmPage() {
             style={{ 
               fontSize: 'clamp(60px, 10vw, 160px)',
               fontFamily: "'Inter', 'Helvetica', sans-serif",
-              textShadow: '0 0 30px rgba(255,255,255,0.1), 3px 3px 0px rgba(255,255,255,0.03)'
+              textShadow: '0 0 30px rgba(255,255,255,0.1)'
             }}
           >
             Fashion Film
@@ -400,7 +400,7 @@ export default function FashionFilmPage() {
         
         @keyframes glitchText {
           0%, 100% {
-            text-shadow: 0 0 30px rgba(255,255,255,0.1), 3px 3px 0px rgba(255,255,255,0.03);
+            text-shadow: 0 0 30px rgba(255,255,255,0.1);
           }
           25% {
             text-shadow: 2px 0 0 rgba(255, 0, 0, 0.1), -2px 0 0 rgba(0, 255, 255, 0.1);

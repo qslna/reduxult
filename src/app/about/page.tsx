@@ -150,7 +150,7 @@ export default function AboutPage() {
             transform: 'translateY(30px) skew(-2deg)',
             animation: 'fadeInUp 1s ease forwards, glitchText 3s ease-in-out infinite',
             color: '#fff',
-            textShadow: '0 0 20px rgba(255,255,255,0.1), 2px 2px 0px rgba(255,255,255,0.05)',
+            textShadow: '0 0 20px rgba(255,255,255,0.1)',
             fontFamily: "'Inter', 'Helvetica', sans-serif",
             position: 'relative',
             zIndex: 3
@@ -593,7 +593,7 @@ export default function AboutPage() {
         /* 글리치 애니메이션 */
         @keyframes glitchText {
           0%, 100% {
-            text-shadow: 0 0 20px rgba(255,255,255,0.1), 2px 2px 0px rgba(255,255,255,0.05);
+            text-shadow: 0 0 20px rgba(255,255,255,0.1);
             transform: translateY(0) skew(-2deg);
           }
           20% {
@@ -605,7 +605,7 @@ export default function AboutPage() {
             transform: translateY(1px) skew(-2deg);
           }
           60% {
-            text-shadow: 0 0 20px rgba(255,255,255,0.1), 2px 2px 0px rgba(255,255,255,0.05);
+            text-shadow: 0 0 20px rgba(255,255,255,0.1);
             transform: translateY(0) skew(-2deg);
           }
         }

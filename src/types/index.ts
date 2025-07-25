@@ -4,6 +4,7 @@ export interface Designer {
   id: string;
   name: string;
   nameKo: string;
+  mainRole: string;
   role: string;
   bio: string;
   profileImage: string;

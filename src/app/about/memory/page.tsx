@@ -3,52 +3,22 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import { useCMSSlot } from '@/hooks/useCMSSlot';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import MediaSlot from '@/components/cms/MediaSlot';
 
 // HTML redux6 about-memory.html과 완전 동일한 Memory 페이지 구현
 export default function MemoryPage() {
   const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  
+  // CMS integration
+  const { isAuthenticated } = useSimpleAuth();
+  const { slot: memorySlot, currentFiles: galleryImages, updateFiles: updateGalleryImages } = useCMSSlot('about-memory-gallery');
 
-  // HTML 버전과 완전 동일한 이미지 배열
-  const galleryImages = [
-    '/images/about/memory/0C22A68E-AADF-4A8D-B5E7-44DDBA2EE64F.jpeg',
-    '/images/about/memory/83C1CE7D-97A9-400F-9403-60E89979528A.jpg',
-    '/images/about/memory/IMG_1728.jpeg',
-    '/images/about/memory/IMG_3452(1).JPG',
-    '/images/about/memory/IMG_3452.JPG',
-    '/images/about/memory/IMG_3454.JPG',
-    '/images/about/memory/IMG_3455.JPG',
-    '/images/about/memory/IMG_3481.JPG',
-    '/images/about/memory/IMG_3491.JPG',
-    '/images/about/memory/IMG_3492.JPG',
-    '/images/about/memory/IMG_3493.JPG',
-    '/images/about/memory/IMG_4339.JPG',
-    '/images/about/memory/IMG_4345.JPG',
-    '/images/about/memory/IMG_4348.JPG',
-    '/images/about/memory/IMG_4367.JPG',
-    '/images/about/memory/IMG_5380.JPG',
-    '/images/about/memory/IMG_5381.JPG',
-    '/images/about/memory/IMG_5382.JPG',
-    '/images/about/memory/IMG_5383.JPG',
-    '/images/about/memory/IMG_7103.jpeg',
-    '/images/about/memory/IMG_7146.jpeg',
-    '/images/about/memory/IMG_7272.jpeg',
-    '/images/about/memory/KakaoTalk_20250626_002430368.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_01.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_02.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_03.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_04.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_05.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_06.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_07.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_08.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_09.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_10.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_11.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_12.jpg',
-    '/images/about/memory/KakaoTalk_20250626_002430368_13.jpg'
-  ];
+  // Gallery images are now managed by CMS - fallback to empty array if not loaded
+  // CMS will populate galleryImages from the 'about-memory-gallery' slot
 
   useEffect(() => {
     // HTML 버전과 동일한 키보드 네비게이션
@@ -190,6 +160,47 @@ export default function MemoryPage() {
             </div>
           ))}
         </div>
+
+        {/* CMS Admin Interface - Only visible to authenticated users */}
+        {isAuthenticated && memorySlot && (
+          <div 
+            className="cms-admin-section"
+            style={{
+              maxWidth: '1800px',
+              margin: '60px auto 0',
+              padding: '0 20px'
+            }}
+          >
+            <div style={{
+              background: 'rgba(0, 0, 0, 0.8)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '16px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              padding: '24px'
+            }}>
+              <div style={{
+                color: 'var(--primary-white)',
+                fontSize: '16px',
+                fontWeight: 600,
+                marginBottom: '20px',
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                textAlign: 'center'
+              }}>
+                📸 Memory Gallery Management
+              </div>
+              
+              <MediaSlot
+                slot={memorySlot}
+                isAdminMode={true}
+                onFileUpdate={(slotId, files) => {
+                  updateGalleryImages(files);
+                }}
+                className="memory-cms-slot"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Professional Lightbox - HTML 버전과 완전 동일 */}
@@ -284,10 +295,40 @@ export default function MemoryPage() {
           }
         }
         
+        /* CMS Admin Section Styles */
+        .cms-admin-section {
+          animation: slideUpFade 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+
+        .memory-cms-slot :global(.media-slot-admin) {
+          background: rgba(255, 255, 255, 0.03) !important;
+          border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+
+        .memory-cms-slot :global(.media-slot-admin h4) {
+          color: var(--accent-mocha) !important;
+        }
+
+        .memory-cms-slot :global(.media-slot-admin p) {
+          color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        @keyframes slideUpFade {
+          0% {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
         /* Motion Reduction */
         @media (prefers-reduced-motion: reduce) {
           .gallery-item,
-          .gallery-header {
+          .gallery-header,
+          .cms-admin-section {
             animation: none !important;
             opacity: 1 !important;
             transform: none !important;

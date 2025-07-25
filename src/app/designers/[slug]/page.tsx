@@ -6,13 +6,6 @@ import { notFound } from 'next/navigation';
 import { designers } from '@/data/designers';
 import { Designer } from '@/types';
 import OptimizedImage from '@/components/ui/OptimizedImage';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-// Register GSAP plugins
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface Props {
   params: Promise<{
@@ -27,8 +20,6 @@ export default function DesignerPage({ params }: Props) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('posts');
-  const [likedPosts, setLikedPosts] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     const getParams = async () => {
@@ -55,37 +46,27 @@ export default function DesignerPage({ params }: Props) {
   useEffect(() => {
     if (!designer || isLoading) return;
 
-    // GSAP Animations
-    const ctx = gsap.context(() => {
-      // Profile animations
-      gsap.fromTo('.profile-content', 
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.2 }
-      );
-
-      // Grid animations
-      gsap.fromTo('.instagram-post', 
-        { opacity: 0, scale: 0.8 },
-        { 
-          opacity: 1, 
-          scale: 1, 
-          duration: 0.6, 
-          ease: 'back.out(1.7)',
-          stagger: {
-            amount: 1.2,
-            grid: "auto",
-            from: "start"
-          },
-          scrollTrigger: {
-            trigger: '.instagram-grid',
-            start: 'top 80%',
-            end: 'bottom 20%',
-          }
+    // Portfolio reveal animation
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('revealed');
+          }, index * 100);
         }
-      );
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.portfolio-item').forEach(item => {
+      observer.observe(item);
     });
 
-    return () => ctx.revert();
+    return () => observer.disconnect();
   }, [designer, isLoading]);
 
   useEffect(() => {
@@ -143,16 +124,6 @@ export default function DesignerPage({ params }: Props) {
     }
   };
 
-  const toggleLike = (index: number) => {
-    const newLikedPosts = new Set(likedPosts);
-    if (likedPosts.has(index)) {
-      newLikedPosts.delete(index);
-    } else {
-      newLikedPosts.add(index);
-    }
-    setLikedPosts(newLikedPosts);
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -170,201 +141,185 @@ export default function DesignerPage({ params }: Props) {
 
   return (
     <>
-      {/* Enhanced Instagram-style Navigation */}
-      <nav className="fixed top-0 left-0 w-full py-3 px-4 bg-black/95 backdrop-blur-xl z-[1000] border-b border-white/10">
-        <div className="flex justify-between items-center max-w-full mx-auto md:max-w-4xl lg:max-w-6xl px-2">
-          <div className="flex items-center gap-4">
-            <button 
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white transition-all duration-300 hover:bg-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95"
+      {/* Professional Navigation */}
+      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] border-b border-[--accent-mocha]/10">
+        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
+          <div className="nav-left flex items-center gap-10">
+            <span 
+              className="back-button font-['Inter'] text-xl cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:transform hover:-translate-x-[5px] hover:text-[--accent-mocha]"
               onClick={goBack}
-              aria-label="Go back to designers"
             >
-              <span className="text-lg">←</span>
-            </button>
-            <span className="font-['Inter'] text-lg font-semibold text-white truncate max-w-[200px]">
-              {designer.name.toLowerCase().replace(' ', '')}
+              ←
+            </span>
+            <span className="page-title font-['Inter'] text-lg font-light tracking-[0.2em] text-[--accent-mocha] uppercase max-[768px]:hidden">
+              {designer.name}
             </span>
           </div>
-          <div className="flex items-center gap-3">
-            <button 
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center text-white rounded-full hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95 transition-all duration-300"
-              aria-label="More options"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-              </svg>
-            </button>
+          <div 
+            className="logo font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:opacity-70 hover:transform hover:scale-[1.02]"
+            onClick={goHome}
+          >
+            REDUX
           </div>
         </div>
       </nav>
 
-      <div className="min-h-screen bg-black pt-16">
-        {/* Enhanced Instagram-style Profile Header */}
-        <section className="profile-content px-4 py-6">
-          <div className="max-w-full mx-auto md:max-w-4xl lg:max-w-6xl px-2">
-            <div className="flex items-start gap-4 md:gap-6 mb-6">
-              {/* Enhanced Profile Image */}
-              <div className="flex-shrink-0">
-                <div className="w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full overflow-hidden p-0.5 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500">
-                  <div className="w-full h-full rounded-full overflow-hidden bg-black p-0.5">
+      <div className="min-h-screen bg-black pt-[120px]">
+        {/* Hero Section */}
+        <section className="hero-section relative h-[70vh] min-h-[500px] overflow-hidden">
+          {/* Background texture */}
+          <div 
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'2\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'1\'/%3E%3C/svg%3E")'
+            }}
+          />
+          
+          {/* Asymmetric geometric elements */}
+          <div 
+            className="absolute top-[20%] right-[15%] w-[150px] h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"
+            style={{ transform: 'rotate(-15deg)' }}
+          />
+          <div 
+            className="absolute bottom-[30%] left-[10%] w-[60px] h-[60px] border border-white/20"
+            style={{ transform: 'rotate(25deg)', borderRadius: '30%' }}
+          />
+          
+          <div className="relative z-10 h-full flex items-center px-10">
+            <div className="max-w-[1600px] mx-auto w-full">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                {/* Designer Info */}
+                <div className="designer-info">
+                  <div className="mb-8">
+                    <h1 
+                      className="designer-name font-['Playfair_Display'] font-bold text-white mb-4 tracking-[-0.02em] leading-[0.9]"
+                      style={{ 
+                        fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+                        textShadow: '0 0 30px rgba(255,255,255,0.1)'
+                      }}
+                    >
+                      {designer.name}
+                    </h1>
+                    <div className="mb-4">
+                      <p className="main-role font-['Inter'] text-white text-xl font-medium tracking-[0.2em] uppercase mb-2">
+                        {designer.mainRole}
+                      </p>
+                      <p className="sub-role font-['Inter'] text-[--accent-mocha] text-base tracking-[0.1em] uppercase">
+                        {designer.role}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Bio */}
+                  <div className="mb-8">
+                    <p className="bio font-['Inter'] text-white/80 text-lg leading-relaxed max-w-[500px]">
+                      {designer.bio}
+                    </p>
+                  </div>
+                  
+                  {/* Details */}
+                  <div className="designer-details space-y-4">
+                    {designer.instagramHandle && (
+                      <div className="detail-item">
+                        <span className="label font-['Inter'] text-[--accent-mocha] text-sm tracking-[0.1em] uppercase mr-4">
+                          Instagram:
+                        </span>
+                        <a 
+                          href={`https://instagram.com/${designer.instagramHandle.replace('@', '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="value font-['Inter'] text-white hover:text-[--accent-mocha] transition-colors duration-300"
+                        >
+                          {designer.instagramHandle}
+                        </a>
+                      </div>
+                    )}
+                    {designer.filmTitle && (
+                      <div className="detail-item">
+                        <span className="label font-['Inter'] text-[--accent-mocha] text-sm tracking-[0.1em] uppercase mr-4">
+                          Featured Film:
+                        </span>
+                        <span className="value font-['Inter'] text-white">
+                          {designer.filmTitle}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Profile Image */}
+                <div className="profile-image-container relative">
+                  <div 
+                    className="profile-image relative w-full max-w-[400px] mx-auto"
+                    style={{ aspectRatio: '3/4' }}
+                  >
                     <OptimizedImage 
                       src={designer.profileImage}
                       alt={`${designer.name} Profile`}
                       fill={true}
                       priority={true}
-                      sizes="(max-width: 768px) 96px, (max-width: 1024px) 128px, 144px"
-                      className="object-cover rounded-full"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-out"
+                      style={{
+                        filter: 'contrast(1.1) brightness(0.9)',
+                        clipPath: 'polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%)'
+                      }}
+                    />
+                    
+                    {/* Decorative elements */}
+                    <div 
+                      className="absolute -top-2 -right-2 w-8 h-8 border-2 border-[--accent-mocha] opacity-60"
+                      style={{ transform: 'rotate(45deg)' }}
+                    />
+                    <div 
+                      className="absolute -bottom-2 -left-2 w-6 h-6 bg-[--accent-mocha] opacity-40"
+                      style={{ transform: 'rotate(15deg)', borderRadius: '30%' }}
                     />
                   </div>
                 </div>
               </div>
-              
-              {/* Enhanced Profile Info */}
-              <div className="flex-grow min-w-0">
-                <div className="flex flex-col md:flex-row md:items-center gap-3 mb-3">
-                  <h1 className="font-['Inter'] text-xl md:text-2xl font-semibold text-white truncate">
-                    {designer.name.toLowerCase().replace(' ', '')}
-                  </h1>
-                  <div className="flex gap-2 flex-wrap">
-                    <button className="px-4 md:px-6 py-2.5 min-h-[44px] bg-blue-500 text-white text-sm font-semibold rounded-lg hover:bg-blue-600 focus:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 active:scale-95 transition-all duration-300">
-                      Follow
-                    </button>
-                    <button className="px-4 md:px-6 py-2.5 min-h-[44px] bg-white/20 text-white text-sm font-semibold rounded-lg hover:bg-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95 transition-all duration-300">
-                      Message
-                    </button>
-                  </div>
-                </div>
-                
-                {/* Enhanced Stats - Instagram style */}
-                <div className="flex gap-4 md:gap-6 mb-4 text-sm md:text-base">
-                  <div className="text-white">
-                    <span className="font-semibold">{designer.portfolioImages.length}</span>
-                    <span className="text-white/70 ml-1">posts</span>
-                  </div>
-                  <div className="text-white">
-                    <span className="font-semibold">{Math.floor(Math.random() * 5000) + 1000}</span>
-                    <span className="text-white/70 ml-1">followers</span>
-                  </div>
-                  <div className="text-white">
-                    <span className="font-semibold">{Math.floor(Math.random() * 500) + 100}</span>
-                    <span className="text-white/70 ml-1">following</span>
-                  </div>
-                </div>
-              </div>
             </div>
-            
-            {/* Enhanced Bio */}
-            <div className="mb-6">
-              <h2 className="font-['Inter'] text-sm font-semibold text-white mb-1">
-                {designer.nameKo} • {designer.role}
+          </div>
+        </section>
+
+        {/* Portfolio Section */}
+        <section className="portfolio-section py-20 px-10">
+          <div className="max-w-[1600px] mx-auto">
+            <div className="section-header mb-16 text-center">
+              <h2 className="font-['Playfair_Display'] text-4xl font-light text-white mb-4 tracking-[0.05em]">
+                Portfolio
               </h2>
-              <p className="font-['Inter'] text-sm text-white/90 leading-relaxed mb-2">
-                {designer.bio.slice(0, 120)}...
-              </p>
-              {designer.instagramHandle && (
-                <a 
-                  href={`https://instagram.com/${designer.instagramHandle.replace('@', '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors min-h-[44px] inline-flex items-center"
-                >
-                  {designer.instagramHandle}
-                </a>
-              )}
+              <div className="w-20 h-[1px] bg-[--accent-mocha] mx-auto"></div>
             </div>
             
-            {/* Enhanced Stories-style highlights with better touch targets */}
-            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide mb-6">
-              <div className="flex-shrink-0 text-center">
-                <button className="w-16 h-16 min-w-[44px] min-h-[44px] rounded-full border-2 border-white/30 flex items-center justify-center mb-1 bg-gradient-to-br from-purple-500 to-pink-500 hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-400 active:scale-95 transition-all duration-300">
-                  <span className="text-white text-xs font-bold">NEW</span>
-                </button>
-                <span className="text-xs text-white/70">Latest</span>
-              </div>
-              {designer.videoUrl && (
-                <div className="flex-shrink-0 text-center">
-                  <button className="w-16 h-16 min-w-[44px] min-h-[44px] rounded-full border-2 border-white/30 flex items-center justify-center mb-1 bg-gradient-to-br from-orange-500 to-red-500 hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-400 active:scale-95 transition-all duration-300">
-                    <span className="text-white text-xs font-bold">FILM</span>
-                  </button>
-                  <span className="text-xs text-white/70">Films</span>
-                </div>
-              )}
-              <div className="flex-shrink-0 text-center">
-                <button className="w-16 h-16 min-w-[44px] min-h-[44px] rounded-full border-2 border-white/30 flex items-center justify-center mb-1 bg-gradient-to-br from-green-500 to-blue-500 hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 active:scale-95 transition-all duration-300">
-                  <span className="text-white text-xs font-bold">BTS</span>
-                </button>
-                <span className="text-xs text-white/70">Behind</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Enhanced Instagram-style Tab Navigation */}
-        <section className="border-t border-white/10 sticky top-16 z-40 bg-black">
-          <div className="max-w-full mx-auto md:max-w-4xl lg:max-w-6xl px-4">
-            <div className="flex justify-center">
-              <button 
-                className={`flex items-center gap-2 px-4 py-3 min-h-[44px] text-sm font-medium border-b-2 transition-colors ${
-                  activeTab === 'posts' ? 'border-white text-white' : 'border-transparent text-white/60'
-                } hover:text-white focus:text-white focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95`}
-                onClick={() => setActiveTab('posts')}
-              >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M3 3h6v6H3V3zm8 0h6v6h-6V3zm8 0h6v6h-6V3zM3 11h6v6H3v-6zm8 0h6v6h-6v-6zm8 0h6v6h-6v-6zM3 19h6v6H3v-6zm8 0h6v6h-6v-6zm8 0h6v6h-6v-6z"/>
-                </svg>
-                POSTS
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Enhanced Instagram-style Feed Grid */}
-        <section className="instagram-grid pb-8">
-          <div className="max-w-full mx-auto md:max-w-4xl lg:max-w-6xl px-2">
-            <div className="grid grid-cols-3 gap-1 md:gap-2 lg:gap-3">
+            {/* Masonry Grid */}
+            <div className="portfolio-grid [columns:4] [column-gap:20px] max-[1400px]:[columns:3] max-[1024px]:[columns:2] max-[768px]:[columns:1]">
               {designer.portfolioImages.map((image: string, index: number) => (
                 <div 
                   key={index}
-                  className="instagram-post group relative overflow-hidden cursor-pointer bg-gray-900 aspect-square rounded-sm md:rounded-md transition-all duration-300 hover:scale-[1.02] active:scale-95"
+                  className="portfolio-item [break-inside:avoid] mb-5 relative overflow-hidden cursor-pointer opacity-0 transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:scale-[1.02] hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
+                  style={{ 
+                    animation: `revealItem 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards`,
+                    animationDelay: `${index * 100}ms`
+                  }}
                   onClick={() => openLightbox(index)}
                 >
                   <OptimizedImage 
                     src={image}
-                    alt={`${designer.name} Post ${index + 1}`}
-                    fill={true}
-                    priority={index < 9}
-                    sizes="(max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-                    className="object-cover transition-all duration-300 group-hover:scale-105"
+                    alt={`${designer.name} Portfolio ${index + 1}`}
+                    width={400}
+                    height={600}
+                    priority={index < 8}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="w-full h-auto block transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] [filter:grayscale(20%)_contrast(1.1)_brightness(0.9)] hover:[filter:grayscale(0%)_contrast(1.2)_brightness(1)]"
                   />
                   
-                  {/* Enhanced Instagram-style hover overlay */}
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                    <div className="flex items-center gap-4 text-white">
-                      <div className="flex items-center gap-1">
-                        <svg className={`w-6 h-6 transition-colors ${
-                          likedPosts.has(index) ? 'fill-red-500 text-red-500' : 'fill-none stroke-current'
-                        }`} viewBox="0 0 24 24" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                        <span className="text-sm font-semibold">{Math.floor(Math.random() * 500) + 50}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <svg className="w-6 h-6 fill-none stroke-current" viewBox="0 0 24 24" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                        </svg>
-                        <span className="text-sm font-semibold">{Math.floor(Math.random() * 100) + 5}</span>
-                      </div>
-                    </div>
+                  {/* Hover overlay */}
+                  <div className="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] flex items-end p-5 hover:opacity-100">
+                    <p className="portfolio-caption font-['Inter'] text-xs font-light tracking-[0.1em] text-white uppercase [text-shadow:0_2px_4px_rgba(0,0,0,0.7)]">
+                      {String(index + 1).padStart(2, '0')} / {String(designer.portfolioImages.length).padStart(2, '0')}
+                    </p>
                   </div>
-                  
-                  {/* Multiple photos indicator */}
-                  {index % 5 === 0 && (
-                    <div className="absolute top-2 right-2">
-                      <svg className="w-4 h-4 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-                      </svg>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -372,209 +327,145 @@ export default function DesignerPage({ params }: Props) {
         </section>
       </div>
 
-      {/* Enhanced Instagram-style Lightbox */}
+      {/* Professional Lightbox */}
       {isLightboxOpen && (
         <div 
-          className="fixed inset-0 bg-black z-[10000] flex items-center justify-center transition-opacity duration-300"
+          className="lightbox fixed inset-0 bg-black/95 backdrop-blur-[20px] z-[10000] flex items-center justify-center opacity-100 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)]"
           onClick={handleLightboxClick}
         >
-          {/* Enhanced Mobile Instagram-style header */}
-          <div className="absolute top-0 left-0 w-full p-4 flex items-center justify-between z-50 bg-gradient-to-b from-black/80 to-transparent">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full overflow-hidden">
-                <OptimizedImage 
-                  src={designer.profileImage}
-                  alt={designer.name}
-                  fill={true}
-                  sizes="32px"
-                  className="object-cover"
-                />
-              </div>
-              <span className="text-white font-semibold text-sm">
-                {designer.name.toLowerCase().replace(' ', '')}
-              </span>
-            </div>
+          <div className="lightbox-content max-w-[90vw] max-h-[90vh] relative">
             <button 
-              className="text-white text-2xl w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95 transition-all duration-300"
+              className="lightbox-close absolute -top-[50px] right-0 bg-transparent border-none text-white text-[30px] cursor-pointer transition-all duration-300 ease-in-out w-10 h-10 flex items-center justify-center hover:text-[--accent-mocha] hover:transform hover:scale-120"
               onClick={closeLightbox}
-              aria-label="Close lightbox"
             >
               ×
             </button>
-          </div>
-          
-          <div className="relative max-w-[90vw] max-h-[90vh]">
+            
+            <button 
+              className="lightbox-nav lightbox-prev absolute top-1/2 left-[-80px] transform -translate-y-1/2 bg-white/10 backdrop-blur-[10px] border border-white/20 rounded-full w-[60px] h-[60px] flex items-center justify-center text-white text-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[--accent-mocha]/30 hover:transform hover:-translate-y-1/2 hover:scale-110 max-[1024px]:hidden"
+              onClick={(e) => { e.stopPropagation(); prevImage(); }}
+            >
+              ‹
+            </button>
+            
             <OptimizedImage 
               src={designer.portfolioImages[currentImageIndex]}
-              alt={`${designer.name} Post ${currentImageIndex + 1}`}
-              width={800}
+              alt={`${designer.name} Portfolio ${currentImageIndex + 1}`}
+              width={1200}
               height={800}
               priority={true}
               sizes="90vw"
-              className="max-w-full max-h-[90vh] object-contain"
+              className="lightbox-image max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
             />
-          </div>
-          
-          {/* Enhanced Instagram-style bottom actions */}
-          <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-4">
-                <button 
-                  className="text-white transition-colors w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95"
-                  onClick={() => toggleLike(currentImageIndex)}
-                  aria-label="Like post"
-                >
-                  <svg className={`w-7 h-7 transition-colors ${
-                    likedPosts.has(currentImageIndex) ? 'fill-red-500 text-red-500' : 'fill-none stroke-current'
-                  }`} viewBox="0 0 24 24" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                </button>
-                <button 
-                  className="text-white w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95 transition-all duration-300"
-                  aria-label="Comment on post"
-                >
-                  <svg className="w-7 h-7 fill-none stroke-current" viewBox="0 0 24 24" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                </button>
-                <button 
-                  className="text-white w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95 transition-all duration-300"
-                  aria-label="Share post"
-                >
-                  <svg className="w-7 h-7 fill-none stroke-current" viewBox="0 0 24 24" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                  </svg>
-                </button>
-              </div>
-              <button 
-                className="text-white w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95 transition-all duration-300"
-                aria-label="Save post"
-              >
-                <svg className="w-6 h-6 fill-none stroke-current" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                </svg>
-              </button>
-            </div>
             
-            <div className="text-white text-sm">
-              <span className="font-semibold">{Math.floor(Math.random() * 1000) + 100} likes</span>
-            </div>
+            <button 
+              className="lightbox-nav lightbox-next absolute top-1/2 right-[-80px] transform -translate-y-1/2 bg-white/10 backdrop-blur-[10px] border border-white/20 rounded-full w-[60px] h-[60px] flex items-center justify-center text-white text-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[--accent-mocha]/30 hover:transform hover:-translate-y-1/2 hover:scale-110 max-[1024px]:hidden"
+              onClick={(e) => { e.stopPropagation(); nextImage(); }}
+            >
+              ›
+            </button>
             
-            <div className="text-white/70 text-xs mt-2 text-center">
-              {currentImageIndex + 1} / {designer.portfolioImages.length}
+            {/* Image info */}
+            <div className="absolute bottom-[-50px] left-0 text-white">
+              <p className="text-sm font-['Inter'] tracking-[0.1em]">
+                {String(currentImageIndex + 1).padStart(2, '0')} / {String(designer.portfolioImages.length).padStart(2, '0')}
+              </p>
             </div>
           </div>
-          
-          {/* Enhanced Navigation arrows with better touch targets */}
-          <button 
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl w-12 h-12 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 focus:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95 transition-all duration-300"
-            onClick={(e) => { e.stopPropagation(); prevImage(); }}
-            aria-label="Previous image"
-          >
-            ‹
-          </button>
-          <button 
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl w-12 h-12 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 focus:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/30 active:scale-95 transition-all duration-300"
-            onClick={(e) => { e.stopPropagation(); nextImage(); }}
-            aria-label="Next image"
-          >
-            ›
-          </button>
         </div>
       )}
 
-      {/* Enhanced Instagram-style Custom Styles */}
+      {/* Professional Styles */}
       <style jsx>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        
-        /* Enhanced Instagram-style animations */
-        .instagram-post {
-          transition: transform 0.1s ease;
-        }
-        .instagram-post:active {
-          transform: scale(0.95);
+        @keyframes revealItem {
+          0% {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            filter: blur(5px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+          }
         }
         
-        /* Enhanced Mobile optimizations */
+        .portfolio-item.revealed {
+          animation: revealItem 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        
+        /* CSS variables */
+        :root {
+          --primary-black: #000000;
+          --primary-white: #FFFFFF;
+          --accent-mocha: #B7AFA3;
+          --accent-warm: #D4CCC5;
+          --accent-deep: #9A9086;
+          --accent-neutral: #F8F6F4;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+          .hero-section {
+            height: 60vh;
+            min-height: 400px;
+          }
+          
+          .hero-section .grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+          
+          .profile-image-container {
+            order: -1;
+          }
+          
+          .profile-image {
+            max-width: 300px;
+          }
+        }
+        
         @media (max-width: 768px) {
-          .instagram-grid {
-            padding-bottom: 2rem;
+          nav {
+            padding: 15px 20px;
           }
           
-          /* Better grid spacing on small screens */
-          .instagram-grid .grid {
-            gap: 2px;
+          .page-title {
+            display: none;
           }
           
-          /* Enhanced profile section spacing */
-          .profile-content {
-            padding: 1rem;
+          .hero-section {
+            height: 50vh;
+            min-height: 350px;
+            padding: 0 20px;
           }
           
-          /* Better button spacing on mobile */
-          .profile-content .flex.gap-2 {
-            gap: 0.5rem;
+          .portfolio-section {
+            padding: 60px 20px;
           }
           
-          /* Improved text truncation */
-          .truncate {
-            max-width: 150px;
+          .portfolio-grid {
+            column-gap: 10px;
+          }
+          
+          .portfolio-item {
+            margin-bottom: 10px;
+          }
+          
+          .designer-name {
+            font-size: clamp(2rem, 8vw, 3rem) !important;
           }
         }
         
-        @media (max-width: 480px) {
-          /* Extra small screens optimization */
-          .profile-content .px-4 {
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-          }
-          
-          /* Better button sizes on very small screens */
-          .profile-content button {
-            font-size: 0.75rem;
-            padding: 0.625rem 0.75rem;
-          }
-          
-          /* Tighter navigation spacing */
-          nav .px-4 {
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-          }
-        }
-        
-        /* Enhanced hover states for non-touch devices */
-        @media (hover: hover) {
-          .instagram-post:hover {
-            transform: scale(1.02);
-          }
-        }
-        
-        /* Better accessibility focus states */
-        *:focus {
-          outline: none;
-        }
-        
-        /* Enhanced dark mode compatibility */
-        @media (prefers-color-scheme: dark) {
-          .bg-black {
-            background-color: #000;
+        /* Motion reduction */
+        @media (prefers-reduced-motion: reduce) {
+          .portfolio-item,
+          * {
+            animation: none !important;
+            transition: none !important;
           }
         }
       `}</style>
     </>
   );
-}
-
-// GSAP types
-declare global {
-  interface Window {
-    gsap: any;
-  }
 }
