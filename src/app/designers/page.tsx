@@ -22,12 +22,12 @@ export default function DesignersPage() {
   const { isAuthenticated } = useSimpleAuth();
   
   // CMS 슬롯 - 각 디자이너 프로필 이미지
-  const { slot: kimBominSlot, currentFiles: kimBominFiles, updateFiles: updateKimBominFiles } = useCMSSlot('main-designer-profile-kim-bomin');
-  const { slot: parkParangSlot, currentFiles: parkParangFiles, updateFiles: updateParkParangFiles } = useCMSSlot('main-designer-profile-park-parang');
-  const { slot: leeTaehyeonSlot, currentFiles: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles } = useCMSSlot('main-designer-profile-lee-taehyeon');
-  const { slot: choiEunsolSlot, currentFiles: choiEunsolFiles, updateFiles: updateChoiEunsolFiles } = useCMSSlot('main-designer-profile-choi-eunsol');
-  const { slot: hwangJinsuSlot, currentFiles: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles } = useCMSSlot('main-designer-profile-hwang-jinsu');
-  const { slot: kimGyeongsuSlot, currentFiles: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles } = useCMSSlot('main-designer-profile-kim-gyeongsu');
+  const { slot: kimBominSlot, currentFiles: kimBominFiles, updateFiles: updateKimBominFiles } = useCMSSlot('main-designer-profile-kimbomin');
+  const { slot: parkParangSlot, currentFiles: parkParangFiles, updateFiles: updateParkParangFiles } = useCMSSlot('main-designer-profile-parkparang');
+  const { slot: leeTaehyeonSlot, currentFiles: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles } = useCMSSlot('main-designer-profile-leetaehyeon');
+  const { slot: choiEunsolSlot, currentFiles: choiEunsolFiles, updateFiles: updateChoiEunsolFiles } = useCMSSlot('main-designer-profile-choieunsol');
+  const { slot: hwangJinsuSlot, currentFiles: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles } = useCMSSlot('main-designer-profile-hwangjinsu');
+  const { slot: kimGyeongsuSlot, currentFiles: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles } = useCMSSlot('main-designer-profile-kimgyeongsu');
 
   useEffect(() => {
     // CSS-based animations without GSAP dependency
@@ -257,6 +257,7 @@ export default function DesignersPage() {
                       slot={cmsData.slot}
                       currentFiles={cmsData.files}
                       onFilesUpdate={cmsData.updateFiles}
+                      isAdminMode={true}
                       className="w-12 h-12"
                     />
                   </div>

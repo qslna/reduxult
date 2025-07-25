@@ -30,8 +30,8 @@ export default function DesignerPage({ params }: Props) {
   const { isAuthenticated } = useSimpleAuth();
   
   // CMS 슬롯 - 프로필 이미지와 포트폴리오 갤러리
-  const { slot: profileSlot, currentFiles: profileFiles, updateFiles: updateProfileFiles } = useCMSSlot(designer ? `main-designer-profile-${designer.id}` : '');
-  const { slot: portfolioSlot, currentFiles: portfolioFiles, updateFiles: updatePortfolioFiles } = useCMSSlot(designer ? `designer-${designer.id}-portfolio` : '');
+  const { slot: profileSlot, currentFiles: profileFiles, updateFiles: updateProfileFiles } = useCMSSlot(designer ? `main-designer-profile-${designer.id.replace(/-/g, '')}` : '');
+  const { slot: portfolioSlot, currentFiles: portfolioFiles, updateFiles: updatePortfolioFiles } = useCMSSlot(designer ? `designer-${designer.id.replace(/-/g, '')}-portfolio` : '');
 
   useEffect(() => {
     const getParams = async () => {
@@ -278,6 +278,7 @@ export default function DesignerPage({ params }: Props) {
                           slot={profileSlot}
                           currentFiles={profileFiles}
                           onFilesUpdate={updateProfileFiles}
+                          isAdminMode={true}
                           className="w-12 h-12"
                         />
                       </div>
@@ -325,6 +326,7 @@ export default function DesignerPage({ params }: Props) {
                       slot={portfolioSlot}
                       currentFiles={portfolioFiles}
                       onFilesUpdate={updatePortfolioFiles}
+                      isAdminMode={true}
                       className="w-16 h-16"
                     />
                   </div>

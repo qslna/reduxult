@@ -365,6 +365,7 @@ export default function ExhibitionsPage() {
                       slot={cineModeSlot}
                       currentFiles={cineModeFiles}
                       onFilesUpdate={updateCineModeFiles}
+                      isAdminMode={true}
                       className="w-16 h-16"
                     />
                   </div>
@@ -621,6 +622,7 @@ export default function ExhibitionsPage() {
                       slot={theRoomSlot}
                       currentFiles={theRoomFiles}
                       onFilesUpdate={updateTheRoomFiles}
+                      isAdminMode={true}
                       className="w-16 h-16"
                     />
                   </div>

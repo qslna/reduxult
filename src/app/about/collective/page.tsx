@@ -149,7 +149,7 @@ export default function CollectivePage() {
           {/* Member 1: Kim Bomin */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('kim-bomin')}
+            onClick={() => openDesignerPage('kimbomin')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
@@ -175,7 +175,7 @@ export default function CollectivePage() {
           {/* Member 2: Park Parang */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('park-parang')}
+            onClick={() => openDesignerPage('parkparang')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
@@ -200,7 +200,7 @@ export default function CollectivePage() {
           {/* Member 3: Lee Taehyeon */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('lee-taehyeon')}
+            onClick={() => openDesignerPage('leetaehyeon')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
@@ -225,7 +225,7 @@ export default function CollectivePage() {
           {/* Member 4: Choi Eunsol */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('choi-eunsol')}
+            onClick={() => openDesignerPage('choieunsol')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
@@ -250,7 +250,7 @@ export default function CollectivePage() {
           {/* Member 5: Hwang Jinsu */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('hwang-jinsu')}
+            onClick={() => openDesignerPage('hwangjinsu')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
@@ -275,7 +275,7 @@ export default function CollectivePage() {
           {/* Member 6: Kim Gyeongsu */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('kim-gyeongsu')}
+            onClick={() => openDesignerPage('kimgyeongsu')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
