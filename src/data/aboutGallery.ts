@@ -34,28 +34,28 @@ export const aboutGalleries: CategoryGallery[] = [
         description: 'Cinematic moment from Hwang Jinsu fashion film'
       },
       {
-        src: '/images/designers/jangmingyu/cinemode/jangmingyufilm1.jpg',
-        alt: 'Fashion Film - Jang Mingyu Scene 1',
-        title: 'Jang Mingyu - Film Collection',
-        description: 'Creative fashion film by Jang Mingyu'
-      },
-      {
-        src: '/images/designers/kimbomin/cinemode/NOR_7987.jpg',
+        src: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
         alt: 'Fashion Film - Kim Bomin Scene 1',
         title: 'Kim Bomin - Visual Narrative',
         description: 'Fashion storytelling through Kim Bomin lens'
       },
       {
-        src: '/images/designers/leesoyeon/cinemode/leesoyeonfilm1.jpg',
-        alt: 'Fashion Film - Lee Soyeon Scene 1',
-        title: 'Lee Soyeon - Motion Study',
-        description: 'Dynamic fashion film by Lee Soyeon'
+        src: '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
+        alt: 'Fashion Film - Lee Taehyeon Scene 1',
+        title: 'Lee Taehyeon - Motion Study',
+        description: 'Dynamic fashion film by Lee Taehyeon'
       },
       {
-        src: '/images/designers/yangjiwon/cinemode/yangjiwonfilm1.jpg',
-        alt: 'Fashion Film - Yang Jiwon Scene 1',
-        title: 'Yang Jiwon - Cinematic Vision',
-        description: 'Artistic fashion film by Yang Jiwon'
+        src: '/images/designers/hwangjinsu/cinemode/📌NOR_7699.jpg',
+        alt: 'Fashion Film - Hwang Jinsu Scene 2',
+        title: 'Hwang Jinsu - Creative Vision',
+        description: 'Artistic fashion film by Hwang Jinsu'
+      },
+      {
+        src: '/images/exhibitions/cinemode/1.jpg',
+        alt: 'Fashion Film - Exhibition Scene',
+        title: 'Exhibition Moments',
+        description: 'Fashion film from REDUX exhibition'
       }
     ],
     previewImages: [
@@ -68,7 +68,7 @@ export const aboutGalleries: CategoryGallery[] = [
         alt: 'Fashion Film Preview 2'
       },
       {
-        src: '/images/designers/jangmingyu/cinemode/jangmingyufilm1.jpg',
+        src: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
         alt: 'Fashion Film Preview 3'
       }
     ]
@@ -85,28 +85,28 @@ export const aboutGalleries: CategoryGallery[] = [
         description: 'Visual art piece exploring transformation'
       },
       {
-        src: '/images/about/visual-art/Renewal.png',
-        alt: 'Visual Art - Renewal',
-        title: 'Renewal',
-        description: 'Artistic interpretation of rebirth and renewal'
+        src: '/images/about/visual-art/Digital Dreams.png',
+        alt: 'Visual Art - Digital Dreams',
+        title: 'Digital Dreams',
+        description: 'Digital visual art exploring contemporary themes'
       },
       {
-        src: '/images/about/visual-art/Revival.png',
-        alt: 'Visual Art - Revival',
-        title: 'Revival',
-        description: 'Contemporary visual art on revival themes'
+        src: '/images/about/visual-art/Form & Void.png',
+        alt: 'Visual Art - Form & Void',
+        title: 'Form & Void',
+        description: 'Contemporary visual art on form and space'
       },
       {
-        src: '/images/about/visual-art/Transformation.png',
-        alt: 'Visual Art - Transformation',
-        title: 'Transformation',
-        description: 'Artistic exploration of change and evolution'
+        src: '/images/about/visual-art/Collective Vision.png',
+        alt: 'Visual Art - Collective Vision',
+        title: 'Collective Vision',
+        description: 'Artistic exploration of collective creativity'
       },
       {
-        src: '/images/about/visual-art/Renovation.png',
-        alt: 'Visual Art - Renovation',
-        title: 'Renovation',
-        description: 'Visual narrative on renovation and change'
+        src: '/images/about/visual-art/Shadow Play.png',
+        alt: 'Visual Art - Shadow Play',
+        title: 'Shadow Play',
+        description: 'Visual narrative through shadow and light'
       }
     ],
     previewImages: [
@@ -115,11 +115,11 @@ export const aboutGalleries: CategoryGallery[] = [
         alt: 'Visual Art Preview 1'
       },
       {
-        src: '/images/about/visual-art/Renewal.png',
+        src: '/images/about/visual-art/Digital Dreams.png',
         alt: 'Visual Art Preview 2'
       },
       {
-        src: '/images/about/visual-art/Revival.png',
+        src: '/images/about/visual-art/Form & Void.png',
         alt: 'Visual Art Preview 3'
       }
     ]
@@ -130,25 +130,25 @@ export const aboutGalleries: CategoryGallery[] = [
     description: '기억에 남을 순간',
     images: [
       {
-        src: '/images/about/memory/memory-collection-1.jpg',
+        src: '/images/about/memory/IMG_3452.JPG',
         alt: 'Memory Collection 1',
         title: 'Nostalgic Moments',
         description: 'Capturing moments that remain in memory'
       },
       {
-        src: '/images/about/memory/memory-collection-2.jpg',
+        src: '/images/about/memory/IMG_7103.jpeg',
         alt: 'Memory Collection 2',
         title: 'Temporal Fragments',
         description: 'Fragmented memories through visual narrative'
       },
       {
-        src: '/images/about/memory/memory-collection-3.jpg',
+        src: '/images/about/memory/IMG_5380.JPG',
         alt: 'Memory Collection 3',
         title: 'Remembered Spaces',
         description: 'Spaces that hold our deepest memories'
       },
       {
-        src: '/images/about/memory/memory-collection-4.jpg',
+        src: '/images/about/memory/KakaoTalk_20250626_002430368_01.jpg',
         alt: 'Memory Collection 4',
         title: 'Emotional Landscapes',
         description: 'Landscapes of memory and emotion'
@@ -156,15 +156,15 @@ export const aboutGalleries: CategoryGallery[] = [
     ],
     previewImages: [
       {
-        src: '/images/exhibition/memory-1.jpg',
+        src: '/images/about/memory/IMG_3452.JPG',
         alt: 'Memory Preview 1'
       },
       {
-        src: '/images/exhibition/memory-2.jpg',
+        src: '/images/about/memory/IMG_7103.jpeg',
         alt: 'Memory Preview 2'
       },
       {
-        src: '/images/exhibition/memory-3.jpg',
+        src: '/images/about/memory/IMG_5380.JPG',
         alt: 'Memory Preview 3'
       }
     ]
@@ -175,41 +175,41 @@ export const aboutGalleries: CategoryGallery[] = [
     description: '공간을 통한 경험',
     images: [
       {
-        src: '/images/about/installation/installation-1.jpg',
-        alt: 'Installation Art 1',
+        src: '/images/about/process/공간  연출.png',
+        alt: 'Installation Art - Spatial Direction',
         title: 'Spatial Narrative',
         description: 'Installation exploring spatial relationships'
       },
       {
-        src: '/images/about/installation/installation-2.jpg',
-        alt: 'Installation Art 2',
+        src: '/images/about/process/디렉팅.png',
+        alt: 'Installation Art - Directing',
         title: 'Interactive Environment',
         description: 'Interactive installation for audience engagement'
       },
       {
-        src: '/images/about/installation/installation-3.jpg',
-        alt: 'Installation Art 3',
+        src: '/images/about/process/아트 그래픽.png',
+        alt: 'Installation Art - Art Graphics',
         title: 'Immersive Experience',
         description: 'Immersive installation creating new experiences'
       },
       {
-        src: '/images/about/installation/installation-4.jpg',
-        alt: 'Installation Art 4',
+        src: '/images/about/process/영상 & 편집.png',
+        alt: 'Installation Art - Video & Editing',
         title: 'Material Exploration',
         description: 'Exploring materials in three-dimensional space'
       }
     ],
     previewImages: [
       {
-        src: '/images/exhibition/installation-preview-1.jpg',
+        src: '/images/about/process/공간  연출.png',
         alt: 'Installation Preview 1'
       },
       {
-        src: '/images/exhibition/installation-preview-2.jpg',
+        src: '/images/about/process/디렉팅.png',
         alt: 'Installation Preview 2'
       },
       {
-        src: '/images/exhibition/installation-preview-3.jpg',
+        src: '/images/about/process/아트 그래픽.png',
         alt: 'Installation Preview 3'
       }
     ]
@@ -220,41 +220,41 @@ export const aboutGalleries: CategoryGallery[] = [
     description: '우리가 함께 만드는 이야기',
     images: [
       {
-        src: '/images/designers/profile/collective-work-1.jpg',
-        alt: 'Collective Work 1',
+        src: '/images/profile/Kim Bomin.webp',
+        alt: 'Collective Work - Kim Bomin',
         title: 'Together We Create',
         description: 'Collaborative work by REDUX collective'
       },
       {
-        src: '/images/designers/profile/collective-work-2.jpg',
-        alt: 'Collective Work 2',
+        src: '/images/profile/Hwang Jinsu.jpg',
+        alt: 'Collective Work - Hwang Jinsu',
         title: 'Six Voices, One Vision',
         description: 'Unity in diversity through collective design'
       },
       {
-        src: '/images/designers/profile/collective-work-3.jpg',
-        alt: 'Collective Work 3',
+        src: '/images/profile/Choi Eunsol.jpeg',
+        alt: 'Collective Work - Choi Eunsol',
         title: 'Shared Dreams',
         description: 'Dreams and visions shared among six designers'
       },
       {
-        src: '/images/designers/profile/collective-work-4.jpg',
-        alt: 'Collective Work 4',
+        src: '/images/profile/Lee Taehyeon.jpg',
+        alt: 'Collective Work - Lee Taehyeon',
         title: 'Creative Synergy',
         description: 'Synergy created through collaborative process'
       }
     ],
     previewImages: [
       {
-        src: '/images/designers/choieunsol/profile/designer-placeholder.jpg',
+        src: '/images/profile/Kim Bomin.webp',
         alt: 'Collective Preview 1'
       },
       {
-        src: '/images/designers/hwangjinsu/profile/designer-placeholder.jpg',
+        src: '/images/profile/Hwang Jinsu.jpg',
         alt: 'Collective Preview 2'
       },
       {
-        src: '/images/designers/jangmingyu/profile/designer-placeholder.jpg',
+        src: '/images/profile/Choi Eunsol.jpeg',
         alt: 'Collective Preview 3'
       }
     ]

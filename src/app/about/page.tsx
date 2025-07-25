@@ -20,40 +20,29 @@ export default function AboutPage() {
   const { text: philosophyText3 } = useTextContent('about', 'philosophy-text-3', '순간을 넘어 영원히 기억될 경험을 디자인합니다.');
   const { text: valuesTitle } = useTextContent('about', 'values-title', 'OUR VALUES');
   useEffect(() => {
-    // HTML 버전과 동일한 GSAP 애니메이션 초기화
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (!isMobile && typeof window !== 'undefined') {
-      // GSAP 애니메이션 실행
-      const timer = setTimeout(() => {
-        if (window.gsap) {
-          // Grid items animation
-          window.gsap.utils.toArray('.grid-item').forEach((item: any, index: number) => {
-            window.gsap.from(item, {
-              y: 100,
-              opacity: 0,
-              duration: 1,
-              delay: index * 0.1,
-              scrollTrigger: {
-                trigger: item,
-                start: 'top 80%',
-                end: 'bottom 20%'
-              }
-            });
-          });
-        }
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    }
-    
-    // Value items reveal animation
+    // CSS-based animations without GSAP dependency
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
     };
     
     const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('grid-revealed');
+          }, index * 100);
+        }
+      });
+    }, observerOptions);
+    
+    // Observe grid items for animations
+    document.querySelectorAll('.grid-item').forEach(item => {
+      observer.observe(item);
+    });
+    
+    // Value items reveal animation
+    const valueObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('revealed');
@@ -62,7 +51,7 @@ export default function AboutPage() {
     }, observerOptions);
     
     document.querySelectorAll('.value-item').forEach(item => {
-      observer.observe(item);
+      valueObserver.observe(item);
     });
     
     // Touch feedback for mobile
@@ -82,6 +71,7 @@ export default function AboutPage() {
     
     return () => {
       observer.disconnect();
+      valueObserver.disconnect();
     };
   }, []);
 
@@ -610,6 +600,18 @@ export default function AboutPage() {
           }
         }
         
+        /* Grid animations */
+        .grid-item {
+          opacity: 0;
+          transform: translateY(100px);
+          transition: all 0.8s ease;
+        }
+        
+        .grid-item.grid-revealed {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
         /* Grid hover effects - 디자이너 스타일 강화 */
         .grid-item:hover .grid-stack {
           transform: rotateY(12deg) rotateX(3deg) scale(1.02);
@@ -889,11 +891,4 @@ export default function AboutPage() {
       `}</style>
     </>
   );
-}
-
-// GSAP 타입 확장
-declare global {
-  interface Window {
-    gsap: any;
-  }
 }

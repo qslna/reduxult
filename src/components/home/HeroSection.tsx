@@ -51,36 +51,26 @@ export default function HeroSection() {
   const designerVideos = Object.values(DESIGNER_VIDEOS);
   const currentVideo = designerVideos[currentVideoIndex];
 
-  // Advanced loading animation with progress
+  // Simplified loading animation
   useEffect(() => {
-    const loadingSteps = [
-      { step: 'Initializing REDUX System...', progress: 20, delay: 300 },
-      { step: 'Loading Fashion Assets...', progress: 40, delay: 500 },
-      { step: 'Connecting Designer Network...', progress: 60, delay: 400 },
-      { step: 'Preparing Visual Experience...', progress: 80, delay: 600 },
-      { step: 'Welcome to REDUX...', progress: 100, delay: 400 }
-    ];
+    // Reduced loading time and simplified progress
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      setTimeout(() => {
+        setShowContent(true);
+        setLoadingProgress(100);
+      }, 200);
+    }, 1500); // Reduced from complex multi-step to simple 1.5s
 
-    let currentStep = 0;
-    
-    const progressInterval = setInterval(() => {
-      if (currentStep < loadingSteps.length) {
-        const { progress, delay } = loadingSteps[currentStep];
-        setLoadingProgress(progress);
-        currentStep++;
-        
-        if (currentStep === loadingSteps.length) {
-          setTimeout(() => {
-            setIsLoading(false);
-            setTimeout(() => setShowContent(true), 500);
-          }, delay);
-        }
-      } else {
-        clearInterval(progressInterval);
-      }
-    }, 800);
+    // Simple progress animation
+    const progressTimer = setTimeout(() => {
+      setLoadingProgress(100);
+    }, 1200);
 
-    return () => clearInterval(progressInterval);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(progressTimer);
+    };
   }, []);
 
   // Device detection and video initialization
@@ -98,44 +88,68 @@ export default function HeroSection() {
     }
   }, [showContent]);
 
-  // Video initialization function
+  // Simplified and more stable video initialization
   const initializeVideo = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    video.addEventListener('loadeddata', () => {
-      setVideoLoaded(true);
-      console.log('Video loaded successfully');
-    });
+    // Add error handling with try-catch
+    try {
+      video.addEventListener('loadeddata', () => {
+        setVideoLoaded(true);
+        console.log('Video loaded successfully');
+      });
 
-    video.addEventListener('canplay', () => {
-      if (!isMobile) {
-        // Auto-play on desktop only
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            setIsVideoPlaying(true);
-            setVideoClosed(false);
-          }).catch(handleVideoError);
+      video.addEventListener('canplay', () => {
+        if (!isMobile) {
+          // More defensive auto-play
+          setTimeout(() => {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.then(() => {
+                setIsVideoPlaying(true);
+                setVideoClosed(false);
+              }).catch((error) => {
+                console.warn('Video autoplay failed:', error);
+                handleVideoError();
+              });
+            }
+          }, 500); // Small delay to ensure everything is ready
         }
-      }
-    });
+      });
 
-    video.addEventListener('error', handleVideoError);
-    video.addEventListener('ended', () => {
-      // Auto-switch to next designer video when current ends
-      switchToNextVideo();
-    });
+      video.addEventListener('error', handleVideoError);
+      video.addEventListener('ended', () => {
+        // Auto-switch to next designer video when current ends
+        try {
+          switchToNextVideo();
+        } catch (error) {
+          console.warn('Video switching failed:', error);
+        }
+      });
 
-    // Show controls on hover (desktop only)
-    if (!isMobile) {
-      const heroElement = heroRef.current;
-      if (heroElement) {
-        heroElement.addEventListener('mouseenter', () => setShowVideoControls(true));
-        heroElement.addEventListener('mouseleave', () => setShowVideoControls(false));
+      // Simplified hover controls
+      if (!isMobile) {
+        const heroElement = heroRef.current;
+        if (heroElement) {
+          const handleMouseEnter = () => setShowVideoControls(true);
+          const handleMouseLeave = () => setShowVideoControls(false);
+          
+          heroElement.addEventListener('mouseenter', handleMouseEnter);
+          heroElement.addEventListener('mouseleave', handleMouseLeave);
+          
+          // Cleanup function
+          return () => {
+            heroElement.removeEventListener('mouseenter', handleMouseEnter);
+            heroElement.removeEventListener('mouseleave', handleMouseLeave);
+          };
+        }
+      } else {
+        setShowVideoControls(true); // Always show on mobile
       }
-    } else {
-      setShowVideoControls(true); // Always show on mobile
+    } catch (error) {
+      console.error('Video initialization failed:', error);
+      handleVideoError();
     }
   }, [isMobile]);
 
@@ -246,42 +260,12 @@ export default function HeroSection() {
               textAlign: 'center',
               margin: 0,
               position: 'relative',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              opacity: 0,
+              animation: 'fadeInUp 1.2s ease-out forwards',
+              animationDelay: '0.3s'
             }}>
-              {heroTitle.split('').map((letter: string, index: number) => (
-                <span
-                  key={index}
-                  className="redux-letter"
-                  style={{
-                    display: 'inline-block',
-                    transform: 'translateY(100px)',
-                    opacity: 0,
-                    animation: `letterReveal 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards`,
-                    animationDelay: `${index * 0.15}s`,
-                    position: 'relative'
-                  }}
-                >
-                  {letter}
-                  <span 
-                    className="letter-glow"
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      background: 'linear-gradient(45deg, var(--accent-mocha), var(--accent-warm))',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      opacity: 0,
-                      animation: `letterGlow 2s ease-in-out infinite`,
-                      animationDelay: `${index * 0.2 + 1}s`
-                    }}
-                  >
-                    {letter}
-                  </span>
-                </span>
-              ))}
+              {heroTitle}
             </h1>
             
             {/* Loading Progress Bar */}
@@ -363,6 +347,9 @@ export default function HeroSection() {
             loop
             playsInline
             preload="metadata"
+            controls={false}
+            controlsList="nodownload nofullscreen noremoteplayback"
+            disablePictureInPicture
             style={{
               width: '100%',
               height: '100%',
@@ -409,57 +396,62 @@ export default function HeroSection() {
               transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)'
             }}
           >
-            {/* Previous Video Button */}
-            <button 
-              onClick={switchToPrevVideo}
-              className="video-control-btn"
-              title="Previous Designer"
-              style={controlButtonStyle}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polygon points="11 19 2 12 11 5 11 19"></polygon>
-                <polygon points="22 19 13 12 22 5 22 19"></polygon>
-              </svg>
-            </button>
+            {/* Desktop Controls */}
+            {!isMobile && (
+              <>
+                {/* Previous Video Button */}
+                <button 
+                  onClick={switchToPrevVideo}
+                  className="video-control-btn"
+                  title="Previous Designer"
+                  style={controlButtonStyle}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polygon points="11 19 2 12 11 5 11 19"></polygon>
+                    <polygon points="22 19 13 12 22 5 22 19"></polygon>
+                  </svg>
+                </button>
+                
+                {/* Video Info */}
+                <div 
+                  className="video-info"
+                  style={{
+                    background: 'rgba(0, 0, 0, 0.5)',
+                    backdropFilter: 'blur(10px)',
+                    padding: '8px 16px',
+                    borderRadius: '20px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  <span style={{
+                    color: 'var(--primary-white)',
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    letterSpacing: '0.5px'
+                  }}>
+                    {currentVideo?.name || 'REDUX'}
+                  </span>
+                </div>
+                
+                {/* Next Video Button */}
+                <button 
+                  onClick={switchToNextVideo}
+                  className="video-control-btn"
+                  title="Next Designer"
+                  style={controlButtonStyle}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polygon points="13 19 22 12 13 5 13 19"></polygon>
+                    <polygon points="2 19 11 12 2 5 2 19"></polygon>
+                  </svg>
+                </button>
+              </>
+            )}
             
-            {/* Video Info */}
-            <div 
-              className="video-info"
-              style={{
-                background: 'rgba(0, 0, 0, 0.5)',
-                backdropFilter: 'blur(10px)',
-                padding: '8px 16px',
-                borderRadius: '20px',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-            >
-              <span style={{
-                color: 'var(--primary-white)',
-                fontSize: '12px',
-                fontWeight: 500,
-                letterSpacing: '0.5px'
-              }}>
-                {currentVideo?.name || 'REDUX'}
-              </span>
-            </div>
-            
-            {/* Next Video Button */}
-            <button 
-              onClick={switchToNextVideo}
-              className="video-control-btn"
-              title="Next Designer"
-              style={controlButtonStyle}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polygon points="13 19 22 12 13 5 13 19"></polygon>
-                <polygon points="2 19 11 12 2 5 2 19"></polygon>
-              </svg>
-            </button>
-            
-            {/* Close Video Button */}
+            {/* Close Video Button - Always visible */}
             <button 
               onClick={closeVideo}
               className="video-control-btn close-btn"
@@ -467,10 +459,13 @@ export default function HeroSection() {
               style={{
                 ...controlButtonStyle,
                 background: 'rgba(255, 0, 0, 0.1)',
-                borderColor: 'rgba(255, 0, 0, 0.3)'
+                borderColor: 'rgba(255, 0, 0, 0.3)',
+                width: isMobile ? '50px' : '40px',
+                height: isMobile ? '50px' : '40px',
+                fontSize: isMobile ? '20px' : '16px'
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width={isMobile ? "20" : "16"} height={isMobile ? "20" : "16"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
@@ -541,7 +536,7 @@ export default function HeroSection() {
             transition: 'all 1s cubic-bezier(0.25, 0.8, 0.25, 1) 0.5s'
           }}
         >
-          {/* Enhanced Main Title with Advanced Animations */}
+          {/* Simplified Main Title */}
           <h1 className="redux-hero-title" style={{
             fontFamily: "'Playfair Display', serif",
             fontWeight: 800,
@@ -550,51 +545,17 @@ export default function HeroSection() {
             lineHeight: 0.85,
             color: 'var(--primary-white)',
             marginBottom: '30px',
-            overflow: 'hidden',
             textShadow: `
               0 0 30px rgba(255,255,255,0.15),
               0 0 60px rgba(183,175,163,0.1),
               0 4px 20px rgba(0,0,0,0.3)
             `,
-            position: 'relative'
+            position: 'relative',
+            opacity: 0,
+            animation: 'fadeInUp 1.5s ease-out forwards',
+            animationDelay: '0.5s'
           }}>
-            {heroTitle.split('').map((letter: string, index: number) => (
-              <span
-                key={index}
-                className="redux-title-letter"
-                style={{
-                  display: 'inline-block',
-                  transform: 'translateY(120px) rotateX(90deg)',
-                  opacity: 0,
-                  animation: `letterRevealAdvanced 1.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards`,
-                  animationDelay: `${index * 0.12 + 0.8}s`,
-                  position: 'relative',
-                  transformOrigin: 'center bottom',
-                  filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.3))'
-                }}
-              >
-                {letter}
-                {/* Letter glow effect */}
-                <span 
-                  className="letter-glow-effect"
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(45deg, var(--accent-mocha), var(--accent-warm))',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    opacity: 0,
-                    animation: `letterGlowPulse 3s ease-in-out infinite`,
-                    animationDelay: `${index * 0.3 + 2}s`
-                  }}
-                >
-                  {letter}
-                </span>
-              </span>
-            ))}
+            {heroTitle}
             
             {/* Title decoration */}
             <div 
@@ -609,12 +570,12 @@ export default function HeroSection() {
                 background: 'linear-gradient(90deg, transparent, var(--accent-mocha), transparent)',
                 opacity: 0,
                 animation: 'fadeInScale 1s ease-out forwards',
-                animationDelay: '2.5s'
+                animationDelay: '1.2s'
               }}
             />
           </h1>
 
-          {/* Enhanced Subtitle with Modern Typography */}
+          {/* Simplified Subtitle */}
           <div className="redux-subtitle-container" style={{
             position: 'relative',
             margin: '40px 0 50px'
@@ -626,47 +587,26 @@ export default function HeroSection() {
               letterSpacing: '0.3em',
               textTransform: 'uppercase',
               color: 'var(--primary-white)',
-              opacity: 0,
-              animation: 'typewriterReveal 2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards',
-              animationDelay: '2s',
               textShadow: `
                 0 0 20px rgba(255,255,255,0.3),
                 0 2px 10px rgba(0,0,0,0.5)
               `,
-              mixBlendMode: 'normal',
-              position: 'relative',
               background: 'rgba(0, 0, 0, 0.25)',
               padding: '12px 24px',
               borderRadius: '6px',
               backdropFilter: 'blur(10px)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               margin: 0,
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-              width: 0
+              textAlign: 'center',
+              opacity: 0,
+              animation: 'fadeInUp 1.2s ease-out forwards',
+              animationDelay: '0.8s'
             }}>
               {heroSubtitle}
             </p>
-            
-            {/* Typing cursor effect */}
-            <span 
-              className="typing-cursor"
-              style={{
-                position: 'absolute',
-                right: '20px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '2px',
-                height: '60%',
-                background: 'var(--accent-mocha)',
-                opacity: 0,
-                animation: 'typingCursor 0.8s ease-in-out infinite, fadeInCursor 0.3s ease-out forwards',
-                animationDelay: '2s, 2s'
-              }}
-            />
           </div>
 
-          {/* Modern CTA Buttons with Enhanced Styling */}
+          {/* Simplified CTA Buttons */}
           <div className="redux-hero-cta" style={{
             marginTop: '70px',
             display: 'flex',
@@ -674,8 +614,8 @@ export default function HeroSection() {
             justifyContent: 'center',
             alignItems: 'center',
             opacity: 0,
-            animation: 'slideUpFade 1.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards',
-            animationDelay: '3.5s',
+            animation: 'fadeInUp 1.2s ease-out forwards',
+            animationDelay: '1.2s',
             flexWrap: 'wrap'
           }}>
             <a 
@@ -840,98 +780,17 @@ export default function HeroSection() {
         )}
       </section>
 
-      {/* Advanced CSS Animations and Styles */}
+      {/* Simplified CSS Animations and Styles */}
       <style jsx>{`
-        /* Loading Animations */
-        @keyframes letterReveal {
+        /* Basic Animations */
+        @keyframes fadeInUp {
           0% {
             opacity: 0;
-            transform: translateY(100px) rotateX(90deg);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) rotateX(0deg);
-          }
-        }
-
-        @keyframes letterGlow {
-          0%, 100% {
-            opacity: 0;
-          }
-          50% {
-            opacity: 0.8;
-          }
-        }
-
-        /* Hero Content Animations */
-        @keyframes letterRevealAdvanced {
-          0% {
-            opacity: 0;
-            transform: translateY(120px) rotateX(90deg) scale(0.8);
-            filter: blur(10px);
-          }
-          50% {
-            opacity: 0.7;
-            transform: translateY(20px) rotateX(15deg) scale(0.95);
-            filter: blur(2px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) rotateX(0deg) scale(1);
-            filter: blur(0);
-          }
-        }
-
-        @keyframes letterGlowPulse {
-          0%, 100% {
-            opacity: 0;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.6;
-            transform: scale(1.02);
-          }
-        }
-
-        @keyframes typewriterReveal {
-          0% {
-            width: 0;
-            opacity: 0;
-          }
-          1% {
-            opacity: 1;
-          }
-          100% {
-            width: 100%;
-            opacity: 1;
-          }
-        }
-
-        @keyframes typingCursor {
-          0%, 50% {
-            opacity: 1;
-          }
-          51%, 100% {
-            opacity: 0;
-          }
-        }
-
-        @keyframes fadeInCursor {
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes slideUpFade {
-          0% {
-            opacity: 0;
-            transform: translateY(60px);
-            filter: blur(5px);
+            transform: translateY(30px);
           }
           100% {
             opacity: 1;
             transform: translateY(0);
-            filter: blur(0);
           }
         }
 

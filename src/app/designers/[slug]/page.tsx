@@ -248,16 +248,7 @@ export default function DesignerPage({ params }: Props) {
                         </a>
                       </div>
                     )}
-                    {designer.filmTitle && (
-                      <div className="detail-item">
-                        <span className="label font-['Inter'] text-[--accent-mocha] text-sm tracking-[0.1em] uppercase mr-4">
-                          Featured Film:
-                        </span>
-                        <span className="value font-['Inter'] text-white">
-                          {designer.filmTitle}
-                        </span>
-                      </div>
-                    )}
+                    {/* Featured Film section removed as requested */}
                   </div>
                 </div>
                 

@@ -22,53 +22,34 @@ export default function DesignersPage() {
   const { isAuthenticated } = useSimpleAuth();
   
   // CMS 슬롯 - 각 디자이너 프로필 이미지
-  const { slot: kimBominSlot, currentFiles: kimBominFiles, updateFiles: updateKimBominFiles } = useCMSSlot('main-designer-profile-kimbomin');
-  const { slot: parkParangSlot, currentFiles: parkParangFiles, updateFiles: updateParkParangFiles } = useCMSSlot('main-designer-profile-parkparang');
-  const { slot: leeTaehyeonSlot, currentFiles: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles } = useCMSSlot('main-designer-profile-leetaehyeon');
-  const { slot: choiEunsolSlot, currentFiles: choiEunsolFiles, updateFiles: updateChoiEunsolFiles } = useCMSSlot('main-designer-profile-choieunsol');
-  const { slot: hwangJinsuSlot, currentFiles: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles } = useCMSSlot('main-designer-profile-hwangjinsu');
-  const { slot: kimGyeongsuSlot, currentFiles: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles } = useCMSSlot('main-designer-profile-kimgyeongsu');
+  const { slot: kimBominSlot, currentFiles: kimBominFiles, updateFiles: updateKimBominFiles } = useCMSSlot('main-designer-profile-kim-bomin');
+  const { slot: parkParangSlot, currentFiles: parkParangFiles, updateFiles: updateParkParangFiles } = useCMSSlot('main-designer-profile-park-parang');
+  const { slot: leeTaehyeonSlot, currentFiles: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles } = useCMSSlot('main-designer-profile-lee-taehyeon');
+  const { slot: choiEunsolSlot, currentFiles: choiEunsolFiles, updateFiles: updateChoiEunsolFiles } = useCMSSlot('main-designer-profile-choi-eunsol');
+  const { slot: hwangJinsuSlot, currentFiles: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles } = useCMSSlot('main-designer-profile-hwang-jinsu');
+  const { slot: kimGyeongsuSlot, currentFiles: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles } = useCMSSlot('main-designer-profile-kim-gyeongsu');
 
   useEffect(() => {
-    // HTML 버전과 동일한 GSAP 애니메이션 초기화
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // CSS-based animations without GSAP dependency
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
     
-    if (!isMobile && typeof window !== 'undefined') {
-      // GSAP 애니메이션 실행
-      const timer = setTimeout(() => {
-        if (window.gsap) {
-          // Designer cards animation
-          window.gsap.utils.toArray('.designer-card').forEach((card: any, index: number) => {
-            window.gsap.from(card, {
-              opacity: 0,
-              y: 100,
-              duration: 1,
-              delay: index * 0.1,
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 80%',
-                end: 'bottom 20%'
-              }
-            });
-          });
-          
-          // Parallax effect on designer numbers
-          window.gsap.utils.toArray('.designer-number').forEach((number: any) => {
-            window.gsap.to(number, {
-              y: -50,
-              scrollTrigger: {
-                trigger: number,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true
-              }
-            });
-          });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('card-revealed');
+          }, index * 100);
         }
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    }
+      });
+    }, observerOptions);
+    
+    // Observe designer cards for scroll animations
+    document.querySelectorAll('.designer-card').forEach(card => {
+      observer.observe(card);
+    });
     
     // Touch feedback for mobile
     if ('ontouchstart' in window) {
@@ -84,17 +65,21 @@ export default function DesignersPage() {
         });
       });
     }
+    
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   // CMS 이미지 파일 가져오기 함수
   const getCMSImageForDesigner = (designerId: string) => {
     switch (designerId) {
-      case 'kimbomin': return kimBominFiles[0];
-      case 'parkparang': return parkParangFiles[0];
-      case 'leetaehyeon': return leeTaehyeonFiles[0];
-      case 'choieunsol': return choiEunsolFiles[0];
-      case 'hwangjinsu': return hwangJinsuFiles[0];
-      case 'kimgyeongsu': return kimGyeongsuFiles[0];
+      case 'kim-bomin': return kimBominFiles[0];
+      case 'park-parang': return parkParangFiles[0];
+      case 'lee-taehyeon': return leeTaehyeonFiles[0];
+      case 'choi-eunsol': return choiEunsolFiles[0];
+      case 'hwang-jinsu': return hwangJinsuFiles[0];
+      case 'kim-gyeongsu': return kimGyeongsuFiles[0];
       default: return null;
     }
   };
@@ -102,12 +87,12 @@ export default function DesignersPage() {
   // CMS 슬롯 가져오기 함수
   const getCMSSlotForDesigner = (designerId: string) => {
     switch (designerId) {
-      case 'kimbomin': return { slot: kimBominSlot, files: kimBominFiles, updateFiles: updateKimBominFiles };
-      case 'parkparang': return { slot: parkParangSlot, files: parkParangFiles, updateFiles: updateParkParangFiles };
-      case 'leetaehyeon': return { slot: leeTaehyeonSlot, files: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles };
-      case 'choieunsol': return { slot: choiEunsolSlot, files: choiEunsolFiles, updateFiles: updateChoiEunsolFiles };
-      case 'hwangjinsu': return { slot: hwangJinsuSlot, files: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles };
-      case 'kimgyeongsu': return { slot: kimGyeongsuSlot, files: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles };
+      case 'kim-bomin': return { slot: kimBominSlot, files: kimBominFiles, updateFiles: updateKimBominFiles };
+      case 'park-parang': return { slot: parkParangSlot, files: parkParangFiles, updateFiles: updateParkParangFiles };
+      case 'lee-taehyeon': return { slot: leeTaehyeonSlot, files: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles };
+      case 'choi-eunsol': return { slot: choiEunsolSlot, files: choiEunsolFiles, updateFiles: updateChoiEunsolFiles };
+      case 'hwang-jinsu': return { slot: hwangJinsuSlot, files: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles };
+      case 'kim-gyeongsu': return { slot: kimGyeongsuSlot, files: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles };
       default: return null;
     }
   };
@@ -121,7 +106,7 @@ export default function DesignersPage() {
       name: designer.name.toUpperCase(),
       mainRole: designer.mainRole,
       role: designer.role,
-      brand: designer.filmTitle || 'REDUX COLLECTIVE',
+      brand: 'REDUX COLLECTIVE',
       profileImage: cmsImage || designer.profileImage,
       hasImage: !!(cmsImage || designer.profileImage),
       hasVideo: !!designer.videoUrl
@@ -413,6 +398,18 @@ export default function DesignersPage() {
           }
         }
         
+        /* Designer card animations */
+        .designer-card {
+          opacity: 0;
+          transform: translateY(100px);
+          transition: all 0.8s ease;
+        }
+        
+        .designer-card.card-revealed {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
         /* Designer card hover effects - HTML 버전과 완전 동일 */
         .designer-card:hover {
           z-index: 10;
@@ -589,11 +586,4 @@ export default function DesignersPage() {
       `}</style>
     </>
   );
-}
-
-// GSAP 타입 확장
-declare global {
-  interface Window {
-    gsap: any;
-  }
 }

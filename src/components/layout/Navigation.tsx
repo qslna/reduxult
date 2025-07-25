@@ -305,7 +305,7 @@ export default function Navigation() {
           --nav-z-index: 1000;
         }
 
-        /* Navigation Base */
+        /* Navigation Base - Simplified */
         .redux-nav {
           position: fixed;
           top: 0;
@@ -314,16 +314,14 @@ export default function Navigation() {
           padding: 20px 40px;
           z-index: var(--nav-z-index);
           transition: var(--nav-transition);
-          isolation: isolate;
           
-          /* Dynamic styles based on page */
-          mix-blend-mode: ${isHomePage ? 'difference' : 'normal'};
+          /* Simplified background - no mix-blend-mode */
           background: ${
             isHomePage 
-              ? 'linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, transparent 100%)' 
+              ? 'rgba(0, 0, 0, 0.85)' 
               : 'rgba(255, 255, 255, 0.95)'
           };
-          backdrop-filter: ${isHomePage ? 'blur(5px)' : 'var(--nav-blur)'};
+          backdrop-filter: blur(20px);
           border-bottom: ${isHomePage ? 'none' : '1px solid rgba(0, 0, 0, 0.08)'};
         }
 
@@ -331,11 +329,11 @@ export default function Navigation() {
           padding: 15px 40px;
           background: ${
             isHomePage 
-              ? 'rgba(0, 0, 0, 0.9)' 
+              ? 'rgba(0, 0, 0, 0.95)' 
               : 'rgba(255, 255, 255, 0.98)'
           };
-          box-shadow: ${isHomePage ? 'none' : 'var(--nav-shadow)'};
-          backdrop-filter: var(--nav-blur);
+          box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+          backdrop-filter: blur(20px);
         }
 
         /* Navigation Container */

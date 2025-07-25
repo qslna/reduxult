@@ -45,15 +45,15 @@
   }
 
   /* === 본문 스타일 === */
-  body, p, .description, .body-text {
-    font-family: 'Inter', sans-serif !important;
-    font-weight: 400 !important;
+  body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
     --font-primary: 'Inter', sans-serif;
     --font-display: 'Playfair Display', serif;
     --font-mono: 'JetBrains Mono', monospace;
-    font-size: clamp(0.875rem, 1.8vw, 1rem) !important;
-    line-height: 1.7 !important;
-    letter-spacing: 0.01em !important;
+    font-size: clamp(0.875rem, 1.8vw, 1rem);
+    line-height: 1.7;
+    letter-spacing: 0.01em;
     color: var(--primary-black);
     background: var(--primary-white);
     overflow-x: hidden;
@@ -61,21 +61,36 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* 텍스트 요소들 개별 스타일링 - 충돌 방지 */
+  p, .description, .body-text {
+    font-family: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    cursor: default;
+  }
+
   /* === 타이포그래피 시스템 === */
   
   /* 메인 타이틀 - Playfair Display (고급 패션 브랜드 표준) */
   .hero-title, h1, .main-title, .redux-title {
-    font-family: 'Playfair Display', serif !important;
-    font-weight: 700 !important;
-    font-size: clamp(3rem, 8vw, 8rem) !important;
-    letter-spacing: -0.03em !important;
-    line-height: 0.9 !important;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(3rem, 8vw, 8rem);
+    letter-spacing: -0.03em;
+    line-height: 0.9;
     color: var(--primary-white);
     margin-bottom: 20px;
     overflow: hidden;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: default;
     /* 기존 비침효과 유지하면서 강화 */
     text-shadow: 0 0 20px rgba(255,255,255,0.1), 
-                 0 0 40px rgba(255,255,255,0.05) !important;
+                 0 0 40px rgba(255,255,255,0.05);
   }
   
   /* 메인 타이틀 시퀸셜 애니메이션 */
@@ -93,72 +108,91 @@
   
   /* "THE ROOM OF [ ]" 특별 처리 - 브랜드 아이덴티티 강화 */
   .hero-subtitle, .room-concept, .subtitle-special {
-    font-family: 'Inter', sans-serif !important;
-    font-weight: 500 !important;
-    font-size: clamp(1rem, 2.5vw, 1.5rem) !important;
-    letter-spacing: 0.4em !important;
-    text-transform: uppercase !important;
-    color: var(--primary-white) !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: default;
+    color: var(--primary-white);
     opacity: 0;
     /* 문화적 깊이 표현 애니메이션 */
     animation: fadeInSequential 1s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
     animation-delay: 0.3s;
-    /* 가시성 확보 (그림자 최소화) */
-    text-shadow: 0 0 15px rgba(255,255,255,0.4) !important;
-    /* 완전한 가시성 확보 */
-    mix-blend-mode: normal !important;
-    z-index: 100 !important;
-    position: relative !important;
-    background: rgba(0,0,0,0.2) !important;
-    padding: 6px 12px !important;
-    border-radius: 3px !important;
-    backdrop-filter: blur(5px) !important;
+    /* 가시성 확보 - 배경 없이 */
+    text-shadow: 0 0 15px rgba(255,255,255,0.4);
+    mix-blend-mode: normal;
+    z-index: 100;
+    position: relative;
   }
   
   /* "THE ROOM OF [ ]" 브래킷 강조 */
   .room-bracket {
-    color: var(--accent-mocha) !important;
-    font-weight: 300 !important;
-    text-shadow: 0 0 30px rgba(183,175,163,0.6) !important;
+    color: var(--accent-mocha);
+    font-weight: 300;
+    text-shadow: 0 0 30px rgba(183,175,163,0.6);
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: default;
   }
 
   /* 서브 헤딩 */
   h2, .section-title {
-    font-family: 'Playfair Display', serif !important;
-    font-size: clamp(2rem, 5vw, 3rem) !important;
-    font-weight: 600 !important;
-    letter-spacing: -0.02em !important;
-    line-height: 1.1 !important;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
     color: var(--primary-black);
     margin-bottom: 1.5rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: default;
   }
 
   h3, .subsection-title {
-    font-family: 'Inter', sans-serif !important;
-    font-size: clamp(1.25rem, 3vw, 1.75rem) !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.05em !important;
-    text-transform: uppercase !important;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     color: var(--primary-black);
     margin-bottom: 1rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: default;
   }
 
   /* 캡션 및 메타 텍스트 */
   .caption, .meta-text, .gallery-caption {
-    font-family: 'Inter', sans-serif !important;
-    font-size: clamp(0.75rem, 1.5vw, 0.875rem) !important;
-    font-weight: 300 !important;
-    letter-spacing: 0.1em !important;
-    text-transform: uppercase !important;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     color: var(--gray-medium);
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: default;
   }
 
   /* 코드/기술 요소 */
   .code-text, .mono-text, code, pre {
-    font-family: 'JetBrains Mono', monospace !important;
-    font-weight: 300 !important;
-    font-size: 0.875rem !important;
-    letter-spacing: 0.05em !important;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 300;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: default;
   }
 
   /* === 특별한 시각 효과 === */

@@ -46,7 +46,7 @@ export default function ExhibitionsPage() {
   const { slot: theRoomSlot, currentFiles: theRoomFiles, updateFiles: updateTheRoomFiles } = useCMSSlot('exhibition-theroom-gallery');
 
   useEffect(() => {
-    // HTML 버전과 동일한 스크롤 네비게이션 효과
+    // Simplified scroll effect
     const handleScroll = () => {
       const navbar = document.getElementById('navbar');
       if (navbar) {
@@ -58,28 +58,9 @@ export default function ExhibitionsPage() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // HTML 버전과 동일한 GSAP 애니메이션 (with error handling)
-    try {
-      initGSAPAnimations(() => {
-        // Timeline animation
-        animations.timelineProgress('.timeline-line', {
-          trigger: '.exhibition-timeline',
-          start: 'top center',
-          end: 'bottom center',
-          scrub: true
-        });
-        
-        // Exhibition items animation
-        animations.exhibitionItemAnimation('.exhibition-item');
-      });
-    } catch (error) {
-      console.warn('GSAP animations failed to load:', error);
-      // Continue without animations
-    }
-
-    // Smooth scroll for anchor links
+    // Simple smooth scroll for anchor links
     const anchors = document.querySelectorAll('a[href^="#"]');
     anchors.forEach(anchor => {
       anchor.addEventListener('click', (e) => {
@@ -178,40 +159,28 @@ export default function ExhibitionsPage() {
           {/* 비대칭 라인 */}
           <div className="absolute -top-[100px] left-1/2 transform -translate-x-1/2 w-[1px] h-[80px] bg-gradient-to-b from-transparent to-white/40 animate-[dropIn_1.5s_ease_forwards]"></div>
           
-          <h1 className="exhibition-hero-title font-['Playfair_Display'] font-bold text-white mb-8 leading-[0.85] opacity-0 animate-[glitchIn_2s_ease_forwards]" 
+          <h1 className="exhibition-hero-title font-['Playfair_Display'] font-bold text-white mb-8 leading-[0.85] opacity-0 animate-[fadeInUp_1.5s_ease_forwards]" 
               style={{ 
                 fontSize: 'clamp(60px, 12vw, 180px)', 
                 letterSpacing: '-0.02em',
-                textShadow: '0 0 30px rgba(255,255,255,0.1)'
+                textShadow: '0 0 30px rgba(255,255,255,0.1)',
+                animationDelay: '0.3s'
               }}>
-            {heroTitle.split('').map((letter: string, index: number) => (
-              <span 
-                key={index}
-                className="inline-block animate-[letterReveal_0.8s_ease_forwards]" 
-                style={{
-                  '--i': index + 1,
-                  animationDelay: `${0.2 + index * 0.1}s`
-                } as React.CSSProperties}
-              >
-                {letter}
-              </span>
-            ))}
+            {heroTitle}
           </h1>
           
-          {/* 비대칭 서브타이틀 */}
+          {/* Simplified Subtitle */}
           <div className="relative">
-            <div className="absolute -left-[150px] top-1/2 transform -translate-y-1/2 w-[100px] h-[1px] bg-gradient-to-r from-transparent to-white/40 opacity-0 animate-[slideInLeft_1s_ease_forwards] [animation-delay:1.5s] max-[768px]:hidden"></div>
-            <p className="exhibition-hero-subtitle font-['Inter'] text-white/80 tracking-[0.4em] uppercase opacity-0 animate-[fadeInUp_1s_ease_forwards] [animation-delay:1.3s]" style={{
+            <p className="exhibition-hero-subtitle font-['Inter'] text-white/80 tracking-[0.4em] uppercase opacity-0 animate-[fadeInUp_1s_ease_forwards] [animation-delay:0.6s]" style={{
               fontSize: 'clamp(14px, 2vw, 18px)',
               fontWeight: 300
             }}>
               {heroSubtitle}
             </p>
-            <div className="absolute -right-[150px] top-1/2 transform -translate-y-1/2 w-[100px] h-[1px] bg-gradient-to-l from-transparent to-white/40 opacity-0 animate-[slideInRight_1s_ease_forwards] [animation-delay:1.5s] max-[768px]:hidden"></div>
           </div>
           
-          {/* 비대칭 네비게이션 하인트 */}
-          <div className="absolute -bottom-[50px] left-1/2 transform -translate-x-1/2 opacity-0 animate-[bounceIn_1s_ease_forwards] [animation-delay:2s]">
+          {/* Simplified Scroll hint */}
+          <div className="absolute -bottom-[50px] left-1/2 transform -translate-x-1/2 opacity-0 animate-[fadeIn_1s_ease_forwards] [animation-delay:0.9s]">
             <div className="w-[1px] h-[30px] bg-gradient-to-b from-white/60 to-transparent mx-auto mb-2"></div>
             <div className="text-white/60 text-xs tracking-[2px] uppercase">Scroll</div>
           </div>
@@ -919,114 +888,8 @@ export default function ExhibitionsPage() {
       {/* Floating CMS Button */}
       <FloatingCMSButton />
       
-      {/* CSS Animations */}
+      {/* Simplified CSS Animations */}
       <style jsx>{`
-        @keyframes glitchIn {
-          0% {
-            opacity: 0;
-            transform: translateY(50px) scale(0.9);
-            filter: blur(10px);
-          }
-          50% {
-            opacity: 0.8;
-            transform: translateY(-10px) scale(1.02);
-            filter: blur(2px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0);
-          }
-        }
-        
-        @keyframes letterReveal {
-          0% {
-            opacity: 0;
-            transform: translateY(100px) rotateX(90deg);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) rotateX(0deg);
-          }
-        }
-        
-        @keyframes slideIn {
-          0% {
-            opacity: 0;
-            transform: translateX(-100px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        @keyframes slideInLeft {
-          0% {
-            opacity: 0;
-            transform: translateX(-50px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        @keyframes slideInRight {
-          0% {
-            opacity: 0;
-            transform: translateX(50px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        @keyframes dropIn {
-          0% {
-            opacity: 0;
-            transform: translateY(-30px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes bounceIn {
-          0% {
-            opacity: 0;
-            transform: translateY(30px) scale(0.8);
-          }
-          50% {
-            opacity: 0.8;
-            transform: translateY(-5px) scale(1.1);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-        
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-20px) rotate(180deg);
-          }
-        }
-        
-        @keyframes expandWidth {
-          0% {
-            width: 0;
-          }
-          100% {
-            width: 60px;
-          }
-        }
-        
         @keyframes fadeInUp {
           0% {
             opacity: 0;
@@ -1035,6 +898,15 @@ export default function ExhibitionsPage() {
           100% {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+        
+        @keyframes fadeIn {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
           }
         }
         

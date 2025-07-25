@@ -29,36 +29,25 @@ export default function CollectivePage() {
       observer.observe(card);
     });
     
-    // GSAP 애니메이션
-    if (typeof window !== 'undefined' && window.gsap) {
-      // Values animation
-      window.gsap.utils.toArray('.value-item').forEach((item: any, i: number) => {
-        window.gsap.from(item, {
-          y: 60,
-          opacity: 0,
-          duration: 1,
-          delay: i * 0.1,
-          scrollTrigger: {
-            trigger: item,
-            start: 'top 80%'
-          }
-        });
-      });
+    // Simple animations without GSAP dependency
+    const animateOnScroll = () => {
+      const valueItems = document.querySelectorAll('.value-item');
+      const philosophyTexts = document.querySelectorAll('.philosophy-text');
       
-      // Philosophy text animation
-      window.gsap.utils.toArray('.philosophy-text').forEach((text: any, i: number) => {
-        window.gsap.from(text, {
-          y: 40,
-          opacity: 0,
-          duration: 1,
-          delay: i * 0.2,
-          scrollTrigger: {
-            trigger: text,
-            start: 'top 80%'
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in-up');
           }
         });
-      });
-    }
+      }, { threshold: 0.2 });
+      
+      valueItems.forEach(item => observer.observe(item));
+      philosophyTexts.forEach(text => observer.observe(text));
+    };
+    
+    // Initialize animations
+    setTimeout(animateOnScroll, 100);
     
     return () => {
       observer.disconnect();
@@ -112,7 +101,7 @@ export default function CollectivePage() {
           loop 
           playsInline
         >
-          <source src="/VIDEO/main.mp4.mp4" type="video/mp4" />
+          <source src="/VIDEO/main.mp4" type="video/mp4" />
         </video>
         <div className="hero-content text-center z-[1] text-white">
           <h1 
@@ -133,25 +122,25 @@ export default function CollectivePage() {
           <h2 className="philosophy-title text-5xl font-light tracking-[4px] mb-[60px] text-black">
             WHO WE ARE
           </h2>
-          <p className="philosophy-text text-2xl font-light leading-[2] text-[--gray-dark] mb-10">
+          <p className="philosophy-text text-2xl font-light leading-[2] text-gray-600 mb-10">
             REDUX는 <span className="text-black font-normal">6인의 패션 디자이너</span>가 모여서 만든 예술 크루입니다.
           </p>
-          <p className="philosophy-text text-2xl font-light leading-[2] text-[--gray-dark] mb-10">
+          <p className="philosophy-text text-2xl font-light leading-[2] text-gray-600 mb-10">
             우리는 패션필름, 설치, 비주얼 작업 등 다양한 방식으로<br />
             관객들에게 <span className="text-black font-normal">'기억에 남을 순간'</span>을 디자인합니다.
           </p>
-          <p className="philosophy-text text-2xl font-light leading-[2] text-[--gray-dark] mb-10">
+          <p className="philosophy-text text-2xl font-light leading-[2] text-gray-600 mb-10">
             각자 다른 색을 가진 멤버가 모여서 하나의 흐름을 만들고,<br />
             그 잔상이 오래도록 머물길 바라는 마음으로 활동하고 있습니다.
           </p>
-          <p className="philosophy-quote text-lg italic text-[--gray-medium] mt-[60px]">
+          <p className="philosophy-quote text-lg italic text-gray-500 mt-[60px]">
             "Fashion is not just what we wear, it's how we remember."
           </p>
         </div>
       </section>
 
       {/* Members Section - HTML 버전과 완전 동일 */}
-      <section className="members-section py-[120px] px-10 bg-[--gray-light]">
+      <section className="members-section py-[120px] px-10 bg-gray-100">
         <h2 className="members-title text-5xl font-light tracking-[4px] text-center mb-20 text-black">
           THE COLLECTIVE
         </h2>
@@ -160,14 +149,14 @@ export default function CollectivePage() {
           {/* Member 1: Kim Bomin */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('kimbomin')}
+            onClick={() => openDesignerPage('kim-bomin')}
           >
-            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 01
               </div>
               <OptimizedImage 
-                src="/images/designer-placeholder.jpg" 
+                src="/images/profile/Kim Bomin.webp" 
                 alt="Kim Bomin" 
                 fill={true}
                 priority={true}
@@ -178,7 +167,7 @@ export default function CollectivePage() {
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               KIM BOMIN
             </h3>
-            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+            <p className="member-role text-sm tracking-[1px] text-gray-500 uppercase">
               Creative Director
             </p>
           </div>
@@ -186,14 +175,14 @@ export default function CollectivePage() {
           {/* Member 2: Park Parang */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('parkparang')}
+            onClick={() => openDesignerPage('park-parang')}
           >
-            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 02
               </div>
               <OptimizedImage 
-                src="/images/designer-placeholder.jpg" 
+                src="/images/profile/Park Parang.jpg" 
                 alt="Park Parang" 
                 fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -203,7 +192,7 @@ export default function CollectivePage() {
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               PARK PARANG
             </h3>
-            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+            <p className="member-role text-sm tracking-[1px] text-gray-500 uppercase">
               Visual Artist
             </p>
           </div>
@@ -211,14 +200,14 @@ export default function CollectivePage() {
           {/* Member 3: Lee Taehyeon */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('leetaehyeon')}
+            onClick={() => openDesignerPage('lee-taehyeon')}
           >
-            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 03
               </div>
               <OptimizedImage 
-                src="/images/designers/leetaehyeon/leetaehyeon-Profile.jpg" 
+                src="/images/profile/Lee Taehyeon.jpg" 
                 alt="Lee Taehyeon" 
                 fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -228,7 +217,7 @@ export default function CollectivePage() {
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               LEE TAEHYEON
             </h3>
-            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+            <p className="member-role text-sm tracking-[1px] text-gray-500 uppercase">
               Fashion Designer
             </p>
           </div>
@@ -236,14 +225,14 @@ export default function CollectivePage() {
           {/* Member 4: Choi Eunsol */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('choieunsol')}
+            onClick={() => openDesignerPage('choi-eunsol')}
           >
-            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 04
               </div>
               <OptimizedImage 
-                src="/images/designers/choieunsol/choieunsol-Profile.jpeg" 
+                src="/images/profile/Choi Eunsol.jpeg" 
                 alt="Choi Eunsol" 
                 fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -253,7 +242,7 @@ export default function CollectivePage() {
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               CHOI EUNSOL
             </h3>
-            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+            <p className="member-role text-sm tracking-[1px] text-gray-500 uppercase">
               Art Director
             </p>
           </div>
@@ -261,14 +250,14 @@ export default function CollectivePage() {
           {/* Member 5: Hwang Jinsu */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('hwangjinsu')}
+            onClick={() => openDesignerPage('hwang-jinsu')}
           >
-            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 05
               </div>
               <OptimizedImage 
-                src="/images/designer-placeholder.jpg" 
+                src="/images/profile/Hwang Jinsu.jpg" 
                 alt="Hwang Jinsu" 
                 fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -278,7 +267,7 @@ export default function CollectivePage() {
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               HWANG JINSU
             </h3>
-            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+            <p className="member-role text-sm tracking-[1px] text-gray-500 uppercase">
               Film Director
             </p>
           </div>
@@ -286,14 +275,14 @@ export default function CollectivePage() {
           {/* Member 6: Kim Gyeongsu */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('kimgyeongsu')}
+            onClick={() => openDesignerPage('kim-gyeongsu')}
           >
-            <div className="member-portrait relative [aspect-ratio:3/4] bg-[--gray-dark] overflow-hidden mb-[30px]">
+            <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
                 06
               </div>
               <OptimizedImage 
-                src="/images/designer-placeholder.jpg" 
+                src="/images/profile/Kim Gyeongsu.webp" 
                 alt="Kim Gyeongsu" 
                 fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -303,7 +292,7 @@ export default function CollectivePage() {
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               KIM GYEONGSU
             </h3>
-            <p className="member-role text-sm tracking-[1px] text-[--gray-medium] uppercase">
+            <p className="member-role text-sm tracking-[1px] text-gray-500 uppercase">
               Installation Artist
             </p>
           </div>
@@ -325,7 +314,7 @@ export default function CollectivePage() {
               <h3 className="value-name text-lg font-light tracking-[2px] mb-5 uppercase">
                 Collective
               </h3>
-              <p className="value-description text-sm leading-[1.8] text-[--gray-medium]">
+              <p className="value-description text-sm leading-[1.8] text-gray-400">
                 개인의 창의성이 모여
                 더 큰 시너지를 만듭니다
               </p>
@@ -338,7 +327,7 @@ export default function CollectivePage() {
               <h3 className="value-name text-lg font-light tracking-[2px] mb-5 uppercase">
                 Memory
               </h3>
-              <p className="value-description text-sm leading-[1.8] text-[--gray-medium]">
+              <p className="value-description text-sm leading-[1.8] text-gray-400">
                 순간을 넘어 기억에
                 남는 경험을 디자인합니다
               </p>
@@ -351,7 +340,7 @@ export default function CollectivePage() {
               <h3 className="value-name text-lg font-light tracking-[2px] mb-5 uppercase">
                 Boundary
               </h3>
-              <p className="value-description text-sm leading-[1.8] text-[--gray-medium]">
+              <p className="value-description text-sm leading-[1.8] text-gray-400">
                 패션과 예술의 경계를
                 허물고 새로운 영역을 탐구합니다
               </p>
@@ -364,7 +353,7 @@ export default function CollectivePage() {
               <h3 className="value-name text-lg font-light tracking-[2px] mb-5 uppercase">
                 Evolution
               </h3>
-              <p className="value-description text-sm leading-[1.8] text-[--gray-medium]">
+              <p className="value-description text-sm leading-[1.8] text-gray-400">
                 끊임없이 변화하고
                 진화하는 창작을 추구합니다
               </p>
@@ -389,13 +378,42 @@ export default function CollectivePage() {
         </a>
       </section>
 
+      {/* CSS Animations */}
+      <style jsx>{`
+        @keyframes heroFade {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes revealMember {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s ease-out forwards;
+        }
+        
+        .revealed {
+          animation: revealMember 0.8s ease forwards;
+        }
+      `}</style>
+
     </>
   );
-}
-
-// GSAP 타입 확장
-declare global {
-  interface Window {
-    gsap: any;
-  }
 }

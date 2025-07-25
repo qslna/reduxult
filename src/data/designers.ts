@@ -2,7 +2,7 @@ import { Designer } from '@/types';
 
 export const designers: Designer[] = [
   {
-    id: 'kimbomin',
+    id: 'kim-bomin',
     name: 'Kim Bomin',
     nameKo: '김보민',
     mainRole: 'Fashion Designer',
@@ -19,14 +19,13 @@ export const designers: Designer[] = [
       '/images/designers/kimbomin/cinemode/KakaoTalk_20250626_002430368_14.jpg',
       '/images/designers/kimbomin/cinemode/KakaoTalk_20250626_002430368_15.jpg'
     ],
-    filmTitle: 'CHASING VOWS',
     videoUrl: 'https://drive.google.com/file/d/1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X/preview',
     googleDriveFileId: '1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X',
     featured: true,
     order: 1
   },
   {
-    id: 'parkparang',
+    id: 'park-parang',
     name: 'Park Parang',
     nameKo: '박파랑',
     mainRole: 'Fashion Designer',
@@ -38,14 +37,13 @@ export const designers: Designer[] = [
     portfolioImages: [
       '/images/profile/Park Parang.jpg'
     ],
-    filmTitle: 'THE TIME BETWEEN',
     videoUrl: 'https://drive.google.com/file/d/15d901XRElkF5p7xiJYelIyblYFb-PtsD/preview',
     googleDriveFileId: '15d901XRElkF5p7xiJYelIyblYFb-PtsD',
     featured: true,
     order: 2
   },
   {
-    id: 'leetaehyeon',
+    id: 'lee-taehyeon',
     name: 'Lee Taehyeon',
     nameKo: '이태현',
     mainRole: 'Fashion Designer',
@@ -60,14 +58,13 @@ export const designers: Designer[] = [
       '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
       '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_02.jpg'
     ],
-    filmTitle: 'POLYHEDRON',
     videoUrl: 'https://drive.google.com/file/d/1fG2fchKvEG7i7Lo79K7250mgiVTse6ks/preview',
     googleDriveFileId: '1fG2fchKvEG7i7Lo79K7250mgiVTse6ks',
     featured: true,
     order: 3
   },
   {
-    id: 'choieunsol',
+    id: 'choi-eunsol',
     name: 'Choi Eunsol',
     nameKo: '최은솔',
     mainRole: 'Fashion Designer',
@@ -83,14 +80,13 @@ export const designers: Designer[] = [
       '/images/designers/choieunsol/cinemode/IMG_8620.jpeg',
       '/images/designers/choieunsol/cinemode/IMG_8621.jpeg'
     ],
-    filmTitle: 'SOUL SUCKER',
     videoUrl: 'https://drive.google.com/file/d/1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3/preview',
     googleDriveFileId: '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3',
     featured: true,
     order: 4
   },
   {
-    id: 'hwangjinsu',
+    id: 'hwang-jinsu',
     name: 'Hwang Jinsu',
     nameKo: '황진수',
     mainRole: 'Fashion Designer',
@@ -110,14 +106,13 @@ export const designers: Designer[] = [
       '/images/designers/hwangjinsu/cinemode/📌NOR_7709.jpg',
       '/images/designers/hwangjinsu/cinemode/📌NOR_7716.jpg'
     ],
-    filmTitle: 'WHO AM I ?!',
     videoUrl: 'https://drive.google.com/file/d/1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d/preview',
     googleDriveFileId: '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d',
     featured: true,
     order: 5
   },
   {
-    id: 'kimgyeongsu',
+    id: 'kim-gyeongsu',
     name: 'Kim Gyeongsu',
     nameKo: '김경수',
     mainRole: 'Fashion Designer',
@@ -153,7 +148,6 @@ export const designers: Designer[] = [
       '/images/designers/kimgyeongsu/portfolio/IMG_5566.JPG',
       '/images/designers/kimgyeongsu/portfolio/IMG_5567.JPG'
     ],
-    filmTitle: 'TO BE REVEALED',
     videoUrl: 'https://drive.google.com/file/d/1Hl594dd_MY714hZwmklTAPTc-pofe9bY/preview',
     googleDriveFileId: '1Hl594dd_MY714hZwmklTAPTc-pofe9bY',
     featured: true,

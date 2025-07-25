@@ -3,9 +3,26 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import { useCMSSlot } from '@/hooks/useCMSSlot';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import MediaSlot from '@/components/cms/MediaSlot';
 
-// HTML redux6 index.html의 showcase-preview 섹션과 완전 동일한 구현
+// HTML redux6 index.html의 showcase-preview 섹션과 완전 동일한 구현 + CMS 통합
 export default function ShowcaseSection() {
+  // CMS 인증
+  const { isAuthenticated } = useSimpleAuth();
+  
+  // CMS 슬롯 - 디자이너 프로필 이미지들
+  const { slot: kimBominSlot, currentFiles: kimBominFiles, updateFiles: updateKimBominFiles } = useCMSSlot('main-designer-profile-kimbomin');
+  const { slot: parkParangSlot, currentFiles: parkParangFiles, updateFiles: updateParkParangFiles } = useCMSSlot('main-designer-profile-parkparang');
+  const { slot: leeTaehyeonSlot, currentFiles: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles } = useCMSSlot('main-designer-profile-leetaehyeon');
+  const { slot: choiEunsolSlot, currentFiles: choiEunsolFiles, updateFiles: updateChoiEunsolFiles } = useCMSSlot('main-designer-profile-choieunsol');
+  const { slot: hwangJinsuSlot, currentFiles: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles } = useCMSSlot('main-designer-profile-hwangjinsu');
+  const { slot: kimGyeongsuSlot, currentFiles: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles } = useCMSSlot('main-designer-profile-kimgyeongsu');
+  
+  // CMS 슬롯 - 전시 프리뷰 이미지들
+  const { slot: cinemodeSlot, currentFiles: cinemodeFiles, updateFiles: updateCinemodeFiles } = useCMSSlot('main-exhibition-cinemode');
+  const { slot: theroomSlot, currentFiles: theroomFiles, updateFiles: updateTheroomFiles } = useCMSSlot('main-exhibition-theroom');
   
   useEffect(() => {
     // HTML 버전과 동일한 GSAP 애니메이션 (모바일이 아닌 경우에만)
@@ -64,13 +81,29 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/profile/Kim Bomin.webp" 
+              src={kimBominFiles[0] || "/images/profile/Kim Bomin.webp"} 
               alt="Kim Bomin" 
               fill={true}
               priority={true}
               sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
+            
+            {/* CMS 오버레이 - Kim Bomin */}
+            {isAuthenticated && kimBominSlot && (
+              <div 
+                className="absolute top-2 left-2 z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MediaSlot
+                  slot={kimBominSlot}
+                  currentFiles={kimBominFiles}
+                  onFilesUpdate={updateKimBominFiles}
+                  isAdminMode={true}
+                  className="w-8 h-8"
+                />
+              </div>
+            )}
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
                    style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
@@ -90,13 +123,29 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/profile/Park Parang.jpg" 
+              src={parkParangFiles[0] || "/images/profile/Park Parang.jpg"} 
               alt="Park Parang" 
               fill={true}
               priority={true}
               sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
+            
+            {/* CMS 오버레이 - Park Parang */}
+            {isAuthenticated && parkParangSlot && (
+              <div 
+                className="absolute top-2 left-2 z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MediaSlot
+                  slot={parkParangSlot}
+                  currentFiles={parkParangFiles}
+                  onFilesUpdate={updateParkParangFiles}
+                  isAdminMode={true}
+                  className="w-8 h-8"
+                />
+              </div>
+            )}
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
                    style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
@@ -116,13 +165,29 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/designers/leetaehyeon/leetaehyeon-Profile.jpg" 
+              src={leeTaehyeonFiles[0] || "/images/profile/Lee Taehyeon.jpg"} 
               alt="Lee Taehyeon" 
               fill={true}
               priority={true}
               sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
+            
+            {/* CMS 오버레이 - Lee Taehyeon */}
+            {isAuthenticated && leeTaehyeonSlot && (
+              <div 
+                className="absolute top-2 left-2 z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MediaSlot
+                  slot={leeTaehyeonSlot}
+                  currentFiles={leeTaehyeonFiles}
+                  onFilesUpdate={updateLeeTaehyeonFiles}
+                  isAdminMode={true}
+                  className="w-8 h-8"
+                />
+              </div>
+            )}
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
                    style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
@@ -142,13 +207,29 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/designers/choieunsol/choieunsol-Profile.jpeg" 
+              src={choiEunsolFiles[0] || "/images/profile/Choi Eunsol.jpeg"} 
               alt="Choi Eunsol" 
               fill={true}
               priority={true}
               sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
+            
+            {/* CMS 오버레이 - Choi Eunsol */}
+            {isAuthenticated && choiEunsolSlot && (
+              <div 
+                className="absolute top-2 left-2 z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MediaSlot
+                  slot={choiEunsolSlot}
+                  currentFiles={choiEunsolFiles}
+                  onFilesUpdate={updateChoiEunsolFiles}
+                  isAdminMode={true}
+                  className="w-8 h-8"
+                />
+              </div>
+            )}
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
                    style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
@@ -168,13 +249,29 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/profile/Hwang Jinsu.jpg" 
+              src={hwangJinsuFiles[0] || "/images/profile/Hwang Jinsu.jpg"} 
               alt="Hwang Jinsu" 
               fill={true}
               priority={true}
               sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
+            
+            {/* CMS 오버레이 - Hwang Jinsu */}
+            {isAuthenticated && hwangJinsuSlot && (
+              <div 
+                className="absolute top-2 left-2 z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MediaSlot
+                  slot={hwangJinsuSlot}
+                  currentFiles={hwangJinsuFiles}
+                  onFilesUpdate={updateHwangJinsuFiles}
+                  isAdminMode={true}
+                  className="w-8 h-8"
+                />
+              </div>
+            )}
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
                    style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
@@ -194,13 +291,29 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/profile/Kim Gyeongsu.webp" 
+              src={kimGyeongsuFiles[0] || "/images/profile/Kim Gyeongsu.webp"} 
               alt="Kim Gyeongsu" 
               fill={true}
               priority={true}
               sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
+            
+            {/* CMS 오버레이 - Kim Gyeongsu */}
+            {isAuthenticated && kimGyeongsuSlot && (
+              <div 
+                className="absolute top-2 left-2 z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MediaSlot
+                  slot={kimGyeongsuSlot}
+                  currentFiles={kimGyeongsuFiles}
+                  onFilesUpdate={updateKimGyeongsuFiles}
+                  isAdminMode={true}
+                  className="w-8 h-8"
+                />
+              </div>
+            )}
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
                    style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
@@ -220,13 +333,29 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/exhibitions/cinemode/1.jpg" 
+              src={cinemodeFiles[0] || "/images/exhibitions/cinemode/1.jpg"} 
               alt="CINE MODE" 
               fill={true}
               priority={true}
               sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
+            
+            {/* CMS 오버레이 - CINE MODE */}
+            {isAuthenticated && cinemodeSlot && (
+              <div 
+                className="absolute top-2 left-2 z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MediaSlot
+                  slot={cinemodeSlot}
+                  currentFiles={cinemodeFiles}
+                  onFilesUpdate={updateCinemodeFiles}
+                  isAdminMode={true}
+                  className="w-8 h-8"
+                />
+              </div>
+            )}
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div 
                 className="showcase-name cine-mode font-['Inter'] font-medium mb-[5px] tracking-[0.02em] font-medium"
@@ -262,13 +391,29 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src="/images/exhibitions/theroom/1.jpg" 
+              src={theroomFiles[0] || "/images/exhibitions/theroom/1.jpg"} 
               alt="THE ROOM" 
               fill={true}
               priority={true}
               sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
             />
+            
+            {/* CMS 오버레이 - THE ROOM */}
+            {isAuthenticated && theroomSlot && (
+              <div 
+                className="absolute top-2 left-2 z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MediaSlot
+                  slot={theroomSlot}
+                  currentFiles={theroomFiles}
+                  onFilesUpdate={updateTheroomFiles}
+                  isAdminMode={true}
+                  className="w-8 h-8"
+                />
+              </div>
+            )}
             <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
               <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
                    style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
@@ -288,6 +433,22 @@ export default function ShowcaseSection() {
             </div>
           </Link>
         </div>
+        
+        {/* CMS 전체 관리 인터페이스 - 인증된 사용자에게만 표시 */}
+        {isAuthenticated && (
+          <div className="mt-8 p-6 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <span>🖼️</span>
+              메인 페이지 쇼케이스 관리
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              디자이너 프로필 이미지와 전시 프리뷰 이미지를 관리할 수 있습니다.
+            </p>
+            <div className="text-xs text-blue-600 dark:text-blue-400">
+              💡 각 이미지 위의 작은 CMS 버튼을 클릭하여 개별 관리하거나, 여기서 전체 현황을 확인하세요.
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

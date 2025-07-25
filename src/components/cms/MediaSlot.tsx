@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Minus, Upload, Video, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Plus, Minus, Upload, Video, Image as ImageIcon, Loader2, Check, Trash2, CheckSquare } from 'lucide-react';
 import type { MediaSlot as MediaSlotType } from '@/lib/cms-config';
 
 interface MediaSlotProps {
@@ -22,6 +22,8 @@ export default function MediaSlot({
 }: MediaSlotProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<number[]>([]);
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = useCallback(async (files: FileList) => {
@@ -79,6 +81,29 @@ export default function MediaSlot({
     const newFiles = currentFiles.filter((_, i) => i !== index);
     onFilesUpdate?.(newFiles);
   }, [currentFiles, onFilesUpdate]);
+
+  const handleBatchDelete = useCallback(() => {
+    const newFiles = currentFiles.filter((_, index) => !selectedFiles.includes(index));
+    onFilesUpdate?.(newFiles);
+    setSelectedFiles([]);
+    setIsSelectionMode(false);
+  }, [currentFiles, selectedFiles, onFilesUpdate]);
+
+  const handleSelectAll = useCallback(() => {
+    if (selectedFiles.length === currentFiles.length) {
+      setSelectedFiles([]);
+    } else {
+      setSelectedFiles(currentFiles.map((_, index) => index));
+    }
+  }, [currentFiles, selectedFiles]);
+
+  const handleFileToggle = useCallback((index: number) => {
+    setSelectedFiles(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    );
+  }, []);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -195,28 +220,106 @@ export default function MediaSlot({
         </div>
       </div>
 
-      {/* 현재 파일들 */}
+      {/* Instagram 스타일 갤러리 헤더 */}
       {currentFiles.length > 0 && (
-        <div className={`mb-3 ${slot.type === 'gallery' ? 'grid grid-cols-3 gap-2' : ''}`}>
-          {currentFiles.map((url, index) => (
-            <motion.div
-              key={index}
-              className="relative group"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-            >
-              {renderMedia(url, index)}
-              
-              {/* 삭제 버튼 */}
-              <button
-                onClick={() => handleFileRemove(index)}
-                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+        <div className="mb-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              {currentFiles.length}개 항목
+            </span>
+            
+            {slot.type === 'gallery' && currentFiles.length > 1 && (
+              <div className="flex items-center gap-2">
+                {isSelectionMode && (
+                  <>
+                    <button
+                      onClick={handleSelectAll}
+                      className="px-3 py-1 text-xs bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center gap-1"
+                    >
+                      <CheckSquare className="w-3 h-3" />
+                      {selectedFiles.length === currentFiles.length ? '전체 해제' : '전체 선택'}
+                    </button>
+                    
+                    {selectedFiles.length > 0 && (
+                      <button
+                        onClick={handleBatchDelete}
+                        className="px-3 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                        선택 삭제 ({selectedFiles.length})
+                      </button>
+                    )}
+                    
+                    <button
+                      onClick={() => {
+                        setIsSelectionMode(false);
+                        setSelectedFiles([]);
+                      }}
+                      className="px-3 py-1 text-xs bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+                    >
+                      취소
+                    </button>
+                  </>
+                )}
+                
+                {!isSelectionMode && (
+                  <button
+                    onClick={() => setIsSelectionMode(true)}
+                    className="px-3 py-1 text-xs bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    선택
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+          
+          {/* Instagram 스타일 그리드 */}
+          <div className={`${slot.type === 'gallery' ? 'grid grid-cols-3 gap-1' : ''}`}>
+            {currentFiles.map((url, index) => (
+              <motion.div
+                key={index}
+                className="relative group"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
               >
-                <Minus className="w-3 h-3" />
-              </button>
-            </motion.div>
-          ))}
+                <div 
+                  className={`relative overflow-hidden rounded-lg ${
+                    slot.type === 'gallery' ? 'aspect-square' : 'h-32'
+                  } ${isSelectionMode ? 'cursor-pointer' : ''}`}
+                  onClick={isSelectionMode ? () => handleFileToggle(index) : undefined}
+                >
+                  {renderMedia(url, index)}
+                  
+                  {/* 선택 체크박스 (Instagram 스타일) */}
+                  {isSelectionMode && slot.type === 'gallery' && (
+                    <div className="absolute top-2 right-2">
+                      <div className={`w-6 h-6 rounded-full border-2 border-white flex items-center justify-center ${
+                        selectedFiles.includes(index) 
+                          ? 'bg-blue-500' 
+                          : 'bg-black bg-opacity-30'
+                      }`}>
+                        {selectedFiles.includes(index) && (
+                          <Check className="w-3 h-3 text-white" />
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* 개별 삭제 버튼 */}
+                  {!isSelectionMode && (
+                    <button
+                      onClick={() => handleFileRemove(index)}
+                      className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 z-10"
+                    >
+                      <Minus className="w-3 h-3" />
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -249,21 +352,26 @@ export default function MediaSlot({
           <div className="flex flex-col items-center gap-2">
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
+              className="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full flex items-center justify-center hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg"
             >
-              <Plus className="w-6 h-6" />
+              <Plus className="w-7 h-7" />
             </button>
             
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {slot.type === 'gallery' ? 'Add images' : `Add ${slot.type.includes('video') ? 'video' : 'image'}`}
+            <div className="text-center">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {slot.type === 'gallery' ? '사진 추가' : `${slot.type.includes('video') ? '동영상' : '이미지'} 추가`}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-500">
-                Drag & drop or click to browse
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                드래그 앤 드롭하거나 클릭하여 업로드
               </p>
-              <p className="text-xs text-gray-400 dark:text-gray-600">
-                {slot.supportedFormats.join(', ')}
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                지원 형식: {slot.supportedFormats.join(', ')}
               </p>
+              {slot.type === 'gallery' && slot.maxFiles && (
+                <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                  최대 {slot.maxFiles}개 파일
+                </p>
+              )}
             </div>
           </div>
         )}
@@ -271,10 +379,21 @@ export default function MediaSlot({
 
       {/* Google Drive 특별 처리 */}
       {slot.type === 'google-drive-video' && (
-        <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <p className="text-xs text-blue-700 dark:text-blue-300">
-            💡 Google Drive 동영상의 경우 파일 ID만 입력하세요
-          </p>
+        <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-l-4 border-blue-400">
+          <div className="flex items-start gap-2">
+            <Video className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                Google Drive 동영상 업로드
+              </p>
+              <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                Google Drive 동영상의 경우 파일 ID만 입력하세요
+              </p>
+              <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                예: 1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X
+              </p>
+            </div>
+          </div>
         </div>
       )}
     </div>
