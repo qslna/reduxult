@@ -43,7 +43,7 @@ const useContentStore = create<ContentStore>()(
       updateCategory: (categoryId, updates) => {
         // This is a simplified implementation
         // In a real app, you'd update the category data
-        console.log('Updating category:', categoryId, updates);
+        // Category update logic would go here
       }
     }),
     {

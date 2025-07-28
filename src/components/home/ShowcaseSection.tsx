@@ -74,420 +74,556 @@ export default function ShowcaseSection() {
           data-fixed-slots="8"
         >
           {/* 디자이너 1: Kim Bomin */}
-          <Link 
-            href="/designers/kim-bomin"
-            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+          <div 
+            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] group"
             style={{ '--index': 0 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <OptimizedImage 
-              src={kimBominCMS.currentUrl || "/images/profile/Kim Bomin.webp"} 
-              alt="Kim Bomin" 
-              fill={true}
-              priority={true}
-              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-            />
+            <Link 
+              href="/designers/kim-bomin"
+              className="absolute inset-0 z-10"
+              style={{ pointerEvents: isAuthenticated ? 'none' : 'auto' }}
+            >
+              <OptimizedImage 
+                src={kimBominCMS.currentUrl || "/images/profile/Kim Bomin.webp"} 
+                alt="Kim Bomin" 
+                fill={true}
+                priority={true}
+                sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
+              />
+            </Link>
             
-            {/* SimpleCMS 오버레이 - Kim Bomin */}
+            {/* 관리자 모드: 전체 이미지 CMS 오버레이 */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20 w-12 h-12"
+                className="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center"
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                  // CMS 버튼 클릭은 허용, 기타 클릭은 차단
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button') && !target.closest('input[type="file"]')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
                 }}
               >
-                <SimpleCMS
-                  slotId="main-designer-kimbomin"
-                  currentUrl={kimBominCMS.currentUrl}
-                  type="image"
-                  onUpload={kimBominCMS.handleUpload}
-                  onDelete={kimBominCMS.handleDelete}
-                  isAdminMode={true}
-                  className="w-full h-full"
-                  placeholder="Kim Bomin"
-                />
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="text-center mb-4">
+                    <h3 className="text-white font-medium mb-2">KIM BOMIN</h3>
+                    <p className="text-white/70 text-sm">프로필 이미지 관리</p>
+                  </div>
+                  <div className="w-64">
+                    <SimpleCMS
+                      slotId="main-designer-kimbomin"
+                      currentUrl={kimBominCMS.currentUrl}
+                      type="image"
+                      onUpload={kimBominCMS.handleUpload}
+                      onDelete={kimBominCMS.handleDelete}
+                      isAdminMode={true}
+                      className="w-full"
+                      placeholder="Kim Bomin 프로필 이미지"
+                    />
+                  </div>
+                </div>
               </div>
             )}
-            <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
-              <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
-                   style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
-                KIM BOMIN
+            
+            {/* 일반 사용자: 호버 오버레이 */}
+            {!isAuthenticated && (
+              <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
+                <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
+                     style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
+                  KIM BOMIN
+                </div>
+                <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
+                  Creative Director
+                </div>
               </div>
-              <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
-                Creative Director
-              </div>
-            </div>
-          </Link>
+            )}
+          </div>
 
           {/* 디자이너 2: Park Parang */}
-          <Link 
-            href="/designers/park-parang"
-            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+          <div 
+            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] group"
             style={{ '--index': 1 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <OptimizedImage 
-              src={parkParangCMS.currentUrl || "/images/profile/Park Parang.jpg"} 
-              alt="Park Parang" 
-              fill={true}
-              priority={true}
-              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-            />
+            <Link 
+              href="/designers/park-parang"
+              className="absolute inset-0 z-10"
+              style={{ pointerEvents: isAuthenticated ? 'none' : 'auto' }}
+            >
+              <OptimizedImage 
+                src={parkParangCMS.currentUrl || "/images/profile/Park Parang.jpg"} 
+                alt="Park Parang" 
+                fill={true}
+                priority={true}
+                sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
+              />
+            </Link>
             
-            {/* SimpleCMS 오버레이 - Park Parang */}
+            {/* 관리자 모드: 전체 이미지 CMS 오버레이 */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20 w-12 h-12"
+                className="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center"
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                  // CMS 버튼 클릭은 허용, 기타 클릭은 차단
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button') && !target.closest('input[type="file"]')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
                 }}
               >
-                <SimpleCMS
-                  slotId="main-designer-parkparang"
-                  currentUrl={parkParangCMS.currentUrl}
-                  type="image"
-                  onUpload={parkParangCMS.handleUpload}
-                  onDelete={parkParangCMS.handleDelete}
-                  isAdminMode={true}
-                  className="w-full h-full"
-                  placeholder="Park Parang"
-                />
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="text-center mb-4">
+                    <h3 className="text-white font-medium mb-2">PARK PARANG</h3>
+                    <p className="text-white/70 text-sm">프로필 이미지 관리</p>
+                  </div>
+                  <div className="w-64">
+                    <SimpleCMS
+                      slotId="main-designer-parkparang"
+                      currentUrl={parkParangCMS.currentUrl}
+                      type="image"
+                      onUpload={parkParangCMS.handleUpload}
+                      onDelete={parkParangCMS.handleDelete}
+                      isAdminMode={true}
+                      className="w-full"
+                      placeholder="Park Parang 프로필 이미지"
+                    />
+                  </div>
+                </div>
               </div>
             )}
-            <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
-              <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
-                   style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
-                PARK PARANG
+            
+            {/* 일반 사용자: 호버 오버레이 */}
+            {!isAuthenticated && (
+              <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
+                <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
+                     style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
+                  PARK PARANG
+                </div>
+                <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
+                  Art Director
+                </div>
               </div>
-              <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
-                Art Director
-              </div>
-            </div>
-          </Link>
+            )}
+          </div>
 
           {/* 디자이너 3: Lee Taehyeon */}
-          <Link 
-            href="/designers/lee-taehyeon"
-            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+          <div 
+            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] group"
             style={{ '--index': 2 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <OptimizedImage 
-              src={leeTaehyeonCMS.currentUrl || "/images/profile/Lee Taehyeon.jpg"} 
-              alt="Lee Taehyeon" 
-              fill={true}
-              priority={true}
-              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-            />
+            <Link 
+              href="/designers/lee-taehyeon"
+              className="absolute inset-0 z-10"
+              style={{ pointerEvents: isAuthenticated ? 'none' : 'auto' }}
+            >
+              <OptimizedImage 
+                src={leeTaehyeonCMS.currentUrl || "/images/profile/Lee Taehyeon.jpg"} 
+                alt="Lee Taehyeon" 
+                fill={true}
+                priority={true}
+                sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
+              />
+            </Link>
             
-            {/* SimpleCMS 오버레이 - Lee Taehyeon */}
+            {/* 관리자 모드: 전체 이미지 CMS 오버레이 */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20 w-12 h-12"
+                className="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center"
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                  // CMS 버튼 클릭은 허용, 기타 클릭은 차단
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button') && !target.closest('input[type="file"]')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
                 }}
               >
-                <SimpleCMS
-                  slotId="main-designer-leetaehyeon"
-                  currentUrl={leeTaehyeonCMS.currentUrl}
-                  type="image"
-                  onUpload={leeTaehyeonCMS.handleUpload}
-                  onDelete={leeTaehyeonCMS.handleDelete}
-                  isAdminMode={true}
-                  className="w-full h-full"
-                  placeholder="Lee Taehyeon"
-                />
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="text-center mb-4">
+                    <h3 className="text-white font-medium mb-2">LEE TAEHYEON</h3>
+                    <p className="text-white/70 text-sm">프로필 이미지 관리</p>
+                  </div>
+                  <div className="w-64">
+                    <SimpleCMS
+                      slotId="main-designer-leetaehyeon"
+                      currentUrl={leeTaehyeonCMS.currentUrl}
+                      type="image"
+                      onUpload={leeTaehyeonCMS.handleUpload}
+                      onDelete={leeTaehyeonCMS.handleDelete}
+                      isAdminMode={true}
+                      className="w-full"
+                      placeholder="Lee Taehyeon 프로필 이미지"
+                    />
+                  </div>
+                </div>
               </div>
             )}
-            <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
-              <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
-                   style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
-                LEE TAEHYEON
+            
+            {/* 일반 사용자: 호버 오버레이 */}
+            {!isAuthenticated && (
+              <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
+                <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
+                     style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
+                  LEE TAEHYEON
+                </div>
+                <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
+                  Visual Director
+                </div>
               </div>
-              <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
-                Visual Director
-              </div>
-            </div>
-          </Link>
+            )}
+          </div>
 
           {/* 디자이너 4: Choi Eunsol */}
-          <Link 
-            href="/designers/choi-eunsol"
-            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+          <div 
+            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] group"
             style={{ '--index': 3 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <OptimizedImage 
-              src={choiEunsolCMS.currentUrl || "/images/profile/Choi Eunsol.jpeg"} 
-              alt="Choi Eunsol" 
-              fill={true}
-              priority={true}
-              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-            />
+            <Link 
+              href="/designers/choi-eunsol"
+              className="absolute inset-0 z-10"
+              style={{ pointerEvents: isAuthenticated ? 'none' : 'auto' }}
+            >
+              <OptimizedImage 
+                src={choiEunsolCMS.currentUrl || "/images/profile/Choi Eunsol.jpeg"} 
+                alt="Choi Eunsol" 
+                fill={true}
+                priority={true}
+                sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
+              />
+            </Link>
             
-            {/* SimpleCMS 오버레이 - Choi Eunsol */}
+            {/* 관리자 모드: 전체 이미지 CMS 오버레이 */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20 w-12 h-12"
+                className="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center"
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                  // CMS 버튼 클릭은 허용, 기타 클릭은 차단
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button') && !target.closest('input[type="file"]')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
                 }}
               >
-                <SimpleCMS
-                  slotId="main-designer-choieunsol"
-                  currentUrl={choiEunsolCMS.currentUrl}
-                  type="image"
-                  onUpload={choiEunsolCMS.handleUpload}
-                  onDelete={choiEunsolCMS.handleDelete}
-                  isAdminMode={true}
-                  className="w-full h-full"
-                  placeholder="Choi Eunsol"
-                />
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="text-center mb-4">
+                    <h3 className="text-white font-medium mb-2">CHOI EUNSOL</h3>
+                    <p className="text-white/70 text-sm">프로필 이미지 관리</p>
+                  </div>
+                  <div className="w-64">
+                    <SimpleCMS
+                      slotId="main-designer-choieunsol"
+                      currentUrl={choiEunsolCMS.currentUrl}
+                      type="image"
+                      onUpload={choiEunsolCMS.handleUpload}
+                      onDelete={choiEunsolCMS.handleDelete}
+                      isAdminMode={true}
+                      className="w-full"
+                      placeholder="Choi Eunsol 프로필 이미지"
+                    />
+                  </div>
+                </div>
               </div>
             )}
-            <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
-              <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
-                   style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
-                CHOI EUNSOL
+            
+            {/* 일반 사용자: 호버 오버레이 */}
+            {!isAuthenticated && (
+              <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
+                <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
+                     style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
+                  CHOI EUNSOL
+                </div>
+                <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
+                  Fashion Director
+                </div>
               </div>
-              <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
-                Fashion Director
-              </div>
-            </div>
-          </Link>
+            )}
+          </div>
 
           {/* 디자이너 5: Hwang Jinsu */}
-          <Link 
-            href="/designers/hwang-jinsu"
-            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+          <div 
+            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] group"
             style={{ '--index': 4 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <OptimizedImage 
-              src={hwangJinsuCMS.currentUrl || "/images/profile/Hwang Jinsu.jpg"} 
-              alt="Hwang Jinsu" 
-              fill={true}
-              priority={true}
-              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-            />
+            <Link 
+              href="/designers/hwang-jinsu"
+              className="absolute inset-0 z-10"
+              style={{ pointerEvents: isAuthenticated ? 'none' : 'auto' }}
+            >
+              <OptimizedImage 
+                src={hwangJinsuCMS.currentUrl || "/images/profile/Hwang Jinsu.jpg"} 
+                alt="Hwang Jinsu" 
+                fill={true}
+                priority={true}
+                sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
+              />
+            </Link>
             
-            {/* SimpleCMS 오버레이 - Hwang Jinsu */}
+            {/* 관리자 모드: 전체 이미지 CMS 오버레이 */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20 w-12 h-12"
+                className="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center"
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                  // CMS 버튼 클릭은 허용, 기타 클릭은 차단
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button') && !target.closest('input[type="file"]')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
                 }}
               >
-                <SimpleCMS
-                  slotId="main-designer-hwangjinsu"
-                  currentUrl={hwangJinsuCMS.currentUrl}
-                  type="image"
-                  onUpload={hwangJinsuCMS.handleUpload}
-                  onDelete={hwangJinsuCMS.handleDelete}
-                  isAdminMode={true}
-                  className="w-full h-full"
-                  placeholder="Hwang Jinsu"
-                />
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="text-center mb-4">
+                    <h3 className="text-white font-medium mb-2">HWANG JINSU</h3>
+                    <p className="text-white/70 text-sm">프로필 이미지 관리</p>
+                  </div>
+                  <div className="w-64">
+                    <SimpleCMS
+                      slotId="main-designer-hwangjinsu"
+                      currentUrl={hwangJinsuCMS.currentUrl}
+                      type="image"
+                      onUpload={hwangJinsuCMS.handleUpload}
+                      onDelete={hwangJinsuCMS.handleDelete}
+                      isAdminMode={true}
+                      className="w-full"
+                      placeholder="Hwang Jinsu 프로필 이미지"
+                    />
+                  </div>
+                </div>
               </div>
             )}
-            <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
-              <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
-                   style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
-                HWANG JINSU
+            
+            {/* 일반 사용자: 호버 오버레이 */}
+            {!isAuthenticated && (
+              <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
+                <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
+                     style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
+                  HWANG JINSU
+                </div>
+                <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
+                  Production Director
+                </div>
               </div>
-              <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
-                Production Director
-              </div>
-            </div>
-          </Link>
+            )}
+          </div>
 
           {/* 디자이너 6: Kim Gyeongsu */}
-          <Link 
-            href="/designers/kim-gyeongsu"
-            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+          <div 
+            className="showcase-item relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] group"
             style={{ '--index': 5 } as React.CSSProperties}
             data-manageable="showcase"
           >
-            <OptimizedImage 
-              src={kimGyeongsuCMS.currentUrl || "/images/profile/Kim Gyeongsu.webp"} 
-              alt="Kim Gyeongsu" 
-              fill={true}
-              priority={true}
-              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-            />
+            <Link 
+              href="/designers/kim-gyeongsu"
+              className="absolute inset-0 z-10"
+              style={{ pointerEvents: isAuthenticated ? 'none' : 'auto' }}
+            >
+              <OptimizedImage 
+                src={kimGyeongsuCMS.currentUrl || "/images/profile/Kim Gyeongsu.webp"} 
+                alt="Kim Gyeongsu" 
+                fill={true}
+                priority={true}
+                sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
+              />
+            </Link>
             
-            {/* SimpleCMS 오버레이 - Kim Gyeongsu */}
+            {/* 관리자 모드: 전체 이미지 CMS 오버레이 */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20 w-12 h-12"
+                className="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center"
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                  // CMS 버튼 클릭은 허용, 기타 클릭은 차단
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button') && !target.closest('input[type="file"]')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
                 }}
               >
-                <SimpleCMS
-                  slotId="main-designer-kimgyeongsu"
-                  currentUrl={kimGyeongsuCMS.currentUrl}
-                  type="image"
-                  onUpload={kimGyeongsuCMS.handleUpload}
-                  onDelete={kimGyeongsuCMS.handleDelete}
-                  isAdminMode={true}
-                  className="w-full h-full"
-                  placeholder="Kim Gyeongsu"
-                />
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="text-center mb-4">
+                    <h3 className="text-white font-medium mb-2">KIM GYEONGSU</h3>
+                    <p className="text-white/70 text-sm">프로필 이미지 관리</p>
+                  </div>
+                  <div className="w-64">
+                    <SimpleCMS
+                      slotId="main-designer-kimgyeongsu"
+                      currentUrl={kimGyeongsuCMS.currentUrl}
+                      type="image"
+                      onUpload={kimGyeongsuCMS.handleUpload}
+                      onDelete={kimGyeongsuCMS.handleDelete}
+                      isAdminMode={true}
+                      className="w-full"
+                      placeholder="Kim Gyeongsu 프로필 이미지"
+                    />
+                  </div>
+                </div>
               </div>
             )}
-            <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
-              <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
-                   style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
-                KIM GYEONGSU
+            
+            {/* 일반 사용자: 호버 오버레이 */}
+            {!isAuthenticated && (
+              <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
+                <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
+                     style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
+                  KIM GYEONGSU
+                </div>
+                <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
+                  Brand Director
+                </div>
               </div>
-              <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
-                Brand Director
-              </div>
-            </div>
-          </Link>
+            )}
+          </div>
 
           {/* 전시 1: Cinemode */}
-          <Link 
-            href="/exhibitions"
-            className="showcase-item showcase-exhibition relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+          <div 
+            className="showcase-item showcase-exhibition relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] group"
             style={{ '--index': 6 } as React.CSSProperties}
             data-manageable="exhibition"
           >
-            <OptimizedImage 
-              src={cinemodeCMS.currentUrl || "/images/exhibitions/cinemode/1.jpg"} 
-              alt="Cinemode Exhibition" 
-              fill={true}
-              priority={false}
-              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-            />
+            <Link 
+              href="/exhibitions"
+              className="absolute inset-0 z-10"
+              style={{ pointerEvents: isAuthenticated ? 'none' : 'auto' }}
+            >
+              <OptimizedImage 
+                src={cinemodeCMS.currentUrl || "/images/exhibitions/cinemode/1.jpg"} 
+                alt="Cinemode Exhibition" 
+                fill={true}
+                priority={false}
+                sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
+              />
+            </Link>
             
-            {/* SimpleCMS 오버레이 - Cinemode */}
+            {/* 관리자 모드: 전체 이미지 CMS 오버레이 */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20 w-12 h-12"
+                className="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center"
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                  // CMS 버튼 클릭은 허용, 기타 클릭은 차단
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button') && !target.closest('input[type="file"]')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
                 }}
               >
-                <SimpleCMS
-                  slotId="main-exhibition-cinemode"
-                  currentUrl={cinemodeCMS.currentUrl}
-                  type="image"
-                  onUpload={cinemodeCMS.handleUpload}
-                  onDelete={cinemodeCMS.handleDelete}
-                  isAdminMode={true}
-                  className="w-full h-full"
-                  placeholder="Cinemode"
-                />
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="text-center mb-4">
+                    <h3 className="text-white font-medium mb-2">CINEMODE</h3>
+                    <p className="text-white/70 text-sm">전시 이미지 관리</p>
+                  </div>
+                  <div className="w-64">
+                    <SimpleCMS
+                      slotId="main-exhibition-cinemode"
+                      currentUrl={cinemodeCMS.currentUrl}
+                      type="image"
+                      onUpload={cinemodeCMS.handleUpload}
+                      onDelete={cinemodeCMS.handleDelete}
+                      isAdminMode={true}
+                      className="w-full"
+                      placeholder="Cinemode 전시 이미지"
+                    />
+                  </div>
+                </div>
               </div>
             )}
-            <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
-              <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
-                   style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
-                CINEMODE
+            
+            {/* 일반 사용자: 호버 오버레이 */}
+            {!isAuthenticated && (
+              <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
+                <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
+                     style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
+                  CINEMODE
+                </div>
+                <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
+                  Exhibition
+                </div>
               </div>
-              <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
-                Exhibition
-              </div>
-            </div>
-          </Link>
+            )}
+          </div>
 
           {/* 전시 2: The Room */}
-          <Link 
-            href="/exhibitions"
-            className="showcase-item showcase-exhibition relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+          <div 
+            className="showcase-item showcase-exhibition relative aspect-square overflow-hidden bg-black cursor-pointer opacity-0 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:translate-y-[-3px] hover:scale-[1.005] hover:brightness-[1.02] hover:saturate-[1.1] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] group"
             style={{ '--index': 7 } as React.CSSProperties}
             data-manageable="exhibition"
           >
-            <OptimizedImage 
-              src={theroomCMS.currentUrl || "/images/exhibitions/theroom/1.jpg"} 
-              alt="The Room Exhibition" 
-              fill={true}
-              priority={false}
-              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
-            />
+            <Link 
+              href="/exhibitions"
+              className="absolute inset-0 z-10"
+              style={{ pointerEvents: isAuthenticated ? 'none' : 'auto' }}
+            >
+              <OptimizedImage 
+                src={theroomCMS.currentUrl || "/images/exhibitions/theroom/1.jpg"} 
+                alt="The Room Exhibition" 
+                fill={true}
+                priority={false}
+                sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-cover transition-all duration-[600ms] ease-in-out opacity-90 hover:scale-[1.02] hover:contrast-[1.05] hover:brightness-[1.02]"
+              />
+            </Link>
             
-            {/* SimpleCMS 오버레이 - The Room */}
+            {/* 관리자 모드: 전체 이미지 CMS 오버레이 */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20 w-12 h-12"
+                className="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center"
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                  // CMS 버튼 클릭은 허용, 기타 클릭은 차단
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button') && !target.closest('input[type="file"]')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
                 }}
               >
-                <SimpleCMS
-                  slotId="main-exhibition-theroom"
-                  currentUrl={theroomCMS.currentUrl}
-                  type="image"
-                  onUpload={theroomCMS.handleUpload}
-                  onDelete={theroomCMS.handleDelete}
-                  isAdminMode={true}
-                  className="w-full h-full"
-                  placeholder="The Room"
-                />
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="text-center mb-4">
+                    <h3 className="text-white font-medium mb-2">THE ROOM</h3>
+                    <p className="text-white/70 text-sm">전시 이미지 관리</p>
+                  </div>
+                  <div className="w-64">
+                    <SimpleCMS
+                      slotId="main-exhibition-theroom"
+                      currentUrl={theroomCMS.currentUrl}
+                      type="image"
+                      onUpload={theroomCMS.handleUpload}
+                      onDelete={theroomCMS.handleDelete}
+                      isAdminMode={true}
+                      className="w-full"
+                      placeholder="The Room 전시 이미지"
+                    />
+                  </div>
+                </div>
               </div>
             )}
-            <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
-              <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
-                   style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
-                THE ROOM
+            
+            {/* 일반 사용자: 호버 오버레이 */}
+            {!isAuthenticated && (
+              <div className="showcase-overlay absolute top-0 left-0 w-full h-full bg-black/60 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-[400ms] ease-in-out p-5 text-center hover:opacity-100">
+                <div className="showcase-name font-['Inter'] font-medium mb-[5px] tracking-[0.02em]" 
+                     style={{ fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)' }}>
+                  THE ROOM
+                </div>
+                <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
+                  Exhibition
+                </div>
               </div>
-              <div className="showcase-role text-xs text-white/70 tracking-[1px] uppercase">
-                Exhibition
-              </div>
-            </div>
-          </Link>
+            )}
+          </div>
         </div>
       </div>
     </section>

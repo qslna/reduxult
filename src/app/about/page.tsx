@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import CategoryPreview from '@/components/about/CategoryPreview';
 import { aboutGalleries } from '@/data/aboutGallery';
@@ -8,6 +8,9 @@ import { useTextContent } from '@/hooks/usePageContent';
 
 // HTML redux6 about.html과 완전 동일한 About 페이지 구현
 export default function AboutPage() {
+  // Error handling state
+  const [hasError, setHasError] = useState(false);
+  
   // Dynamic content loading
   const { text: heroTitle } = useTextContent('about', 'about-title', 'WHO REDUX?');
   const { text: heroSubtitle } = useTextContent('about', 'about-subtitle', 'Fashion Designer Collective');
@@ -263,56 +266,74 @@ export default function AboutPage() {
           margin: '0 auto 120px'
         }}
       >
-        
-        {/* Fashion Film */}
-        <CategoryPreview 
-          category={aboutGalleries.find(g => g.id === 'fashion-film')!}
-          gridStyle={{
-            gridColumn: 'span 7',
-            gridRow: 'span 2'
-          }}
-          className="grid-item"
-        />
+        {/* Safe rendering with error boundaries */}
+        {(() => {
+          try {
+            const categories = [
+              { id: 'fashion-film', gridColumn: 'span 7', gridRow: 'span 2' },
+              { id: 'memory', gridColumn: 'span 5', gridRow: 'span 3' },
+              { id: 'visual-art', gridColumn: 'span 4', gridRow: 'span 2' },
+              { id: 'installation', gridColumn: 'span 4', gridRow: 'span 2' },
+              { id: 'collective', gridColumn: 'span 4', gridRow: 'span 2' }
+            ];
 
-        {/* Memory */}
-        <CategoryPreview 
-          category={aboutGalleries.find(g => g.id === 'memory')!}
-          gridStyle={{
-            gridColumn: 'span 5',
-            gridRow: 'span 3'
-          }}
-          className="grid-item"
-        />
+            return categories.map((categoryConfig) => {
+              const category = aboutGalleries.find(g => g.id === categoryConfig.id);
+              
+              if (!category) {
+                console.warn(`Category not found: ${categoryConfig.id}`);
+                return (
+                  <div 
+                    key={categoryConfig.id}
+                    className="grid-item"
+                    style={{
+                      gridColumn: categoryConfig.gridColumn,
+                      gridRow: categoryConfig.gridRow,
+                      background: '#f0f0f0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#666',
+                      fontSize: '14px'
+                    }}
+                  >
+                    Category not found: {categoryConfig.id}
+                  </div>
+                );
+              }
 
-        {/* Visual Art */}
-        <CategoryPreview 
-          category={aboutGalleries.find(g => g.id === 'visual-art')!}
-          gridStyle={{
-            gridColumn: 'span 4',
-            gridRow: 'span 2'
-          }}
-          className="grid-item"
-        />
-
-        {/* Installation */}
-        <CategoryPreview 
-          category={aboutGalleries.find(g => g.id === 'installation')!}
-          gridStyle={{
-            gridColumn: 'span 4',
-            gridRow: 'span 2'
-          }}
-          className="grid-item"
-        />
-
-        {/* Collective */}
-        <CategoryPreview 
-          category={aboutGalleries.find(g => g.id === 'collective')!}
-          gridStyle={{
-            gridColumn: 'span 4',
-            gridRow: 'span 2'
-          }}
-          className="grid-item"
-        />
+              return (
+                <CategoryPreview 
+                  key={category.id}
+                  category={category}
+                  gridStyle={{
+                    gridColumn: categoryConfig.gridColumn,
+                    gridRow: categoryConfig.gridRow
+                  }}
+                  className="grid-item"
+                />
+              );
+            });
+          } catch (error) {
+            console.error('Error rendering category grid:', error);
+            return (
+              <div 
+                style={{
+                  gridColumn: 'span 12',
+                  gridRow: 'span 2',
+                  background: '#f0f0f0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#666',
+                  fontSize: '16px'
+                }}
+              >
+                Unable to load gallery content. Please refresh the page.
+              </div>
+            );
+          }
+        })()}
       </div>
 
       {/* Philosophy Section - HTML 버전과 완전 동일한 다크 섹션 */}

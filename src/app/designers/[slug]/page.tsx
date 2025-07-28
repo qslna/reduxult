@@ -45,13 +45,9 @@ export default function DesignerPage({ params }: Props) {
     
     try {
       const designerSlug = resolvedParams.slug;
-      console.log('Looking for designer with slug:', designerSlug);
-      
       const designerData = designers.find(d => d.id === designerSlug);
-      console.log('Found designer data:', designerData);
       
       if (!designerData) {
-        console.error('Designer not found:', designerSlug);
         notFound();
         return;
       }
@@ -59,7 +55,6 @@ export default function DesignerPage({ params }: Props) {
       setDesigner(designerData);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error loading designer:', error);
       notFound();
     }
   }, [resolvedParams]);

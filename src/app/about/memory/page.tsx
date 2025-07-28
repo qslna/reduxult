@@ -12,6 +12,8 @@ export default function MemoryPage() {
   const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxImageError, setLightboxImageError] = useState(false);
+  const [lightboxImageLoading, setLightboxImageLoading] = useState(true);
   
   // CMS integration
   const { isAuthenticated } = useSimpleAuth();
@@ -66,9 +68,13 @@ export default function MemoryPage() {
 
   // HTML 버전과 동일한 라이트박스 함수들
   const openLightbox = (index: number) => {
-    setCurrentImageIndex(index);
-    setIsLightboxOpen(true);
-    document.body.style.overflow = 'hidden';
+    if (galleryImages && galleryImages.length > 0) {
+      setCurrentImageIndex(index);
+      setIsLightboxOpen(true);
+      setLightboxImageError(false);
+      setLightboxImageLoading(true);
+      document.body.style.overflow = 'hidden';
+    }
   };
 
   const closeLightbox = () => {
@@ -77,11 +83,19 @@ export default function MemoryPage() {
   };
 
   const nextImage = () => {
-    setCurrentImageIndex(prev => (prev + 1) % galleryImages.length);
+    if (galleryImages && galleryImages.length > 0) {
+      setCurrentImageIndex(prev => (prev + 1) % galleryImages.length);
+      setLightboxImageError(false);
+      setLightboxImageLoading(true);
+    }
   };
 
   const prevImage = () => {
-    setCurrentImageIndex(prev => (prev - 1 + galleryImages.length) % galleryImages.length);
+    if (galleryImages && galleryImages.length > 0) {
+      setCurrentImageIndex(prev => (prev - 1 + galleryImages.length) % galleryImages.length);
+      setLightboxImageError(false);
+      setLightboxImageLoading(true);
+    }
   };
 
   const handleLightboxClick = (e: React.MouseEvent) => {
@@ -223,15 +237,51 @@ export default function MemoryPage() {
               ‹
             </button>
             
-            <OptimizedImage 
-              src={galleryImages[currentImageIndex]}
-              alt={`Memory ${currentImageIndex + 1}`}
-              width={1200}
-              height={800}
-              priority={true}
-              sizes="90vw"
-              className="lightbox-image max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
-            />
+            <div className="relative">
+              {lightboxImageError ? (
+                <div className="flex items-center justify-center text-white min-h-[50vh]">
+                  <div className="text-center">
+                    <div className="text-6xl mb-4 opacity-50">📷</div>
+                    <p className="text-lg mb-2">Failed to load image</p>
+                    <p className="text-sm opacity-70 mb-4">Image may not exist or is not accessible</p>
+                    <button 
+                      onClick={() => {
+                        setLightboxImageError(false);
+                        setLightboxImageLoading(true);
+                      }}
+                      className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-md transition-colors border border-white/20"
+                    >
+                      Try Again
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {lightboxImageLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center text-white min-h-[50vh]">
+                      <div className="text-center">
+                        <div className="animate-spin w-8 h-8 border-2 border-white/20 border-t-white rounded-full mb-4 mx-auto"></div>
+                        <p className="text-sm opacity-70">Loading image...</p>
+                      </div>
+                    </div>
+                  )}
+                  <OptimizedImage 
+                    src={galleryImages[currentImageIndex] || ''}
+                    alt={`Memory ${currentImageIndex + 1}`}
+                    width={1200}
+                    height={800}
+                    priority={true}
+                    sizes="90vw"
+                    className="lightbox-image max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+                    onLoad={() => setLightboxImageLoading(false)}
+                    onError={() => {
+                      setLightboxImageLoading(false);
+                      setLightboxImageError(true);
+                    }}
+                  />
+                </>
+              )}
+            </div>
             
             <button 
               className="lightbox-nav lightbox-next absolute top-1/2 right-[-80px] transform -translate-y-1/2 bg-white/10 backdrop-blur-[10px] border border-white/20 rounded-full w-[60px] h-[60px] flex items-center justify-center text-white text-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[--accent-mocha]/30 hover:transform hover:-translate-y-1/2 hover:scale-110 max-[1024px]:hidden"

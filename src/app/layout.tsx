@@ -30,6 +30,7 @@ export const viewport: Viewport = {
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import PageTransition from '@/components/ui/PageTransition';
+import InitialLoadingScreen from '@/components/ui/InitialLoadingScreen';
 
 export default function RootLayout({
   children,
@@ -43,11 +44,40 @@ export default function RootLayout({
     <html lang="ko" className={inter.variable}>
       <head>
         {/* 파비콘 및 앱 아이콘 */}
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="alternate icon" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/images/hero-background/background.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        <link rel="manifest" href="/manifest.json" />
+        
+        {/* Critical CSS - Prevents FOUC */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            /* Critical styles to prevent FOUC */
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            html, body { 
+              background: #000000; 
+              color: #ffffff; 
+              font-family: system-ui, -apple-system, sans-serif;
+              overflow-x: hidden;
+              -webkit-font-smoothing: antialiased;
+            }
+            /* Hide content until fonts are loaded */
+            body:not(.fonts-loaded) {
+              visibility: hidden;
+            }
+            /* Ensure loading screen is always visible */
+            .initial-loading-screen {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100vh;
+              background: #000000;
+              z-index: 10001;
+            }
+          `
+        }} />
         
         {/* PWA 및 모바일 최적화 */}
         <meta name="application-name" content={DEFAULT_SEO.siteName} />
@@ -104,6 +134,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased bg-black text-white overflow-x-hidden">
+        <InitialLoadingScreen />
         <Navigation />
         <main>
           <PageTransition>
@@ -139,7 +170,7 @@ export default function RootLayout({
             dangerouslySetInnerHTML={{
               __html: `
                 // Add your analytics code here
-                console.log('Analytics initialized');
+                // Analytics initialized
               `,
             }}
           />

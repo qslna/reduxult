@@ -103,6 +103,13 @@ export default function FashionFilmPage() {
     document.body.style.overflow = 'auto';
   };
 
+  // Google Drive video URL formatter - 더 안정적인 URL 생성
+  const formatGoogleDriveUrl = (fileId: string | undefined, fallbackId: string) => {
+    const id = fileId || fallbackId;
+    // Google Drive 임베드를 위한 올바른 URL 형식 사용
+    return `https://drive.google.com/file/d/${id}/preview?usp=sharing`;
+  };
+
   // Dynamic films data from CMS - 각 디자이너별 개별 관리
   const films = [
     { 
@@ -110,42 +117,42 @@ export default function FashionFilmPage() {
       title: 'CHASING VOWS', 
       id: 'kimbomin',
       thumbnail: kimBominFiles[0] || '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
-      videoUrl: kimBominVideoFiles[0] ? `https://drive.google.com/file/d/${kimBominVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X/preview'
+      videoUrl: formatGoogleDriveUrl(kimBominVideoFiles[0], '1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X')
     },
     { 
       designer: 'PARK PARANG', 
       title: 'THE TIME BETWEEN', 
       id: 'parkparang',
       thumbnail: parkParangFiles[0] || '/images/profile/Park Parang.jpg',
-      videoUrl: parkParangVideoFiles[0] ? `https://drive.google.com/file/d/${parkParangVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/15d901XRElkF5p7xiJYelIyblYFb-PtsD/preview'
+      videoUrl: formatGoogleDriveUrl(parkParangVideoFiles[0], '15d901XRElkF5p7xiJYelIyblYFb-PtsD')
     },
     { 
       designer: 'LEE TAEHYEON', 
       title: 'POLYHEDRON', 
       id: 'leetaehyeon',
       thumbnail: leeTaehyeonFiles[0] || '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
-      videoUrl: leeTaehyeonVideoFiles[0] ? `https://drive.google.com/file/d/${leeTaehyeonVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/1fG2fchKvEG7i7Lo79K7250mgiVTse6ks/preview'
+      videoUrl: formatGoogleDriveUrl(leeTaehyeonVideoFiles[0], '1fG2fchKvEG7i7Lo79K7250mgiVTse6ks')
     },
     { 
       designer: 'CHOI EUNSOL', 
       title: 'SOUL SUCKER', 
       id: 'choieunsol',
       thumbnail: choiEunsolFiles[0] || '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
-      videoUrl: choiEunsolVideoFiles[0] ? `https://drive.google.com/file/d/${choiEunsolVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3/preview'
+      videoUrl: formatGoogleDriveUrl(choiEunsolVideoFiles[0], '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3')
     },
     { 
       designer: 'HWANG JINSU', 
       title: 'WHO AM I ?!', 
       id: 'hwangjinsu',
       thumbnail: hwangJinsuFiles[0] || '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
-      videoUrl: hwangJinsuVideoFiles[0] ? `https://drive.google.com/file/d/${hwangJinsuVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d/preview'
+      videoUrl: formatGoogleDriveUrl(hwangJinsuVideoFiles[0], '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d')
     },
     { 
       designer: 'KIM GYEONGSU', 
       title: 'TO BE REVEALED', 
       id: 'kimgyeongsu',
       thumbnail: kimGyeongsuFiles[0] || '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg',
-      videoUrl: kimGyeongsuVideoFiles[0] ? `https://drive.google.com/file/d/${kimGyeongsuVideoFiles[0]}/preview` : 'https://drive.google.com/file/d/1Hl594dd_MY714hZwmklTAPTc-pofe9bY/preview'
+      videoUrl: formatGoogleDriveUrl(kimGyeongsuVideoFiles[0], '1Hl594dd_MY714hZwmklTAPTc-pofe9bY')
     }
   ];
 
@@ -334,22 +341,66 @@ export default function FashionFilmPage() {
         </div>
         <div className="modal-content w-[90%] max-w-[1200px] h-[80vh] relative">
           {currentFilm && (
-            <iframe
-              src={films.find(f => f.id === currentFilm)?.videoUrl || ''}
-              className="w-full h-full rounded-lg"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              style={{
-                border: '1px solid rgba(255,255,255,0.1)',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.5)'
-              }}
-            />
+            <div className="w-full h-full relative">
+              <iframe
+                src={films.find(f => f.id === currentFilm)?.videoUrl || ''}
+                className="w-full h-full rounded-lg"
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope"
+                allowFullScreen
+                loading="lazy"
+                style={{
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.5)'
+                }}
+                onError={(e) => {
+                  console.error('Video load error:', e);
+                  // 에러 발생 시 사용자에게 메시지 표시
+                  const errorDiv = document.createElement('div');
+                  errorDiv.innerHTML = `
+                    <div style="
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                      color: white;
+                      text-align: center;
+                      z-index: 1000;
+                    ">
+                      <p style="font-size: 18px; margin-bottom: 10px;">Video playback error</p>
+                      <p style="font-size: 14px; opacity: 0.7;">Please check if the video is publicly accessible</p>
+                      <button onclick="location.reload()" style="
+                        margin-top: 20px;
+                        padding: 10px 20px;
+                        background: rgba(255,255,255,0.1);
+                        border: 1px solid rgba(255,255,255,0.2);
+                        border-radius: 8px;
+                        color: white;
+                        cursor: pointer;
+                      ">Try Again</button>
+                    </div>
+                  `;
+                  (e.target as HTMLElement).parentNode?.appendChild(errorDiv);
+                }}
+              />
+              
+              {/* 비디오 로딩 인디케이터 */}
+              <div 
+                className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black flex items-center justify-center text-white text-2xl rounded-lg border border-white/10"
+                style={{ zIndex: -1 }}
+              >
+                <div className="text-center">
+                  <div className="mb-4 text-6xl opacity-20 animate-pulse">▶</div>
+                  <p className="text-lg opacity-60">Loading Video...</p>
+                  <p className="text-sm opacity-40 mt-2">If video doesn't load, it may not be publicly accessible</p>
+                </div>
+              </div>
+            </div>
           )}
           {!currentFilm && (
             <div className="w-full h-full bg-gradient-to-br from-gray-900 to-black flex items-center justify-center text-white text-2xl rounded-lg border border-white/10">
               <div className="text-center">
                 <div className="mb-4 text-6xl opacity-20">▶</div>
-                <p className="text-lg opacity-60">Loading Video...</p>
+                <p className="text-lg opacity-60">Select a video to play</p>
               </div>
             </div>
           )}

@@ -33,40 +33,54 @@ export default function CategoryPreview({
     // CMS 이미지가 있으면 우선 사용, 없으면 기본 이미지 사용
     const cmsImages: GalleryImage[] = [];
     
-    // Layer 1 (메인 이미지)
-    if (layer1CMS.currentUrl) {
-      cmsImages.push({
-        src: layer1CMS.currentUrl,
-        alt: `${category.name} Layer 1 (CMS)`
-      });
-    } else if (category.previewImages.length > 0) {
-      cmsImages.push(category.previewImages[0]);
-    } else {
-      cmsImages.push(category.images[0]);
+    // 안전한 이미지 가져오기 함수
+    const getSafeImage = (cmsUrl: string | undefined, previewImages: GalleryImage[], allImages: GalleryImage[], index: number): GalleryImage | null => {
+      if (cmsUrl) {
+        return {
+          src: cmsUrl,
+          alt: `${category.name} Layer ${index + 1} (CMS)`
+        };
+      }
+      
+      // Preview 이미지 시도
+      if (previewImages && previewImages.length > index) {
+        return previewImages[index];
+      }
+      
+      // 전체 이미지에서 시도
+      if (allImages && allImages.length > index) {
+        return allImages[index];
+      }
+      
+      // 기본 placeholder 이미지
+      return {
+        src: '/images/hero-background/background.png',
+        alt: `${category.name} Placeholder`
+      };
+    };
+    
+    // Layer 1 (메인 이미지) - 항상 추가
+    const layer1 = getSafeImage(layer1CMS.currentUrl, category.previewImages, category.images, 0);
+    if (layer1) cmsImages.push(layer1);
+    
+    // Layer 2 (배경 이미지 1) - 선택적 추가
+    const layer2 = getSafeImage(layer2CMS.currentUrl, category.previewImages, category.images, 1);
+    if (layer2 && layer2.src !== '/images/hero-background/background.png') {
+      cmsImages.push(layer2);
     }
     
-    // Layer 2 (배경 이미지 1)
-    if (layer2CMS.currentUrl) {
-      cmsImages.push({
-        src: layer2CMS.currentUrl,
-        alt: `${category.name} Layer 2 (CMS)`
-      });
-    } else if (category.previewImages.length > 1) {
-      cmsImages.push(category.previewImages[1]);
-    } else if (category.images.length > 1) {
-      cmsImages.push(category.images[1]);
+    // Layer 3 (배경 이미지 2) - 선택적 추가
+    const layer3 = getSafeImage(layer3CMS.currentUrl, category.previewImages, category.images, 2);
+    if (layer3 && layer3.src !== '/images/hero-background/background.png') {
+      cmsImages.push(layer3);
     }
     
-    // Layer 3 (배경 이미지 2)
-    if (layer3CMS.currentUrl) {
+    // 최소 1개 이미지 보장
+    if (cmsImages.length === 0) {
       cmsImages.push({
-        src: layer3CMS.currentUrl,
-        alt: `${category.name} Layer 3 (CMS)`
+        src: '/images/hero-background/background.png',
+        alt: `${category.name} Fallback`
       });
-    } else if (category.previewImages.length > 2) {
-      cmsImages.push(category.previewImages[2]);
-    } else if (category.images.length > 2) {
-      cmsImages.push(category.images[2]);
     }
     
     setPreviewImages(cmsImages);

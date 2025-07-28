@@ -1,0 +1,18 @@
+{
+  "name": "REDUX - Fashion Designer Collective",
+  "short_name": "REDUX",
+  "description": "Six fashion designers, one vision. Creative collective portfolio.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/hero-background/background.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
