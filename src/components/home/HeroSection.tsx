@@ -3,9 +3,9 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { DESIGNER_VIDEOS, getGoogleDriveEmbedUrl, getGoogleDriveThumbnailUrl } from '@/utils/drive-utils';
 import { useTextContent } from '@/hooks/usePageContent';
-import { useCMSSlot } from '@/hooks/useCMSSlot';
+import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import MediaSlot from '@/components/cms/MediaSlot';
+import SimpleCMS from '@/components/cms/SimpleCMS';
 
 /**
  * Phase 2.2: Revolutionary Hero Section
@@ -23,7 +23,7 @@ export default function HeroSection() {
   
   // CMS integration
   const { isAuthenticated } = useSimpleAuth();
-  const { slot: videoSlot, currentFiles: videoFiles, updateFiles: updateVideoFiles } = useCMSSlot('main-hero-video');
+  const { currentUrl: heroVideoUrl, updateUrl: updateHeroVideoUrl } = useSimpleCMS('main-hero-video', '/VIDEO/main.mp4');
 
   // Video states
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -51,26 +51,12 @@ export default function HeroSection() {
   const designerVideos = Object.values(DESIGNER_VIDEOS);
   const currentVideo = designerVideos[currentVideoIndex];
 
-  // Simplified loading animation
+  // Disabled loading animation to prevent conflict with main page loading
   useEffect(() => {
-    // Reduced loading time and simplified progress
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      setTimeout(() => {
-        setShowContent(true);
-        setLoadingProgress(100);
-      }, 200);
-    }, 1500); // Reduced from complex multi-step to simple 1.5s
-
-    // Simple progress animation
-    const progressTimer = setTimeout(() => {
-      setLoadingProgress(100);
-    }, 1200);
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(progressTimer);
-    };
+    // Immediately show content as main page handles loading
+    setIsLoading(false);
+    setShowContent(true);
+    setLoadingProgress(100);
   }, []);
 
   // Device detection and video initialization
@@ -362,7 +348,7 @@ export default function HeroSection() {
               transition: 'filter 0.3s ease'
             }}
           >
-            <source src={videoFiles[0] || '/VIDEO/main.mp4'} type="video/mp4" />
+            <source src={heroVideoUrl || '/VIDEO/main.mp4'} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           
@@ -734,7 +720,7 @@ export default function HeroSection() {
         </div>
 
         {/* CMS Admin Interface - Only visible to authenticated users */}
-        {isAuthenticated && videoSlot && (
+        {isAuthenticated && (
           <div 
             className="cms-admin-overlay"
             style={{
@@ -742,39 +728,24 @@ export default function HeroSection() {
               bottom: '20px',
               left: '20px',
               zIndex: 10,
-              background: 'rgba(0, 0, 0, 0.8)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '12px',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              padding: '16px',
               maxWidth: '300px'
             }}
           >
-            <div style={{
-              color: 'var(--primary-white)',
-              fontSize: '12px',
-              fontWeight: 500,
-              marginBottom: '12px',
-              letterSpacing: '1px',
-              textTransform: 'uppercase'
-            }}>
-              🎬 Hero Video Management
-            </div>
-            
-            <MediaSlot
-              slot={videoSlot}
-              currentFiles={videoFiles}
-              onFilesUpdate={(files) => {
-                updateVideoFiles(files);
-                // Reload video when files change
+            <SimpleCMS
+              slotId="main-hero-video"
+              currentUrl={heroVideoUrl}
+              type="video"
+              onUpload={(url) => {
+                updateHeroVideoUrl(url);
+                // Reload video when URL changes
                 const video = videoRef.current;
-                if (video && files.length > 0) {
-                  video.src = files[0];
+                if (video) {
+                  video.src = url;
                   video.load();
                 }
               }}
               isAdminMode={true}
-              className="mini-cms-slot"
+              placeholder="Hero 배경 동영상 업로드"
             />
           </div>
         )}

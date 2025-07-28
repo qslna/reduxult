@@ -30,7 +30,7 @@ export const viewport: Viewport = {
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import PageTransition from '@/components/ui/PageTransition';
-import FloatingCMSButton from '@/components/cms/FloatingCMSButton';
+import SimpleFloatingCMS from '@/components/cms/SimpleFloatingCMS';
 
 export default function RootLayout({
   children,
@@ -112,7 +112,7 @@ export default function RootLayout({
           </PageTransition>
         </main>
         <Footer />
-        <FloatingCMSButton />
+        <SimpleFloatingCMS />
         
         {/* 성능 최적화 초기화 */}
         <Script

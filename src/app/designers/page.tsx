@@ -6,9 +6,218 @@ import OptimizedImage from '@/components/ui/OptimizedImage';
 import { designers } from '@/data/designers';
 import { useTextContent } from '@/hooks/usePageContent';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useCMSSlot } from '@/hooks/useCMSSlot';
-import MediaSlot from '@/components/cms/MediaSlot';
-import FloatingCMSButton from '@/components/cms/FloatingCMSButton';
+import { useSimpleCMS } from '@/hooks/useSimpleCMS';
+import SimpleCMS from '@/components/cms/SimpleCMS';
+
+interface DesignerCardProps {
+  designer: {
+    id: string;
+    number: string;
+    name: string;
+    mainRole: string;
+    role: string;
+    brand: string;
+    profileImage: string;
+    hasImage: boolean;
+    hasVideo: boolean;
+  };
+  index: number;
+  isAuthenticated: boolean;
+  onClick: () => void;
+}
+
+function DesignerCard({ designer, index, isAuthenticated, onClick }: DesignerCardProps) {
+  const { currentUrl, handleUpload, handleDelete } = useSimpleCMS(
+    `designer-${designer.id}-profile`,
+    designer.profileImage
+  );
+
+  const displayImage = currentUrl || designer.profileImage;
+  const hasDisplayImage = !!displayImage;
+
+  return (
+    <div 
+      className="designer-card"
+      onClick={onClick}
+      style={{
+        position: 'relative',
+        height: '65vh',
+        minHeight: '450px',
+        maxHeight: '600px',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        borderRight: (index + 1) % 3 !== 0 ? '1px solid rgba(255, 255, 255, 0.05)' : 'none',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+        transition: 'all 0.6s ease'
+      }}
+    >
+      <div 
+        className="designer-image"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundImage: hasDisplayImage ? `url('${displayImage}')` : 'none',
+          background: !hasDisplayImage ? 'linear-gradient(135deg, #2a2a2a, #4a4a4a)' : undefined,
+          filter: 'grayscale(100%) contrast(1.2)',
+          transition: 'all 0.8s ease',
+          opacity: 0.7,
+          display: !hasDisplayImage ? 'flex' : 'block',
+          alignItems: !hasDisplayImage ? 'center' : 'normal',
+          justifyContent: !hasDisplayImage ? 'center' : 'normal',
+          color: !hasDisplayImage ? 'rgba(255, 255, 255, 0.3)' : 'transparent',
+          fontSize: !hasDisplayImage ? '48px' : '0',
+          fontWeight: !hasDisplayImage ? 100 : 'normal'
+        }}
+      >
+        {!hasDisplayImage && '📷'}
+      </div>
+      
+      {/* SimpleCMS 오버레이 - 프로필 이미지 */}
+      {isAuthenticated && (
+        <div 
+          className="absolute top-4 left-4 z-20"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <SimpleCMS
+            slotId={`designer-${designer.id}-profile`}
+            currentUrl={currentUrl}
+            type="image"
+            onUpload={handleUpload}
+            onDelete={handleDelete}
+            isAdminMode={true}
+            className="w-12 h-12"
+            placeholder="프로필 이미지"
+          />
+        </div>
+      )}
+      
+      <span 
+        className="designer-number"
+        style={{
+          fontSize: '120px',
+          fontWeight: 100,
+          color: 'rgba(255, 255, 255, 0.1)',
+          position: 'absolute',
+          top: '40px',
+          right: '40px',
+          transition: 'all 0.6s ease'
+        }}
+      >
+        {designer.number}
+      </span>
+      
+      {/* Film indicator for designers with videos */}
+      {designer.hasVideo && (
+        <div 
+          className="film-indicator"
+          style={{
+            position: 'absolute',
+            top: '40px',
+            left: '40px',
+            width: '40px',
+            height: '40px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '16px',
+            color: '#fff',
+            transition: 'all 0.6s ease'
+          }}
+        >
+          ▶
+        </div>
+      )}
+      
+      <div 
+        className="designer-content"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          padding: '60px 40px',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)',
+          transform: 'translateY(60%)',
+          transition: 'transform 0.6s ease'
+        }}
+      >
+        <h3 
+          className="designer-name"
+          style={{
+            fontSize: '32px',
+            fontWeight: 300,
+            letterSpacing: '3px',
+            color: '#fff',
+            marginBottom: '10px'
+          }}
+        >
+          {designer.name}
+        </h3>
+        <p 
+          className="designer-main-role"
+          style={{
+            fontSize: '16px',
+            letterSpacing: '2px',
+            color: '#fff',
+            textTransform: 'uppercase',
+            marginBottom: '8px',
+            fontWeight: 500
+          }}
+        >
+          {designer.mainRole}
+        </p>
+        <p 
+          className="designer-role"
+          style={{
+            fontSize: '12px',
+            letterSpacing: '1px',
+            color: '#999',
+            textTransform: 'uppercase',
+            marginBottom: '20px'
+          }}
+        >
+          {designer.role}
+        </p>
+        <p 
+          className="designer-brand"
+          style={{
+            fontSize: '16px',
+            color: '#fff',
+            marginBottom: '30px',
+            opacity: 0.8
+          }}
+        >
+          {designer.brand}
+        </p>
+        <span 
+          className="designer-link"
+          style={{
+            display: 'inline-block',
+            padding: '12px 30px',
+            border: '1px solid #fff',
+            color: '#fff',
+            fontSize: '12px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            transition: 'all 0.3s ease',
+            opacity: 0
+          }}
+        >
+          View Profile
+        </span>
+      </div>
+    </div>
+  );
+}
 
 // HTML redux6 designers.html과 완전 동일한 Designers 페이지 구현
 export default function DesignersPage() {
@@ -20,14 +229,6 @@ export default function DesignersPage() {
   
   // CMS 인증
   const { isAuthenticated } = useSimpleAuth();
-  
-  // CMS 슬롯 - 각 디자이너 프로필 이미지
-  const { slot: kimBominSlot, currentFiles: kimBominFiles, updateFiles: updateKimBominFiles } = useCMSSlot('main-designer-profile-kimbomin');
-  const { slot: parkParangSlot, currentFiles: parkParangFiles, updateFiles: updateParkParangFiles } = useCMSSlot('main-designer-profile-parkparang');
-  const { slot: leeTaehyeonSlot, currentFiles: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles } = useCMSSlot('main-designer-profile-leetaehyeon');
-  const { slot: choiEunsolSlot, currentFiles: choiEunsolFiles, updateFiles: updateChoiEunsolFiles } = useCMSSlot('main-designer-profile-choieunsol');
-  const { slot: hwangJinsuSlot, currentFiles: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles } = useCMSSlot('main-designer-profile-hwangjinsu');
-  const { slot: kimGyeongsuSlot, currentFiles: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles } = useCMSSlot('main-designer-profile-kimgyeongsu');
 
   useEffect(() => {
     // CSS-based animations without GSAP dependency
@@ -71,35 +272,9 @@ export default function DesignersPage() {
     };
   }, []);
 
-  // CMS 이미지 파일 가져오기 함수
-  const getCMSImageForDesigner = (designerId: string) => {
-    switch (designerId) {
-      case 'kim-bomin': return kimBominFiles[0];
-      case 'park-parang': return parkParangFiles[0];
-      case 'lee-taehyeon': return leeTaehyeonFiles[0];
-      case 'choi-eunsol': return choiEunsolFiles[0];
-      case 'hwang-jinsu': return hwangJinsuFiles[0];
-      case 'kim-gyeongsu': return kimGyeongsuFiles[0];
-      default: return null;
-    }
-  };
-
-  // CMS 슬롯 가져오기 함수
-  const getCMSSlotForDesigner = (designerId: string) => {
-    switch (designerId) {
-      case 'kim-bomin': return { slot: kimBominSlot, files: kimBominFiles, updateFiles: updateKimBominFiles };
-      case 'park-parang': return { slot: parkParangSlot, files: parkParangFiles, updateFiles: updateParkParangFiles };
-      case 'lee-taehyeon': return { slot: leeTaehyeonSlot, files: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles };
-      case 'choi-eunsol': return { slot: choiEunsolSlot, files: choiEunsolFiles, updateFiles: updateChoiEunsolFiles };
-      case 'hwang-jinsu': return { slot: hwangJinsuSlot, files: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles };
-      case 'kim-gyeongsu': return { slot: kimGyeongsuSlot, files: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles };
-      default: return null;
-    }
-  };
 
   // 6인의 디자이너 데이터를 실제 데이터에서 가져와서 display용으로 변환
   const designerDisplayData = designers.map((designer, index) => {
-    const cmsImage = getCMSImageForDesigner(designer.id);
     return {
       id: designer.id,
       number: String(designer.order).padStart(2, '0'),
@@ -107,8 +282,8 @@ export default function DesignersPage() {
       mainRole: designer.mainRole,
       role: designer.role,
       brand: 'REDUX COLLECTIVE',
-      profileImage: cmsImage || designer.profileImage,
-      hasImage: !!(cmsImage || designer.profileImage),
+      profileImage: designer.profileImage,
+      hasImage: !!designer.profileImage,
       hasVideo: !!designer.videoUrl
     };
   });
@@ -202,193 +377,19 @@ export default function DesignersPage() {
           }}
         >
           {designerDisplayData.map((designer, index) => {
-            const cmsData = getCMSSlotForDesigner(designer.id);
             return (
-              <div 
+              <DesignerCard
                 key={designer.id}
-                className="designer-card"
+                designer={designer}
+                index={index}
+                isAuthenticated={isAuthenticated}
                 onClick={() => handleDesignerClick(designer.id)}
-                style={{
-                  position: 'relative',
-                  height: '65vh',
-                  minHeight: '450px',
-                  maxHeight: '600px',
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                  borderRight: (index + 1) % 3 !== 0 ? '1px solid rgba(255, 255, 255, 0.05)' : 'none',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-                  transition: 'all 0.6s ease'
-                }}
-              >
-                <div 
-                  className="designer-image"
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundImage: designer.hasImage ? `url('${designer.profileImage}')` : 'none',
-                    background: !designer.hasImage ? 'linear-gradient(135deg, #2a2a2a, #4a4a4a)' : undefined,
-                    filter: 'grayscale(100%) contrast(1.2)',
-                    transition: 'all 0.8s ease',
-                    opacity: 0.7,
-                    display: !designer.hasImage ? 'flex' : 'block',
-                    alignItems: !designer.hasImage ? 'center' : 'normal',
-                    justifyContent: !designer.hasImage ? 'center' : 'normal',
-                    color: !designer.hasImage ? 'rgba(255, 255, 255, 0.3)' : 'transparent',
-                    fontSize: !designer.hasImage ? '48px' : '0',
-                    fontWeight: !designer.hasImage ? 100 : 'normal'
-                  }}
-                >
-                  {!designer.hasImage && '📷'}
-                </div>
-                
-                {/* CMS 오버레이 - 프로필 이미지 */}
-                {isAuthenticated && cmsData?.slot && (
-                  <div 
-                    className="absolute top-4 left-4 z-20"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <MediaSlot
-                      slot={cmsData.slot}
-                      currentFiles={cmsData.files}
-                      onFilesUpdate={cmsData.updateFiles}
-                      isAdminMode={true}
-                      className="w-12 h-12"
-                    />
-                  </div>
-                )}
-              
-              <span 
-                className="designer-number"
-                style={{
-                  fontSize: '120px',
-                  fontWeight: 100,
-                  color: 'rgba(255, 255, 255, 0.1)',
-                  position: 'absolute',
-                  top: '40px',
-                  right: '40px',
-                  transition: 'all 0.6s ease'
-                }}
-              >
-                {designer.number}
-              </span>
-              
-              {/* Film indicator for designers with videos */}
-              {designer.hasVideo && (
-                <div 
-                  className="film-indicator"
-                  style={{
-                    position: 'absolute',
-                    top: '40px',
-                    left: '40px',
-                    width: '40px',
-                    height: '40px',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    backdropFilter: 'blur(10px)',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '16px',
-                    color: '#fff',
-                    transition: 'all 0.6s ease'
-                  }}
-                >
-                  ▶
-                </div>
-              )}
-              
-              <div 
-                className="designer-content"
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  width: '100%',
-                  padding: '60px 40px',
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)',
-                  transform: 'translateY(60%)',
-                  transition: 'transform 0.6s ease'
-                }}
-              >
-                <h3 
-                  className="designer-name"
-                  style={{
-                    fontSize: '32px',
-                    fontWeight: 300,
-                    letterSpacing: '3px',
-                    color: '#fff',
-                    marginBottom: '10px'
-                  }}
-                >
-                  {designer.name}
-                </h3>
-                <p 
-                  className="designer-main-role"
-                  style={{
-                    fontSize: '16px',
-                    letterSpacing: '2px',
-                    color: '#fff',
-                    textTransform: 'uppercase',
-                    marginBottom: '8px',
-                    fontWeight: 500
-                  }}
-                >
-                  {designer.mainRole}
-                </p>
-                <p 
-                  className="designer-role"
-                  style={{
-                    fontSize: '12px',
-                    letterSpacing: '1px',
-                    color: '#999',
-                    textTransform: 'uppercase',
-                    marginBottom: '20px'
-                  }}
-                >
-                  {designer.role}
-                </p>
-                <p 
-                  className="designer-brand"
-                  style={{
-                    fontSize: '16px',
-                    color: '#fff',
-                    marginBottom: '30px',
-                    opacity: 0.8
-                  }}
-                >
-                  {designer.brand}
-                </p>
-                <span 
-                  className="designer-link"
-                  style={{
-                    display: 'inline-block',
-                    padding: '12px 30px',
-                    border: '1px solid #fff',
-                    color: '#fff',
-                    fontSize: '12px',
-                    letterSpacing: '2px',
-                    textTransform: 'uppercase',
-                    transition: 'all 0.3s ease',
-                    opacity: 0
-                  }}
-                >
-                  View Profile
-                </span>
-              </div>
-            </div>
+              />
             );
           })}
         </div>
       </section>
 
-      {/* Floating CMS Button */}
-      <FloatingCMSButton />
 
       {/* CSS for animations matching HTML version */}
       <style jsx>{`

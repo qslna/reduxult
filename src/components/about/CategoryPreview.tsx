@@ -3,6 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { CategoryGallery, GalleryImage } from '@/data/aboutGallery';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import { useSimpleCMS } from '@/hooks/useSimpleCMS';
+import SimpleCMS from '@/components/cms/SimpleCMS';
 
 interface CategoryPreviewProps {
   category: CategoryGallery;
@@ -20,15 +23,54 @@ export default function CategoryPreview({
   const [previewImages, setPreviewImages] = useState<GalleryImage[]>([]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // CMS 인증 및 각 레이어별 이미지 관리
+  const { isAuthenticated } = useSimpleAuth();
+  const layer1CMS = useSimpleCMS(`about-${category.id}-layer1`);
+  const layer2CMS = useSimpleCMS(`about-${category.id}-layer2`);
+  const layer3CMS = useSimpleCMS(`about-${category.id}-layer3`);
+
   useEffect(() => {
-    // 미리보기 이미지 설정
-    if (category.previewImages.length > 0) {
-      setPreviewImages(category.previewImages);
+    // CMS 이미지가 있으면 우선 사용, 없으면 기본 이미지 사용
+    const cmsImages: GalleryImage[] = [];
+    
+    // Layer 1 (메인 이미지)
+    if (layer1CMS.currentUrl) {
+      cmsImages.push({
+        src: layer1CMS.currentUrl,
+        alt: `${category.name} Layer 1 (CMS)`
+      });
+    } else if (category.previewImages.length > 0) {
+      cmsImages.push(category.previewImages[0]);
     } else {
-      // fallback: 전체 이미지에서 처음 3개 사용
-      setPreviewImages(category.images.slice(0, 3));
+      cmsImages.push(category.images[0]);
     }
-  }, [category]);
+    
+    // Layer 2 (배경 이미지 1)
+    if (layer2CMS.currentUrl) {
+      cmsImages.push({
+        src: layer2CMS.currentUrl,
+        alt: `${category.name} Layer 2 (CMS)`
+      });
+    } else if (category.previewImages.length > 1) {
+      cmsImages.push(category.previewImages[1]);
+    } else if (category.images.length > 1) {
+      cmsImages.push(category.images[1]);
+    }
+    
+    // Layer 3 (배경 이미지 2)
+    if (layer3CMS.currentUrl) {
+      cmsImages.push({
+        src: layer3CMS.currentUrl,
+        alt: `${category.name} Layer 3 (CMS)`
+      });
+    } else if (category.previewImages.length > 2) {
+      cmsImages.push(category.previewImages[2]);
+    } else if (category.images.length > 2) {
+      cmsImages.push(category.images[2]);
+    }
+    
+    setPreviewImages(cmsImages);
+  }, [category, layer1CMS.currentUrl, layer2CMS.currentUrl, layer3CMS.currentUrl]);
 
   useEffect(() => {
     if (isHovered && previewImages.length > 1) {
@@ -125,6 +167,25 @@ export default function CategoryPreview({
             }}
           />
           
+          {/* SimpleCMS 오버레이 - Layer 1 */}
+          {isAuthenticated && (
+            <div 
+              className="absolute top-2 left-2 z-20"
+              onClick={(e) => e.preventDefault()}
+            >
+              <SimpleCMS
+                slotId={`about-${category.id}-layer1`}
+                currentUrl={layer1CMS.currentUrl}
+                type="image"
+                onUpload={layer1CMS.handleUpload}
+                onDelete={layer1CMS.handleDelete}
+                isAdminMode={true}
+                className="w-8 h-8"
+                placeholder="Layer 1"
+              />
+            </div>
+          )}
+          
           {/* 이미지 오버레이 인디케이터 */}
           {isHovered && previewImages.length > 1 && (
             <div 
@@ -183,6 +244,25 @@ export default function CategoryPreview({
                 transition: 'all 0.8s ease'
               }}
             />
+            
+            {/* SimpleCMS 오버레이 - Layer 2 */}
+            {isAuthenticated && (
+              <div 
+                className="absolute top-2 right-2 z-20"
+                onClick={(e) => e.preventDefault()}
+              >
+                <SimpleCMS
+                  slotId={`about-${category.id}-layer2`}
+                  currentUrl={layer2CMS.currentUrl}
+                  type="image"
+                  onUpload={layer2CMS.handleUpload}
+                  onDelete={layer2CMS.handleDelete}
+                  isAdminMode={true}
+                  className="w-6 h-6"
+                  placeholder="Layer 2"
+                />
+              </div>
+            )}
           </div>
         )}
 
@@ -215,6 +295,25 @@ export default function CategoryPreview({
                 transition: 'all 0.8s ease'
               }}
             />
+            
+            {/* SimpleCMS 오버레이 - Layer 3 */}
+            {isAuthenticated && (
+              <div 
+                className="absolute bottom-2 left-2 z-20"
+                onClick={(e) => e.preventDefault()}
+              >
+                <SimpleCMS
+                  slotId={`about-${category.id}-layer3`}
+                  currentUrl={layer3CMS.currentUrl}
+                  type="image"
+                  onUpload={layer3CMS.handleUpload}
+                  onDelete={layer3CMS.handleDelete}
+                  isAdminMode={true}
+                  className="w-5 h-5"
+                  placeholder="Layer 3"
+                />
+              </div>
+            )}
           </div>
         )}
 

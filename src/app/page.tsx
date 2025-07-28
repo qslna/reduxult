@@ -64,13 +64,13 @@ export default function HomePage() {
         >
           <div className="loading-content text-center">
             <h1 className={`
-              loading-title font-['Playfair_Display'] font-bold tracking-wider text-black mb-4
+              loading-title font-['Playfair_Display'] font-bold tracking-wider text-white mb-4
               ${isMobile ? 'text-4xl' : isTablet ? 'text-5xl' : 'text-6xl'}
             `}>
               REDUX
             </h1>
             <div className={`
-              loading-subtitle font-['Inter'] uppercase text-gray-500
+              loading-subtitle font-['Inter'] uppercase text-gray-300
               ${isMobile ? 'text-xs tracking-[2px]' : 'text-sm tracking-[3px]'}
             `}>
               LOADING...

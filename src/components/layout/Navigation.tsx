@@ -147,12 +147,12 @@ export default function Navigation() {
                 Designers
               </Link>
               <div className="redux-nav__dropdown" role="menu" aria-label="Designers submenu">
-                <Link href="/designers/kimbomin" className="redux-nav__dropdown-item" role="menuitem">Kim Bomin</Link>
-                <Link href="/designers/parkparang" className="redux-nav__dropdown-item" role="menuitem">Park Parang</Link>
-                <Link href="/designers/leetaehyeon" className="redux-nav__dropdown-item" role="menuitem">Lee Taehyeon</Link>
-                <Link href="/designers/choieunsol" className="redux-nav__dropdown-item" role="menuitem">Choi Eunsol</Link>
-                <Link href="/designers/hwangjinsu" className="redux-nav__dropdown-item" role="menuitem">Hwang Jinsu</Link>
-                <Link href="/designers/kimgyeongsu" className="redux-nav__dropdown-item" role="menuitem">Kim Gyeongsu</Link>
+                <Link href="/designers/kim-bomin" className="redux-nav__dropdown-item" role="menuitem">Kim Bomin</Link>
+                <Link href="/designers/park-parang" className="redux-nav__dropdown-item" role="menuitem">Park Parang</Link>
+                <Link href="/designers/lee-taehyeon" className="redux-nav__dropdown-item" role="menuitem">Lee Taehyeon</Link>
+                <Link href="/designers/choi-eunsol" className="redux-nav__dropdown-item" role="menuitem">Choi Eunsol</Link>
+                <Link href="/designers/hwang-jinsu" className="redux-nav__dropdown-item" role="menuitem">Hwang Jinsu</Link>
+                <Link href="/designers/kim-gyeongsu" className="redux-nav__dropdown-item" role="menuitem">Kim Gyeongsu</Link>
               </div>
             </li>
 
@@ -248,12 +248,12 @@ export default function Navigation() {
               className={`redux-nav__mobile-submenu ${activeSubmenu === 'designers' ? 'redux-nav__mobile-submenu--active' : ''}`}
             >
               <Link href="/designers" onClick={closeMobileMenu}>All Designers</Link>
-              <Link href="/designers/kimbomin" onClick={closeMobileMenu}>Kim Bomin</Link>
-              <Link href="/designers/parkparang" onClick={closeMobileMenu}>Park Parang</Link>
-              <Link href="/designers/leetaehyeon" onClick={closeMobileMenu}>Lee Taehyeon</Link>
-              <Link href="/designers/choieunsol" onClick={closeMobileMenu}>Choi Eunsol</Link>
-              <Link href="/designers/hwangjinsu" onClick={closeMobileMenu}>Hwang Jinsu</Link>
-              <Link href="/designers/kimgyeongsu" onClick={closeMobileMenu}>Kim Gyeongsu</Link>
+              <Link href="/designers/kim-bomin" onClick={closeMobileMenu}>Kim Bomin</Link>
+              <Link href="/designers/park-parang" onClick={closeMobileMenu}>Park Parang</Link>
+              <Link href="/designers/lee-taehyeon" onClick={closeMobileMenu}>Lee Taehyeon</Link>
+              <Link href="/designers/choi-eunsol" onClick={closeMobileMenu}>Choi Eunsol</Link>
+              <Link href="/designers/hwang-jinsu" onClick={closeMobileMenu}>Hwang Jinsu</Link>
+              <Link href="/designers/kim-gyeongsu" onClick={closeMobileMenu}>Kim Gyeongsu</Link>
             </div>
           </div>
 
