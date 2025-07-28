@@ -87,10 +87,19 @@ Each of 5 categories has 3 layers:
 - `designer-hwangjinsu-portfolio` (9 images)
 - `designer-kimgyeongsu-portfolio` (25+ images)
 
-### 6. EXHIBITIONS PAGE (2 slots)
+### 6. EXHIBITIONS PAGE (7 slots)
 **File: `/src/app/exhibitions/page.tsx`**
-- `exhibition-cinemode-gallery` - Cinemode exhibition gallery
-- `exhibition-theroom-gallery` - The Room exhibition gallery
+
+**Cinemode Exhibition:**
+- `exhibition-cinemode-1` - Featured Cinemode image
+- `exhibition-cinemode-2` - Cinemode gallery image 2
+- `exhibition-cinemode-3` - Cinemode gallery image 3
+- `exhibition-cinemode-4` - Cinemode gallery image 4
+
+**The Room Exhibition:**
+- `exhibition-theroom-1` - Featured The Room image
+- `exhibition-theroom-2` - The Room gallery image 2
+- `exhibition-theroom-3` - The Room gallery image 3
 
 ### 7. DESIGNERS OVERVIEW PAGE (6 slots)
 **File: `/src/app/designers/page.tsx`**
@@ -101,19 +110,19 @@ Each of 5 categories has 3 layers:
 - `designer-hwang-jinsu-profile`
 - `designer-kim-gyeongsu-profile`
 
-## TOTAL SLOT COUNT: 73 SLOTS
+## TOTAL SLOT COUNT: 78 SLOTS
 
 ### Breakdown:
 - Hero Section: 1 slot
 - Main Showcase: 8 slots
 - About Category Previews: 15 slots
 - Fashion Film Page: 12 slots (6 thumbnails + 6 videos)
-- Designer Individual Pages: 12 slots (6 profiles + 6 portfolios)
-- Exhibitions Page: 2 slots
+- Designer Individual Pages: 12 slots (6 profiles + 6 portfolios)  
+- Exhibitions Page: 7 slots (4 Cinemode + 3 The Room)
 - Designers Overview Page: 6 slots
 - **Additional category pages**: ~15-20 slots (estimated)
 
-**CONFIRMED TOTAL: 73+ MANAGEABLE SLOTS**
+**CONFIRMED TOTAL: 78+ MANAGEABLE SLOTS**
 
 ## Notes
 - Each slot supports both CMS override and fallback to default images

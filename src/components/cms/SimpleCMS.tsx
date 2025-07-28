@@ -65,31 +65,29 @@ export default function SimpleCMS({
     setIsUploading(true);
     
     try {
-      // ImageKit 업로드
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('fileName', file.name);
-      formData.append('folder', `/redux/${slotId}`);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error('업로드에 실패했습니다.');
-      }
-
-      const result = await response.json();
-      const uploadedUrl = result.url;
+      // 임시로 파일을 base64로 변환하여 localStorage에 저장
+      const reader = new FileReader();
       
-      setPreviewUrl(uploadedUrl);
-      onUpload?.(uploadedUrl);
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        
+        // localStorage에 저장
+        localStorage.setItem(`redux-cms-${slotId}`, base64String);
+        
+        setPreviewUrl(base64String);
+        onUpload?.(base64String);
+        setIsUploading(false);
+      };
+      
+      reader.onerror = () => {
+        throw new Error('파일 읽기에 실패했습니다.');
+      };
+      
+      reader.readAsDataURL(file);
       
     } catch (error) {
       console.error('Upload error:', error);
       alert('업로드 중 오류가 발생했습니다. 다시 시도해주세요.');
-    } finally {
       setIsUploading(false);
     }
   }, [slotId, type, onUpload]);
@@ -120,10 +118,11 @@ export default function SimpleCMS({
   // 삭제 처리
   const handleDelete = useCallback(() => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
+      localStorage.removeItem(`redux-cms-${slotId}`);
       setPreviewUrl(undefined);
       onDelete?.();
     }
-  }, [onDelete]);
+  }, [slotId, onDelete]);
 
   // 파일 입력 트리거
   const triggerFileInput = useCallback(() => {

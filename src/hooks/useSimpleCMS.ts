@@ -26,10 +26,16 @@ export function useSimpleCMS(slotId: string, initialUrl?: string) {
       const stored = localStorage.getItem(storageKey);
       if (stored) {
         try {
-          const data = JSON.parse(stored);
-          setCurrentUrl(data.url);
+          // 기존 JSON 형태이면 파싱, 아니면 직접 URL로 사용
+          if (stored.startsWith('{')) {
+            const data = JSON.parse(stored);
+            setCurrentUrl(data.url);
+          } else {
+            setCurrentUrl(stored);
+          }
         } catch (error) {
-          console.warn('Failed to parse stored CMS data:', error);
+          // JSON 파싱 실패 시 직접 URL로 사용
+          setCurrentUrl(stored);
         }
       }
     }
@@ -39,13 +45,9 @@ export function useSimpleCMS(slotId: string, initialUrl?: string) {
   const updateUrl = (newUrl: string) => {
     setCurrentUrl(newUrl);
     
-    // 로컬 스토리지에 저장
+    // 로컬 스토리지에 직접 URL 저장
     if (typeof window !== 'undefined') {
-      const data = {
-        url: newUrl,
-        updatedAt: new Date().toISOString()
-      };
-      localStorage.setItem(storageKey, JSON.stringify(data));
+      localStorage.setItem(storageKey, newUrl);
     }
   };
 
@@ -107,11 +109,21 @@ export function useAllCMSSlots() {
       keys.forEach(key => {
         if (key.startsWith('redux-cms-')) {
           try {
-            const data = JSON.parse(localStorage.getItem(key) || '');
+            const stored = localStorage.getItem(key) || '';
             const slotId = key.replace('redux-cms-', '');
-            cmsSlots[slotId] = data.url;
+            
+            // JSON 형태이면 파싱, 아니면 직접 URL로 사용
+            if (stored.startsWith('{')) {
+              const data = JSON.parse(stored);
+              cmsSlots[slotId] = data.url;
+            } else {
+              cmsSlots[slotId] = stored;
+            }
           } catch (error) {
-            console.warn('Failed to parse CMS slot:', key, error);
+            // JSON 파싱 실패 시 직접 URL로 사용
+            const stored = localStorage.getItem(key) || '';
+            const slotId = key.replace('redux-cms-', '');
+            cmsSlots[slotId] = stored;
           }
         }
       });

@@ -37,52 +37,44 @@ function DesignerCard({ designer, index, isAuthenticated, onClick }: DesignerCar
 
   return (
     <div 
-      className="designer-card"
+      className="relative h-[65vh] min-h-[450px] max-h-[600px] overflow-hidden cursor-pointer bg-black transition-all duration-[600ms] ease-out hover:transform hover:scale-[1.002] hover:z-10"
       onClick={onClick}
       style={{
-        position: 'relative',
-        height: '65vh',
-        minHeight: '450px',
-        maxHeight: '600px',
-        overflow: 'hidden',
-        cursor: 'pointer',
         borderRight: (index + 1) % 3 !== 0 ? '1px solid rgba(255, 255, 255, 0.05)' : 'none',
         borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-        transition: 'all 0.6s ease'
       }}
     >
       <div 
-        className="designer-image"
+        className="absolute inset-0 transition-all duration-[800ms] ease-out"
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           backgroundImage: hasDisplayImage ? `url('${displayImage}')` : 'none',
           background: !hasDisplayImage ? 'linear-gradient(135deg, #2a2a2a, #4a4a4a)' : undefined,
           filter: 'grayscale(100%) contrast(1.2)',
-          transition: 'all 0.8s ease',
           opacity: 0.7,
-          display: !hasDisplayImage ? 'flex' : 'block',
-          alignItems: !hasDisplayImage ? 'center' : 'normal',
-          justifyContent: !hasDisplayImage ? 'center' : 'normal',
-          color: !hasDisplayImage ? 'rgba(255, 255, 255, 0.3)' : 'transparent',
-          fontSize: !hasDisplayImage ? '48px' : '0',
-          fontWeight: !hasDisplayImage ? 100 : 'normal'
         }}
       >
-        {!hasDisplayImage && '📷'}
+        {!hasDisplayImage && (
+          <div className="absolute inset-0 flex items-center justify-center text-6xl text-white/30">
+            📷
+          </div>
+        )}
       </div>
       
-      {/* SimpleCMS 오버레이 - 프로필 이미지 */}
+      {/* SimpleCMS 오버레이 */}
       {isAuthenticated && (
         <div 
-          className="absolute top-4 left-4 z-20"
-          onClick={(e) => e.stopPropagation()}
+          className="absolute top-4 left-4 z-20 w-12 h-12"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
         >
           <SimpleCMS
             slotId={`designer-${designer.id}-profile`}
@@ -91,23 +83,14 @@ function DesignerCard({ designer, index, isAuthenticated, onClick }: DesignerCar
             onUpload={handleUpload}
             onDelete={handleDelete}
             isAdminMode={true}
-            className="w-12 h-12"
+            className="w-full h-full"
             placeholder="프로필 이미지"
           />
         </div>
       )}
       
       <span 
-        className="designer-number"
-        style={{
-          fontSize: '120px',
-          fontWeight: 100,
-          color: 'rgba(255, 255, 255, 0.1)',
-          position: 'absolute',
-          top: '40px',
-          right: '40px',
-          transition: 'all 0.6s ease'
-        }}
+        className="absolute top-[40px] right-[40px] text-[120px] font-light text-white/10 transition-all duration-[600ms] ease-out"
       >
         {designer.number}
       </span>
@@ -115,102 +98,37 @@ function DesignerCard({ designer, index, isAuthenticated, onClick }: DesignerCar
       {/* Film indicator for designers with videos */}
       {designer.hasVideo && (
         <div 
-          className="film-indicator"
-          style={{
-            position: 'absolute',
-            top: '40px',
-            left: '40px',
-            width: '40px',
-            height: '40px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '16px',
-            color: '#fff',
-            transition: 'all 0.6s ease'
-          }}
+          className="absolute top-[40px] left-[40px] w-[40px] h-[40px] bg-white/10 backdrop-blur-[10px] rounded-full flex items-center justify-center text-white transition-all duration-[600ms] ease-out"
         >
           ▶
         </div>
       )}
       
       <div 
-        className="designer-content"
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '100%',
-          padding: '60px 40px',
-          background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)',
-          transform: 'translateY(60%)',
-          transition: 'transform 0.6s ease'
-        }}
+        className="absolute bottom-0 left-0 w-full p-[60px_40px] bg-gradient-to-t from-black/90 to-transparent transform translate-y-[60%] transition-transform duration-[600ms] ease-out"
       >
         <h3 
-          className="designer-name"
-          style={{
-            fontSize: '32px',
-            fontWeight: 300,
-            letterSpacing: '3px',
-            color: '#fff',
-            marginBottom: '10px'
-          }}
+          className="text-[32px] font-light tracking-[3px] text-white mb-[10px]"
         >
           {designer.name}
         </h3>
         <p 
-          className="designer-main-role"
-          style={{
-            fontSize: '16px',
-            letterSpacing: '2px',
-            color: '#fff',
-            textTransform: 'uppercase',
-            marginBottom: '8px',
-            fontWeight: 500
-          }}
+          className="text-[16px] tracking-[2px] text-white uppercase mb-[8px] font-medium"
         >
           {designer.mainRole}
         </p>
         <p 
-          className="designer-role"
-          style={{
-            fontSize: '12px',
-            letterSpacing: '1px',
-            color: '#999',
-            textTransform: 'uppercase',
-            marginBottom: '20px'
-          }}
+          className="text-[12px] tracking-[1px] text-gray-400 uppercase mb-[20px]"
         >
           {designer.role}
         </p>
         <p 
-          className="designer-brand"
-          style={{
-            fontSize: '16px',
-            color: '#fff',
-            marginBottom: '30px',
-            opacity: 0.8
-          }}
+          className="text-[16px] text-white mb-[30px] opacity-80"
         >
           {designer.brand}
         </p>
         <span 
-          className="designer-link"
-          style={{
-            display: 'inline-block',
-            padding: '12px 30px',
-            border: '1px solid #fff',
-            color: '#fff',
-            fontSize: '12px',
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-            transition: 'all 0.3s ease',
-            opacity: 0
-          }}
+          className="inline-block py-[12px] px-[30px] border border-white text-white text-[12px] tracking-[2px] uppercase transition-all duration-300 ease-out opacity-0"
         >
           View Profile
         </span>
@@ -219,7 +137,6 @@ function DesignerCard({ designer, index, isAuthenticated, onClick }: DesignerCar
   );
 }
 
-// HTML redux6 designers.html과 완전 동일한 Designers 페이지 구현
 export default function DesignersPage() {
   const router = useRouter();
   
@@ -231,7 +148,7 @@ export default function DesignersPage() {
   const { isAuthenticated } = useSimpleAuth();
 
   useEffect(() => {
-    // CSS-based animations without GSAP dependency
+    // Intersection Observer for scroll animations
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
@@ -272,7 +189,6 @@ export default function DesignersPage() {
     };
   }, []);
 
-
   // 6인의 디자이너 데이터를 실제 데이터에서 가져와서 display용으로 변환
   const designerDisplayData = designers.map((designer, index) => {
     return {
@@ -293,62 +209,37 @@ export default function DesignersPage() {
   };
 
   return (
-    <>
-      {/* Hero Section - HTML 버전과 완전 동일 */}
+    <div className="min-h-screen bg-black text-white">
+      {/* Hero Section */}
       <section 
-        className="hero-section"
+        className="flex items-center justify-center relative overflow-hidden"
         style={{
           marginTop: '80px',
           height: '50vh',
           minHeight: '400px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-          overflow: 'hidden'
         }}
       >
         <div 
-          className="hero-bg"
+          className="absolute inset-0 opacity-50"
           style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
             background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)',
-            opacity: 0.5
           }}
         ></div>
         <div 
-          className="hero-content"
-          style={{
-            textAlign: 'center',
-            zIndex: 1,
-            color: '#fff'
-          }}
+          className="text-center z-10 text-white"
         >
           <h1 
-            className="hero-title"
+            className="font-['Playfair_Display'] font-light tracking-[0.2em] mb-5 opacity-0 transform translate-y-[30px]"
             style={{
               fontSize: 'clamp(48px, 8vw, 80px)',
-              fontWeight: 300,
-              letterSpacing: '0.2em',
-              marginBottom: '20px',
-              opacity: 0,
-              transform: 'translateY(30px)',
               animation: 'fadeInUp 1s ease forwards'
             }}
           >
             {heroTitle}
           </h1>
           <p 
-            className="hero-subtitle"
+            className="text-[18px] text-gray-400 tracking-[2px] opacity-0"
             style={{
-              fontSize: '18px',
-              color: '#999',
-              letterSpacing: '2px',
-              opacity: 0,
               animation: 'fadeInUp 1s ease forwards',
               animationDelay: '0.2s'
             }}
@@ -358,40 +249,30 @@ export default function DesignersPage() {
         </div>
       </section>
 
-      {/* Designer Grid - HTML 버전과 완전 동일 */}
+      {/* Designer Grid */}
       <section 
-        className="designers-container"
-        style={{
-          padding: '120px 40px',
-          maxWidth: '1600px',
-          margin: '0 auto'
-        }}
+        className="py-[120px] px-[40px]"
       >
-        <div 
-          className="designers-grid"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 0,
-            position: 'relative'
-          }}
-        >
-          {designerDisplayData.map((designer, index) => {
-            return (
-              <DesignerCard
-                key={designer.id}
-                designer={designer}
-                index={index}
-                isAuthenticated={isAuthenticated}
-                onClick={() => handleDesignerClick(designer.id)}
-              />
-            );
-          })}
+        <div className="max-w-[1600px] mx-auto">
+          <div 
+            className="grid grid-cols-3 gap-0 relative max-[1024px]:grid-cols-2 max-[768px]:grid-cols-1"
+          >
+            {designerDisplayData.map((designer, index) => {
+              return (
+                <DesignerCard
+                  key={designer.id}
+                  designer={designer}
+                  index={index}
+                  isAuthenticated={isAuthenticated}
+                  onClick={() => handleDesignerClick(designer.id)}
+                />
+              );
+            })}
+          </div>
         </div>
       </section>
 
-
-      {/* CSS for animations matching HTML version */}
+      {/* Styles */}
       <style jsx>{`
         @keyframes fadeInUp {
           to {
@@ -412,7 +293,7 @@ export default function DesignersPage() {
           transform: translateY(0);
         }
         
-        /* Designer card hover effects - HTML 버전과 완전 동일 */
+        /* Designer card hover effects */
         .designer-card:hover {
           z-index: 10;
         }
@@ -586,6 +467,6 @@ export default function DesignersPage() {
           }
         }
       `}</style>
-    </>
+    </div>
   );
 }

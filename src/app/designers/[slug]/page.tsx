@@ -7,9 +7,8 @@ import { designers } from '@/data/designers';
 import { Designer } from '@/types';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useCMSSlot } from '@/hooks/useCMSSlot';
-import MediaSlot from '@/components/cms/MediaSlot';
-import { Minus } from 'lucide-react';
+import { useSimpleCMS } from '@/hooks/useSimpleCMS';
+import SimpleCMS from '@/components/cms/SimpleCMS';
 
 interface Props {
   params: Promise<{
@@ -23,66 +22,51 @@ export default function DesignerPage({ params }: Props) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [resolvedParams, setResolvedParams] = useState<{ slug: string } | null>(null);
   
   // CMS 인증
   const { isAuthenticated } = useSimpleAuth();
   
-  // CMS 슬롯 - 프로필 이미지와 포트폴리오 갤러리
-  const { slot: profileSlot, currentFiles: profileFiles, updateFiles: updateProfileFiles } = useCMSSlot(designer ? `main-designer-profile-${designer.id.replace(/-/g, '')}` : '');
-  const { slot: portfolioSlot, currentFiles: portfolioFiles, updateFiles: updatePortfolioFiles } = useCMSSlot(designer ? `designer-${designer.id.replace(/-/g, '')}-portfolio` : '');
+  // CMS 슬롯들
+  const profileCMS = useSimpleCMS(`designer-${designer?.id || 'default'}-profile`, designer?.profileImage);
+  const portfolioCMS = useSimpleCMS(`designer-${designer?.id || 'default'}-portfolio`);
 
+  // Resolve params first
   useEffect(() => {
-    const getParams = async () => {
-      try {
-        const resolvedParams = await params;
-        const designerSlug = resolvedParams.slug;
-        
-        const designerData = designers.find(d => d.id === designerSlug);
-        if (!designerData) {
-          notFound();
-        }
-        setDesigner(designerData);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error resolving params:', error);
-        notFound();
-      }
+    const resolveParams = async () => {
+      const resolved = await params;
+      setResolvedParams(resolved);
     };
-    
-    getParams();
+    resolveParams();
   }, [params]);
 
   useEffect(() => {
-    if (!designer || isLoading) return;
-
-    // Portfolio reveal animation
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
+    if (!resolvedParams) return;
     
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('revealed');
-          }, index * 100);
-        }
-      });
-    }, observerOptions);
-    
-    document.querySelectorAll('.portfolio-item').forEach(item => {
-      observer.observe(item);
-    });
+    try {
+      const designerSlug = resolvedParams.slug;
+      console.log('Looking for designer with slug:', designerSlug);
+      
+      const designerData = designers.find(d => d.id === designerSlug);
+      console.log('Found designer data:', designerData);
+      
+      if (!designerData) {
+        console.error('Designer not found:', designerSlug);
+        notFound();
+        return;
+      }
+      
+      setDesigner(designerData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error loading designer:', error);
+      notFound();
+    }
+  }, [resolvedParams]);
 
-    return () => observer.disconnect();
-  }, [designer, isLoading]);
-
-  // Navigation functions
   const goBack = () => router.push('/designers');
   const goHome = () => router.push('/');
 
-  // Lightbox functions
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index);
     setIsLightboxOpen(true);
@@ -96,15 +80,13 @@ export default function DesignerPage({ params }: Props) {
 
   const nextImage = () => {
     if (designer) {
-      const currentImages = portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages;
-      setCurrentImageIndex(prev => (prev + 1) % currentImages.length);
+      setCurrentImageIndex(prev => (prev + 1) % designer.portfolioImages.length);
     }
   };
 
   const prevImage = () => {
     if (designer) {
-      const currentImages = portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages;
-      setCurrentImageIndex(prev => (prev - 1 + currentImages.length) % currentImages.length);
+      setCurrentImageIndex(prev => (prev - 1 + designer.portfolioImages.length) % designer.portfolioImages.length);
     }
   };
 
@@ -127,7 +109,7 @@ export default function DesignerPage({ params }: Props) {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isLightboxOpen, nextImage, prevImage]);
+  }, [isLightboxOpen]);
 
   const handleLightboxClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -151,23 +133,23 @@ export default function DesignerPage({ params }: Props) {
   }
 
   return (
-    <>
-      {/* Professional Navigation */}
-      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] border-b border-[--accent-mocha]/10">
-        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
-          <div className="nav-left flex items-center gap-10">
+    <div className="min-h-screen bg-black text-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] border-b border-white/10">
+        <div className="flex justify-between items-center max-w-[1600px] mx-auto">
+          <div className="flex items-center gap-10">
             <span 
-              className="back-button font-['Inter'] text-xl cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:transform hover:-translate-x-[5px] hover:text-[--accent-mocha]"
+              className="text-xl cursor-pointer transition-all duration-[400ms] text-white hover:transform hover:-translate-x-[5px] hover:text-amber-300"
               onClick={goBack}
             >
               ←
             </span>
-            <span className="page-title font-['Inter'] text-lg font-light tracking-[0.2em] text-[--accent-mocha] uppercase max-[768px]:hidden">
+            <span className="text-lg font-light tracking-[0.2em] text-amber-300 uppercase max-[768px]:hidden">
               {designer.name}
             </span>
           </div>
           <div 
-            className="logo font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:opacity-70 hover:transform hover:scale-[1.02]"
+            className="font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] text-white hover:opacity-70 hover:transform hover:scale-[1.02]"
             onClick={goHome}
           >
             REDUX
@@ -175,9 +157,10 @@ export default function DesignerPage({ params }: Props) {
         </div>
       </nav>
 
-      <div className="min-h-screen bg-black pt-[120px]">
+      {/* Main Content */}
+      <div className="pt-[120px]">
         {/* Hero Section */}
-        <section className="hero-section relative h-[70vh] min-h-[500px] overflow-hidden">
+        <section className="relative h-[70vh] min-h-[500px] overflow-hidden">
           {/* Background texture */}
           <div 
             className="absolute inset-0 opacity-[0.03]"
@@ -186,7 +169,7 @@ export default function DesignerPage({ params }: Props) {
             }}
           />
           
-          {/* Asymmetric geometric elements */}
+          {/* Decorative elements */}
           <div 
             className="absolute top-[20%] right-[15%] w-[150px] h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"
             style={{ transform: 'rotate(-15deg)' }}
@@ -203,7 +186,7 @@ export default function DesignerPage({ params }: Props) {
                 <div className="designer-info">
                   <div className="mb-8">
                     <h1 
-                      className="designer-name font-['Playfair_Display'] font-bold text-white mb-4 tracking-[-0.02em] leading-[0.9]"
+                      className="font-['Playfair_Display'] font-bold text-white mb-4 tracking-[-0.02em] leading-[0.9]"
                       style={{ 
                         fontSize: 'clamp(2.5rem, 6vw, 4rem)',
                         textShadow: '0 0 30px rgba(255,255,255,0.1)'
@@ -212,10 +195,10 @@ export default function DesignerPage({ params }: Props) {
                       {designer.name}
                     </h1>
                     <div className="mb-4">
-                      <p className="main-role font-['Inter'] text-white text-xl font-medium tracking-[0.2em] uppercase mb-2">
+                      <p className="text-white text-xl font-medium tracking-[0.2em] uppercase mb-2">
                         {designer.mainRole}
                       </p>
-                      <p className="sub-role font-['Inter'] text-[--accent-mocha] text-base tracking-[0.1em] uppercase">
+                      <p className="text-amber-300 text-base tracking-[0.1em] uppercase">
                         {designer.role}
                       </p>
                     </div>
@@ -223,40 +206,39 @@ export default function DesignerPage({ params }: Props) {
                   
                   {/* Bio */}
                   <div className="mb-8">
-                    <p className="bio font-['Inter'] text-white/80 text-lg leading-relaxed max-w-[500px]">
+                    <p className="text-white/80 text-lg leading-relaxed max-w-[500px]">
                       {designer.bio}
                     </p>
                   </div>
                   
                   {/* Details */}
-                  <div className="designer-details space-y-4">
+                  <div className="space-y-4">
                     {designer.instagramHandle && (
-                      <div className="detail-item">
-                        <span className="label font-['Inter'] text-[--accent-mocha] text-sm tracking-[0.1em] uppercase mr-4">
+                      <div>
+                        <span className="text-amber-300 text-sm tracking-[0.1em] uppercase mr-4">
                           Instagram:
                         </span>
                         <a 
                           href={`https://instagram.com/${designer.instagramHandle.replace('@', '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="value font-['Inter'] text-white hover:text-[--accent-mocha] transition-colors duration-300"
+                          className="text-white hover:text-amber-300 transition-colors duration-300"
                         >
                           {designer.instagramHandle}
                         </a>
                       </div>
                     )}
-                    {/* Featured Film section removed as requested */}
                   </div>
                 </div>
                 
                 {/* Profile Image */}
-                <div className="profile-image-container relative">
+                <div className="relative">
                   <div 
-                    className="profile-image relative w-full max-w-[400px] mx-auto"
+                    className="relative w-full max-w-[400px] mx-auto"
                     style={{ aspectRatio: '3/4' }}
                   >
                     <OptimizedImage 
-                      src={profileFiles[0] || designer.profileImage}
+                      src={profileCMS.currentUrl || designer.profileImage}
                       alt={`${designer.name} Profile`}
                       fill={true}
                       priority={true}
@@ -269,25 +251,38 @@ export default function DesignerPage({ params }: Props) {
                     />
                     
                     {/* CMS 오버레이 - 프로필 이미지 */}
-                    {isAuthenticated && profileSlot && (
-                      <div className="absolute top-4 right-4 z-20">
-                        <MediaSlot
-                          slot={profileSlot}
-                          currentFiles={profileFiles}
-                          onFilesUpdate={updateProfileFiles}
+                    {isAuthenticated && (
+                      <div 
+                        className="absolute top-4 right-4 z-20 w-12 h-12"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                      >
+                        <SimpleCMS
+                          slotId={`designer-${designer.id}-profile`}
+                          currentUrl={profileCMS.currentUrl}
+                          type="image"
+                          onUpload={profileCMS.handleUpload}
+                          onDelete={profileCMS.handleDelete}
                           isAdminMode={true}
-                          className="w-12 h-12"
+                          className="w-full h-full"
+                          placeholder="프로필 이미지"
                         />
                       </div>
                     )}
                     
                     {/* Decorative elements */}
                     <div 
-                      className="absolute -top-2 -right-2 w-8 h-8 border-2 border-[--accent-mocha] opacity-60"
+                      className="absolute -top-2 -right-2 w-8 h-8 border-2 border-amber-300 opacity-60"
                       style={{ transform: 'rotate(45deg)' }}
                     />
                     <div 
-                      className="absolute -bottom-2 -left-2 w-6 h-6 bg-[--accent-mocha] opacity-40"
+                      className="absolute -bottom-2 -left-2 w-6 h-6 bg-amber-300 opacity-40"
                       style={{ transform: 'rotate(15deg)', borderRadius: '30%' }}
                     />
                   </div>
@@ -298,44 +293,42 @@ export default function DesignerPage({ params }: Props) {
         </section>
 
         {/* Portfolio Section */}
-        <section className="portfolio-section py-20 px-10">
+        <section className="py-20 px-10">
           <div className="max-w-[1600px] mx-auto">
-            <div className="section-header mb-16 text-center">
+            <div className="text-center mb-16">
               <h2 className="font-['Playfair_Display'] text-4xl font-light text-white mb-4 tracking-[0.05em]">
                 Portfolio
               </h2>
-              <div className="w-20 h-[1px] bg-[--accent-mocha] mx-auto"></div>
+              <div className="w-20 h-[1px] bg-amber-300 mx-auto"></div>
             </div>
             
-            {/* Portfolio Grid with CMS */}
+            {/* Portfolio Grid */}
             <div className="relative">
-              {/* CMS 오버레이 - 포트폴리오 갤러리 */}
-              {isAuthenticated && portfolioSlot && (
+              {/* CMS 오버레이 - 포트폴리오 */}
+              {isAuthenticated && (
                 <div className="absolute -top-16 right-0 z-20">
                   <div className="bg-black/90 backdrop-blur-sm border border-gray-700 rounded-lg p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="text-sm font-medium text-white">포트폴리오 갤러리</div>
-                      <div className="text-xs text-gray-400">
-                        {portfolioFiles.length}/{portfolioSlot.maxFiles || 50}
-                      </div>
-                    </div>
-                    <MediaSlot
-                      slot={portfolioSlot}
-                      currentFiles={portfolioFiles}
-                      onFilesUpdate={updatePortfolioFiles}
+                    <div className="text-sm font-medium text-white mb-3">포트폴리오 관리</div>
+                    <SimpleCMS
+                      slotId={`designer-${designer.id}-portfolio`}
+                      currentUrl={portfolioCMS.currentUrl}
+                      type="image"
+                      onUpload={portfolioCMS.handleUpload}
+                      onDelete={portfolioCMS.handleDelete}
                       isAdminMode={true}
                       className="w-16 h-16"
+                      placeholder="포트폴리오"
                     />
                   </div>
                 </div>
               )}
 
               {/* Masonry Grid */}
-              <div className="portfolio-grid [columns:4] [column-gap:20px] max-[1400px]:[columns:3] max-[1024px]:[columns:2] max-[768px]:[columns:1]">
-                {(portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages).map((image: string, index: number) => (
+              <div className="[columns:4] [column-gap:20px] max-[1400px]:[columns:3] max-[1024px]:[columns:2] max-[768px]:[columns:1]">
+                {designer.portfolioImages.map((image: string, index: number) => (
                   <div 
                     key={index}
-                    className="portfolio-item [break-inside:avoid] mb-5 relative overflow-hidden cursor-pointer opacity-0 transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] hover:transform hover:scale-[1.02] hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
+                    className="[break-inside:avoid] mb-5 relative overflow-hidden cursor-pointer opacity-0 transition-all duration-[600ms] hover:transform hover:scale-[1.02] hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
                     style={{ 
                       animation: `revealItem 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards`,
                       animationDelay: `${index * 100}ms`
@@ -349,27 +342,13 @@ export default function DesignerPage({ params }: Props) {
                       height={600}
                       priority={index < 8}
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="w-full h-auto block transition-all duration-[600ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] [filter:grayscale(20%)_contrast(1.1)_brightness(0.9)] hover:[filter:grayscale(0%)_contrast(1.2)_brightness(1)]"
+                      className="w-full h-auto block transition-all duration-[600ms] [filter:grayscale(20%)_contrast(1.1)_brightness(0.9)] hover:[filter:grayscale(0%)_contrast(1.2)_brightness(1)]"
                     />
                     
-                    {/* CMS 개별 이미지 삭제 버튼 */}
-                    {isAuthenticated && portfolioFiles.length > 0 && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const newFiles = portfolioFiles.filter((_, i) => i !== index);
-                          updatePortfolioFiles(newFiles);
-                        }}
-                        className="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100"
-                      >
-                        <Minus className="w-4 h-4" />
-                      </button>
-                    )}
-                    
                     {/* Hover overlay */}
-                    <div className="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] flex items-end p-5 hover:opacity-100">
-                      <p className="portfolio-caption font-['Inter'] text-xs font-light tracking-[0.1em] text-white uppercase [text-shadow:0_2px_4px_rgba(0,0,0,0.7)]">
-                        {String(index + 1).padStart(2, '0')} / {String((portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages).length).padStart(2, '0')}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-[400ms] flex items-end p-5 hover:opacity-100">
+                      <p className="text-xs font-light tracking-[0.1em] text-white uppercase [text-shadow:0_2px_4px_rgba(0,0,0,0.7)]">
+                        {String(index + 1).padStart(2, '0')} / {String(designer.portfolioImages.length).padStart(2, '0')}
                       </p>
                     </div>
                   </div>
@@ -380,39 +359,39 @@ export default function DesignerPage({ params }: Props) {
         </section>
       </div>
 
-      {/* Professional Lightbox */}
+      {/* Lightbox */}
       {isLightboxOpen && (
         <div 
-          className="lightbox fixed inset-0 bg-black/95 backdrop-blur-[20px] z-[10000] flex items-center justify-center opacity-100 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)]"
+          className="fixed inset-0 bg-black/95 backdrop-blur-[20px] z-[10000] flex items-center justify-center opacity-100 transition-opacity duration-[400ms]"
           onClick={handleLightboxClick}
         >
-          <div className="lightbox-content max-w-[90vw] max-h-[90vh] relative">
+          <div className="max-w-[90vw] max-h-[90vh] relative">
             <button 
-              className="lightbox-close absolute -top-[50px] right-0 bg-transparent border-none text-white text-[30px] cursor-pointer transition-all duration-300 ease-in-out w-10 h-10 flex items-center justify-center hover:text-[--accent-mocha] hover:transform hover:scale-120"
+              className="absolute -top-[50px] right-0 bg-transparent border-none text-white text-[30px] cursor-pointer transition-all duration-300 ease-in-out w-10 h-10 flex items-center justify-center hover:text-amber-300 hover:transform hover:scale-120"
               onClick={closeLightbox}
             >
               ×
             </button>
             
             <button 
-              className="lightbox-nav lightbox-prev absolute top-1/2 left-[-80px] transform -translate-y-1/2 bg-white/10 backdrop-blur-[10px] border border-white/20 rounded-full w-[60px] h-[60px] flex items-center justify-center text-white text-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[--accent-mocha]/30 hover:transform hover:-translate-y-1/2 hover:scale-110 max-[1024px]:hidden"
+              className="absolute top-1/2 left-[-80px] transform -translate-y-1/2 bg-white/10 backdrop-blur-[10px] border border-white/20 rounded-full w-[60px] h-[60px] flex items-center justify-center text-white text-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-amber-300/30 hover:transform hover:-translate-y-1/2 hover:scale-110 max-[1024px]:hidden"
               onClick={(e) => { e.stopPropagation(); prevImage(); }}
             >
               ‹
             </button>
             
             <OptimizedImage 
-              src={(portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages)[currentImageIndex]}
+              src={designer.portfolioImages[currentImageIndex]}
               alt={`${designer.name} Portfolio ${currentImageIndex + 1}`}
               width={1200}
               height={800}
               priority={true}
               sizes="90vw"
-              className="lightbox-image max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+              className="max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
             />
             
             <button 
-              className="lightbox-nav lightbox-next absolute top-1/2 right-[-80px] transform -translate-y-1/2 bg-white/10 backdrop-blur-[10px] border border-white/20 rounded-full w-[60px] h-[60px] flex items-center justify-center text-white text-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-[--accent-mocha]/30 hover:transform hover:-translate-y-1/2 hover:scale-110 max-[1024px]:hidden"
+              className="absolute top-1/2 right-[-80px] transform -translate-y-1/2 bg-white/10 backdrop-blur-[10px] border border-white/20 rounded-full w-[60px] h-[60px] flex items-center justify-center text-white text-xl cursor-pointer transition-all duration-300 ease-in-out hover:bg-amber-300/30 hover:transform hover:-translate-y-1/2 hover:scale-110 max-[1024px]:hidden"
               onClick={(e) => { e.stopPropagation(); nextImage(); }}
             >
               ›
@@ -420,16 +399,15 @@ export default function DesignerPage({ params }: Props) {
             
             {/* Image info */}
             <div className="absolute bottom-[-50px] left-0 text-white">
-              <p className="text-sm font-['Inter'] tracking-[0.1em]">
-                {String(currentImageIndex + 1).padStart(2, '0')} / {String((portfolioFiles.length > 0 ? portfolioFiles : designer.portfolioImages).length).padStart(2, '0')}
+              <p className="text-sm tracking-[0.1em]">
+                {String(currentImageIndex + 1).padStart(2, '0')} / {String(designer.portfolioImages.length).padStart(2, '0')}
               </p>
             </div>
           </div>
         </div>
       )}
 
-
-      {/* Professional Styles */}
+      {/* Styles */}
       <style jsx>{`
         @keyframes revealItem {
           0% {
@@ -442,20 +420,6 @@ export default function DesignerPage({ params }: Props) {
             transform: translateY(0) scale(1);
             filter: blur(0);
           }
-        }
-        
-        .portfolio-item.revealed {
-          animation: revealItem 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-        }
-        
-        /* CSS variables */
-        :root {
-          --primary-black: #000000;
-          --primary-white: #FFFFFF;
-          --accent-mocha: #B7AFA3;
-          --accent-warm: #D4CCC5;
-          --accent-deep: #9A9086;
-          --accent-neutral: #F8F6F4;
         }
         
         /* Responsive adjustments */
@@ -520,6 +484,6 @@ export default function DesignerPage({ params }: Props) {
           }
         }
       `}</style>
-    </>
+    </div>
   );
 }

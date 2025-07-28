@@ -51,9 +51,9 @@ export default function HeroSection() {
   const designerVideos = Object.values(DESIGNER_VIDEOS);
   const currentVideo = designerVideos[currentVideoIndex];
 
-  // Disabled loading animation to prevent conflict with main page loading
+  // Remove loading animation completely for smooth page entry
   useEffect(() => {
-    // Immediately show content as main page handles loading
+    // No loading screen needed - direct content display
     setIsLoading(false);
     setShowContent(true);
     setLoadingProgress(100);
@@ -211,90 +211,11 @@ export default function HeroSection() {
 
   return (
     <>
-      {/* Advanced Loading Screen with Redux Logo Animation */}
-      {isLoading && (
-        <div 
-          ref={loadingRef}
-          className="redux-loading-screen"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100vh',
-            background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 9999,
-            transition: 'opacity 0.8s ease-out',
-            overflow: 'hidden'
-          }}
-        >
-          {/* Animated Redux Logo */}
-          <div className="redux-logo-container" style={{
-            position: 'relative',
-            marginBottom: '60px'
-          }}>
-            <h1 className="redux-logo-text" style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: 'clamp(4rem, 8vw, 8rem)',
-              fontWeight: 800,
-              color: 'var(--primary-white)',
-              letterSpacing: '0.05em',
-              textAlign: 'center',
-              margin: 0,
-              position: 'relative',
-              overflow: 'hidden',
-              opacity: 0,
-              animation: 'fadeInUp 1.2s ease-out forwards',
-              animationDelay: '0.3s'
-            }}>
-              {heroTitle}
-            </h1>
-            
-            {/* Loading Progress Bar */}
-            <div className="loading-progress-container" style={{
-              width: '300px',
-              height: '2px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              borderRadius: '1px',
-              overflow: 'hidden',
-              margin: '40px auto 20px'
-            }}>
-              <div 
-                className="loading-progress-bar"
-                style={{
-                  width: `${loadingProgress}%`,
-                  height: '100%',
-                  background: 'linear-gradient(90deg, var(--accent-mocha), var(--accent-warm))',
-                  transition: 'width 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)',
-                  borderRadius: '1px'
-                }}
-              />
-            </div>
-            
-            {/* Loading Text */}
-            <p className="loading-text" style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '14px',
-              color: 'rgba(255, 255, 255, 0.7)',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              textAlign: 'center',
-              margin: 0
-            }}>
-              Loading Experience... {loadingProgress}%
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* Main Hero Section */}
       <section 
         ref={heroRef}
-        className={`redux-hero ${videoClosed ? 'video-closed' : ''} ${showContent ? 'content-visible' : ''}`}
+        className={`redux-hero ${videoClosed ? 'video-closed' : ''}`}
         style={{
           height: '100vh',
           position: 'relative',
@@ -304,8 +225,8 @@ export default function HeroSection() {
             url('/images/hero-background/background.png') center/cover no-repeat,
             linear-gradient(135deg, #000000, #1a1a1a)
           `,
-          opacity: showContent ? 1 : 0,
-          transition: 'opacity 1s ease-in-out'
+          opacity: 1,
+          animation: 'fadeInSmooth 0.8s ease-out'
         }}
       >
         {/* Enhanced Video Container with Google Drive Integration */}
@@ -518,8 +439,8 @@ export default function HeroSection() {
             maxWidth: '1200px',
             isolation: 'isolate',
             padding: '0 20px',
-            opacity: showContent ? 1 : 0,
-            transition: 'all 1s cubic-bezier(0.25, 0.8, 0.25, 1) 0.5s'
+            opacity: 1,
+            animation: 'fadeInDelayed 1s ease-out 0.3s both'
           }}
         >
           {/* Simplified Main Title */}
@@ -753,7 +674,29 @@ export default function HeroSection() {
 
       {/* Simplified CSS Animations and Styles */}
       <style jsx>{`
-        /* Basic Animations */
+        /* Smooth Entry Animations */
+        @keyframes fadeInSmooth {
+          0% {
+            opacity: 0;
+            transform: scale(1.02);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes fadeInDelayed {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) translateY(20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translate(-50%, -50%) translateY(0);
+          }
+        }
+
         @keyframes fadeInUp {
           0% {
             opacity: 0;

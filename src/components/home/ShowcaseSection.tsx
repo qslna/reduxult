@@ -12,7 +12,7 @@ export default function ShowcaseSection() {
   // CMS 인증
   const { isAuthenticated } = useSimpleAuth();
   
-  // SimpleCMS 슬롯 - 디자이너 프로필 이미지들
+  // SimpleCMS 슬롯 - 디자이너 프로필 이미지들 (실제 파일 경로로 수정)
   const kimBominCMS = useSimpleCMS('main-designer-kimbomin', '/images/profile/Kim Bomin.webp');
   const parkParangCMS = useSimpleCMS('main-designer-parkparang', '/images/profile/Park Parang.jpg');
   const leeTaehyeonCMS = useSimpleCMS('main-designer-leetaehyeon', '/images/profile/Lee Taehyeon.jpg');
@@ -92,8 +92,15 @@ export default function ShowcaseSection() {
             {/* SimpleCMS 오버레이 - Kim Bomin */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20"
-                onClick={(e) => e.stopPropagation()}
+                className="absolute top-2 left-2 z-20 w-12 h-12"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
                 <SimpleCMS
                   slotId="main-designer-kimbomin"
@@ -102,7 +109,7 @@ export default function ShowcaseSection() {
                   onUpload={kimBominCMS.handleUpload}
                   onDelete={kimBominCMS.handleDelete}
                   isAdminMode={true}
-                  className="w-8 h-8"
+                  className="w-full h-full"
                   placeholder="Kim Bomin"
                 />
               </div>
@@ -137,8 +144,15 @@ export default function ShowcaseSection() {
             {/* SimpleCMS 오버레이 - Park Parang */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20"
-                onClick={(e) => e.stopPropagation()}
+                className="absolute top-2 left-2 z-20 w-12 h-12"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
                 <SimpleCMS
                   slotId="main-designer-parkparang"
@@ -147,7 +161,7 @@ export default function ShowcaseSection() {
                   onUpload={parkParangCMS.handleUpload}
                   onDelete={parkParangCMS.handleDelete}
                   isAdminMode={true}
-                  className="w-8 h-8"
+                  className="w-full h-full"
                   placeholder="Park Parang"
                 />
               </div>
@@ -171,7 +185,7 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src={leeTaehyeonCMS.currentUrl || "/images/profile/Lee Taehyeon.webp"} 
+              src={leeTaehyeonCMS.currentUrl || "/images/profile/Lee Taehyeon.jpg"} 
               alt="Lee Taehyeon" 
               fill={true}
               priority={true}
@@ -182,8 +196,15 @@ export default function ShowcaseSection() {
             {/* SimpleCMS 오버레이 - Lee Taehyeon */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20"
-                onClick={(e) => e.stopPropagation()}
+                className="absolute top-2 left-2 z-20 w-12 h-12"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
                 <SimpleCMS
                   slotId="main-designer-leetaehyeon"
@@ -192,7 +213,7 @@ export default function ShowcaseSection() {
                   onUpload={leeTaehyeonCMS.handleUpload}
                   onDelete={leeTaehyeonCMS.handleDelete}
                   isAdminMode={true}
-                  className="w-8 h-8"
+                  className="w-full h-full"
                   placeholder="Lee Taehyeon"
                 />
               </div>
@@ -216,7 +237,7 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src={choiEunsolCMS.currentUrl || "/images/profile/Choi Eunsol.webp"} 
+              src={choiEunsolCMS.currentUrl || "/images/profile/Choi Eunsol.jpeg"} 
               alt="Choi Eunsol" 
               fill={true}
               priority={true}
@@ -227,8 +248,15 @@ export default function ShowcaseSection() {
             {/* SimpleCMS 오버레이 - Choi Eunsol */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20"
-                onClick={(e) => e.stopPropagation()}
+                className="absolute top-2 left-2 z-20 w-12 h-12"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
                 <SimpleCMS
                   slotId="main-designer-choieunsol"
@@ -237,7 +265,7 @@ export default function ShowcaseSection() {
                   onUpload={choiEunsolCMS.handleUpload}
                   onDelete={choiEunsolCMS.handleDelete}
                   isAdminMode={true}
-                  className="w-8 h-8"
+                  className="w-full h-full"
                   placeholder="Choi Eunsol"
                 />
               </div>
@@ -261,7 +289,7 @@ export default function ShowcaseSection() {
             data-manageable="showcase"
           >
             <OptimizedImage 
-              src={hwangJinsuCMS.currentUrl || "/images/profile/Hwang Jinsu.webp"} 
+              src={hwangJinsuCMS.currentUrl || "/images/profile/Hwang Jinsu.jpg"} 
               alt="Hwang Jinsu" 
               fill={true}
               priority={true}
@@ -272,8 +300,15 @@ export default function ShowcaseSection() {
             {/* SimpleCMS 오버레이 - Hwang Jinsu */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20"
-                onClick={(e) => e.stopPropagation()}
+                className="absolute top-2 left-2 z-20 w-12 h-12"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
                 <SimpleCMS
                   slotId="main-designer-hwangjinsu"
@@ -282,7 +317,7 @@ export default function ShowcaseSection() {
                   onUpload={hwangJinsuCMS.handleUpload}
                   onDelete={hwangJinsuCMS.handleDelete}
                   isAdminMode={true}
-                  className="w-8 h-8"
+                  className="w-full h-full"
                   placeholder="Hwang Jinsu"
                 />
               </div>
@@ -317,8 +352,15 @@ export default function ShowcaseSection() {
             {/* SimpleCMS 오버레이 - Kim Gyeongsu */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20"
-                onClick={(e) => e.stopPropagation()}
+                className="absolute top-2 left-2 z-20 w-12 h-12"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
                 <SimpleCMS
                   slotId="main-designer-kimgyeongsu"
@@ -327,7 +369,7 @@ export default function ShowcaseSection() {
                   onUpload={kimGyeongsuCMS.handleUpload}
                   onDelete={kimGyeongsuCMS.handleDelete}
                   isAdminMode={true}
-                  className="w-8 h-8"
+                  className="w-full h-full"
                   placeholder="Kim Gyeongsu"
                 />
               </div>
@@ -362,8 +404,15 @@ export default function ShowcaseSection() {
             {/* SimpleCMS 오버레이 - Cinemode */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20"
-                onClick={(e) => e.stopPropagation()}
+                className="absolute top-2 left-2 z-20 w-12 h-12"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
                 <SimpleCMS
                   slotId="main-exhibition-cinemode"
@@ -372,7 +421,7 @@ export default function ShowcaseSection() {
                   onUpload={cinemodeCMS.handleUpload}
                   onDelete={cinemodeCMS.handleDelete}
                   isAdminMode={true}
-                  className="w-8 h-8"
+                  className="w-full h-full"
                   placeholder="Cinemode"
                 />
               </div>
@@ -407,8 +456,15 @@ export default function ShowcaseSection() {
             {/* SimpleCMS 오버레이 - The Room */}
             {isAuthenticated && (
               <div 
-                className="absolute top-2 left-2 z-20"
-                onClick={(e) => e.stopPropagation()}
+                className="absolute top-2 left-2 z-20 w-12 h-12"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
                 <SimpleCMS
                   slotId="main-exhibition-theroom"
@@ -417,7 +473,7 @@ export default function ShowcaseSection() {
                   onUpload={theroomCMS.handleUpload}
                   onDelete={theroomCMS.handleDelete}
                   isAdminMode={true}
-                  className="w-8 h-8"
+                  className="w-full h-full"
                   placeholder="The Room"
                 />
               </div>

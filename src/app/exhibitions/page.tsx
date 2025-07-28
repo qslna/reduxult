@@ -3,66 +3,31 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
-import { useTextContent } from '@/hooks/usePageContent';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useCMSSlot } from '@/hooks/useCMSSlot';
-import MediaSlot from '@/components/cms/MediaSlot';
-import { Minus } from 'lucide-react';
+import { useSimpleCMS } from '@/hooks/useSimpleCMS';
+import SimpleCMS from '@/components/cms/SimpleCMS';
 
-// HTML redux6 exhibitions.html과 완전 동일한 Exhibitions 페이지 구현
+// Simplified Exhibitions Page
 export default function ExhibitionsPage() {
   const router = useRouter();
-  
-  // Dynamic content loading
-  const { text: heroTitle } = useTextContent('exhibitions', 'hero-title', 'EXHIBITIONS');
-  const { text: heroSubtitle } = useTextContent('exhibitions', 'hero-subtitle', 'Redefining Fashion Through Space');
-  const { text: cineTitle } = useTextContent('exhibitions', 'cine-title', 'CINE\\nMODE');
-  const { text: cineDescription1 } = useTextContent('exhibitions', 'cine-description-1', 'REDUX의 \'CINE MODE\' 패션 필름 전시회는 단순한 스타일 전시를 넘어 영상에 각자의 이야기를 담아 관객들과의 유대감 형성에 집중한 전시입니다.');
-  const { text: cineDescription2 } = useTextContent('exhibitions', 'cine-description-2', '6인의 디자이너가 각자의 관점으로 풀어낸 패션 필름을 통해 시각적 서사를 경험할 수 있습니다.');
-  const { text: cineCTA } = useTextContent('exhibitions', 'cine-cta', 'Explore Exhibition');
-  const { text: cineGalleryTitle } = useTextContent('exhibitions', 'cine-gallery-title', 'CINE MODE\\nGallery');
-  const { text: cineGalleryDescription } = useTextContent('exhibitions', 'cine-gallery-description', 'Behind The Scenes &\\nExhibition Moments');
-  const { text: roomTitle } = useTextContent('exhibitions', 'room-title', 'THE ROOM\\nOF [ ]');
-  const { text: roomDescription1 } = useTextContent('exhibitions', 'room-description-1', '패션 필름, 텍스타일 아트, 인터랙션 디자인, 공간 인스톨레이션 등 다양한 매체를 통해 각 디자이너의 서로 다른 컨셉으로 전시를 풀어냅니다.');
-  const { text: roomDescription2 } = useTextContent('exhibitions', 'room-description-2', '빈 공간 [ ] 안에 각자의 이야기를 채워나가는 실험적인 전시입니다.');
-  const { text: roomCTA } = useTextContent('exhibitions', 'room-cta', 'Coming Soon');
-  const { text: roomGalleryTitle } = useTextContent('exhibitions', 'room-gallery-title', 'THE ROOM OF [ ]\\nConceptual Preview');
-  const { text: roomGalleryDescription } = useTextContent('exhibitions', 'room-gallery-description', 'Conceptual Visualizations & Artistic Explorations\\n예술적 가능성을 탐구하는 컨셉추얼 비주얼리제이션');
-  const { text: futureTitle } = useTextContent('exhibitions', 'future-title', 'FUTURE\\nEXHIBITIONS');
-  const { text: futureDescription1 } = useTextContent('exhibitions', 'future-description-1', 'REDUX는 계속해서 새로운 형태의 전시를 준비하고 있습니다.');
-  const { text: futureDescription2 } = useTextContent('exhibitions', 'future-description-2', '패션과 예술의 경계를 넘나들며, 관객과 함께 만들어가는 특별한 경험을 선사하겠습니다.');
-  const { text: futureCTA } = useTextContent('exhibitions', 'future-cta', 'Stay Updated');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState('');
   const [currentAlt, setCurrentAlt] = useState('');
   
-  // CMS 인증
+  // CMS integration
   const { isAuthenticated } = useSimpleAuth();
   
-  // CMS 슬롯 - 전시 갤러리
-  const { slot: cineModeSlot, currentFiles: cineModeFiles, updateFiles: updateCineModeFiles } = useCMSSlot('exhibition-cinemode-gallery');
-  const { slot: theRoomSlot, currentFiles: theRoomFiles, updateFiles: updateTheRoomFiles } = useCMSSlot('exhibition-theroom-gallery');
-
-  useEffect(() => {
-    // Simple scroll effect without complex animations
-    const handleScroll = () => {
-      const navbar = document.getElementById('navbar');
-      if (navbar && window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-      } else if (navbar) {
-        navbar.classList.remove('scrolled');
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-
-  const comingSoonAlert = () => {
-    alert('Coming Soon');
-    return false;
-  };
+  // CMS slots for exhibition galleries
+  const cinemode1CMS = useSimpleCMS('exhibition-cinemode-1', '/images/exhibitions/cinemode/1.jpg');
+  const cinemode2CMS = useSimpleCMS('exhibition-cinemode-2', '/images/exhibitions/cinemode/2.jpg');
+  const cinemode3CMS = useSimpleCMS('exhibition-cinemode-3', '/images/exhibitions/cinemode/3.jpg');
+  const cinemode4CMS = useSimpleCMS('exhibition-cinemode-4', '/images/exhibitions/cinemode/4.jpg');
+  
+  const theroom1CMS = useSimpleCMS('exhibition-theroom-1', '/images/exhibitions/theroom/1.jpg');
+  const theroom2CMS = useSimpleCMS('exhibition-theroom-2', '/images/exhibitions/theroom/2.jpg');
+  const theroom3CMS = useSimpleCMS('exhibition-theroom-3', '/images/exhibitions/theroom/3.jpg');
+  
+  const goBack = () => router.push('/');
 
   const openLightbox = (imageSrc: string, imageAlt: string) => {
     setCurrentImage(imageSrc);
@@ -94,735 +59,349 @@ export default function ExhibitionsPage() {
   }, [lightboxOpen]);
 
   return (
-    <>
-      {/* Professional Navigation */}
-      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] border-b border-[--accent-mocha]/10">
-        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
-          <div className="nav-left flex items-center gap-10">
+    <div className="min-h-screen bg-black text-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] border-b border-white/10">
+        <div className="flex justify-between items-center max-w-[1600px] mx-auto">
+          <div className="flex items-center gap-10">
             <span 
-              className="back-button font-['Inter'] text-xl cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:transform hover:-translate-x-[5px] hover:text-[--accent-mocha]"
-              onClick={() => router.back()}
+              className="text-xl cursor-pointer transition-all duration-[400ms] text-white hover:transform hover:-translate-x-[5px] hover:text-amber-300"
+              onClick={goBack}
             >
               ←
             </span>
-            <span className="page-title font-['Inter'] text-lg font-light tracking-[0.2em] text-[--accent-mocha] uppercase max-[768px]:hidden">
-              Exhibitions
+            <span className="text-lg font-light tracking-[0.2em] text-amber-300 uppercase max-[768px]:hidden">
+              EXHIBITIONS
             </span>
           </div>
           <div 
-            className="logo font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:opacity-70 hover:transform hover:scale-[1.02]"
-            onClick={() => router.push('/')}
+            className="font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] text-white hover:opacity-70 hover:transform hover:scale-[1.02]"
+            onClick={goBack}
           >
             REDUX
           </div>
         </div>
       </nav>
 
-      {/* Simplified Exhibition Hero */}
-      <section className="exhibition-hero relative h-screen flex items-center justify-center bg-black pt-[120px]">
-        <div className="exhibition-hero-content text-center px-10">
-          <h1 className="exhibition-hero-title font-['Playfair_Display'] font-bold text-white mb-8 leading-[0.85]" 
+      {/* Main Content */}
+      <div className="pt-[120px]">
+        {/* Hero Section */}
+        <section className="relative h-[70vh] min-h-[500px] overflow-hidden flex items-center justify-center">
+          <div className="text-center">
+            <h1 
+              className="font-['Playfair_Display'] font-bold text-white mb-8 tracking-[-0.02em] leading-[0.9]"
               style={{ 
-                fontSize: 'clamp(60px, 12vw, 180px)', 
-                letterSpacing: '-0.02em'
-              }}>
-            {heroTitle}
-          </h1>
-          
-          <p className="exhibition-hero-subtitle font-['Inter'] text-white/80 tracking-[0.4em] uppercase" style={{
-            fontSize: 'clamp(14px, 2vw, 18px)',
-            fontWeight: 300
-          }}>
-            {heroSubtitle}
-          </p>
-        </div>
-      </section>
-
-      {/* Exhibition Timeline - HTML 버전과 완전 동일 */}
-      <section className="exhibition-timeline py-[120px] relative">
-        <div className="timeline-line absolute left-1/2 top-0 bottom-0 w-[1px] bg-[--gray-light] transform -translate-x-1/2 max-[768px]:hidden"></div>
-        
-        {/* Exhibition 1: CINE MODE - 아원가르드 디자인 */}
-        <div className="exhibition-item relative mb-0" id="cine-mode">
-          <div className="exhibition-content relative">
-            {/* 비대칭 비주얼 레이아웃 */}
-            <div className="grid grid-cols-12 gap-0 min-h-screen relative">
-              {/* 이미지 섹션 - 비대칭 */}
-              <div className="exhibition-visual col-span-7 relative overflow-hidden bg-black max-[1024px]:col-span-12">
-                <div className="relative h-screen max-[1024px]:h-[70vh]">
-                  <OptimizedImage 
-                    src="/images/exhibitions/cinemode/1.jpg" 
-                    alt="CINE MODE Exhibition" 
-                    fill={true}
-                    sizes="(max-width: 1024px) 100vw, 58vw"
-                    priority={true}
-                    className="object-cover transition-all duration-[2000ms] ease-out hover:scale-110 hover:rotate-[1deg]"
-                    style={{
-                      filter: 'contrast(1.1) brightness(0.9) saturate(1.2)'
-                    }}
-                  />
-                  
-                  {/* 오버레이 효과 */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-transparent"></div>
-                  <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-transparent to-black/20"></div>
-                  
-                  {/* 다이나믹 요소들 */}
-                  <div className="absolute bottom-10 left-10 z-10">
-                    <div className="w-[60px] h-[1px] bg-white/60 mb-4 animate-[expandWidth_2s_ease_forwards]"></div>
-                    <div className="text-white/80 font-['Inter'] text-sm tracking-[3px] uppercase font-light">Exhibition 01</div>
-                  </div>
-                  
-                  <div className="absolute top-10 right-10 z-10">
-                    <div className="w-[40px] h-[40px] border border-white/30 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <div className="w-[8px] h-[8px] bg-white/60 rounded-full animate-pulse"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* 텍스트 섹션 - 비대칭 배치 */}
-              <div className="exhibition-info col-span-5 relative flex flex-col justify-center bg-gradient-to-br from-gray-50 to-white px-12 py-20 max-[1024px]:col-span-12 max-[1024px]:px-8 max-[1024px]:py-16">
-                {/* 기하학적 대형 숫자 */}
-                <div className="absolute -top-8 -left-4 text-[280px] font-thin text-black/[0.03] leading-none z-0 max-[1024px]:text-[180px] max-[1024px]:-top-4">
-                  01
-                </div>
-                
-                {/* 비대칭 데코레이션 */}
-                <div className="absolute top-16 right-8 w-[120px] h-[1px] bg-gradient-to-r from-black/20 to-transparent transform rotate-12"></div>
-                <div className="absolute bottom-20 left-0 w-[2px] h-[100px] bg-gradient-to-b from-black/10 to-transparent"></div>
-                
-                <div className="relative z-10">
-                  {/* 날짜 및 상태 */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <span className="exhibition-date font-['JetBrains_Mono'] text-xs tracking-[2px] text-gray-500 uppercase font-medium bg-black/5 px-3 py-1 rounded-full">
-                      2025.03.03 - 03.08
-                    </span>
-                    <span className="w-[6px] h-[6px] bg-green-500 rounded-full animate-pulse"></span>
-                    <span className="text-xs text-green-600 font-medium uppercase tracking-wide">Completed</span>
-                  </div>
-                  
-                  {/* 전시 제목 */}
-                  <h2 className="exhibition-title font-['Playfair_Display'] font-bold text-black mb-8 leading-[0.9] tracking-[-0.02em]" 
-                      style={{ fontSize: 'clamp(42px, 6vw, 72px)' }}>
-                    {cineTitle.split('\\n').map((line: string, index: number) => (
-                      <span key={index}>
-                        {index === 0 ? line : <span className="text-gray-600">{line}</span>}
-                        {index < cineTitle.split('\\n').length - 1 && <br />}
-                      </span>
-                    ))}
-                  </h2>
-                  
-                  {/* 설명 */}
-                  <div className="space-y-4 mb-10">
-                    <p className="exhibition-description font-['Inter'] text-gray-700 leading-[1.7] font-light" style={{ fontSize: 'clamp(15px, 2vw, 17px)' }}>
-                      {cineDescription1}
-                    </p>
-                    <p className="font-['Inter'] text-gray-600 leading-[1.7] font-light text-sm">
-                      {cineDescription2}
-                    </p>
-                  </div>
-                  
-                  {/* 전시 세부 정보 - 개선된 디자인 */}
-                  <div className="exhibition-specs grid grid-cols-2 gap-6 mb-12 max-[768px]:grid-cols-1">
-                    <div className="spec-item">
-                      <div className="text-xs text-gray-400 uppercase tracking-[1px] mb-1 font-medium">Location</div>
-                      <div className="text-sm text-gray-700 font-medium">Seoul, South Korea</div>
-                    </div>
-                    <div className="spec-item">
-                      <div className="text-xs text-gray-400 uppercase tracking-[1px] mb-1 font-medium">Type</div>
-                      <div className="text-sm text-gray-700 font-medium">Fashion Film</div>
-                    </div>
-                    <div className="spec-item">
-                      <div className="text-xs text-gray-400 uppercase tracking-[1px] mb-1 font-medium">Participants</div>
-                      <div className="text-sm text-gray-700 font-medium">6 Designers</div>
-                    </div>
-                    <div className="spec-item">
-                      <div className="text-xs text-gray-400 uppercase tracking-[1px] mb-1 font-medium">Curator</div>
-                      <div className="text-sm text-gray-700 font-medium">REDUX Collective</div>
-                    </div>
-                  </div>
-                  
-                  {/* CTA 버튼 - 향상된 디자인 */}
-                  <a 
-                    href="/about/fashion-film" 
-                    className="exhibition-cta group inline-flex items-center gap-3 bg-black text-white px-8 py-4 no-underline text-sm tracking-[1px] uppercase font-medium relative overflow-hidden transition-all duration-500 ease-out hover:bg-gray-900 hover:scale-[1.02] hover:shadow-xl"
-                  >
-                    <span className="relative z-10">{cineCTA}</span>
-                    <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  </a>
-                </div>
-              </div>
-            </div>
+                fontSize: 'clamp(3rem, 8vw, 6rem)',
+                textShadow: '0 0 30px rgba(255,255,255,0.1)'
+              }}
+            >
+              EXHIBITIONS
+            </h1>
+            <p className="text-white/80 text-xl tracking-[0.2em] uppercase">
+              Redefining Fashion Through Space
+            </p>
           </div>
-        </div>
+        </section>
 
-        {/* Simplified CINE MODE Gallery Section */}
-        <div className="exhibition-gallery bg-black py-20">
-          <div className="gallery-content">
-            {/* 비대칭 헤더 */}
-            <div className="relative mb-20 px-10">
-              <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-12 items-end gap-8">
-                  <div className="col-span-8 max-[768px]:col-span-12">
-                    <div className="relative">
-                      {/* 데코레이티브 라인 */}
-                      <div className="absolute -top-8 left-0 w-[200px] h-[1px] bg-gradient-to-r from-white/40 to-transparent"></div>
-                      
-                      <h3 className="font-['Playfair_Display'] text-white mb-6 leading-[0.9] font-bold" style={{ fontSize: 'clamp(36px, 6vw, 64px)' }}>
-                        {cineGalleryTitle.split('\\n').map((line: string, index: number) => (
-                          <span key={index}>
-                            {index === 0 ? line : <span className="text-white/60 font-light">{line}</span>}
-                            {index < cineGalleryTitle.split('\\n').length - 1 && <br />}
-                          </span>
-                        ))}
-                      </h3>
-                    </div>
-                  </div>
-                  <div className="col-span-4 max-[768px]:col-span-12">
-                    <p className="font-['Inter'] text-white/70 leading-[1.6] text-right max-[768px]:text-left" style={{ fontSize: 'clamp(14px, 2vw, 16px)' }}>
-                      {cineGalleryDescription.split('\\n').map((line: string, index: number) => (
-                        <span key={index}>
-                          {line}
-                          {index < cineGalleryDescription.split('\\n').length - 1 && <br />}
-                        </span>
-                      ))}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* 비대칭 갤러리 레이아웃 with CMS */}
-            <div className="gallery-grid px-10 relative">
-              {/* CMS 오버레이 - CINE MODE 갤러리 */}
-              {isAuthenticated && cineModeSlot && (
-                <div className="absolute -top-20 right-10 z-30">
-                  <div className="bg-black/90 backdrop-blur-sm border border-gray-700 rounded-lg p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="text-sm font-medium text-white">CINE MODE 갤러리</div>
-                      <div className="text-xs text-gray-400">
-                        {cineModeFiles.length}/{cineModeSlot.maxFiles || 10}
-                      </div>
-                    </div>
-                    <MediaSlot
-                      slot={cineModeSlot}
-                      currentFiles={cineModeFiles}
-                      onFilesUpdate={updateCineModeFiles}
-                      isAdminMode={true}
-                      className="w-16 h-16"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <div className="max-w-7xl mx-auto">
-                {/* Simplified grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {(cineModeFiles.length > 0 ? cineModeFiles : [
-                    '/images/exhibitions/cinemode/1.jpg',
-                    '/images/exhibitions/cinemode/2.jpg',
-                    '/images/exhibitions/cinemode/3.jpg',
-                    '/images/exhibitions/cinemode/4.jpg'
-                  ]).map((image, index) => (
-                    <div 
-                      key={index}
-                      className="aspect-[4/3] group cursor-pointer relative overflow-hidden bg-gray-900"
-                      onClick={() => openLightbox(image, `CINE MODE 전시 이미지 ${index + 1}`)}
-                    >
-                      <OptimizedImage 
-                        src={image}
-                        alt={`CINE MODE Gallery ${index + 1}`} 
-                        fill={true}
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      
-                      {/* CMS 개별 이미지 삭제 버튼 */}
-                      {isAuthenticated && cineModeFiles.length > 0 && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            const newFiles = cineModeFiles.filter((_, i) => i !== index);
-                            updateCineModeFiles(newFiles);
-                          }}
-                          className="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100 z-20"
-                        >
-                          <Minus className="w-4 h-4" />
-                        </button>
-                      )}
-
-                      {/* Simplified overlay */}
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            {/* 비대칭 디코레이티브 요소 */}
-            <div className="absolute bottom-20 right-10 opacity-20">
-              <div className="w-[150px] h-[150px] border border-white/20 rounded-full flex items-center justify-center">
-                <div className="w-[100px] h-[100px] border border-white/10 rounded-full flex items-center justify-center">
-                  <div className="w-[50px] h-[50px] border border-white/5 rounded-full"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Exhibition 2: THE ROOM OF [ ] - 환상적 디자인 */}
-        <div className="exhibition-item relative mb-0" id="the-room">
-          <div className="exhibition-content relative bg-gradient-to-br from-white via-gray-50 to-gray-100">
-            {/* 비대칭 레이아웃 - 리버스 */}
-            <div className="grid grid-cols-12 gap-0 min-h-screen relative">
-              {/* 텍스트 섹션 먼저 (RTL 효과) */}
-              <div className="exhibition-info col-span-5 relative flex flex-col justify-center px-12 py-20 max-[1024px]:col-span-12 max-[1024px]:px-8 max-[1024px]:py-16">
-                {/* 비대칭 배경 요소들 */}
-                <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-                  <div className="absolute top-12 left-8 w-[160px] h-[1px] bg-gradient-to-r from-transparent to-black/15 transform -rotate-12"></div>
-                  <div className="absolute bottom-16 right-0 w-[2px] h-[120px] bg-gradient-to-t from-black/10 to-transparent"></div>
-                  <div className="absolute top-1/2 right-8 w-[80px] h-[80px] border border-black/5 rounded-full transform translate-y-[-50%]"></div>
-                </div>
-                
-                {/* 기하학적 대형 숫자 - 오른쪽 */}
-                <div className="absolute -top-8 -right-8 text-[280px] font-thin text-black/[0.02] leading-none z-0 max-[1024px]:text-[180px] max-[1024px]:-top-4 max-[1024px]:-right-4">
-                  02
-                </div>
-                
-                <div className="relative z-10">
-                  {/* 날짜 및 상태 - 예정된 전시 */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <span className="exhibition-date font-['JetBrains_Mono'] text-xs tracking-[2px] text-gray-600 uppercase font-medium bg-orange-100 px-3 py-1 rounded-full">
-                      2025.12 - 2026.01
-                    </span>
-                    <span className="w-[6px] h-[6px] bg-orange-400 rounded-full animate-pulse"></span>
-                    <span className="text-xs text-orange-600 font-medium uppercase tracking-wide">Upcoming</span>
-                  </div>
-                  
-                  {/* 전시 제목 - 특별한 타이포그래피 */}
-                  <h2 className="exhibition-title font-['Playfair_Display'] font-bold text-black mb-8 leading-[0.85] tracking-[-0.03em]" 
-                      style={{ fontSize: 'clamp(38px, 6vw, 68px)' }}>
-                    THE ROOM<br />OF 
-                    <span className="inline-flex items-center gap-2">
-                      <span className="w-[40px] h-[40px] border-2 border-gray-400 rounded-sm flex items-center justify-center text-2xl font-light" style={{ fontSize: 'clamp(16px, 3vw, 24px)' }}>[  ]</span>
-                    </span>
-                  </h2>
-                  
-                  {/* 설명 - 개선된 타이포그래피 */}
-                  <div className="space-y-4 mb-10">
-                    <p className="exhibition-description font-['Inter'] text-gray-700 leading-[1.7] font-light" style={{ fontSize: 'clamp(15px, 2vw, 17px)' }}>
-                      {roomDescription1}
-                    </p>
-                    <p className="font-['Inter'] text-gray-600 leading-[1.7] font-light text-sm">
-                      {roomDescription2}
-                    </p>
-                  </div>
-                  
-                  {/* 전시 세부 정보 */}
-                  <div className="exhibition-specs grid grid-cols-2 gap-6 mb-12 max-[768px]:grid-cols-1">
-                    <div className="spec-item">
-                      <div className="text-xs text-gray-400 uppercase tracking-[1px] mb-1 font-medium">Location</div>
-                      <div className="text-sm text-gray-700 font-medium">TBA</div>
-                    </div>
-                    <div className="spec-item">
-                      <div className="text-xs text-gray-400 uppercase tracking-[1px] mb-1 font-medium">Type</div>
-                      <div className="text-sm text-gray-700 font-medium">Multimedia</div>
-                    </div>
-                    <div className="spec-item">
-                      <div className="text-xs text-gray-400 uppercase tracking-[1px] mb-1 font-medium">Duration</div>
-                      <div className="text-sm text-gray-700 font-medium">1 Month</div>
-                    </div>
-                    <div className="spec-item">
-                      <div className="text-xs text-gray-400 uppercase tracking-[1px] mb-1 font-medium">Special</div>
-                      <div className="text-sm text-gray-700 font-medium">Interactive</div>
-                    </div>
-                  </div>
-                  
-                  {/* CTA 버튼 - Coming Soon 스타일 */}
-                  <button 
-                    className="exhibition-cta group inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 text-sm tracking-[1px] uppercase font-medium relative overflow-hidden transition-all duration-500 ease-out hover:from-orange-600 hover:to-orange-700 hover:scale-[1.02] hover:shadow-xl cursor-pointer"
-                    onClick={comingSoonAlert}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="relative z-10">{roomCTA}</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  </button>
-                </div>
-              </div>
-              
-              {/* 이미지 섹션 - 대형 */}
-              <div className="exhibition-visual col-span-7 relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 max-[1024px]:col-span-12">
-                <div className="relative h-screen max-[1024px]:h-[70vh]">
-                  <OptimizedImage 
-                    src="/images/exhibitions/theroom/1.jpg" 
-                    alt="THE ROOM OF [ ] Exhibition" 
-                    fill={true}
-                    sizes="(max-width: 1024px) 100vw, 58vw"
-                    priority={false}
-                    className="object-cover transition-all duration-[2000ms] ease-out hover:scale-105 hover:rotate-[-1deg]"
-                    style={{
-                      filter: 'contrast(1.05) brightness(0.95) saturate(1.1)'
-                    }}
-                  />
-                  
-                  {/* 오버레이 효과 - 더 미묘한 */}
-                  <div className="absolute inset-0 bg-gradient-to-bl from-white/10 via-transparent to-transparent"></div>
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-orange-500/5"></div>
-                  
-                  {/* 다이나믹 요소들 */}
-                  <div className="absolute top-10 left-10 z-10">
-                    <div className="w-[50px] h-[50px] border-2 border-white/40 rounded-sm flex items-center justify-center backdrop-blur-sm text-white font-light">
-                      [  ]
-                    </div>
-                  </div>
-                  
-                  <div className="absolute bottom-10 right-10 z-10">
-                    <div className="text-white/80 font-['Inter'] text-sm tracking-[3px] uppercase font-light text-right">
-                      Exhibition 02<br />
-                      <span className="text-xs text-white/60">Conceptual</span>
-                    </div>
-                    <div className="w-[60px] h-[1px] bg-white/60 mt-4 ml-auto animate-[expandWidth_2s_ease_forwards]"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Simplified THE ROOM Gallery Section */}
-        <div className="exhibition-gallery bg-white py-20">
-          
-          <div className="gallery-content relative z-10 py-32">
-            {/* 컬셉추얼 헤더 */}
-            <div className="relative mb-20 px-10">
-              <div className="max-w-7xl mx-auto">
-                <div className="text-center max-w-4xl mx-auto">
-                  {/* 데코레이티브 요소 */}
-                  <div className="flex items-center justify-center gap-4 mb-8">
-                    <div className="w-[40px] h-[1px] bg-gradient-to-r from-transparent to-orange-300"></div>
-                    <div className="w-[30px] h-[30px] border border-orange-300/60 rounded-sm flex items-center justify-center text-orange-500 font-light text-sm">[ ]</div>
-                    <div className="w-[40px] h-[1px] bg-gradient-to-l from-transparent to-orange-300"></div>
-                  </div>
-                  
-                  <h3 className="font-['Playfair_Display'] text-black mb-6 leading-[0.9] font-bold text-center" style={{ fontSize: 'clamp(36px, 6vw, 64px)' }}>
-                    THE ROOM OF <span className="inline-flex items-center mx-2">
-                      <span className="w-[50px] h-[50px] border-2 border-orange-400/60 rounded-sm flex items-center justify-center text-2xl font-light text-orange-500" style={{ fontSize: 'clamp(16px, 2vw, 20px)' }}>[  ]</span>
-                    </span><br />
-                    <span className="text-gray-600 font-light">Conceptual Preview</span>
-                  </h3>
-                  
-                  <p className="font-['Inter'] text-gray-600 leading-[1.6] max-w-2xl mx-auto" style={{ fontSize: 'clamp(14px, 2vw, 16px)' }}>
-                    Conceptual Visualizations & Artistic Explorations<br />
-                    예술적 가능성을 탐구하는 컨셉추얼 비주얼리제이션
+        {/* CINE MODE Section */}
+        <section id="cine-mode" className="py-20 px-10">
+          <div className="max-w-[1600px] mx-auto">
+            {/* Content Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
+              {/* Text Content */}
+              <div>
+                <h2 
+                  className="font-['Playfair_Display'] font-bold text-white mb-8 tracking-[-0.02em] leading-[0.9]"
+                  style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}
+                >
+                  CINE<br />MODE
+                </h2>
+                <div className="space-y-6 text-white/80 text-lg leading-relaxed">
+                  <p>
+                    REDUX의 'CINE MODE' 패션 필름 전시회는 단순한 스타일 전시를 넘어 영상에 각자의 이야기를 담아 관객들과의 유대감 형성에 집중한 전시입니다.
+                  </p>
+                  <p>
+                    6인의 디자이너가 각자의 관점으로 풀어낸 패션 필름을 통해 시각적 서사를 경험할 수 있습니다.
                   </p>
                 </div>
+                <button 
+                  className="mt-8 px-8 py-4 border border-amber-300 text-amber-300 bg-transparent hover:bg-amber-300 hover:text-black transition-all duration-300 tracking-[0.1em] uppercase"
+                  onClick={() => alert('Exhibition Details Coming Soon')}
+                >
+                  Explore Exhibition
+                </button>
               </div>
-            </div>
-            
-            {/* 컬셉추얼 갤러리 레이아웃 with CMS */}
-            <div className="gallery-grid px-10 relative">
-              {/* CMS 오버레이 - THE ROOM 갤러리 */}
-              {isAuthenticated && theRoomSlot && (
-                <div className="absolute -top-20 right-10 z-30">
-                  <div className="bg-white/95 backdrop-blur-sm border border-gray-300 rounded-lg p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="text-sm font-medium text-black">THE ROOM 갤러리</div>
-                      <div className="text-xs text-gray-600">
-                        {theRoomFiles.length}/{theRoomSlot.maxFiles || 10}
-                      </div>
-                    </div>
-                    <MediaSlot
-                      slot={theRoomSlot}
-                      currentFiles={theRoomFiles}
-                      onFilesUpdate={updateTheRoomFiles}
+              
+              {/* Featured Image */}
+              <div className="relative">
+                <OptimizedImage 
+                  src={cinemode1CMS.currentUrl || "/images/exhibitions/cinemode/1.jpg"}
+                  alt="CINE MODE Exhibition"
+                  width={600}
+                  height={400}
+                  priority={true}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="w-full h-auto object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.02]"
+                  onClick={() => openLightbox(cinemode1CMS.currentUrl || '/images/exhibitions/cinemode/1.jpg', 'CINE MODE Exhibition')}
+                />
+                
+                {/* CMS 오버레이 */}
+                {isAuthenticated && (
+                  <div 
+                    className="absolute top-4 right-4 z-20 w-12 h-12"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                  >
+                    <SimpleCMS
+                      slotId="exhibition-cinemode-1"
+                      currentUrl={cinemode1CMS.currentUrl}
+                      type="image"
+                      onUpload={cinemode1CMS.handleUpload}
+                      onDelete={cinemode1CMS.handleDelete}
                       isAdminMode={true}
-                      className="w-16 h-16"
+                      className="w-full h-full"
+                      placeholder="Cinemode 1"
                     />
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+            </div>
 
-              <div className="max-w-6xl mx-auto">
-                {/* Simplified grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {(theRoomFiles.length > 0 ? theRoomFiles : [
-                    '/images/exhibitions/theroom/1.jpg',
-                    '/images/exhibitions/theroom/2.jpg',
-                    '/images/exhibitions/theroom/3.jpg'
-                  ]).map((image, index) => (
-                    <div key={index} className="aspect-[4/3] group cursor-pointer relative overflow-hidden bg-gray-100">
-                      <OptimizedImage 
-                        src={image}
-                        alt={`THE ROOM Gallery ${index + 1}`} 
-                        fill={true}
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        onClick={() => openLightbox(image, `THE ROOM 컨셉추얼 비주얼 ${index + 1}`)}
+            {/* Gallery Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { num: 1, cms: cinemode1CMS },
+                { num: 2, cms: cinemode2CMS },
+                { num: 3, cms: cinemode3CMS },
+                { num: 4, cms: cinemode4CMS }
+              ].map(({ num, cms }) => (
+                <div key={num} className="relative aspect-square overflow-hidden">
+                  <OptimizedImage 
+                    src={cms.currentUrl || `/images/exhibitions/cinemode/${num}.jpg`}
+                    alt={`CINE MODE Gallery ${num}`}
+                    fill={true}
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.1]"
+                    onClick={() => openLightbox(cms.currentUrl || `/images/exhibitions/cinemode/${num}.jpg`, `CINE MODE Gallery ${num}`)}
+                  />
+                  
+                  {/* CMS 오버레이 */}
+                  {isAuthenticated && (
+                    <div 
+                      className="absolute top-2 left-2 z-20 w-8 h-8"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    >
+                      <SimpleCMS
+                        slotId={`exhibition-cinemode-${num}`}
+                        currentUrl={cms.currentUrl}
+                        type="image"
+                        onUpload={cms.handleUpload}
+                        onDelete={cms.handleDelete}
+                        isAdminMode={true}
+                        className="w-full h-full"
+                        placeholder={`Cinemode ${num}`}
                       />
-                      
-                      {/* CMS 개별 이미지 삭제 버튼 */}
-                      {isAuthenticated && theRoomFiles.length > 0 && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            const newFiles = theRoomFiles.filter((_, i) => i !== index);
-                            updateTheRoomFiles(newFiles);
-                          }}
-                          className="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100 z-20"
-                        >
-                          <Minus className="w-4 h-4" />
-                        </button>
-                      )}
-
-                      {/* Simplified overlay */}
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
-                  ))}
+                  )}
                 </div>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Simplified Future Exhibitions Section */}
-      <section className="future-exhibitions py-20 bg-black text-white">
-        
-        <div className="future-content relative z-10 text-center px-10">
-          <div className="max-w-6xl mx-auto">
-            {/* 제목 섹션 */}
-            <div className="mb-16">
-              <div className="flex items-center justify-center gap-6 mb-8">
-                <div className="w-[60px] h-[1px] bg-gradient-to-r from-transparent to-white/40"></div>
-                <div className="text-white/60 font-['JetBrains_Mono'] text-xs tracking-[3px] uppercase">2026 & Beyond</div>
-                <div className="w-[60px] h-[1px] bg-gradient-to-l from-transparent to-white/40"></div>
+        {/* THE ROOM OF [ ] Section */}
+        <section id="the-room" className="py-20 px-10 bg-gray-900/30">
+          <div className="max-w-[1600px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
+              {/* Featured Image */}
+              <div className="relative order-2 lg:order-1">
+                <OptimizedImage 
+                  src={theroom1CMS.currentUrl || "/images/exhibitions/theroom/1.jpg"}
+                  alt="THE ROOM OF [ ] Exhibition"
+                  width={600}
+                  height={400}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="w-full h-auto object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.02]"
+                  onClick={() => openLightbox(theroom1CMS.currentUrl || '/images/exhibitions/theroom/1.jpg', 'THE ROOM OF [ ] Exhibition')}
+                />
+                
+                {/* CMS 오버레이 */}
+                {isAuthenticated && (
+                  <div 
+                    className="absolute top-4 right-4 z-20 w-12 h-12"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                  >
+                    <SimpleCMS
+                      slotId="exhibition-theroom-1"
+                      currentUrl={theroom1CMS.currentUrl}
+                      type="image"
+                      onUpload={theroom1CMS.handleUpload}
+                      onDelete={theroom1CMS.handleDelete}
+                      isAdminMode={true}
+                      className="w-full h-full"
+                      placeholder="The Room 1"
+                    />
+                  </div>
+                )}
               </div>
               
-              <h2 className="future-title font-['Playfair_Display'] font-bold text-white mb-8 leading-[0.9]" style={{ fontSize: 'clamp(48px, 8vw, 96px)' }}>
-                {futureTitle.split('\\n').map((line: string, index: number) => (
-                  <span key={index}>
-                    {index === 0 ? line : <span className="text-white/70 font-light">{line}</span>}
-                    {index < futureTitle.split('\\n').length - 1 && <br />}
-                  </span>
-                ))}
-              </h2>
-            </div>
-            
-            {/* 설명 섹션 */}
-            <div className="mb-16">
-              <p className="future-description font-['Inter'] text-white/80 leading-[1.8] max-w-3xl mx-auto mb-8" style={{ fontSize: 'clamp(16px, 2.5vw, 20px)' }}>
-                {futureDescription1}
-              </p>
-              <p className="font-['Inter'] text-white/60 leading-[1.7] max-w-2xl mx-auto" style={{ fontSize: 'clamp(14px, 2vw, 16px)' }}>
-                {futureDescription2}
-              </p>
-            </div>
-            
-            {/* 예정된 전시 미리보기 */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="future-item group">
-                <div className="w-[80px] h-[80px] border-2 border-white/20 rounded-sm mx-auto mb-6 flex items-center justify-center backdrop-blur-sm transition-all duration-500 group-hover:border-white/40 group-hover:scale-110">
-                  <div className="w-[40px] h-[40px] border border-white/30 rounded-sm flex items-center justify-center">
-                    <div className="w-[20px] h-[20px] bg-white/20 rounded-sm"></div>
-                  </div>
+              {/* Text Content */}
+              <div className="order-1 lg:order-2">
+                <h2 
+                  className="font-['Playfair_Display'] font-bold text-white mb-8 tracking-[-0.02em] leading-[0.9]"
+                  style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}
+                >
+                  THE ROOM<br />OF <span className="text-amber-300">[ ]</span>
+                </h2>
+                <div className="space-y-6 text-white/80 text-lg leading-relaxed">
+                  <p>
+                    패션 필름, 텍스타일 아트, 인터랙션 디자인, 공간 인스톨레이션 등 다양한 매체를 통해 각 디자이너의 서로 다른 컨셉으로 전시를 풀어냅니다.
+                  </p>
+                  <p>
+                    빈 공간 [ ] 안에 각자의 이야기를 채워나가는 실험적인 전시입니다.
+                  </p>
                 </div>
-                <h3 className="font-['Inter'] text-lg font-medium text-white mb-3 tracking-wide uppercase">Immersive Fashion</h3>
-                <p className="font-['Inter'] text-sm text-white/60 leading-[1.6]">
-                  VR/AR 기술을 활용한<br />
-                  몰입형 패션 경험
-                </p>
-              </div>
-              
-              <div className="future-item group">
-                <div className="w-[80px] h-[80px] border-2 border-white/20 rounded-sm mx-auto mb-6 flex items-center justify-center backdrop-blur-sm transition-all duration-500 group-hover:border-white/40 group-hover:scale-110">
-                  <div className="w-[40px] h-[40px] border border-white/30 rounded-sm flex items-center justify-center">
-                    <div className="w-[20px] h-[20px] bg-white/20 rounded-sm"></div>
-                  </div>
-                </div>
-                <h3 className="font-['Inter'] text-lg font-medium text-white mb-3 tracking-wide uppercase">Digital Couture</h3>
-                <p className="font-['Inter'] text-sm text-white/60 leading-[1.6]">
-                  디지털 패션과<br />
-                  NFT 아트워크 전시
-                </p>
-              </div>
-              
-              <div className="future-item group">
-                <div className="w-[80px] h-[80px] border-2 border-white/20 rounded-sm mx-auto mb-6 flex items-center justify-center backdrop-blur-sm transition-all duration-500 group-hover:border-white/40 group-hover:scale-110">
-                  <div className="w-[40px] h-[40px] border border-white/30 rounded-sm flex items-center justify-center">
-                    <div className="w-[20px] h-[20px] bg-white/20 rounded-sm"></div>
-                  </div>
-                </div>
-                <h3 className="font-['Inter'] text-lg font-medium text-white mb-3 tracking-wide uppercase">Global Collaboration</h3>
-                <p className="font-['Inter'] text-sm text-white/60 leading-[1.6]">
-                  세계 아티스트와의<br />
-                  국제 콜라보레이션
-                </p>
+                <button 
+                  className="mt-8 px-8 py-4 border border-gray-500 text-gray-400 bg-transparent cursor-not-allowed tracking-[0.1em] uppercase"
+                  disabled
+                >
+                  Coming Soon
+                </button>
               </div>
             </div>
-            
-            {/* CTA */}
-            <div className="mt-16">
-              <a 
-                href="/contact" 
-                className="inline-flex items-center gap-3 bg-white/10 text-white px-8 py-4 backdrop-blur-sm border border-white/20 text-sm tracking-[1px] uppercase font-medium transition-all duration-500 hover:bg-white/20 hover:scale-[1.02] hover:border-white/40"
-              >
-                <span>{futureCTA}</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26c.3.16.67.16.97 0L20 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </a>
+
+            {/* Gallery Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {[
+                { num: 1, cms: theroom1CMS },
+                { num: 2, cms: theroom2CMS },
+                { num: 3, cms: theroom3CMS }
+              ].map(({ num, cms }) => (
+                <div key={num} className="relative aspect-square overflow-hidden">
+                  <OptimizedImage 
+                    src={cms.currentUrl || `/images/exhibitions/theroom/${num}.jpg`}
+                    alt={`THE ROOM Gallery ${num}`}
+                    fill={true}
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    className="object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.1]"
+                    onClick={() => openLightbox(cms.currentUrl || `/images/exhibitions/theroom/${num}.jpg`, `THE ROOM Gallery ${num}`)}
+                  />
+                  
+                  {/* CMS 오버레이 */}
+                  {isAuthenticated && (
+                    <div 
+                      className="absolute top-2 left-2 z-20 w-8 h-8"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    >
+                      <SimpleCMS
+                        slotId={`exhibition-theroom-${num}`}
+                        currentUrl={cms.currentUrl}
+                        type="image"
+                        onUpload={cms.handleUpload}
+                        onDelete={cms.handleDelete}
+                        isAdminMode={true}
+                        className="w-full h-full"
+                        placeholder={`The Room ${num}`}
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer - HTML 버전과 완전 동일 */}
-      <footer className="py-[60px] px-10 bg-white text-black text-center border-t border-black/10">
-        <p>&copy; 2025 REDUX. All rights reserved.</p>
-      </footer>
+        {/* Future Exhibitions Section */}
+        <section className="py-20 px-10">
+          <div className="max-w-[1600px] mx-auto text-center">
+            <h2 
+              className="font-['Playfair_Display'] font-bold text-white mb-8 tracking-[-0.02em] leading-[0.9]"
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}
+            >
+              FUTURE<br />EXHIBITIONS
+            </h2>
+            <div className="max-w-[600px] mx-auto space-y-6 text-white/80 text-lg leading-relaxed mb-8">
+              <p>
+                REDUX는 계속해서 새로운 형태의 전시를 준비하고 있습니다.
+              </p>
+              <p>
+                패션과 예술의 경계를 넘나들며, 관객과 함께 만들어가는 특별한 경험을 선사하겠습니다.
+              </p>
+            </div>
+            <button 
+              className="px-8 py-4 border border-white text-white bg-transparent hover:bg-white hover:text-black transition-all duration-300 tracking-[0.1em] uppercase"
+              onClick={() => alert('Stay tuned for updates!')}
+            >
+              Stay Updated
+            </button>
+          </div>
+        </section>
+      </div>
 
-      {/* Enhanced Lightbox Modal */}
+      {/* Lightbox */}
       {lightboxOpen && (
         <div 
-          className="fixed inset-0 bg-black/98 backdrop-blur-2xl z-[10000] flex items-center justify-center transition-all duration-500 animate-[modalFadeIn_0.4s_ease_forwards]"
+          className="fixed inset-0 bg-black/95 backdrop-blur-[20px] z-[10000] flex items-center justify-center opacity-100 transition-opacity duration-[400ms]"
           onClick={handleLightboxClick}
         >
-          <div className="lightbox-content max-w-[92vw] max-h-[92vh] relative animate-[modalSlideIn_0.5s_ease_forwards]">
-            {/* Enhanced close button */}
+          <div className="max-w-[90vw] max-h-[90vh] relative">
             <button 
-              className="absolute -top-14 right-0 w-12 h-12 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white text-xl transition-all duration-300 hover:bg-white/20 hover:scale-110 hover:rotate-90 z-50 group"
+              className="absolute -top-[50px] right-0 bg-transparent border-none text-white text-[30px] cursor-pointer transition-all duration-300 ease-in-out w-10 h-10 flex items-center justify-center hover:text-amber-300 hover:transform hover:scale-120"
               onClick={closeLightbox}
             >
-              <svg className="w-5 h-5 transition-transform duration-300 group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              ×
             </button>
             
-            {/* Image navigation hints */}
-            <div className="absolute -top-14 left-0 text-white/60 text-xs tracking-wider uppercase font-light">
-              Press ESC to close
-            </div>
-            
-            <div className="relative group">
-              <OptimizedImage 
-                src={currentImage}
-                alt={currentAlt}
-                width={1200}
-                height={800}
-                priority={true}
-                sizes="92vw"
-                className="max-w-full max-h-[92vh] object-contain shadow-2xl transition-all duration-500 group-hover:scale-[1.02]"
-                style={{
-                  filter: 'contrast(1.05) brightness(1.02)'
-                }}
-              />
-              
-              {/* Enhanced image info */}
-              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-black/80 via-black/70 to-black/80 backdrop-blur-lg px-6 py-3 rounded-full border border-white/10 text-white text-sm font-light tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="flex items-center gap-3">
-                  <div className="w-[6px] h-[6px] bg-white/60 rounded-full animate-pulse"></div>
-                  <span>{currentAlt}</span>
-                </div>
-              </div>
-              
-              {/* Corner decorations */}
-              <div className="absolute top-4 left-4 w-[20px] h-[20px] border-l-2 border-t-2 border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="absolute top-4 right-4 w-[20px] h-[20px] border-r-2 border-t-2 border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="absolute bottom-4 left-4 w-[20px] h-[20px] border-l-2 border-b-2 border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="absolute bottom-4 right-4 w-[20px] h-[20px] border-r-2 border-b-2 border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </div>
+            <OptimizedImage 
+              src={currentImage}
+              alt={currentAlt}
+              width={1200}
+              height={800}
+              priority={true}
+              sizes="90vw"
+              className="max-w-full max-h-[90vh] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+            />
           </div>
         </div>
       )}
 
-      
-      {/* Simplified CSS Animations */}
       <style jsx>{`
-        @keyframes fadeInUp {
-          0% {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes fadeIn {
-          0% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 1;
-          }
-        }
-        
-        @keyframes modalFadeIn {
-          0% {
-            opacity: 0;
-            backdrop-filter: blur(0px);
-          }
-          100% {
-            opacity: 1;
-            backdrop-filter: blur(20px);
-          }
-        }
-        
-        @keyframes modalSlideIn {
-          0% {
-            opacity: 0;
-            transform: scale(0.8) translateY(50px);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
-        }
-        
-        /* Custom CSS Variables for animations */
-        :root {
-          --primary-black: #000000;
-          --primary-white: #FFFFFF;
-          --accent-mocha: #B7AFA3;
-          --accent-warm: #D4CCC5;
-          --accent-deep: #9A9086;
-          --accent-neutral: #F8F6F4;
-          --gray-light: #F5F5F5;
-          --gray-medium: #999999;
-          --gray-dark: #333333;
-        }
-        
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-          .exhibition-hero-title {
-            font-size: clamp(40px, 10vw, 80px) !important;
+          nav {
+            padding: 15px 20px;
           }
           
-          .exhibition-hero-subtitle {
-            font-size: clamp(12px, 3vw, 16px) !important;
-            letter-spacing: 0.2em !important;
+          .page-title {
+            display: none;
           }
           
-          .lightbox-content {
-            max-width: 95vw !important;
-            max-h-95vh !important;
+          section {
+            padding: 60px 20px;
+          }
+          
+          .grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          section {
+            padding: 40px 15px;
           }
         }
       `}</style>
-
-    </>
+    </div>
   );
-}
-
-// GSAP 타입 확장
-declare global {
-  interface Window {
-    gsap: any;
-  }
 }
