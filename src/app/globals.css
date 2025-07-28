@@ -1,12 +1,12 @@
 /* REDUX - 2024-2025 패션업계 표준 글로벌 스타일 시스템 */
 /* HTML redux6 버전과 완전 동일한 디자인 시스템 구현 */
 
+/* 2024-2025 패션업계 표준 폰트 시스템 - @import는 최상단에 위치 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* 2024-2025 패션업계 표준 폰트 시스템 */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400&display=swap');
 
 @layer base {
   /* === CSS 변수 시스템 === */

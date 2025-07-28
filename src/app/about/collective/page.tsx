@@ -9,48 +9,62 @@ export default function CollectivePage() {
   const router = useRouter();
 
   useEffect(() => {
-    // HTML 버전과 동일한 GSAP 애니메이션 초기화
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('revealed');
-          }, index * 100);
-        }
-      });
-    }, observerOptions);
-    
-    document.querySelectorAll('.member-card').forEach(card => {
-      observer.observe(card);
-    });
-    
-    // Simple animations without GSAP dependency
-    const animateOnScroll = () => {
-      const valueItems = document.querySelectorAll('.value-item');
-      const philosophyTexts = document.querySelectorAll('.philosophy-text');
+    // 클라이언트 사이드에서만 실행
+    if (typeof window === 'undefined') return;
+
+    // 컴포넌트가 마운트된 후 약간의 지연을 두고 실행
+    const timeoutId = setTimeout(() => {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      };
       
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
+      const memberObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in-up');
+            setTimeout(() => {
+              entry.target.classList.add('revealed');
+            }, index * 100);
           }
         });
-      }, { threshold: 0.2 });
+      }, observerOptions);
       
-      valueItems.forEach(item => observer.observe(item));
-      philosophyTexts.forEach(text => observer.observe(text));
-    };
-    
-    // Initialize animations
-    setTimeout(animateOnScroll, 100);
-    
+      // member-card 클래스를 가진 요소들을 찾아서 관찰
+      const memberCards = document.querySelectorAll('.member-card');
+      memberCards.forEach(card => {
+        memberObserver.observe(card);
+      });
+
+      // Simple animations without GSAP dependency
+      const animateOnScroll = () => {
+        const valueItems = document.querySelectorAll('.value-item');
+        const philosophyTexts = document.querySelectorAll('.philosophy-text');
+        
+        const scrollObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animate-fade-in-up');
+            }
+          });
+        }, { threshold: 0.2 });
+        
+        valueItems.forEach(item => scrollObserver.observe(item));
+        philosophyTexts.forEach(text => scrollObserver.observe(text));
+
+        return scrollObserver;
+      };
+      
+      // Initialize animations
+      const scrollObserver = animateOnScroll();
+      
+      return () => {
+        memberObserver.disconnect();
+        scrollObserver?.disconnect();
+      };
+    }, 100);
+
     return () => {
-      observer.disconnect();
+      clearTimeout(timeoutId);
     };
   }, []);
 

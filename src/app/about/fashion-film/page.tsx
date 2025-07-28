@@ -32,6 +32,9 @@ export default function FashionFilmPage() {
   const { slot: kimGyeongsuVideoSlot, currentFiles: kimGyeongsuVideoFiles, updateFiles: updateKimGyeongsuVideoFiles } = useCMSSlot('designer-kimgyeongsu-film');
 
   useEffect(() => {
+    // 클라이언트 사이드에서만 실행
+    if (typeof window === 'undefined') return;
+
     // HTML 버전과 동일한 스크롤 네비게이션 효과
     const handleScroll = () => {
       const navbar = document.getElementById('navbar');
@@ -44,28 +47,6 @@ export default function FashionFilmPage() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-
-    // HTML 버전과 동일한 필름 아이템 reveal 애니메이션
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('revealed');
-          }, index * 100);
-        }
-      });
-    }, observerOptions);
-    
-    document.querySelectorAll('.film-item').forEach(item => {
-      observer.observe(item);
-    });
-
     // ESC 키로 모달 닫기
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -73,12 +54,50 @@ export default function FashionFilmPage() {
       }
     };
 
+    // 이벤트 리스너 추가
+    window.addEventListener('scroll', handleScroll);
     document.addEventListener('keydown', handleKeyDown);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('keydown', handleKeyDown);
-      observer.disconnect();
+    };
+  }, []);
+
+  // 별도 useEffect로 Intersection Observer 처리
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    // 컴포넌트가 마운트된 후 약간의 지연을 두고 실행
+    const timeoutId = setTimeout(() => {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('revealed');
+            }, index * 100);
+          }
+        });
+      }, observerOptions);
+      
+      // film-item 클래스를 가진 요소들을 찾아서 관찰
+      const filmItems = document.querySelectorAll('.film-item');
+      filmItems.forEach(item => {
+        observer.observe(item);
+      });
+
+      return () => {
+        observer.disconnect();
+      };
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
     };
   }, []);
 

@@ -20,10 +20,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#000000' },
-    { media: '(prefers-color-scheme: dark)', color: '#000000' }
-  ],
+  themeColor: '#000000',
   colorScheme: 'dark',
 };
 
@@ -31,6 +28,7 @@ import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import PageTransition from '@/components/ui/PageTransition';
 import InitialLoadingScreen from '@/components/ui/InitialLoadingScreen';
+import ErrorBoundary from '@/components/ui/ErrorBoundary';
 
 export default function RootLayout({
   children,
@@ -135,13 +133,15 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-black text-white overflow-x-hidden">
         <InitialLoadingScreen />
-        <Navigation />
-        <main>
-          <PageTransition>
-            {children}
-          </PageTransition>
-        </main>
-        <Footer />
+        <ErrorBoundary>
+          <Navigation />
+          <main>
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </main>
+          <Footer />
+        </ErrorBoundary>
         
         {/* 성능 최적화 초기화 */}
         <Script

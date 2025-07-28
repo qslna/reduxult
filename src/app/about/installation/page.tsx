@@ -10,6 +10,9 @@ export default function InstallationPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
+    // 클라이언트 사이드에서만 실행
+    if (typeof window === 'undefined') return;
+
     // HTML 버전과 동일한 스크롤 네비게이션 효과
     const handleScroll = () => {
       const navbar = document.getElementById('navbar');
@@ -22,31 +25,6 @@ export default function InstallationPage() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-
-    // HTML 버전과 동일한 설치 아이템 reveal 애니메이션
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
-      });
-    }, observerOptions);
-    
-    document.querySelectorAll('.installation-item').forEach(item => {
-      observer.observe(item);
-    });
-
-    // 갤러리 자동 재생
-    const slideInterval = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % 3);
-    }, 5000);
-
     // 키보드 네비게이션
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
@@ -57,13 +35,54 @@ export default function InstallationPage() {
       }
     };
 
+    // 이벤트 리스너 추가
+    window.addEventListener('scroll', handleScroll);
     document.addEventListener('keydown', handleKeyDown);
+
+    // 갤러리 자동 재생
+    const slideInterval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % 3);
+    }, 5000);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('keydown', handleKeyDown);
       clearInterval(slideInterval);
-      observer.disconnect();
+    };
+  }, []);
+
+  // 별도 useEffect로 Intersection Observer 처리
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    // 컴포넌트가 마운트된 후 약간의 지연을 두고 실행
+    const timeoutId = setTimeout(() => {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      }, observerOptions);
+      
+      // installation-item 클래스를 가진 요소들을 찾아서 관찰
+      const installationItems = document.querySelectorAll('.installation-item');
+      installationItems.forEach(item => {
+        observer.observe(item);
+      });
+
+      return () => {
+        observer.disconnect();
+      };
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
     };
   }, []);
 

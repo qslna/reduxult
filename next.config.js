@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false, // 임시 비활성화로 Hydration 오류 해결
   poweredByHeader: false,
   eslint: {
     ignoreDuringBuilds: true,

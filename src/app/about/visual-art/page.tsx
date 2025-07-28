@@ -9,45 +9,57 @@ export default function VisualArtPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // HTML 버전과 동일한 GSAP 애니메이션 초기화
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('revealed');
-          }, index * 50);
-        }
-      });
-    }, observerOptions);
-    
-    document.querySelectorAll('.visual-item').forEach(item => {
-      observer.observe(item);
-    });
-    
-    // GSAP 애니메이션
-    if (typeof window !== 'undefined' && window.gsap) {
-      // Process items animation
-      window.gsap.utils.toArray('.process-item').forEach((item: any, i: number) => {
-        window.gsap.from(item, {
-          y: 80,
-          opacity: 0,
-          duration: 1,
-          delay: i * 0.2,
-          scrollTrigger: {
-            trigger: item,
-            start: 'top 80%'
+    // 클라이언트 사이드에서만 실행
+    if (typeof window === 'undefined') return;
+
+    // 컴포넌트가 마운트된 후 약간의 지연을 두고 실행
+    const timeoutId = setTimeout(() => {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      };
+      
+      const visualObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('revealed');
+            }, index * 50);
           }
         });
+      }, observerOptions);
+      
+      // visual-item 클래스를 가진 요소들을 찾아서 관찰
+      const visualItems = document.querySelectorAll('.visual-item');
+      visualItems.forEach(item => {
+        visualObserver.observe(item);
       });
-    }
-    
+
+      // GSAP 애니메이션 (선택적)
+      const processObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            // GSAP 대신 CSS 애니메이션 사용
+            setTimeout(() => {
+              entry.target.classList.add('animate-fade-in-up');
+            }, index * 200);
+          }
+        });
+      }, { threshold: 0.2 });
+
+      const processItems = document.querySelectorAll('.process-item');
+      processItems.forEach(item => {
+        processObserver.observe(item);
+      });
+
+      return () => {
+        visualObserver.disconnect();
+        processObserver.disconnect();
+      };
+    }, 100);
+
     return () => {
-      observer.disconnect();
+      clearTimeout(timeoutId);
     };
   }, []);
 
@@ -350,6 +362,29 @@ export default function VisualArtPage() {
         
         .visual-item.revealed {
           animation: revealItem 0.8s ease forwards;
+        }
+        
+        /* Process items animation */
+        .process-item {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .process-item.animate-fade-in-up {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         
         /* Responsive adjustments */

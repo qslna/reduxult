@@ -23,6 +23,9 @@ export default function MemoryPage() {
   // CMS will populate galleryImages from the 'about-memory-gallery' slot
 
   useEffect(() => {
+    // 클라이언트 사이드에서만 실행
+    if (typeof window === 'undefined') return;
+
     // HTML 버전과 동일한 키보드 네비게이션
     const handleKeyDown = (event: KeyboardEvent) => {
       if (isLightboxOpen) {
@@ -42,20 +45,32 @@ export default function MemoryPage() {
 
     document.addEventListener('keydown', handleKeyDown);
     
-    // HTML 버전과 동일한 성능 최적화
-    const preloadImages = () => {
-      galleryImages.slice(0, 6).forEach(src => {
-        const img = new Image();
-        img.src = src;
-      });
-    };
-
-    preloadImages();
-    
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isLightboxOpen]);
+
+  // 이미지 프리로딩을 별도 useEffect로 처리
+  useEffect(() => {
+    if (typeof window === 'undefined' || !galleryImages.length) return;
+
+    // HTML 버전과 동일한 성능 최적화
+    const preloadImages = () => {
+      galleryImages.slice(0, 6).forEach(src => {
+        if (src) {
+          const img = new Image();
+          img.src = src;
+        }
+      });
+    };
+
+    // 약간의 지연을 두고 프리로딩 실행
+    const timeoutId = setTimeout(preloadImages, 100);
+    
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [galleryImages]);
 
   // HTML 버전과 동일한 내비게이션 함수들
   const goBack = () => {
