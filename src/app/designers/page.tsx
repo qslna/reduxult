@@ -63,31 +63,6 @@ function DesignerCard({ designer, index, isAuthenticated, onClick }: DesignerCar
         )}
       </div>
       
-      {/* SimpleCMS 오버레이 */}
-      {isAuthenticated && (
-        <div 
-          className="absolute top-4 left-4 z-20 w-12 h-12"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-        >
-          <SimpleCMS
-            slotId={`designer-${designer.id}-profile`}
-            currentUrl={currentUrl}
-            type="image"
-            onUpload={handleUpload}
-            onDelete={handleDelete}
-            isAdminMode={true}
-            className="w-full h-full"
-            placeholder="프로필 이미지"
-          />
-        </div>
-      )}
       
       <span 
         className="absolute top-[40px] right-[40px] text-[120px] font-light text-white/10 transition-all duration-[600ms] ease-out"

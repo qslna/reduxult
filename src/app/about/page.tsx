@@ -1,14 +1,25 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import OptimizedImage from '@/components/ui/OptimizedImage';
-import CategoryPreview from '@/components/about/CategoryPreview';
+import dynamic from 'next/dynamic';
 import { aboutGalleries } from '@/data/aboutGallery';
 import { useTextContent } from '@/hooks/usePageContent';
 
+// Dynamic imports to prevent hydration issues
+const OptimizedImage = dynamic(() => import('@/components/ui/OptimizedImage'), {
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-gray-800 animate-pulse" />
+});
+
+const CategoryPreview = dynamic(() => import('@/components/about/CategoryPreview'), {
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-gray-800 animate-pulse rounded-lg" />
+});
+
 // HTML redux6 about.html과 완전 동일한 About 페이지 구현
 export default function AboutPage() {
-  // Error handling state
+  // Client-side only state
+  const [isClient, setIsClient] = useState(false);
   const [hasError, setHasError] = useState(false);
   
   // Dynamic content loading
@@ -22,61 +33,92 @@ export default function AboutPage() {
   const { text: philosophyText2 } = useTextContent('about', 'philosophy-text-2', '각자의 개성이 하나로 모여 더 큰 시너지를 만들어냅니다.');
   const { text: philosophyText3 } = useTextContent('about', 'philosophy-text-3', '순간을 넘어 영원히 기억될 경험을 디자인합니다.');
   const { text: valuesTitle } = useTextContent('about', 'values-title', 'OUR VALUES');
+
+  // Ensure client-side rendering
   useEffect(() => {
-    // CSS-based animations without GSAP dependency
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('grid-revealed');
-          }, index * 100);
-        }
-      });
-    }, observerOptions);
-    
-    // Observe grid items for animations
-    document.querySelectorAll('.grid-item').forEach(item => {
-      observer.observe(item);
-    });
-    
-    // Value items reveal animation
-    const valueObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
-      });
-    }, observerOptions);
-    
-    document.querySelectorAll('.value-item').forEach(item => {
-      valueObserver.observe(item);
-    });
-    
-    // Touch feedback for mobile
-    if ('ontouchstart' in window) {
-      document.querySelectorAll('.grid-item').forEach(item => {
-        item.addEventListener('touchstart', function(this: Element) {
-          this.classList.add('touch-active');
+    setIsClient(true);
+  }, []);
+  useEffect(() => {
+    // 클라이언트 사이드에서만 실행
+    if (typeof window === 'undefined') return;
+
+    // 컴포넌트가 마운트된 후 약간의 지연을 두고 실행
+    const timeoutId = setTimeout(() => {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('grid-revealed');
+            }, index * 100);
+          }
         });
-        
-        item.addEventListener('touchend', function(this: Element) {
-          setTimeout(() => {
-            this.classList.remove('touch-active');
-          }, 300);
-        });
+      }, observerOptions);
+      
+      // Observe grid items for animations
+      const gridItems = document.querySelectorAll('.grid-item');
+      gridItems.forEach(item => {
+        observer.observe(item);
       });
-    }
-    
+      
+      // Value items reveal animation
+      const valueObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      }, observerOptions);
+      
+      const valueItems = document.querySelectorAll('.value-item');
+      valueItems.forEach(item => {
+        valueObserver.observe(item);
+      });
+      
+      // Touch feedback for mobile
+      if ('ontouchstart' in window) {
+        gridItems.forEach(item => {
+          const touchStartHandler = function(this: Element) {
+            this.classList.add('touch-active');
+          };
+          
+          const touchEndHandler = function(this: Element) {
+            setTimeout(() => {
+              this.classList.remove('touch-active');
+            }, 300);
+          };
+          
+          item.addEventListener('touchstart', touchStartHandler as any);
+          item.addEventListener('touchend', touchEndHandler as any);
+        });
+      }
+      
+      return () => {
+        observer.disconnect();
+        valueObserver.disconnect();
+      };
+    }, 100);
+
     return () => {
-      observer.disconnect();
-      valueObserver.disconnect();
+      clearTimeout(timeoutId);
     };
   }, []);
+
+  // Show loading until client-side is ready
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-sm opacity-60">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

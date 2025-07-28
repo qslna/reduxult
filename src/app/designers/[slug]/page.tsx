@@ -245,31 +245,6 @@ export default function DesignerPage({ params }: Props) {
                       }}
                     />
                     
-                    {/* CMS 오버레이 - 프로필 이미지 */}
-                    {isAuthenticated && (
-                      <div 
-                        className="absolute top-4 right-4 z-20 w-12 h-12"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                        }}
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                        }}
-                      >
-                        <SimpleCMS
-                          slotId={`designer-${designer.id}-profile`}
-                          currentUrl={profileCMS.currentUrl}
-                          type="image"
-                          onUpload={profileCMS.handleUpload}
-                          onDelete={profileCMS.handleDelete}
-                          isAdminMode={true}
-                          className="w-full h-full"
-                          placeholder="프로필 이미지"
-                        />
-                      </div>
-                    )}
                     
                     {/* Decorative elements */}
                     <div 

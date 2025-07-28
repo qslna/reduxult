@@ -187,27 +187,6 @@ export default function ExhibitionsPage() {
                     onClick={() => openLightbox(cms.currentUrl || `/images/exhibitions/cinemode/${num}.jpg`, `CINE MODE Gallery ${num}`)}
                   />
                   
-                  {/* CMS 오버레이 */}
-                  {isAuthenticated && (
-                    <div 
-                      className="absolute top-2 left-2 z-20 w-8 h-8"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }}
-                    >
-                      <SimpleCMS
-                        slotId={`exhibition-cinemode-${num}`}
-                        currentUrl={cms.currentUrl}
-                        type="image"
-                        onUpload={cms.handleUpload}
-                        onDelete={cms.handleDelete}
-                        isAdminMode={true}
-                        className="w-full h-full"
-                        placeholder={`Cinemode ${num}`}
-                      />
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -295,27 +274,6 @@ export default function ExhibitionsPage() {
                     onClick={() => openLightbox(cms.currentUrl || `/images/exhibitions/theroom/${num}.jpg`, `THE ROOM Gallery ${num}`)}
                   />
                   
-                  {/* CMS 오버레이 */}
-                  {isAuthenticated && (
-                    <div 
-                      className="absolute top-2 left-2 z-20 w-8 h-8"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }}
-                    >
-                      <SimpleCMS
-                        slotId={`exhibition-theroom-${num}`}
-                        currentUrl={cms.currentUrl}
-                        type="image"
-                        onUpload={cms.handleUpload}
-                        onDelete={cms.handleDelete}
-                        isAdminMode={true}
-                        className="w-full h-full"
-                        placeholder={`The Room ${num}`}
-                      />
-                    </div>
-                  )}
                 </div>
               ))}
             </div>

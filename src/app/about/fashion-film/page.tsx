@@ -11,6 +11,7 @@ export default function FashionFilmPage() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFilm, setCurrentFilm] = useState('');
+  const [modalTransform, setModalTransform] = useState({ x: 0, y: 0, scale: 0 });
   
   // CMS integration for fashion films
   const { isAuthenticated } = useSimpleAuth();
@@ -110,16 +111,49 @@ export default function FashionFilmPage() {
     router.push('/');
   };
 
-  const openFilm = (designer: string) => {
+  const openFilm = (designer: string, event: React.MouseEvent) => {
+    const thumbnail = event.currentTarget as HTMLElement;
+    const rect = thumbnail.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // 뷰포트 중앙을 기준으로 오프셋 계산
+    const viewportCenterX = window.innerWidth / 2;
+    const viewportCenterY = window.innerHeight / 2;
+    const offsetX = centerX - viewportCenterX;
+    const offsetY = centerY - viewportCenterY;
+    
+    // 모달을 썸네일 위치에서 시작
+    setModalTransform({ 
+      x: offsetX, 
+      y: offsetY, 
+      scale: 0.1 
+    });
+    
     setCurrentFilm(designer);
     setIsModalOpen(true);
     document.body.style.overflow = 'hidden';
+    
+    // 애니메이션을 위한 약간의 지연 후 중앙으로 확대
+    setTimeout(() => {
+      setModalTransform({ x: 0, y: 0, scale: 1 });
+    }, 50);
   };
 
   const closeFilm = () => {
-    setIsModalOpen(false);
-    setCurrentFilm('');
-    document.body.style.overflow = 'auto';
+    // 닫는 애니메이션: 현재 위치에서 작아짐
+    setModalTransform(prev => ({ 
+      ...prev, 
+      scale: 0.1 
+    }));
+    
+    // 애니메이션 완료 후 모달 제거
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setCurrentFilm('');
+      document.body.style.overflow = 'auto';
+      setModalTransform({ x: 0, y: 0, scale: 0 });
+    }, 300);
   };
 
   // Google Drive video URL formatter - 더 안정적인 URL 생성
@@ -299,7 +333,7 @@ export default function FashionFilmPage() {
             <div 
               key={film.id}
               className="film-item group relative cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards]"
-              onClick={() => openFilm(film.id)}
+              onClick={(e) => openFilm(film.id, e)}
               style={{
                 filter: 'contrast(0.9) brightness(0.95)',
                 transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)'
@@ -346,19 +380,31 @@ export default function FashionFilmPage() {
         </div>
       </section>
 
-      {/* Film Modal - HTML 버전과 완전 동일 */}
+      {/* Film Modal - 라이트박스 스타일 애니메이션 */}
       <div 
         className={`film-modal fixed top-0 left-0 w-full h-screen bg-black/95 flex items-center justify-center z-[2000] transition-all duration-500 ease-in-out ${
           isModalOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
+        onClick={(e) => {
+          // 배경 클릭 시 모달 닫기 (콘텐츠 영역은 제외)
+          if (e.target === e.currentTarget) {
+            closeFilm();
+          }
+        }}
       >
         <div 
-          className="modal-close absolute top-10 right-10 w-[60px] h-[60px] bg-white/10 border border-white/20 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 ease-in-out hover:bg-white/20 hover:transform hover:scale-110 max-[768px]:top-5 max-[768px]:right-5 max-[768px]:w-[50px] max-[768px]:h-[50px]"
+          className="modal-close absolute top-10 right-10 w-[60px] h-[60px] bg-white/10 border border-white/20 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 ease-in-out hover:bg-white/20 hover:transform hover:scale-110 max-[768px]:top-5 max-[768px]:right-5 max-[768px]:w-[50px] max-[768px]:h-[50px] z-[2001]"
           onClick={closeFilm}
         >
           <span className="text-[30px] text-white font-light">×</span>
         </div>
-        <div className="modal-content w-[90%] max-w-[1200px] h-[80vh] relative">
+        <div 
+          className="modal-content w-[90%] max-w-[1200px] h-[80vh] relative transition-all duration-300 ease-out"
+          style={{
+            transform: `translate(${modalTransform.x}px, ${modalTransform.y}px) scale(${modalTransform.scale})`,
+            transformOrigin: 'center center'
+          }}
+        >
           {currentFilm && (
             <div className="w-full h-full relative">
               <iframe
@@ -923,6 +969,32 @@ export default function FashionFilmPage() {
           }
         }
 
+        /* 라이트박스 모달 애니메이션 강화 */
+        .film-modal {
+          backdrop-filter: blur(10px);
+          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .modal-content {
+          will-change: transform;
+          transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        }
+        
+        /* 썸네일 호버 시 확대 효과 강화 */
+        .film-item {
+          will-change: transform, filter;
+        }
+        
+        .film-item:hover {
+          transform: translateY(-8px) scale(1.02) !important;
+          filter: contrast(1.1) brightness(1.05) !important;
+        }
+        
+        .film-item:active {
+          transform: translateY(-4px) scale(0.98) !important;
+          transition: all 0.15s ease !important;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
           .hero-title {
@@ -943,12 +1015,16 @@ export default function FashionFilmPage() {
           }
           
           .modal-content {
-            w-95% !important;
-            h-70vh !important;
+            width: 95% !important;
+            height: 70vh !important;
           }
           
           .film-item:hover {
-            transform: translateY(-4px) !important;
+            transform: translateY(-4px) scale(1.01) !important;
+          }
+          
+          .film-item:active {
+            transform: translateY(-2px) scale(0.99) !important;
           }
 
           .cms-admin-section {
