@@ -9,8 +9,7 @@ import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useCMSSlot } from '@/hooks/useCMSSlot';
 import MediaSlot from '@/components/cms/MediaSlot';
-import FloatingCMSButton from '@/components/cms/FloatingCMSButton';
-import { Plus, Minus } from 'lucide-react';
+import { Minus } from 'lucide-react';
 
 interface Props {
   params: Promise<{
@@ -20,7 +19,6 @@ interface Props {
 
 export default function DesignerPage({ params }: Props) {
   const router = useRouter();
-  const [slug, setSlug] = useState<string>('');
   const [designer, setDesigner] = useState<Designer | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -38,7 +36,6 @@ export default function DesignerPage({ params }: Props) {
       try {
         const resolvedParams = await params;
         const designerSlug = resolvedParams.slug;
-        setSlug(designerSlug);
         
         const designerData = designers.find(d => d.id === designerSlug);
         if (!designerData) {
@@ -81,27 +78,6 @@ export default function DesignerPage({ params }: Props) {
     return () => observer.disconnect();
   }, [designer, isLoading]);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (isLightboxOpen) {
-        switch(event.key) {
-          case 'Escape':
-            closeLightbox();
-            break;
-          case 'ArrowRight':
-            nextImage();
-            break;
-          case 'ArrowLeft':
-            prevImage();
-            break;
-        }
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isLightboxOpen, designer]);
-
   // Navigation functions
   const goBack = () => router.push('/designers');
   const goHome = () => router.push('/');
@@ -131,6 +107,27 @@ export default function DesignerPage({ params }: Props) {
       setCurrentImageIndex(prev => (prev - 1 + currentImages.length) % currentImages.length);
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isLightboxOpen) {
+        switch(event.key) {
+          case 'Escape':
+            closeLightbox();
+            break;
+          case 'ArrowRight':
+            nextImage();
+            break;
+          case 'ArrowLeft':
+            prevImage();
+            break;
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen, nextImage, prevImage]);
 
   const handleLightboxClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -431,8 +428,6 @@ export default function DesignerPage({ params }: Props) {
         </div>
       )}
 
-      {/* Floating CMS Button */}
-      <FloatingCMSButton />
 
       {/* Professional Styles */}
       <style jsx>{`

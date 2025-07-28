@@ -15,14 +15,14 @@ export default function ShowcaseSection() {
   // SimpleCMS 슬롯 - 디자이너 프로필 이미지들
   const kimBominCMS = useSimpleCMS('main-designer-kimbomin', '/images/profile/Kim Bomin.webp');
   const parkParangCMS = useSimpleCMS('main-designer-parkparang', '/images/profile/Park Parang.jpg');
-  const leeTaehyeonCMS = useSimpleCMS('main-designer-leetaehyeon', '/images/profile/Lee Taehyeon.webp');
-  const choiEunsolCMS = useSimpleCMS('main-designer-choieunsol', '/images/profile/Choi Eunsol.webp');
-  const hwangJinsuCMS = useSimpleCMS('main-designer-hwangjinsu', '/images/profile/Hwang Jinsu.webp');
+  const leeTaehyeonCMS = useSimpleCMS('main-designer-leetaehyeon', '/images/profile/Lee Taehyeon.jpg');
+  const choiEunsolCMS = useSimpleCMS('main-designer-choieunsol', '/images/profile/Choi Eunsol.jpeg');
+  const hwangJinsuCMS = useSimpleCMS('main-designer-hwangjinsu', '/images/profile/Hwang Jinsu.jpg');
   const kimGyeongsuCMS = useSimpleCMS('main-designer-kimgyeongsu', '/images/profile/Kim Gyeongsu.webp');
   
   // SimpleCMS 슬롯 - 전시 프리뷰 이미지들
-  const cinemodeCMS = useSimpleCMS('main-exhibition-cinemode', '/images/exhibition/cinemode-preview.webp');
-  const theroomCMS = useSimpleCMS('main-exhibition-theroom', '/images/exhibition/theroom-preview.webp');
+  const cinemodeCMS = useSimpleCMS('main-exhibition-cinemode', '/images/exhibitions/cinemode/1.jpg');
+  const theroomCMS = useSimpleCMS('main-exhibition-theroom', '/images/exhibitions/theroom/1.jpg');
   
   useEffect(() => {
     // HTML 버전과 동일한 GSAP 애니메이션 (모바일이 아닌 경우에만)
@@ -351,7 +351,7 @@ export default function ShowcaseSection() {
             data-manageable="exhibition"
           >
             <OptimizedImage 
-              src={cinemodeCMS.currentUrl || "/images/exhibition/cinemode-preview.webp"} 
+              src={cinemodeCMS.currentUrl || "/images/exhibitions/cinemode/1.jpg"} 
               alt="Cinemode Exhibition" 
               fill={true}
               priority={false}
@@ -396,7 +396,7 @@ export default function ShowcaseSection() {
             data-manageable="exhibition"
           >
             <OptimizedImage 
-              src={theroomCMS.currentUrl || "/images/exhibition/theroom-preview.webp"} 
+              src={theroomCMS.currentUrl || "/images/exhibitions/theroom/1.jpg"} 
               alt="The Room Exhibition" 
               fill={true}
               priority={false}
