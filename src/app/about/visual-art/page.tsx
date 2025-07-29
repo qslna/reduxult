@@ -2,16 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import { useCMSSlot } from '@/hooks/useCMSSlot';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
-
-// Dynamic imports to prevent hydration issues
-const OptimizedImage = dynamic(() => import('@/components/ui/OptimizedImage'), {
-  ssr: false,
-  loading: () => <div className="w-full h-full bg-gray-800 animate-pulse" />
-});
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 about-visual-art.html과 완전 동일한 Visual Art 페이지 구현
 export default function VisualArtPage() {
@@ -40,60 +34,46 @@ export default function VisualArtPage() {
     setIsClient(true);
   }, []);
 
+  // Intersection Observer 애니메이션 - 클라이언트에서만
   useEffect(() => {
-    // 클라이언트 사이드에서만 실행
-    if (typeof window === 'undefined') return;
+    if (!isClient) return;
 
-    // 컴포넌트가 마운트된 후 약간의 지연을 두고 실행
-    const timeoutId = setTimeout(() => {
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-      };
-      
-      const visualObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              entry.target.classList.add('revealed');
-            }, index * 50);
-          }
-        });
-      }, observerOptions);
-      
-      // visual-item 클래스를 가진 요소들을 찾아서 관찰
-      const visualItems = document.querySelectorAll('.visual-item');
-      visualItems.forEach(item => {
-        visualObserver.observe(item);
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const visualObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('revealed');
+          }, index * 50);
+        }
       });
-
-      // GSAP 애니메이션 (선택적)
-      const processObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting) {
-            // GSAP 대신 CSS 애니메이션 사용
-            setTimeout(() => {
-              entry.target.classList.add('animate-fade-in-up');
-            }, index * 200);
-          }
-        });
-      }, { threshold: 0.2 });
-
-      const processItems = document.querySelectorAll('.process-item');
-      processItems.forEach(item => {
-        processObserver.observe(item);
+    }, observerOptions);
+    
+    const processObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('animate-fade-in-up');
+          }, index * 200);
+        }
       });
+    }, { threshold: 0.2 });
 
-      return () => {
-        visualObserver.disconnect();
-        processObserver.disconnect();
-      };
-    }, 100);
+    const visualItems = document.querySelectorAll('.visual-item');
+    const processItems = document.querySelectorAll('.process-item');
+    
+    visualItems.forEach(item => visualObserver.observe(item));
+    processItems.forEach(item => processObserver.observe(item));
 
     return () => {
-      clearTimeout(timeoutId);
+      visualObserver.disconnect();
+      processObserver.disconnect();
     };
-  }, []);
+  }, [isClient]);
 
   // HTML 버전과 동일한 내비게이션 함수들
   const goBack = () => {
@@ -104,16 +84,9 @@ export default function VisualArtPage() {
     router.push('/');
   };
 
-  // Show loading until client-side is ready
+  // 서버 사이드 렌더링 중에는 null 반환 - 로딩 화면 없이
   if (!isClient) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-center">
-          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-sm opacity-60">Loading...</p>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (

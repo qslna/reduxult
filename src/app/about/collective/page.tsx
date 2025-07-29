@@ -2,13 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
-
-// Dynamic imports to prevent hydration issues
-const OptimizedImage = dynamic(() => import('@/components/ui/OptimizedImage'), {
-  ssr: false,
-  loading: () => <div className="w-full h-full bg-gray-800 animate-pulse" />
-});
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 about-collective.html과 완전 동일한 Collective 페이지 구현
 export default function CollectivePage() {
@@ -20,65 +14,46 @@ export default function CollectivePage() {
     setIsClient(true);
   }, []);
 
+  // Intersection Observer 애니메이션 - 클라이언트에서만
   useEffect(() => {
-    // 클라이언트 사이드에서만 실행
-    if (typeof window === 'undefined') return;
+    if (!isClient) return;
 
-    // 컴포넌트가 마운트된 후 약간의 지연을 두고 실행
-    const timeoutId = setTimeout(() => {
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-      };
-      
-      const memberObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              entry.target.classList.add('revealed');
-            }, index * 100);
-          }
-        });
-      }, observerOptions);
-      
-      // member-card 클래스를 가진 요소들을 찾아서 관찰
-      const memberCards = document.querySelectorAll('.member-card');
-      memberCards.forEach(card => {
-        memberObserver.observe(card);
-      });
-
-      // Simple animations without GSAP dependency
-      const animateOnScroll = () => {
-        const valueItems = document.querySelectorAll('.value-item');
-        const philosophyTexts = document.querySelectorAll('.philosophy-text');
-        
-        const scrollObserver = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('animate-fade-in-up');
-            }
-          });
-        }, { threshold: 0.2 });
-        
-        valueItems.forEach(item => scrollObserver.observe(item));
-        philosophyTexts.forEach(text => scrollObserver.observe(text));
-
-        return scrollObserver;
-      };
-      
-      // Initialize animations
-      const scrollObserver = animateOnScroll();
-      
-      return () => {
-        memberObserver.disconnect();
-        scrollObserver?.disconnect();
-      };
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
     };
-  }, []);
+    
+    const memberObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('revealed');
+          }, index * 100);
+        }
+      });
+    }, observerOptions);
+    
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-in-up');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    const memberCards = document.querySelectorAll('.member-card');
+    const valueItems = document.querySelectorAll('.value-item');
+    const philosophyTexts = document.querySelectorAll('.philosophy-text');
+    
+    memberCards.forEach(card => memberObserver.observe(card));
+    valueItems.forEach(item => scrollObserver.observe(item));
+    philosophyTexts.forEach(text => scrollObserver.observe(text));
+    
+    return () => {
+      memberObserver.disconnect();
+      scrollObserver.disconnect();
+    };
+  }, [isClient]);
 
   // HTML 버전과 동일한 내비게이션 함수들
   const goBack = () => {
@@ -93,16 +68,9 @@ export default function CollectivePage() {
     router.push(`/designers/${designer}`);
   };
 
-  // Show loading until client-side is ready
+  // 서버 사이드 렌더링 중에는 null 반환 - 로딩 화면 없이
   if (!isClient) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-center">
-          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-sm opacity-60">Loading...</p>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (

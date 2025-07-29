@@ -5,38 +5,92 @@ import { useRouter } from 'next/navigation';
 import { useCMSSlot } from '@/hooks/useCMSSlot';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
-// HTML redux6 about-fashion-film.html과 완전 동일한 Fashion Film 페이지 구현
+// 최적화된 Fashion Film 페이지
 export default function FashionFilmPage() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFilm, setCurrentFilm] = useState('');
   const [modalTransform, setModalTransform] = useState({ x: 0, y: 0, scale: 0 });
+  const [isClient, setIsClient] = useState(false);
   
-  // CMS integration for fashion films
+  // CMS integration
   const { isAuthenticated } = useSimpleAuth();
   
-  // Individual CMS slots for each designer's fashion film content
-  const { slot: kimBominSlot, currentFiles: kimBominFiles, updateFiles: updateKimBominFiles } = useCMSSlot('about-fashionfilm-kimbomin-thumbnail');
-  const { slot: parkParangSlot, currentFiles: parkParangFiles, updateFiles: updateParkParangFiles } = useCMSSlot('about-fashionfilm-parkparang-thumbnail');
-  const { slot: leeTaehyeonSlot, currentFiles: leeTaehyeonFiles, updateFiles: updateLeeTaehyeonFiles } = useCMSSlot('about-fashionfilm-leetaehyeon-thumbnail');
-  const { slot: choiEunsolSlot, currentFiles: choiEunsolFiles, updateFiles: updateChoiEunsolFiles } = useCMSSlot('about-fashionfilm-choieunsol-thumbnail');
-  const { slot: hwangJinsuSlot, currentFiles: hwangJinsuFiles, updateFiles: updateHwangJinsuFiles } = useCMSSlot('about-fashionfilm-hwangjinsu-thumbnail');
-  const { slot: kimGyeongsuSlot, currentFiles: kimGyeongsuFiles, updateFiles: updateKimGyeongsuFiles } = useCMSSlot('about-fashionfilm-kimgyeongsu-thumbnail');
-  
-  // Video slots for Google Drive links
-  const { slot: kimBominVideoSlot, currentFiles: kimBominVideoFiles, updateFiles: updateKimBominVideoFiles } = useCMSSlot('designer-kimbomin-film');
-  const { slot: parkParangVideoSlot, currentFiles: parkParangVideoFiles, updateFiles: updateParkParangVideoFiles } = useCMSSlot('designer-parkparang-film');
-  const { slot: leeTaehyeonVideoSlot, currentFiles: leeTaehyeonVideoFiles, updateFiles: updateLeeTaehyeonVideoFiles } = useCMSSlot('designer-leetaehyeon-film');
-  const { slot: choiEunsolVideoSlot, currentFiles: choiEunsolVideoFiles, updateFiles: updateChoiEunsolVideoFiles } = useCMSSlot('designer-choieunsol-film');
-  const { slot: hwangJinsuVideoSlot, currentFiles: hwangJinsuVideoFiles, updateFiles: updateHwangJinsuVideoFiles } = useCMSSlot('designer-hwangjinsu-film');
-  const { slot: kimGyeongsuVideoSlot, currentFiles: kimGyeongsuVideoFiles, updateFiles: updateKimGyeongsuVideoFiles } = useCMSSlot('designer-kimgyeongsu-film');
+  // 최적화된 CMS 슬롯 데이터 구조
+  const filmData = [
+    {
+      id: 'kimbomin',
+      name: 'Kim Bomin',
+      title: 'CHASING VOWS',
+      description: '설레임과 이별의 감정을 담은 서사',
+      thumbnailSlot: useCMSSlot('about-fashionfilm-kimbomin-thumbnail'),
+      videoSlot: useCMSSlot('designer-kimbomin-film'),
+      defaultThumbnail: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
+      defaultVideo: '1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X'
+    },
+    {
+      id: 'parkparang',
+      name: 'Park Parang',
+      title: 'THE TIME BETWEEN',
+      description: '시간의 틈 사이에서 발견하는 아름다움',
+      thumbnailSlot: useCMSSlot('about-fashionfilm-parkparang-thumbnail'),
+      videoSlot: useCMSSlot('designer-parkparang-film'),
+      defaultThumbnail: '/images/profile/Park Parang.jpg',
+      defaultVideo: '15d901XRElkF5p7xiJYelIyblYFb-PtsD'
+    },
+    {
+      id: 'leetaehyeon',
+      name: 'Lee Taehyeon',
+      title: 'POLYHEDRON',
+      description: '다면체로 표현하는 인간의 복잡성',
+      thumbnailSlot: useCMSSlot('about-fashionfilm-leetaehyeon-thumbnail'),
+      videoSlot: useCMSSlot('designer-leetaehyeon-film'),
+      defaultThumbnail: '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
+      defaultVideo: '1fG2fchKvEG7i7Lo79K7250mgiVTse6ks'
+    },
+    {
+      id: 'choieunsol',
+      name: 'Choi Eunsol',
+      title: 'SOUL SUCKER',
+      description: '영혼을 빨아드리는 유혹의 힘',
+      thumbnailSlot: useCMSSlot('about-fashionfilm-choieunsol-thumbnail'),
+      videoSlot: useCMSSlot('designer-choieunsol-film'),
+      defaultThumbnail: '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
+      defaultVideo: '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3'
+    },
+    {
+      id: 'hwangjinsu',
+      name: 'Hwang Jinsu',
+      title: 'WHO AM I ?!',
+      description: '자아에 대한 끝없는 물음',
+      thumbnailSlot: useCMSSlot('about-fashionfilm-hwangjinsu-thumbnail'),
+      videoSlot: useCMSSlot('designer-hwangjinsu-film'),
+      defaultThumbnail: '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
+      defaultVideo: '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d'
+    },
+    {
+      id: 'kimgyeongsu',
+      name: 'Kim Gyeongsu',
+      title: 'TO BE REVEALED',
+      description: '드러날 진실에 대한 고민',
+      thumbnailSlot: useCMSSlot('about-fashionfilm-kimgyeongsu-thumbnail'),
+      videoSlot: useCMSSlot('designer-kimgyeongsu-film'),
+      defaultThumbnail: '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg',
+      defaultVideo: '1Hl594dd_MY714hZwmklTAPTc-pofe9bY'
+    }
+  ];
+
+  // 클라이언트 마운트 처리
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
-    // 클라이언트 사이드에서만 실행
-    if (typeof window === 'undefined') return;
+    if (!isClient) return;
 
-    // HTML 버전과 동일한 스크롤 네비게이션 효과
+    // 스크롤 네비게이션 효과
     const handleScroll = () => {
       const navbar = document.getElementById('navbar');
       if (navbar) {
@@ -48,35 +102,19 @@ export default function FashionFilmPage() {
       }
     };
 
-    // ESC 키로 모달 닫기
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        closeFilm();
+    // 키보드 모달 닫기
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isModalOpen) {
+        closeModal();
       }
     };
 
-    // 이벤트 리스너 추가
     window.addEventListener('scroll', handleScroll);
     document.addEventListener('keydown', handleKeyDown);
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
 
-  // 별도 useEffect로 Intersection Observer 처리
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    // 컴포넌트가 마운트된 후 약간의 지연을 두고 실행
-    const timeoutId = setTimeout(() => {
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-      };
-      
-      const observer = new IntersectionObserver((entries) => {
+    // Intersection Observer for animations
+    const observer = new IntersectionObserver(
+      (entries) => {
         entries.forEach((entry, index) => {
           if (entry.isIntersecting) {
             setTimeout(() => {
@@ -84,152 +122,107 @@ export default function FashionFilmPage() {
             }, index * 100);
           }
         });
-      }, observerOptions);
-      
-      // film-item 클래스를 가진 요소들을 찾아서 관찰
-      const filmItems = document.querySelectorAll('.film-item');
-      filmItems.forEach(item => {
-        observer.observe(item);
-      });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
+    );
 
-      return () => {
-        observer.disconnect();
-      };
-    }, 100);
+    const filmItems = document.querySelectorAll('.film-item');
+    filmItems.forEach(item => observer.observe(item));
 
     return () => {
-      clearTimeout(timeoutId);
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('keydown', handleKeyDown);
+      observer.disconnect();
     };
-  }, []);
+  }, [isClient, isModalOpen]);
 
-  // HTML 버전과 동일한 내비게이션 함수들
   const goBack = () => {
-    router.back();
+    router.push('/about');
   };
 
   const goHome = () => {
     router.push('/');
   };
 
-  const openFilm = (designer: string, event: React.MouseEvent) => {
+  const formatGoogleDriveUrl = (cmsUrl: string | undefined, defaultId: string) => {
+    const fileId = cmsUrl || defaultId;
+    return `https://drive.google.com/file/d/${fileId}/preview?usp=sharing&controls=1&modestbranding=1&rel=0&showinfo=0`;
+  };
+
+  const openFilm = (filmId: string, event: React.MouseEvent) => {
+    if (!isClient) return;
+    
+    const film = filmData.find(f => f.id === filmId);
+    if (!film) return;
+
     const thumbnail = event.currentTarget as HTMLElement;
     const rect = thumbnail.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
-    // 뷰포트 중앙을 기준으로 오프셋 계산
     const viewportCenterX = window.innerWidth / 2;
     const viewportCenterY = window.innerHeight / 2;
     const offsetX = centerX - viewportCenterX;
     const offsetY = centerY - viewportCenterY;
     
-    // 모달을 썸네일 위치에서 시작
     setModalTransform({ 
       x: offsetX, 
       y: offsetY, 
       scale: 0.1 
     });
     
-    setCurrentFilm(designer);
+    const videoFile = film.videoSlot.currentFiles[0] || film.defaultVideo;
+    setCurrentFilm(videoFile);
     setIsModalOpen(true);
     document.body.style.overflow = 'hidden';
     
-    // 애니메이션을 위한 약간의 지연 후 중앙으로 확대
     setTimeout(() => {
       setModalTransform({ x: 0, y: 0, scale: 1 });
     }, 50);
   };
 
-  const closeFilm = () => {
-    // 닫는 애니메이션: 현재 위치에서 작아짐
-    setModalTransform(prev => ({ 
-      ...prev, 
-      scale: 0.1 
-    }));
-    
-    // 애니메이션 완료 후 모달 제거
-    setTimeout(() => {
-      setIsModalOpen(false);
-      setCurrentFilm('');
-      document.body.style.overflow = 'auto';
-      setModalTransform({ x: 0, y: 0, scale: 0 });
-    }, 300);
-  };
-
-  // Google Drive video URL formatter - 더 안정적인 URL 생성
-  const formatGoogleDriveUrl = (fileId: string | undefined, fallbackId: string) => {
-    const id = fileId || fallbackId;
-    // Google Drive 임베드를 위한 올바른 URL 형식 사용
-    return `https://drive.google.com/file/d/${id}/preview?usp=sharing`;
-  };
-
-  // Dynamic films data from CMS - 각 디자이너별 개별 관리
-  const films = [
-    { 
-      designer: 'KIM BOMIN', 
-      title: 'CHASING VOWS', 
-      id: 'kimbomin',
-      thumbnail: kimBominFiles[0] || '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
-      videoUrl: formatGoogleDriveUrl(kimBominVideoFiles[0], '1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X')
-    },
-    { 
-      designer: 'PARK PARANG', 
-      title: 'THE TIME BETWEEN', 
-      id: 'parkparang',
-      thumbnail: parkParangFiles[0] || '/images/profile/Park Parang.jpg',
-      videoUrl: formatGoogleDriveUrl(parkParangVideoFiles[0], '15d901XRElkF5p7xiJYelIyblYFb-PtsD')
-    },
-    { 
-      designer: 'LEE TAEHYEON', 
-      title: 'POLYHEDRON', 
-      id: 'leetaehyeon',
-      thumbnail: leeTaehyeonFiles[0] || '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
-      videoUrl: formatGoogleDriveUrl(leeTaehyeonVideoFiles[0], '1fG2fchKvEG7i7Lo79K7250mgiVTse6ks')
-    },
-    { 
-      designer: 'CHOI EUNSOL', 
-      title: 'SOUL SUCKER', 
-      id: 'choieunsol',
-      thumbnail: choiEunsolFiles[0] || '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
-      videoUrl: formatGoogleDriveUrl(choiEunsolVideoFiles[0], '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3')
-    },
-    { 
-      designer: 'HWANG JINSU', 
-      title: 'WHO AM I ?!', 
-      id: 'hwangjinsu',
-      thumbnail: hwangJinsuFiles[0] || '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
-      videoUrl: formatGoogleDriveUrl(hwangJinsuVideoFiles[0], '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d')
-    },
-    { 
-      designer: 'KIM GYEONGSU', 
-      title: 'TO BE REVEALED', 
-      id: 'kimgyeongsu',
-      thumbnail: kimGyeongsuFiles[0] || '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg',
-      videoUrl: formatGoogleDriveUrl(kimGyeongsuVideoFiles[0], '1Hl594dd_MY714hZwmklTAPTc-pofe9bY')
+  const closeModal = () => {
+    setIsModalOpen(false);
+    if (isClient) {
+      document.body.style.overflow = '';
     }
-  ];
+  };
+
+  const handleModalClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
+  };
+
+  // 서버 사이드 렌더링 중에는 null 반환
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <>
-      {/* Navigation - HTML 버전과 동일한 다크 테마 */}
+      {/* Navigation */}
       <nav 
         id="navbar"
-        className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[10px] z-[1000] transition-all duration-300 ease-in-out border-b border-white/10 scrolled:py-[15px] scrolled:px-10 scrolled:bg-black/98"
+        className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[10px] z-[1000] transition-all duration-300 ease-in-out border-b border-white/10"
+        style={{
+          transition: 'all 0.3s ease-in-out'
+        }}
       >
         <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
           <div className="nav-left flex items-center gap-10">
             <span 
-              className="back-button text-xl cursor-pointer transition-all duration-300 ease-in-out text-white hover:transform hover:-translate-x-[5px]"
+              className="back-button text-xl cursor-pointer transition-all duration-300 ease-in-out text-white hover:transform hover:-translate-x-[5px] hover:text-amber-300"
               onClick={goBack}
             >
               ←
             </span>
-            <span className="page-title text-lg font-medium tracking-[2px] text-white max-[768px]:hidden">
+            <span className="page-title text-lg font-medium tracking-[2px] text-amber-300 uppercase max-[768px]:hidden">
               FASHION FILM
             </span>
           </div>
           <div 
-            className="logo text-2xl font-bold tracking-[2px] cursor-pointer transition-opacity duration-300 ease-in-out text-white hover:opacity-70"
+            className="logo font-['Playfair_Display'] text-2xl font-bold tracking-[2px] cursor-pointer transition-opacity duration-300 ease-in-out text-white hover:opacity-70"
             onClick={goHome}
           >
             REDUX
@@ -237,519 +230,165 @@ export default function FashionFilmPage() {
         </div>
       </nav>
 
-      {/* Hero Section - 디자이너 스타일 강화 */}
+      {/* Hero Section */}
       <section className="hero-section h-screen relative flex items-center justify-center bg-black overflow-hidden pt-[100px]">
-        {/* 배경 노이즈 텍스처 */}
+        {/* Background texture */}
         <div 
+          className="absolute inset-0 opacity-[0.05]"
           style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E")',
-            zIndex: 1
+            backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'2\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'1\'/%3E%3C/svg%3E")'
           }}
         />
         
-        {/* 비대칭 기하학적 요소들 */}
+        {/* Decorative elements */}
         <div 
-          style={{
-            position: 'absolute',
-            top: '15%',
-            right: '10%',
-            width: '200px',
-            height: '1px',
-            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-            transform: 'rotate(-25deg)',
-            zIndex: 2
-          }}
+          className="absolute top-[15%] right-[10%] w-[200px] h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"
+          style={{ transform: 'rotate(-25deg)' }}
         />
         <div 
-          style={{
-            position: 'absolute',
-            bottom: '25%',
-            left: '15%',
-            width: '80px',
-            height: '80px',
-            border: '1px solid rgba(255,255,255,0.15)',
-            borderRadius: '50%',
-            transform: 'rotate(15deg)',
-            zIndex: 2
-          }}
+          className="absolute bottom-[25%] left-[8%] w-[80px] h-[80px] border border-white/20"
+          style={{ transform: 'rotate(15deg)', borderRadius: '30%' }}
         />
         
-        <div className="hero-content text-center relative z-10">
+        <div className="hero-content text-center z-10">
           <h1 
-            className="hero-title font-bold uppercase text-white text-center opacity-0 transform translate-y-[50px] animate-[heroFade_1.5s_ease_forwards] tracking-[0.2em] glitch-text"
-            style={{ 
-              fontSize: 'clamp(60px, 10vw, 160px)',
-              fontFamily: "'Inter', 'Helvetica', sans-serif",
-              textShadow: '0 0 30px rgba(255,255,255,0.1)'
-            }}
+            className="hero-title font-['Playfair_Display'] font-thin uppercase text-white tracking-[0.2em] leading-[0.8]"
+            style={{ fontSize: 'clamp(60px, 10vw, 160px)' }}
           >
-            Fashion Film
+            FASHION<br />FILM
           </h1>
-          <div 
-            className="hero-separator"
-            style={{
-              width: '100px',
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent, #fff, transparent)',
-              margin: '30px auto',
-              opacity: 0,
-              animation: 'fadeInUp 1s ease forwards',
-              animationDelay: '0.5s'
-            }}
-          />
-          <p 
-            className="hero-subtitle text-sm tracking-[4px] text-white opacity-0 uppercase"
-            style={{
-              animation: 'fadeInUp 1s ease forwards',
-              animationDelay: '0.7s',
-              fontWeight: 300,
-              letterSpacing: '0.3em'
-            }}
-          >
-            CINE MODE Exhibition Films
+          <p className="hero-subtitle text-base tracking-[3px] text-amber-300 mt-8 opacity-80">
+            Moving Images, Moving Stories
           </p>
         </div>
       </section>
 
-      {/* Film Grid Section - HTML 버전과 완전 동일 */}
-      <section className="film-grid-section py-[120px] px-10 bg-black">
+      {/* Films Grid Section */}
+      <section className="films-section py-[120px] px-10 bg-black">
         <div className="section-intro max-w-[800px] mx-auto mb-[120px] text-center">
-          <h2 className="text-4xl font-light tracking-[3px] text-white mb-[30px]">
-            CINE MODE
+          <h2 className="text-4xl font-['Playfair_Display'] font-light tracking-[3px] text-white mb-[30px]">
+            6인 6색의 시각적 서사
           </h2>
-          <p className="text-base leading-[2] text-[--gray-medium]">
-            REDUX의 'CINE MODE' 패션 필름 전시회는 단순한 스타일 전시를 넘어 
-            영상에 각자의 이야기를 담아 관객들과의 유대감 형성에 집중한 전시입니다.
+          <p className="text-base leading-[2] text-white/70">
+            REDUX의 각 디자이너가 자신만의 시선으로 풀어낸 패션 필름 컬렉션입니다.<br />
+            의상을 넘어선 이야기, 움직임을 통해 전달되는 감정을 경험해보세요.
           </p>
         </div>
         
-        <div className="film-grid grid grid-cols-3 gap-[60px] max-w-[1400px] mx-auto max-[1024px]:grid-cols-2 max-[1024px]:gap-10 max-[768px]:grid-cols-1 max-[768px]:gap-[60px]">
-          {films.map((film) => (
-            <div 
-              key={film.id}
-              className="film-item group relative cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards]"
-              onClick={(e) => openFilm(film.id, e)}
-              style={{
-                filter: 'contrast(0.9) brightness(0.95)',
-                transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)'
-              }}
-            >
-              <div className="film-thumbnail relative pb-[133.33%] overflow-hidden rounded-lg border border-white/10 before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-gradient-to-t before:from-black/60 before:via-transparent before:to-black/20 before:z-[1] before:transition-opacity before:duration-500 before:ease-in-out group-hover:before:opacity-30">
-                <img 
-                  src={film.thumbnail}
-                  alt={`${film.designer} - ${film.title}`}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                  style={{
-                    filter: 'grayscale(20%) contrast(1.1) brightness(0.9)',
-                    transition: 'all 0.7s cubic-bezier(0.23, 1, 0.32, 1)'
-                  }}
+        <div className="films-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1400px] mx-auto">
+          {filmData.map((film, index) => {
+            const thumbnailUrl = film.thumbnailSlot.currentFiles[0] || film.defaultThumbnail;
+            
+            return (
+              <div 
+                key={film.id}
+                className="film-item relative overflow-hidden cursor-pointer group opacity-0 transform translate-y-[50px]"
+                style={{ 
+                  aspectRatio: '16/10',
+                  animation: `revealItem 0.8s ease forwards`,
+                  animationDelay: `${index * 200}ms`
+                }}
+                onClick={(e) => openFilm(film.id, e)}
+              >
+                <OptimizedImage 
+                  src={thumbnailUrl}
+                  alt={`${film.name} - ${film.title}`}
+                  fill={true}
+                  priority={index < 3}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-all duration-[800ms] group-hover:scale-105"
                 />
-                <div className="play-button absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white/10 backdrop-blur-[10px] border-2 border-white/30 rounded-full flex items-center justify-center z-[2] transition-all duration-500 ease-out group-hover:scale-125 group-hover:bg-white/20 group-hover:border-white/50">
-                  <svg 
-                    viewBox="0 0 24 24" 
-                    className="w-6 h-6 fill-white ml-1 transition-all duration-300"
-                  >
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
+                
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                  <div className="text-white">
+                    <h3 className="text-xl font-['Playfair_Display'] font-medium tracking-[2px] mb-2 text-amber-300">
+                      {film.title}
+                    </h3>
+                    <p className="text-sm tracking-[1px] mb-1 uppercase">
+                      {film.name}
+                    </p>
+                    <p className="text-xs opacity-80 leading-relaxed">
+                      {film.description}
+                    </p>
+                  </div>
+                  
+                  {/* Play icon */}
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                      <div className="w-0 h-0 border-l-[12px] border-l-white border-y-[8px] border-y-transparent ml-1"></div>
+                    </div>
+                  </div>
                 </div>
                 
-                {/* 글리치 효과 */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[1]"
-                  style={{
-                    background: 'linear-gradient(45deg, transparent 48%, rgba(255,0,0,0.03) 49%, rgba(255,0,0,0.03) 51%, transparent 52%, transparent 58%, rgba(0,255,255,0.03) 59%, rgba(0,255,255,0.03) 61%, transparent 62%)',
-                    animation: 'glitchSlide 2s ease-in-out infinite'
-                  }}
-                />
+                {/* CMS overlay for admin */}
+                {isAuthenticated && (
+                  <div 
+                    className="absolute top-2 right-2 z-20 w-8 h-8"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                  >
+                    <MediaSlot
+                      slot={film.thumbnailSlot.slot!}
+                      currentFiles={film.thumbnailSlot.currentFiles}
+                      onFilesUpdate={film.thumbnailSlot.updateFiles}
+                      isAdminMode={true}
+                    />
+                  </div>
+                )}
               </div>
-              <div className="film-info py-[30px]">
-                <h3 className="film-designer text-xl font-light tracking-[2px] text-white mb-[10px]">
-                  {film.designer}
-                </h3>
-                <p className="film-title text-sm tracking-[1px] text-[--gray-medium] uppercase">
-                  {film.title}
-                </p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
-      {/* Film Modal - 라이트박스 스타일 애니메이션 */}
-      <div 
-        className={`film-modal fixed top-0 left-0 w-full h-screen bg-black/95 flex items-center justify-center z-[2000] transition-all duration-500 ease-in-out ${
-          isModalOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-        onClick={(e) => {
-          // 배경 클릭 시 모달 닫기 (콘텐츠 영역은 제외)
-          if (e.target === e.currentTarget) {
-            closeFilm();
-          }
-        }}
-      >
+      {/* Video Modal */}
+      {isModalOpen && (
         <div 
-          className="modal-close absolute top-10 right-10 w-[60px] h-[60px] bg-white/10 border border-white/20 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 ease-in-out hover:bg-white/20 hover:transform hover:scale-110 max-[768px]:top-5 max-[768px]:right-5 max-[768px]:w-[50px] max-[768px]:h-[50px] z-[2001]"
-          onClick={closeFilm}
-        >
-          <span className="text-[30px] text-white font-light">×</span>
-        </div>
-        <div 
-          className="modal-content w-[90%] max-w-[1200px] h-[80vh] relative transition-all duration-300 ease-out"
+          className="modal-overlay fixed inset-0 bg-black/95 z-[10000] flex items-center justify-center cursor-pointer"
+          onClick={handleModalClick}
           style={{
-            transform: `translate(${modalTransform.x}px, ${modalTransform.y}px) scale(${modalTransform.scale})`,
-            transformOrigin: 'center center'
+            backdropFilter: 'blur(20px)'
           }}
         >
-          {currentFilm && (
-            <div className="w-full h-full relative">
-              <iframe
-                src={films.find(f => f.id === currentFilm)?.videoUrl || ''}
-                className="w-full h-full rounded-lg"
-                allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope"
-                allowFullScreen
-                loading="lazy"
-                style={{
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  boxShadow: '0 20px 60px rgba(0,0,0,0.5)'
-                }}
-                onError={(e) => {
-                  console.error('Video load error:', e);
-                  // 에러 발생 시 사용자에게 메시지 표시
-                  const errorDiv = document.createElement('div');
-                  errorDiv.innerHTML = `
-                    <div style="
-                      position: absolute;
-                      top: 50%;
-                      left: 50%;
-                      transform: translate(-50%, -50%);
-                      color: white;
-                      text-align: center;
-                      z-index: 1000;
-                    ">
-                      <p style="font-size: 18px; margin-bottom: 10px;">Video playback error</p>
-                      <p style="font-size: 14px; opacity: 0.7;">Please check if the video is publicly accessible</p>
-                      <button onclick="location.reload()" style="
-                        margin-top: 20px;
-                        padding: 10px 20px;
-                        background: rgba(255,255,255,0.1);
-                        border: 1px solid rgba(255,255,255,0.2);
-                        border-radius: 8px;
-                        color: white;
-                        cursor: pointer;
-                      ">Try Again</button>
-                    </div>
-                  `;
-                  (e.target as HTMLElement).parentNode?.appendChild(errorDiv);
-                }}
-              />
-              
-              {/* 비디오 로딩 인디케이터 */}
-              <div 
-                className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black flex items-center justify-center text-white text-2xl rounded-lg border border-white/10"
-                style={{ zIndex: -1 }}
-              >
-                <div className="text-center">
-                  <div className="mb-4 text-6xl opacity-20 animate-pulse">▶</div>
-                  <p className="text-lg opacity-60">Loading Video...</p>
-                  <p className="text-sm opacity-40 mt-2">If video doesn't load, it may not be publicly accessible</p>
-                </div>
-              </div>
-            </div>
-          )}
-          {!currentFilm && (
-            <div className="w-full h-full bg-gradient-to-br from-gray-900 to-black flex items-center justify-center text-white text-2xl rounded-lg border border-white/10">
-              <div className="text-center">
-                <div className="mb-4 text-6xl opacity-20">▶</div>
-                <p className="text-lg opacity-60">Select a video to play</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* CMS Admin Interface - 비대칭 왜곡 빈티지 트렌디 스타일 */}
-      {isAuthenticated && (
-        <section className="cms-admin-section py-[120px] px-10 bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
-          {/* 배경 장식 요소들 - 비대칭 */}
           <div 
-            className="absolute top-[10%] left-[5%] w-[300px] h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent"
-            style={{ transform: 'rotate(-15deg)' }}
-          />
-          <div 
-            className="absolute bottom-[20%] right-[8%] w-[200px] h-[200px] border border-cyan-500/10 rounded-full"
-            style={{ transform: 'rotate(25deg) scale(0.7)' }}
-          />
-          <div 
-            className="absolute top-[60%] left-[15%] w-[100px] h-[100px] border-l border-t border-yellow-500/15"
-            style={{ transform: 'rotate(-45deg)' }}
-          />
-          
-          <div className="max-w-[1400px] mx-auto relative z-10">
-            <div className="text-center mb-[80px]">
-              <h2 
-                className="text-5xl font-light text-white mb-6 glitch-title"
-                style={{ 
-                  fontFamily: "'Inter', monospace",
-                  letterSpacing: '0.3em',
-                  textShadow: '2px 2px 0 rgba(255,0,0,0.1), -2px -2px 0 rgba(0,255,255,0.1)'
-                }}
-              >
-                🎬 FILM MANAGEMENT
-              </h2>
-              <div 
-                className="w-[150px] h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent mx-auto mb-4"
-                style={{ transform: 'skew(-20deg)' }}
-              />
-              <p className="text-gray-400 text-sm tracking-[0.2em] uppercase">
-                Instagram-Style CMS for Fashion Films
-              </p>
-            </div>
-
-            {/* 각 디자이너별 CMS 슬롯들 - 비대칭 그리드 */}
-            <div className="cms-grid space-y-12">
-              {/* Kim Bomin */}
-              <div className="designer-cms-block relative">
-                <div 
-                  className="absolute -left-4 top-0 w-2 h-full bg-gradient-to-b from-red-500/30 to-transparent"
-                  style={{ transform: 'skew(5deg)' }}
+            className="modal-content relative max-w-[90vw] max-h-[90vh]"
+            style={{
+              transform: `translate(${modalTransform.x}px, ${modalTransform.y}px) scale(${modalTransform.scale})`,
+              transition: 'transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              className="absolute -top-[50px] right-0 text-white text-3xl hover:text-amber-300 transition-colors duration-300 w-10 h-10 flex items-center justify-center"
+              onClick={closeModal}
+            >
+              ×
+            </button>
+            
+            <div className="relative w-[80vw] h-[45vw] max-w-[1200px] max-h-[675px] bg-black rounded-lg overflow-hidden">
+              {currentFilm && (
+                <iframe
+                  src={formatGoogleDriveUrl(currentFilm, currentFilm)}
+                  className="w-full h-full"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  title="Fashion Film"
                 />
-                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
-                     style={{ transform: 'rotate(0.5deg)' }}>
-                  <div>
-                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">KIM BOMIN</h3>
-                    <p className="text-gray-400 text-sm mb-6">CHASING VOWS - 썸네일 관리</p>
-                    {kimBominSlot && (
-                      <MediaSlot
-                        slot={kimBominSlot}
-                        currentFiles={kimBominFiles}
-                        onFilesUpdate={updateKimBominFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                  <div>
-                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
-                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
-                    {kimBominVideoSlot && (
-                      <MediaSlot
-                        slot={kimBominVideoSlot}
-                        currentFiles={kimBominVideoFiles}
-                        onFilesUpdate={updateKimBominVideoFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Park Parang */}
-              <div className="designer-cms-block relative">
-                <div 
-                  className="absolute -right-4 top-0 w-2 h-full bg-gradient-to-b from-blue-500/30 to-transparent"
-                  style={{ transform: 'skew(-5deg)' }}
-                />
-                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
-                     style={{ transform: 'rotate(-0.3deg)' }}>
-                  <div>
-                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">PARK PARANG</h3>
-                    <p className="text-gray-400 text-sm mb-6">THE TIME BETWEEN - 썸네일 관리</p>
-                    {parkParangSlot && (
-                      <MediaSlot
-                        slot={parkParangSlot}
-                        currentFiles={parkParangFiles}
-                        onFilesUpdate={updateParkParangFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                  <div>
-                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
-                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
-                    {parkParangVideoSlot && (
-                      <MediaSlot
-                        slot={parkParangVideoSlot}
-                        currentFiles={parkParangVideoFiles}
-                        onFilesUpdate={updateParkParangVideoFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Lee Taehyeon */}
-              <div className="designer-cms-block relative">
-                <div 
-                  className="absolute -left-4 top-0 w-2 h-full bg-gradient-to-b from-green-500/30 to-transparent"
-                  style={{ transform: 'skew(3deg)' }}
-                />
-                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
-                     style={{ transform: 'rotate(0.2deg)' }}>
-                  <div>
-                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">LEE TAEHYEON</h3>
-                    <p className="text-gray-400 text-sm mb-6">POLYHEDRON - 썸네일 관리</p>
-                    {leeTaehyeonSlot && (
-                      <MediaSlot
-                        slot={leeTaehyeonSlot}
-                        currentFiles={leeTaehyeonFiles}
-                        onFilesUpdate={updateLeeTaehyeonFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                  <div>
-                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
-                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
-                    {leeTaehyeonVideoSlot && (
-                      <MediaSlot
-                        slot={leeTaehyeonVideoSlot}
-                        currentFiles={leeTaehyeonVideoFiles}
-                        onFilesUpdate={updateLeeTaehyeonVideoFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Choi Eunsol */}
-              <div className="designer-cms-block relative">
-                <div 
-                  className="absolute -right-4 top-0 w-2 h-full bg-gradient-to-b from-purple-500/30 to-transparent"
-                  style={{ transform: 'skew(-3deg)' }}
-                />
-                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
-                     style={{ transform: 'rotate(-0.4deg)' }}>
-                  <div>
-                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">CHOI EUNSOL</h3>
-                    <p className="text-gray-400 text-sm mb-6">SOUL SUCKER - 썸네일 관리</p>
-                    {choiEunsolSlot && (
-                      <MediaSlot
-                        slot={choiEunsolSlot}
-                        currentFiles={choiEunsolFiles}
-                        onFilesUpdate={updateChoiEunsolFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                  <div>
-                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
-                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
-                    {choiEunsolVideoSlot && (
-                      <MediaSlot
-                        slot={choiEunsolVideoSlot}
-                        currentFiles={choiEunsolVideoFiles}
-                        onFilesUpdate={updateChoiEunsolVideoFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Hwang Jinsu */}
-              <div className="designer-cms-block relative">
-                <div 
-                  className="absolute -left-4 top-0 w-2 h-full bg-gradient-to-b from-yellow-500/30 to-transparent"
-                  style={{ transform: 'skew(4deg)' }}
-                />
-                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
-                     style={{ transform: 'rotate(0.3deg)' }}>
-                  <div>
-                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">HWANG JINSU</h3>
-                    <p className="text-gray-400 text-sm mb-6">WHO AM I ?! - 썸네일 관리</p>
-                    {hwangJinsuSlot && (
-                      <MediaSlot
-                        slot={hwangJinsuSlot}
-                        currentFiles={hwangJinsuFiles}
-                        onFilesUpdate={updateHwangJinsuFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                  <div>
-                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
-                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
-                    {hwangJinsuVideoSlot && (
-                      <MediaSlot
-                        slot={hwangJinsuVideoSlot}
-                        currentFiles={hwangJinsuVideoFiles}
-                        onFilesUpdate={updateHwangJinsuVideoFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Kim Gyeongsu */}
-              <div className="designer-cms-block relative">
-                <div 
-                  className="absolute -right-4 top-0 w-2 h-full bg-gradient-to-b from-pink-500/30 to-transparent"
-                  style={{ transform: 'skew(-4deg)' }}
-                />
-                <div className="grid md:grid-cols-2 gap-8 bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5" 
-                     style={{ transform: 'rotate(-0.2deg)' }}>
-                  <div>
-                    <h3 className="text-2xl text-white mb-4 font-light tracking-[0.15em]">KIM GYEONGSU</h3>
-                    <p className="text-gray-400 text-sm mb-6">TO BE REVEALED - 썸네일 관리</p>
-                    {kimGyeongsuSlot && (
-                      <MediaSlot
-                        slot={kimGyeongsuSlot}
-                        currentFiles={kimGyeongsuFiles}
-                        onFilesUpdate={updateKimGyeongsuFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                  <div>
-                    <h4 className="text-lg text-cyan-400 mb-4 font-light tracking-[0.1em]">Google Drive Video</h4>
-                    <p className="text-gray-400 text-sm mb-6">비디오 파일 ID 관리</p>
-                    {kimGyeongsuVideoSlot && (
-                      <MediaSlot
-                        slot={kimGyeongsuVideoSlot}
-                        currentFiles={kimGyeongsuVideoFiles}
-                        onFilesUpdate={updateKimGyeongsuVideoFiles}
-                        isAdminMode={true}
-                        className="vintage-cms-slot"
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
           </div>
-        </section>
+        </div>
       )}
 
-      {/* Footer - HTML 버전과 완전 동일 */}
-      <footer className="py-[60px] px-10 bg-black text-white text-center border-t border-white/10">
-        <p>&copy; 2025 REDUX. All rights reserved.</p>
-      </footer>
-
-      {/* CSS for animations matching HTML version */}
+      {/* CSS for animations */}
       <style jsx>{`
-        @keyframes heroFade {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        .scrolled {
+          background: rgba(0, 0, 0, 0.98) !important;
+          padding-top: 15px !important;
+          padding-bottom: 15px !important;
         }
         
         @keyframes revealItem {
@@ -759,253 +398,12 @@ export default function FashionFilmPage() {
           }
         }
         
-        @keyframes glitchSlide {
-          0%, 100% {
-            transform: translateX(0);
-          }
-          10% {
-            transform: translateX(-2px);
-          }
-          20% {
-            transform: translateX(2px);
-          }
-          30% {
-            transform: translateX(-1px);
-          }
-          40%, 60% {
-            transform: translateX(0);
-          }
-          70% {
-            transform: translateX(1px);
-          }
-          80% {
-            transform: translateX(-1px);
-          }
-          90% {
-            transform: translateX(1px);
-          }
-        }
-        
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        /* 글리치 텍스트 효과 */
-        .glitch-text:hover {
-          animation: glitchText 0.5s ease-in-out;
-        }
-        
-        @keyframes glitchText {
-          0%, 100% {
-            text-shadow: 0 0 30px rgba(255,255,255,0.1);
-          }
-          25% {
-            text-shadow: 2px 0 0 rgba(255, 0, 0, 0.1), -2px 0 0 rgba(0, 255, 255, 0.1);
-          }
-          50% {
-            text-shadow: -1px 0 0 rgba(255, 0, 0, 0.1), 1px 0 0 rgba(0, 255, 255, 0.1);
-          }
-          75% {
-            text-shadow: 1px 0 0 rgba(255, 0, 0, 0.1), -1px 0 0 rgba(0, 255, 255, 0.1);
-          }
-        }
-        
         .film-item.revealed {
           animation: revealItem 0.8s ease forwards;
         }
         
-        /* Enhanced film item hover effects */
-        .film-item:hover {
-          filter: contrast(1.1) brightness(1.05) !important;
-          transform: translateY(-8px) !important;
-        }
-        
-        .film-item:hover img {
-          filter: grayscale(0%) contrast(1.2) brightness(1) !important;
-        }
-        
-        /* CMS Admin Section - 비대칭 왜곡 빈티지 트렌디 스타일 */
-        .cms-admin-section {
-          animation: slideInFromBottom 1.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-        }
-
-        @keyframes slideInFromBottom {
-          0% {
-            opacity: 0;
-            transform: translateY(60px) rotate(-0.5deg);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) rotate(0deg);
-          }
-        }
-
-        .glitch-title {
-          animation: glitchPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes glitchPulse {
-          0%, 100% {
-            text-shadow: 2px 2px 0 rgba(255,0,0,0.1), -2px -2px 0 rgba(0,255,255,0.1);
-          }
-          25% {
-            text-shadow: -2px 2px 0 rgba(255,0,0,0.15), 2px -2px 0 rgba(0,255,255,0.15);
-          }
-          50% {
-            text-shadow: 2px -2px 0 rgba(255,0,0,0.1), -2px 2px 0 rgba(0,255,255,0.1);
-          }
-          75% {
-            text-shadow: -2px -2px 0 rgba(255,0,0,0.15), 2px 2px 0 rgba(0,255,255,0.15);
-          }
-        }
-
-        .designer-cms-block {
-          animation: blockReveal 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-          opacity: 0;
-          transform: translateY(30px) rotate(-1deg);
-        }
-
-        .designer-cms-block:nth-child(1) { animation-delay: 0.1s; }
-        .designer-cms-block:nth-child(2) { animation-delay: 0.2s; }
-        .designer-cms-block:nth-child(3) { animation-delay: 0.3s; }
-        .designer-cms-block:nth-child(4) { animation-delay: 0.4s; }
-        .designer-cms-block:nth-child(5) { animation-delay: 0.5s; }
-        .designer-cms-block:nth-child(6) { animation-delay: 0.6s; }
-
-        @keyframes blockReveal {
-          0% {
-            opacity: 0;
-            transform: translateY(30px) rotate(-1deg) scale(0.95);
-            filter: blur(5px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) rotate(0deg) scale(1);
-            filter: blur(0);
-          }
-        }
-
-        .designer-cms-block:hover {
-          transform: translateY(-5px) rotate(0.2deg) !important;
-          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        .vintage-cms-slot :global(.media-slot-admin) {
-          background: rgba(255, 255, 255, 0.02) !important;
-          border: 1px solid rgba(255, 255, 255, 0.08) !important;
-          border-radius: 16px !important;
-          backdrop-filter: blur(20px) !important;
-          transform: skew(-0.5deg) !important;
-          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-        }
-
-        .vintage-cms-slot :global(.media-slot-admin:hover) {
-          transform: skew(0deg) scale(1.02) !important;
-          border-color: rgba(255, 255, 255, 0.15) !important;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
-        }
-
-        .vintage-cms-slot :global(.media-slot-admin h4) {
-          color: var(--primary-white) !important;
-          font-family: 'Inter', monospace !important;
-          font-weight: 300 !important;
-          letter-spacing: 0.15em !important;
-          text-transform: uppercase !important;
-        }
-
-        .vintage-cms-slot :global(.media-slot-admin p) {
-          color: rgba(255, 255, 255, 0.6) !important;
-          font-size: 11px !important;
-          letter-spacing: 0.1em !important;
-        }
-
-        /* Vintage button styles */
-        .vintage-cms-slot :global(button) {
-          background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)) !important;
-          border: 1px solid rgba(255,255,255,0.2) !important;
-          border-radius: 12px !important;
-          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-          transform: skew(-1deg) !important;
-        }
-
-        .vintage-cms-slot :global(button:hover) {
-          background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1)) !important;
-          transform: skew(0deg) scale(1.05) !important;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-        }
-
-        /* 글리치 노이즈 효과 */
-        .cms-admin-section::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: 
-            radial-gradient(circle at 20% 50%, rgba(255,0,0,0.01) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(0,255,255,0.01) 0%, transparent 50%),
-            radial-gradient(circle at 40% 80%, rgba(255,255,0,0.01) 0%, transparent 50%);
-          pointer-events: none;
-          z-index: 1;
-          animation: noiseFloat 10s ease-in-out infinite;
-        }
-
-        @keyframes noiseFloat {
-          0%, 100% {
-            opacity: 0.3;
-            transform: scale(1) rotate(0deg);
-          }
-          50% {
-            opacity: 0.1;
-            transform: scale(1.05) rotate(0.5deg);
-          }
-        }
-
-        /* 라이트박스 모달 애니메이션 강화 */
-        .film-modal {
-          backdrop-filter: blur(10px);
-          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        
-        .modal-content {
-          will-change: transform;
-          transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-        }
-        
-        /* 썸네일 호버 시 확대 효과 강화 */
-        .film-item {
-          will-change: transform, filter;
-        }
-        
-        .film-item:hover {
-          transform: translateY(-8px) scale(1.02) !important;
-          filter: contrast(1.1) brightness(1.05) !important;
-        }
-        
-        .film-item:active {
-          transform: translateY(-4px) scale(0.98) !important;
-          transition: all 0.15s ease !important;
-        }
-
         /* Responsive adjustments */
         @media (max-width: 768px) {
-          .hero-title {
-            font-size: clamp(40px, 8vw, 80px) !important;
-            letter-spacing: 0.1em !important;
-          }
-          
-          .film-grid-section {
-            padding: 80px 20px;
-          }
-          
           nav {
             padding: 15px 20px;
           }
@@ -1014,40 +412,31 @@ export default function FashionFilmPage() {
             display: none;
           }
           
-          .modal-content {
-            width: 95% !important;
-            height: 70vh !important;
+          .films-section {
+            padding: 80px 20px;
           }
           
-          .film-item:hover {
-            transform: translateY(-4px) scale(1.01) !important;
+          .films-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
           }
           
-          .film-item:active {
-            transform: translateY(-2px) scale(0.99) !important;
+          .hero-title {
+            font-size: clamp(40px, 12vw, 80px) !important;
           }
-
-          .cms-admin-section {
-            padding: 80px 15px !important;
+        }
+        
+        @media (max-width: 480px) {
+          .films-section {
+            padding: 60px 15px;
           }
-
-          .designer-cms-block .grid {
-            grid-template-columns: 1fr !important;
-            gap: 24px !important;
-          }
-
-          .glitch-title {
-            font-size: clamp(32px, 8vw, 48px) !important;
+          
+          .modal-content .relative {
+            width: 95vw !important;
+            height: 53vw !important;
           }
         }
       `}</style>
     </>
   );
-}
-
-// GSAP 타입 확장
-declare global {
-  interface Window {
-    gsap: any;
-  }
 }

@@ -1,1046 +1,263 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { DESIGNER_VIDEOS, getGoogleDriveEmbedUrl, getGoogleDriveThumbnailUrl } from '@/utils/drive-utils';
-import { useTextContent } from '@/hooks/usePageContent';
+import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import SimpleCMS from '@/components/cms/SimpleCMS';
 
 /**
- * Phase 2.2: Revolutionary Hero Section
- * - Advanced loading animations with Redux logo
- * - Google Drive video integration
- * - Video-to-image background transitions
- * - Modern video controls with 2025 fashion styling
+ * 최적화된 Hero Section - 로딩 문제 해결
  */
 export default function HeroSection() {
-  // Dynamic content loading
-  const { text: heroTitle } = useTextContent('home', 'hero-title', 'REDUX');
-  const { text: heroSubtitle } = useTextContent('home', 'hero-subtitle', 'THE ROOM OF [ ]');
-  const { text: primaryCTAText } = useTextContent('home', 'hero-cta-primary', 'DISCOVER REDUX');
-  const { text: secondaryCTAText } = useTextContent('home', 'hero-cta-secondary', 'VIEW EXHIBITIONS');
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   
   // CMS integration
   const { isAuthenticated } = useSimpleAuth();
-  const { currentUrl: heroVideoUrl, updateUrl: updateHeroVideoUrl } = useSimpleCMS('main-hero-video', '/VIDEO/main.mp4');
+  const { currentUrl: heroVideoUrl, handleUpload, handleDelete } = useSimpleCMS('main-hero-video', '/VIDEO/main.mp4');
 
-  // Video states
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [videoClosed, setVideoClosed] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [showVideoControls, setShowVideoControls] = useState(false);
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  
-  // Loading states
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [showContent, setShowContent] = useState(false);
-  
-  // Device detection
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-  
-  // Refs
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const heroRef = useRef<HTMLElement>(null);
-  const loadingRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  
-  // Get designer videos array
-  const designerVideos = Object.values(DESIGNER_VIDEOS);
-  const currentVideo = designerVideos[currentVideoIndex];
-
-  // Remove loading animation completely for smooth page entry
+  // 클라이언트 마운트 처리
   useEffect(() => {
-    // No loading screen needed - direct content display
-    setIsLoading(false);
-    setShowContent(true);
-    setLoadingProgress(100);
+    setIsClient(true);
   }, []);
 
-  // Device detection and video initialization
+  // 비디오 로드 처리
   useEffect(() => {
-    const mobileCheck = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const tabletCheck = /iPad|Android(?=.*\bMobile\b)/i.test(navigator.userAgent) || 
-                        (window.innerWidth >= 768 && window.innerWidth <= 1024);
-    
-    setIsMobile(mobileCheck);
-    setIsTablet(tabletCheck);
-    
-    // Initialize video after content is shown
-    if (showContent) {
-      initializeVideo();
-    }
-  }, [showContent]);
+    if (!isClient || !videoRef.current) return;
 
-  // Simplified and more stable video initialization
-  const initializeVideo = useCallback(() => {
     const video = videoRef.current;
-    if (!video) return;
-
-    // Add error handling with try-catch
-    try {
-      video.addEventListener('loadeddata', () => {
-        setVideoLoaded(true);
-        console.log('Video loaded successfully');
+    
+    const handleLoadedData = () => {
+      setVideoError(false);
+      // 자동 재생 시도
+      video.play().catch(() => {
+        // 자동 재생 실패시 무시 (사용자가 수동으로 재생 가능)
       });
+    };
 
-      video.addEventListener('canplay', () => {
-        if (!isMobile) {
-          // More defensive auto-play
-          setTimeout(() => {
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-              playPromise.then(() => {
-                setIsVideoPlaying(true);
-                setVideoClosed(false);
-              }).catch((error) => {
-                console.warn('Video autoplay failed:', error);
-                handleVideoError();
-              });
-            }
-          }, 500); // Small delay to ensure everything is ready
-        }
-      });
+    const handleError = () => {
+      setVideoError(true);
+    };
 
-      video.addEventListener('error', handleVideoError);
-      video.addEventListener('ended', () => {
-        // Auto-switch to next designer video when current ends
-        try {
-          switchToNextVideo();
-        } catch (error) {
-          console.warn('Video switching failed:', error);
-        }
-      });
+    video.addEventListener('loadeddata', handleLoadedData);
+    video.addEventListener('error', handleError);
 
-      // Simplified hover controls
-      if (!isMobile) {
-        const heroElement = heroRef.current;
-        if (heroElement) {
-          const handleMouseEnter = () => setShowVideoControls(true);
-          const handleMouseLeave = () => setShowVideoControls(false);
-          
-          heroElement.addEventListener('mouseenter', handleMouseEnter);
-          heroElement.addEventListener('mouseleave', handleMouseLeave);
-          
-          // Cleanup function
-          return () => {
-            heroElement.removeEventListener('mouseenter', handleMouseEnter);
-            heroElement.removeEventListener('mouseleave', handleMouseLeave);
-          };
-        }
-      } else {
-        setShowVideoControls(true); // Always show on mobile
-      }
-    } catch (error) {
-      console.error('Video initialization failed:', error);
-      handleVideoError();
-    }
-  }, [isMobile]);
+    return () => {
+      video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('error', handleError);
+    };
+  }, [isClient, heroVideoUrl]);
 
-  // Enhanced video error handling
-  const handleVideoError = useCallback(() => {
-    console.warn('Video playback failed, switching to background image');
-    setIsVideoPlaying(false);
-    setVideoClosed(true);
-    if (heroRef.current) {
-      heroRef.current.classList.add('video-closed');
-    }
-  }, []);
+  const navigateToAbout = () => {
+    router.push('/about');
+  };
 
-  // Enhanced video control functions
-  const closeVideo = useCallback(() => {
-    const video = videoRef.current;
-    if (video) {
-      video.pause();
-      video.currentTime = 0;
-    }
-    
-    setIsVideoPlaying(false);
-    setVideoClosed(true);
-    
-    if (heroRef.current) {
-      heroRef.current.classList.add('video-closed');
-    }
-  }, []);
+  const navigateToExhibitions = () => {
+    router.push('/exhibitions');
+  };
 
-  const playVideo = useCallback(() => {
-    const video = videoRef.current;
-    if (video) {
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          setIsVideoPlaying(true);
-          setVideoClosed(false);
-          
-          if (heroRef.current) {
-            heroRef.current.classList.remove('video-closed');
-          }
-        }).catch(handleVideoError);
-      }
-    }
-  }, [handleVideoError]);
-
-  // Switch to next designer video
-  const switchToNextVideo = useCallback(() => {
-    const nextIndex = (currentVideoIndex + 1) % designerVideos.length;
-    setCurrentVideoIndex(nextIndex);
-    
-    // Reload video with new source
-    const video = videoRef.current;
-    if (video) {
-      video.pause();
-      video.currentTime = 0;
-      video.load(); // Reload with new source
-    }
-  }, [currentVideoIndex, designerVideos.length]);
-
-  // Switch to previous designer video
-  const switchToPrevVideo = useCallback(() => {
-    const prevIndex = currentVideoIndex === 0 ? designerVideos.length - 1 : currentVideoIndex - 1;
-    setCurrentVideoIndex(prevIndex);
-    
-    const video = videoRef.current;
-    if (video) {
-      video.pause();
-      video.currentTime = 0;
-      video.load();
-    }
-  }, [currentVideoIndex, designerVideos.length]);
+  // 서버 사이드 렌더링 중에는 기본 콘텐츠 반환
+  if (!isClient) {
+    return (
+      <section className="hero-section relative h-screen flex items-center justify-center bg-black overflow-hidden">
+        <div className="hero-content text-center z-10 px-6">
+          <h1 
+            className="hero-title font-['Playfair_Display'] font-bold text-white mb-8 tracking-[-0.02em] leading-[0.85]"
+            style={{ fontSize: 'clamp(3rem, 8vw, 8rem)' }}
+          >
+            REDUX
+          </h1>
+          <p className="hero-subtitle text-white/80 text-xl tracking-[0.3em] uppercase mb-12">
+            THE ROOM OF [ ]
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <>
+    <section className="hero-section relative h-screen flex items-center justify-center bg-black overflow-hidden">
+      {/* Background Video */}
+      {!videoError && (
+        <video
+          ref={videoRef}
+          className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source src={heroVideoUrl || '/VIDEO/main.mp4'} type="video/mp4" />
+        </video>
+      )}
 
-      {/* Main Hero Section */}
-      <section 
-        ref={heroRef}
-        className={`redux-hero ${videoClosed ? 'video-closed' : ''}`}
+      {/* Fallback Background */}
+      {videoError && (
+        <div 
+          className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-80"
+        />
+      )}
+
+      {/* Background overlay */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
+
+      {/* Noise texture */}
+      <div 
+        className="absolute inset-0 opacity-[0.03]"
         style={{
-          height: '100vh',
-          position: 'relative',
-          overflow: 'hidden',
-          background: `
-            linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
-            url('/images/hero-background/background.png') center/cover no-repeat,
-            linear-gradient(135deg, #000000, #1a1a1a)
-          `,
-          opacity: 1,
-          animation: 'fadeInSmooth 0.8s ease-out'
+          backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'2\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'1\'/%3E%3C/svg%3E")'
         }}
-      >
-        {/* Enhanced Video Container with Google Drive Integration */}
-        <div 
-          className={`redux-video-container ${videoClosed ? 'hidden' : ''}`}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            transition: 'all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)',
-            zIndex: 2,
-            opacity: videoClosed ? 0 : 1,
-            transform: videoClosed ? 'scale(1.1)' : 'scale(1)',
-            pointerEvents: videoClosed ? 'none' : 'auto'
-          }}
-        >
-          {/* Background Video - CMS Enabled */}
-          <video
-            ref={videoRef}
-            className="redux-hero-video"
-            autoPlay={!isMobile}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            controls={false}
-            controlsList="nodownload nofullscreen noremoteplayback"
-            disablePictureInPicture
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              filter: 'brightness(0.85) contrast(1.1)',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              zIndex: 1,
-              transition: 'filter 0.3s ease'
-            }}
-          >
-            <source src={heroVideoUrl || '/VIDEO/main.mp4'} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          
-          {/* Video Overlay for Better Text Readability */}
-          <div 
-            className="video-overlay"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4))',
-              zIndex: 2,
-              pointerEvents: 'none'
-            }}
-          />
-          
-          {/* Modern Video Controls */}
-          <div 
-            className={`redux-video-controls ${showVideoControls || isMobile ? 'visible' : ''}`}
-            style={{
-              position: 'absolute',
-              top: isMobile ? '20px' : '40px',
-              right: isMobile ? '20px' : '40px',
-              display: 'flex',
-              gap: '15px',
-              zIndex: 5,
-              opacity: showVideoControls || isMobile ? 1 : 0,
-              transform: showVideoControls || isMobile ? 'translateY(0)' : 'translateY(-10px)',
-              transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)'
-            }}
-          >
-            {/* Desktop Controls */}
-            {!isMobile && (
-              <>
-                {/* Previous Video Button */}
-                <button 
-                  onClick={switchToPrevVideo}
-                  className="video-control-btn"
-                  title="Previous Designer"
-                  style={controlButtonStyle}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polygon points="11 19 2 12 11 5 11 19"></polygon>
-                    <polygon points="22 19 13 12 22 5 22 19"></polygon>
-                  </svg>
-                </button>
-                
-                {/* Video Info */}
-                <div 
-                  className="video-info"
-                  style={{
-                    background: 'rgba(0, 0, 0, 0.5)',
-                    backdropFilter: 'blur(10px)',
-                    padding: '8px 16px',
-                    borderRadius: '20px',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}
-                >
-                  <span style={{
-                    color: 'var(--primary-white)',
-                    fontSize: '12px',
-                    fontWeight: 500,
-                    letterSpacing: '0.5px'
-                  }}>
-                    {currentVideo?.name || 'REDUX'}
-                  </span>
-                </div>
-                
-                {/* Next Video Button */}
-                <button 
-                  onClick={switchToNextVideo}
-                  className="video-control-btn"
-                  title="Next Designer"
-                  style={controlButtonStyle}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polygon points="13 19 22 12 13 5 13 19"></polygon>
-                    <polygon points="2 19 11 12 2 5 2 19"></polygon>
-                  </svg>
-                </button>
-              </>
-            )}
-            
-            {/* Close Video Button - Always visible */}
-            <button 
-              onClick={closeVideo}
-              className="video-control-btn close-btn"
-              title="Close Video"
-              style={{
-                ...controlButtonStyle,
-                background: 'rgba(255, 0, 0, 0.1)',
-                borderColor: 'rgba(255, 0, 0, 0.3)',
-                width: isMobile ? '50px' : '40px',
-                height: isMobile ? '50px' : '40px',
-                fontSize: isMobile ? '20px' : '16px'
-              }}
-            >
-              <svg width={isMobile ? "20" : "16"} height={isMobile ? "20" : "16"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div>
-        </div>
+      />
 
-        {/* Enhanced Video Play Button */}
-        <button 
-          className="redux-video-play-btn"
-          onClick={playVideo}
-          title="Play Video Experience"
+      {/* Decorative elements */}
+      <div 
+        className="absolute top-[20%] right-[15%] w-[150px] h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"
+        style={{ transform: 'rotate(-15deg)' }}
+      />
+      <div 
+        className="absolute bottom-[30%] left-[10%] w-[60px] h-[60px] border border-white/20"
+        style={{ transform: 'rotate(25deg)', borderRadius: '30%' }}
+      />
+
+      {/* Main content */}
+      <div className="hero-content text-center z-10 px-6 max-w-4xl mx-auto">
+        <h1 
+          className="hero-title font-['Playfair_Display'] font-bold text-white mb-8 tracking-[-0.02em] leading-[0.85]"
           style={{ 
-            display: videoClosed ? 'flex' : 'none',
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: isMobile ? '80px' : '120px',
-            height: isMobile ? '80px' : '120px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(20px)',
-            border: '2px solid rgba(255, 255, 255, 0.3)',
-            borderRadius: '50%',
-            cursor: 'pointer',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)',
-            zIndex: 4,
-            color: 'var(--primary-white)',
-            outline: 'none',
-            animation: 'pulsePlay 2s ease-in-out infinite'
+            fontSize: 'clamp(3rem, 8vw, 8rem)',
+            textShadow: '0 0 30px rgba(255,255,255,0.1)'
           }}
         >
-          <svg 
-            width={isMobile ? "32" : "48"} 
-            height={isMobile ? "32" : "48"} 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="1.5"
-            style={{
-              marginLeft: '4px',
-              filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))'
-            }}
-          >
-            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-          </svg>
-        </button>
+          REDUX
+        </h1>
+        
+        <p className="hero-subtitle text-white/80 text-xl tracking-[0.3em] uppercase mb-12">
+          THE ROOM OF [ ]
+        </p>
 
-        {/* Revolutionary Hero Content */}
-        <div 
-          ref={contentRef}
-          className="redux-hero-content" 
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            textAlign: 'center',
-            zIndex: 3,
-            mixBlendMode: videoClosed ? 'normal' : 'difference',
-            width: '90%',
-            maxWidth: '1200px',
-            isolation: 'isolate',
-            padding: '0 20px',
-            opacity: 1,
-            animation: 'fadeInDelayed 1s ease-out 0.3s both'
-          }}
-        >
-          {/* Simplified Main Title */}
-          <h1 className="redux-hero-title" style={{
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: 800,
-            fontSize: 'clamp(3.5rem, 10vw, 12rem)',
-            letterSpacing: '-0.02em',
-            lineHeight: 0.85,
-            color: 'var(--primary-white)',
-            marginBottom: '30px',
-            textShadow: `
-              0 0 30px rgba(255,255,255,0.15),
-              0 0 60px rgba(183,175,163,0.1),
-              0 4px 20px rgba(0,0,0,0.3)
-            `,
-            position: 'relative',
-            opacity: 0,
-            animation: 'fadeInUp 1.5s ease-out forwards',
-            animationDelay: '0.5s'
-          }}>
-            {heroTitle}
-            
-            {/* Title decoration */}
-            <div 
-              className="title-decoration"
-              style={{
-                position: 'absolute',
-                bottom: '-15px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '200px',
-                height: '2px',
-                background: 'linear-gradient(90deg, transparent, var(--accent-mocha), transparent)',
-                opacity: 0,
-                animation: 'fadeInScale 1s ease-out forwards',
-                animationDelay: '1.2s'
-              }}
-            />
-          </h1>
-
-          {/* Simplified Subtitle */}
-          <div className="redux-subtitle-container" style={{
-            position: 'relative',
-            margin: '40px 0 50px'
-          }}>
-            <p className="redux-hero-subtitle" style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 400,
-              fontSize: 'clamp(1.1rem, 3vw, 1.8rem)',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase',
-              color: 'var(--primary-white)',
-              textShadow: `
-                0 0 20px rgba(255,255,255,0.3),
-                0 2px 10px rgba(0,0,0,0.5)
-              `,
-              background: 'rgba(0, 0, 0, 0.25)',
-              padding: '12px 24px',
-              borderRadius: '6px',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              margin: 0,
-              textAlign: 'center',
-              opacity: 0,
-              animation: 'fadeInUp 1.2s ease-out forwards',
-              animationDelay: '0.8s'
-            }}>
-              {heroSubtitle}
-            </p>
-          </div>
-
-          {/* Simplified CTA Buttons */}
-          <div className="redux-hero-cta" style={{
-            marginTop: '70px',
-            display: 'flex',
-            gap: '25px',
-            justifyContent: 'center',
-            alignItems: 'center',
-            opacity: 0,
-            animation: 'fadeInUp 1.2s ease-out forwards',
-            animationDelay: '1.2s',
-            flexWrap: 'wrap'
-          }}>
-            <a 
-              href="/about" 
-              className="redux-cta-primary"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '18px 36px',
-                border: '2px solid transparent',
-                background: 'linear-gradient(135deg, rgba(183,175,163,0.15), rgba(212,204,197,0.1))',
-                color: 'var(--primary-white)',
-                textDecoration: 'none',
-                fontSize: '13px',
-                fontWeight: 500,
-                letterSpacing: '2.5px',
-                textTransform: 'uppercase',
-                borderRadius: '50px',
-                backdropFilter: 'blur(15px)',
-                transition: 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)',
-                position: 'relative',
-                overflow: 'hidden',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-                minHeight: '56px'
-              }}
-            >
-              <span>{primaryCTAText}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </a>
-            
-            <a 
-              href="/exhibitions" 
-              className="redux-cta-secondary"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '18px 36px',
-                border: '2px solid rgba(255,255,255,0.3)',
-                background: 'rgba(255, 255, 255, 0.05)',
-                color: 'var(--primary-white)',
-                textDecoration: 'none',
-                fontSize: '13px',
-                fontWeight: 400,
-                letterSpacing: '2.5px',
-                textTransform: 'uppercase',
-                borderRadius: '50px',
-                backdropFilter: 'blur(15px)',
-                transition: 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)',
-                position: 'relative',
-                overflow: 'hidden',
-                minHeight: '56px'
-              }}
-            >
-              <span>{secondaryCTAText}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect width="7" height="7" x="3" y="3" rx="1" />
-                <rect width="7" height="7" x="14" y="3" rx="1" />
-                <rect width="7" height="7" x="3" y="14" rx="1" />
-                <rect width="7" height="7" x="14" y="14" rx="1" />
-              </svg>
-            </a>
-          </div>
+        <div className="hero-description max-w-2xl mx-auto mb-12">
+          <p className="text-white/70 text-lg leading-relaxed">
+            6명의 패션 디자이너가 만들어가는 창작의 공간.<br />
+            패션을 넘어 예술로, 개인을 넘어 집단으로.
+          </p>
         </div>
 
-        {/* Enhanced Background Overlays */}
-        <div className="redux-background-overlays">
-          {/* Main gradient overlay */}
-          <div 
-            className="primary-gradient-overlay" 
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: `
-                radial-gradient(ellipse at 30% 20%, rgba(183,175,163,0.08) 0%, transparent 40%),
-                radial-gradient(ellipse at 70% 80%, rgba(212,204,197,0.05) 0%, transparent 35%),
-                linear-gradient(45deg, rgba(0,0,0,0.2) 0%, transparent 50%, rgba(0,0,0,0.1) 100%)
-              `,
-              zIndex: 1,
-              opacity: videoClosed ? 1 : 0.6,
-              transition: 'opacity 1.5s cubic-bezier(0.25, 0.8, 0.25, 1)',
-              pointerEvents: 'none'
-            }}
-          />
+        {/* Action buttons */}
+        <div className="hero-actions flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <button
+            onClick={navigateToAbout}
+            className="group relative px-8 py-4 bg-transparent border-2 border-white text-white uppercase tracking-[0.2em] text-sm font-medium transition-all duration-300 hover:bg-white hover:text-black hover:scale-105"
+          >
+            <span className="relative z-10">Discover Redux</span>
+            <div className="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+          </button>
           
-          {/* Animated pattern overlay */}
-          <div 
-            className="pattern-overlay"
-            style={{
-              position: 'absolute',
-              top: '-20%',
-              left: '-20%',
-              width: '140%',
-              height: '140%',
-              background: `
-                repeating-linear-gradient(
-                  45deg,
-                  transparent,
-                  transparent 2px,
-                  rgba(255,255,255,0.01) 2px,
-                  rgba(255,255,255,0.01) 4px
-                )
-              `,
-              zIndex: 1,
-              opacity: 0.3,
-              animation: 'patternMove 20s linear infinite',
-              pointerEvents: 'none'
-            }}
-          />
-        </div>
-
-        {/* CMS Admin Interface - Only visible to authenticated users */}
-        {isAuthenticated && (
-          <div 
-            className="cms-admin-overlay"
-            style={{
-              position: 'absolute',
-              bottom: '20px',
-              left: '20px',
-              zIndex: 10,
-              maxWidth: '300px'
-            }}
+          <button
+            onClick={navigateToExhibitions}
+            className="group relative px-8 py-4 bg-amber-300 text-black uppercase tracking-[0.2em] text-sm font-medium transition-all duration-300 hover:bg-amber-400 hover:scale-105"
           >
+            View Exhibitions
+          </button>
+        </div>
+      </div>
+
+      {/* CMS Admin Interface */}
+      {isAuthenticated && (
+        <div className="absolute top-4 right-4 z-20">
+          <div className="bg-black/80 backdrop-blur-sm border border-gray-700 rounded-lg p-3">
+            <div className="text-xs font-medium text-white mb-2">Hero Video</div>
             <SimpleCMS
               slotId="main-hero-video"
               currentUrl={heroVideoUrl}
               type="video"
-              onUpload={(url) => {
-                updateHeroVideoUrl(url);
-                // Reload video when URL changes
-                const video = videoRef.current;
-                if (video) {
-                  video.src = url;
-                  video.load();
-                }
-              }}
+              onUpload={handleUpload}
+              onDelete={handleDelete}
               isAdminMode={true}
-              placeholder="Hero 배경 동영상 업로드"
+              className="w-12 h-12"
+              placeholder="Hero Video"
             />
           </div>
-        )}
-      </section>
+        </div>
+      )}
 
-      {/* Simplified CSS Animations and Styles */}
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-bounce"></div>
+        </div>
+      </div>
+
       <style jsx>{`
-        /* Smooth Entry Animations */
-        @keyframes fadeInSmooth {
-          0% {
-            opacity: 0;
-            transform: scale(1.02);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes fadeInDelayed {
-          0% {
-            opacity: 0;
-            transform: translate(-50%, -50%) translateY(20px);
-          }
-          100% {
-            opacity: 1;
-            transform: translate(-50%, -50%) translateY(0);
-          }
-        }
-
-        @keyframes fadeInUp {
-          0% {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fadeInScale {
-          0% {
-            opacity: 0;
-            transform: translateX(-50%) scaleX(0);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(-50%) scaleX(1);
-          }
-        }
-
-        @keyframes pulsePlay {
-          0%, 100% {
-            transform: translate(-50%, -50%) scale(1);
-            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-          }
-          50% {
-            transform: translate(-50%, -50%) scale(1.05);
-            box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
-          }
-        }
-
-        @keyframes patternMove {
-          0% {
-            transform: translateX(-50px) translateY(-50px);
-          }
-          100% {
-            transform: translateX(0px) translateY(0px);
-          }
-        }
-
-        /* Video Control Hover Effects */
-        .video-control-btn:hover {
-          background: rgba(255, 255, 255, 0.2) !important;
-          transform: scale(1.1) !important;
-          box-shadow: 0 8px 25px rgba(0,0,0,0.3) !important;
-        }
-
-        .video-control-btn.close-btn:hover {
-          background: rgba(255, 0, 0, 0.2) !important;
-          border-color: rgba(255, 0, 0, 0.5) !important;
-        }
-
-        .redux-video-play-btn:hover {
-          background: rgba(255, 255, 255, 0.2) !important;
-          transform: translate(-50%, -50%) scale(1.1) !important;
-          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6) !important;
-        }
-
-        /* Enhanced CTA Button Effects */
-        .redux-cta-primary::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(135deg, var(--accent-mocha), var(--accent-warm));
-          transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-          z-index: -1;
-          border-radius: inherit;
-        }
-
-        .redux-cta-primary:hover {
-          transform: translateY(-3px) !important;
-          box-shadow: 0 12px 40px rgba(183,175,163,0.4) !important;
-          border-color: var(--accent-mocha) !important;
-        }
-
-        .redux-cta-primary:hover::before {
-          left: 0;
-        }
-
-        .redux-cta-secondary::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: rgba(255, 255, 255, 0.1);
-          transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-          z-index: -1;
-          border-radius: inherit;
-        }
-
-        .redux-cta-secondary:hover {
-          transform: translateY(-3px) !important;
-          box-shadow: 0 12px 40px rgba(255,255,255,0.1) !important;
-          border-color: rgba(255,255,255,0.6) !important;
-          background: rgba(255, 255, 255, 0.1) !important;
-        }
-
-        .redux-cta-secondary:hover::before {
-          left: 0;
-        }
-
-        /* Video State Management */
-        .redux-hero.video-closed {
-          background-attachment: fixed;
-        }
-
-        .redux-hero.video-closed::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6));
-          z-index: 1;
-        }
-
-        .redux-video-container.hidden {
-          opacity: 0 !important;
-          pointer-events: none !important;
-          transform: scale(1.1) !important;
-        }
-
-        .redux-hero.content-visible {
-          animation: heroReveal 1.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-        }
-
-        @keyframes heroReveal {
-          0% {
-            opacity: 0;
-            transform: scale(1.05);
-            filter: blur(10px);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-            filter: blur(0);
-          }
-        }
-
-        /* Mobile Responsive Design */
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-          .redux-video-controls {
-            top: 15px !important;
-            right: 15px !important;
-            gap: 10px !important;
+          .hero-content {
+            padding: 0 20px;
           }
           
-          .video-control-btn {
-            width: 42px !important;
-            height: 42px !important;
+          .hero-title {
+            font-size: clamp(2.5rem, 12vw, 5rem) !important;
+            margin-bottom: 1.5rem !important;
           }
           
-          .video-control-btn svg {
-            width: 14px !important;
-            height: 14px !important;
-          }
-
-          .video-info {
-            padding: 6px 12px !important;
-          }
-
-          .video-info span {
-            font-size: 10px !important;
-          }
-
-          .redux-video-play-btn {
-            width: 70px !important;
-            height: 70px !important;
-          }
-
-          .redux-video-play-btn svg {
-            width: 28px !important;
-            height: 28px !important;
-          }
-
-          .redux-hero-cta {
-            flex-direction: column !important;
-            gap: 15px !important;
-            margin-top: 50px !important;
-          }
-
-          .redux-cta-primary,
-          .redux-cta-secondary {
-            min-height: 50px !important;
-            padding: 16px 28px !important;
-            font-size: 11px !important;
-            letter-spacing: 2px !important;
-          }
-
-          .redux-hero-title {
-            font-size: clamp(2.8rem, 15vw, 6rem) !important;
-            margin-bottom: 25px !important;
-          }
-
-          .redux-hero-subtitle {
-            font-size: clamp(0.9rem, 4vw, 1.2rem) !important;
-            letter-spacing: 0.2em !important;
-            padding: 10px 18px !important;
-          }
-
-          .redux-subtitle-container {
-            margin: 30px 0 40px !important;
-          }
-        }
-
-        /* Extra Small Mobile Devices */
-        @media (max-width: 480px) {
-          .redux-loading-screen .redux-logo-text {
-            font-size: clamp(2.5rem, 12vw, 4rem) !important;
-          }
-
-          .loading-progress-container {
-            width: 250px !important;
-          }
-
-          .redux-hero-title {
-            font-size: clamp(2.2rem, 18vw, 4.5rem) !important;
-            margin-bottom: 20px !important;
+          .hero-subtitle {
+            font-size: 1rem !important;
+            margin-bottom: 2rem !important;
           }
           
-          .redux-hero-subtitle {
-            font-size: clamp(0.7rem, 5vw, 1rem) !important;
-            letter-spacing: 0.15em !important;
-            padding: 8px 15px !important;
-          }
-
-          .redux-cta-primary,
-          .redux-cta-secondary {
-            padding: 14px 24px !important;
-            font-size: 10px !important;
-            min-height: 46px !important;
-          }
-
-          .redux-video-controls {
-            gap: 8px !important;
-          }
-
-          .video-control-btn {
-            width: 38px !important;
-            height: 38px !important;
-          }
-
-          .redux-video-play-btn {
-            width: 65px !important;
-            height: 65px !important;
-          }
-        }
-
-        /* CMS Admin Overlay Styles */
-        .cms-admin-overlay {
-          animation: slideInFromLeft 0.5s ease-out;
-        }
-
-        .mini-cms-slot :global(.media-slot-admin) {
-          background: rgba(255, 255, 255, 0.05) !important;
-          border: 1px solid rgba(255, 255, 255, 0.1) !important;
-          border-radius: 8px !important;
-          padding: 12px !important;
-        }
-
-        .mini-cms-slot :global(.media-slot-admin h4) {
-          color: var(--primary-white) !important;
-          font-size: 11px !important;
-        }
-
-        .mini-cms-slot :global(.media-slot-admin p) {
-          color: rgba(255, 255, 255, 0.7) !important;
-          font-size: 10px !important;
-        }
-
-        @keyframes slideInFromLeft {
-          0% {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-          .redux-hero-title {
-            text-shadow: none !important;
+          .hero-description {
+            margin-bottom: 2rem !important;
           }
           
-          .redux-hero-subtitle {
-            background: rgba(0, 0, 0, 0.8) !important;
-            border: 2px solid white !important;
+          .hero-description p {
+            font-size: 1rem !important;
+          }
+          
+          .hero-actions {
+            flex-direction: column;
+            gap: 1rem;
+          }
+          
+          .hero-actions button {
+            width: 100%;
+            max-width: 280px;
           }
         }
         
-        /* Reduced motion support */
+        @media (max-width: 480px) {
+          .hero-actions button {
+            padding: 12px 24px;
+            font-size: 0.75rem;
+          }
+        }
+        
+        /* Prevent flash of unstyled content */
+        .hero-section {
+          min-height: 100vh;
+          min-height: 100dvh;
+        }
+        
+        /* Video optimization */
+        video {
+          will-change: transform;
+        }
+        
+        /* Performance optimizations */
+        .hero-content * {
+          will-change: auto;
+        }
+        
+        /* Reduce motion for users who prefer it */
         @media (prefers-reduced-motion: reduce) {
           * {
             animation-duration: 0.01ms !important;
             animation-iteration-count: 1 !important;
             transition-duration: 0.01ms !important;
           }
-          
-          .redux-hero-title .redux-title-letter {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-          }
-          
-          .redux-hero-subtitle {
-            animation: none !important;
-            opacity: 1 !important;
-            width: auto !important;
-          }
-          
-          .redux-hero-cta {
-            animation: none !important;
-            opacity: 1 !important;
-          }
         }
       `}</style>
-    </>
+    </section>
   );
 }
-
-// Control button style constant (moved outside component for better performance)
-const controlButtonStyle: React.CSSProperties = {
-  width: '48px',
-  height: '48px',
-  background: 'rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(15px)',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
-  borderRadius: '50%',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
-  color: 'var(--primary-white)',
-  outline: 'none'
-};

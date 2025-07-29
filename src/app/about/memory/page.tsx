@@ -2,16 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import { useCMSSlot } from '@/hooks/useCMSSlot';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
-
-// Dynamic imports to prevent hydration issues
-const OptimizedImage = dynamic(() => import('@/components/ui/OptimizedImage'), {
-  ssr: false,
-  loading: () => <div className="w-full h-full bg-gray-800 animate-pulse" />
-});
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 about-memory.html과 완전 동일한 Memory 페이지 구현
 export default function MemoryPage() {
@@ -35,11 +29,10 @@ export default function MemoryPage() {
   // Gallery images are now managed by CMS - fallback to empty array if not loaded
   // CMS will populate galleryImages from the 'about-memory-gallery' slot
 
+  // 키보드 네비게이션 - 클라이언트에서만
   useEffect(() => {
-    // 클라이언트 사이드에서만 실행
-    if (typeof window === 'undefined') return;
+    if (!isClient) return;
 
-    // HTML 버전과 동일한 키보드 네비게이션
     const handleKeyDown = (event: KeyboardEvent) => {
       if (isLightboxOpen) {
         switch(event.key) {
@@ -61,13 +54,12 @@ export default function MemoryPage() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isLightboxOpen]);
+  }, [isClient, isLightboxOpen]);
 
-  // 이미지 프리로딩을 별도 useEffect로 처리
+  // 이미지 프리로딩
   useEffect(() => {
-    if (typeof window === 'undefined' || !galleryImages.length) return;
+    if (!isClient || !galleryImages.length) return;
 
-    // HTML 버전과 동일한 성능 최적화
     const preloadImages = () => {
       galleryImages.slice(0, 6).forEach(src => {
         if (src) {
@@ -77,13 +69,12 @@ export default function MemoryPage() {
       });
     };
 
-    // 약간의 지연을 두고 프리로딩 실행
     const timeoutId = setTimeout(preloadImages, 100);
     
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [galleryImages]);
+  }, [isClient, galleryImages]);
 
   // HTML 버전과 동일한 내비게이션 함수들
   const goBack = () => {
@@ -94,36 +85,38 @@ export default function MemoryPage() {
     router.push('/');
   };
 
-  // HTML 버전과 동일한 라이트박스 함수들
+  // 라이트박스 함수들 - 클라이언트 체크 포함
   const openLightbox = (index: number) => {
-    if (galleryImages && galleryImages.length > 0) {
-      setCurrentImageIndex(index);
-      setIsLightboxOpen(true);
-      setLightboxImageError(false);
-      setLightboxImageLoading(true);
-      document.body.style.overflow = 'hidden';
-    }
+    if (!isClient || !galleryImages || galleryImages.length === 0) return;
+    
+    setCurrentImageIndex(index);
+    setIsLightboxOpen(true);
+    setLightboxImageError(false);
+    setLightboxImageLoading(true);
+    document.body.style.overflow = 'hidden';
   };
 
   const closeLightbox = () => {
     setIsLightboxOpen(false);
-    document.body.style.overflow = '';
+    if (isClient) {
+      document.body.style.overflow = '';
+    }
   };
 
   const nextImage = () => {
-    if (galleryImages && galleryImages.length > 0) {
-      setCurrentImageIndex(prev => (prev + 1) % galleryImages.length);
-      setLightboxImageError(false);
-      setLightboxImageLoading(true);
-    }
+    if (!isClient || !galleryImages || galleryImages.length === 0) return;
+    
+    setCurrentImageIndex(prev => (prev + 1) % galleryImages.length);
+    setLightboxImageError(false);
+    setLightboxImageLoading(true);
   };
 
   const prevImage = () => {
-    if (galleryImages && galleryImages.length > 0) {
-      setCurrentImageIndex(prev => (prev - 1 + galleryImages.length) % galleryImages.length);
-      setLightboxImageError(false);
-      setLightboxImageLoading(true);
-    }
+    if (!isClient || !galleryImages || galleryImages.length === 0) return;
+    
+    setCurrentImageIndex(prev => (prev - 1 + galleryImages.length) % galleryImages.length);
+    setLightboxImageError(false);
+    setLightboxImageLoading(true);
   };
 
   const handleLightboxClick = (e: React.MouseEvent) => {
@@ -132,16 +125,9 @@ export default function MemoryPage() {
     }
   };
 
-  // Show loading until client-side is ready
+  // 서버 사이드 렌더링 중에는 null 반환 - 로딩 화면 없이
   if (!isClient) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-center">
-          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-sm opacity-60">Loading...</p>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (

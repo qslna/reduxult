@@ -2,13 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
-
-// Dynamic imports to prevent hydration issues
-const OptimizedImage = dynamic(() => import('@/components/ui/OptimizedImage'), {
-  ssr: false,
-  loading: () => <div className="w-full h-full bg-gray-800 animate-pulse" />
-});
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 about-installation.html과 완전 동일한 Process 페이지 구현
 export default function InstallationPage() {
@@ -21,11 +15,10 @@ export default function InstallationPage() {
     setIsClient(true);
   }, []);
 
+  // 클라이언트 이벤트 처리 - 스크롤, 키보드, 자동재생
   useEffect(() => {
-    // 클라이언트 사이드에서만 실행
-    if (typeof window === 'undefined') return;
+    if (!isClient) return;
 
-    // HTML 버전과 동일한 스크롤 네비게이션 효과
     const handleScroll = () => {
       const navbar = document.getElementById('navbar');
       if (navbar) {
@@ -37,7 +30,6 @@ export default function InstallationPage() {
       }
     };
 
-    // 키보드 네비게이션
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
         setCurrentSlide(prev => (prev - 1 + 3) % 3);
@@ -47,11 +39,9 @@ export default function InstallationPage() {
       }
     };
 
-    // 이벤트 리스너 추가
     window.addEventListener('scroll', handleScroll);
     document.addEventListener('keydown', handleKeyDown);
 
-    // 갤러리 자동 재생
     const slideInterval = setInterval(() => {
       setCurrentSlide(prev => (prev + 1) % 3);
     }, 5000);
@@ -61,42 +51,34 @@ export default function InstallationPage() {
       document.removeEventListener('keydown', handleKeyDown);
       clearInterval(slideInterval);
     };
-  }, []);
+  }, [isClient]);
 
-  // 별도 useEffect로 Intersection Observer 처리
+  // Intersection Observer - 클라이언트에서만
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!isClient) return;
 
-    // 컴포넌트가 마운트된 후 약간의 지연을 두고 실행
-    const timeoutId = setTimeout(() => {
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-      };
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-          }
-        });
-      }, observerOptions);
-      
-      // installation-item 클래스를 가진 요소들을 찾아서 관찰
-      const installationItems = document.querySelectorAll('.installation-item');
-      installationItems.forEach(item => {
-        observer.observe(item);
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
       });
-
-      return () => {
-        observer.disconnect();
-      };
-    }, 100);
+    }, observerOptions);
+    
+    const installationItems = document.querySelectorAll('.installation-item');
+    installationItems.forEach(item => {
+      observer.observe(item);
+    });
 
     return () => {
-      clearTimeout(timeoutId);
+      observer.disconnect();
     };
-  }, []);
+  }, [isClient]);
 
   // HTML 버전과 동일한 내비게이션 함수들
   const goBack = () => {
@@ -168,16 +150,9 @@ export default function InstallationPage() {
     { title: 'CINE MODE - Opening', location: '오프닝 현장', image: '' }
   ];
 
-  // Show loading until client-side is ready
+  // 서버 사이드 렌더링 중에는 null 반환 - 로딩 화면 없이
   if (!isClient) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-center">
-          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-sm opacity-60">Loading...</p>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (

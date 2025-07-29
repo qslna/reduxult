@@ -24,6 +24,7 @@ export default function DesignerPage({ params }: Props) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false);
   const [resolvedParams, setResolvedParams] = useState<{ slug: string } | null>(null);
   
   // CMS 인증
@@ -38,6 +39,11 @@ export default function DesignerPage({ params }: Props) {
     `designer-${designer?.id || 'default'}-portfolio`, 
     portfolioSlot?.currentFiles || designer?.portfolioImages
   );
+
+  // 클라이언트 마운트 처리
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Resolve params first
   useEffect(() => {
@@ -83,6 +89,8 @@ export default function DesignerPage({ params }: Props) {
   const goHome = () => router.push('/');
 
   const openLightbox = (index: number) => {
+    if (!isClient) return;
+    
     setCurrentImageIndex(index);
     setIsLightboxOpen(true);
     document.body.style.overflow = 'hidden';
@@ -90,7 +98,9 @@ export default function DesignerPage({ params }: Props) {
 
   const closeLightbox = () => {
     setIsLightboxOpen(false);
-    document.body.style.overflow = '';
+    if (isClient) {
+      document.body.style.overflow = '';
+    }
   };
 
   const nextImage = () => {
@@ -107,7 +117,10 @@ export default function DesignerPage({ params }: Props) {
     }
   };
 
+  // 키보드 이벤트 처리 - 클라이언트에서만
   useEffect(() => {
+    if (!isClient) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (isLightboxOpen) {
         switch(event.key) {
@@ -126,7 +139,7 @@ export default function DesignerPage({ params }: Props) {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isLightboxOpen]);
+  }, [isClient, isLightboxOpen]);
 
   const handleLightboxClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -134,18 +147,8 @@ export default function DesignerPage({ params }: Props) {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="font-['Inter'] text-sm tracking-wider text-white/70">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!designer) {
+  // 서버 사이드 렌더링 중이거나 로딩 중에는 null 반환 - 로딩 화면 없이
+  if (!isClient || isLoading || !designer) {
     return null;
   }
 
