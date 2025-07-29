@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import SimpleCMS from '@/components/cms/SimpleCMS';
+import DirectCMS from '@/components/cms/DirectCMS';
 
 // HTML redux6 about-collective.html과 완전 동일한 Collective 페이지 구현
 export default function CollectivePage() {
@@ -184,17 +184,22 @@ export default function CollectivePage() {
                 className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
               
-              {/* CMS overlay for admin */}
+              {/* CMS 버튼 for admin */}
               {isAuthenticated && (
-                <div className="absolute top-2 right-2 z-10">
-                  <SimpleCMS
+                <div 
+                  className="absolute top-2 right-2 z-20"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <DirectCMS
                     slotId="about-collective-kimbomin-profile"
                     currentUrl={kimBominCMS.currentUrl}
                     type="image"
                     onUpload={kimBominCMS.handleUpload}
                     onDelete={kimBominCMS.handleDelete}
                     isAdminMode={true}
-                    className="w-8 h-8"
                     placeholder="Kim Bomin"
                   />
                 </div>
@@ -225,17 +230,22 @@ export default function CollectivePage() {
                 className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
               
-              {/* CMS overlay for admin */}
+              {/* CMS 버튼 for admin */}
               {isAuthenticated && (
-                <div className="absolute top-2 right-2 z-10">
-                  <SimpleCMS
+                <div 
+                  className="absolute top-2 right-2 z-20"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <DirectCMS
                     slotId="about-collective-parkparang-profile"
                     currentUrl={parkParangCMS.currentUrl}
                     type="image"
                     onUpload={parkParangCMS.handleUpload}
                     onDelete={parkParangCMS.handleDelete}
                     isAdminMode={true}
-                    className="w-8 h-8"
                     placeholder="Park Parang"
                   />
                 </div>
@@ -266,17 +276,22 @@ export default function CollectivePage() {
                 className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
               
-              {/* CMS overlay for admin */}
+              {/* CMS 버튼 for admin */}
               {isAuthenticated && (
-                <div className="absolute top-2 right-2 z-10">
-                  <SimpleCMS
+                <div 
+                  className="absolute top-2 right-2 z-20"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <DirectCMS
                     slotId="about-collective-leetaehyeon-profile"
                     currentUrl={leeTaehyeonCMS.currentUrl}
                     type="image"
                     onUpload={leeTaehyeonCMS.handleUpload}
                     onDelete={leeTaehyeonCMS.handleDelete}
                     isAdminMode={true}
-                    className="w-8 h-8"
                     placeholder="Lee Taehyeon"
                   />
                 </div>
@@ -307,17 +322,22 @@ export default function CollectivePage() {
                 className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
               
-              {/* CMS overlay for admin */}
+              {/* CMS 버튼 for admin */}
               {isAuthenticated && (
-                <div className="absolute top-2 right-2 z-10">
-                  <SimpleCMS
+                <div 
+                  className="absolute top-2 right-2 z-20"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <DirectCMS
                     slotId="about-collective-choieunsol-profile"
                     currentUrl={choiEunsolCMS.currentUrl}
                     type="image"
                     onUpload={choiEunsolCMS.handleUpload}
                     onDelete={choiEunsolCMS.handleDelete}
                     isAdminMode={true}
-                    className="w-8 h-8"
                     placeholder="Choi Eunsol"
                   />
                 </div>
@@ -348,17 +368,22 @@ export default function CollectivePage() {
                 className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
               
-              {/* CMS overlay for admin */}
+              {/* CMS 버튼 for admin */}
               {isAuthenticated && (
-                <div className="absolute top-2 right-2 z-10">
-                  <SimpleCMS
+                <div 
+                  className="absolute top-2 right-2 z-20"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <DirectCMS
                     slotId="about-collective-hwangjinsu-profile"
                     currentUrl={hwangJinsuCMS.currentUrl}
                     type="image"
                     onUpload={hwangJinsuCMS.handleUpload}
                     onDelete={hwangJinsuCMS.handleDelete}
                     isAdminMode={true}
-                    className="w-8 h-8"
                     placeholder="Hwang Jinsu"
                   />
                 </div>
@@ -389,17 +414,22 @@ export default function CollectivePage() {
                 className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
               />
               
-              {/* CMS overlay for admin */}
+              {/* CMS 버튼 for admin */}
               {isAuthenticated && (
-                <div className="absolute top-2 right-2 z-10">
-                  <SimpleCMS
+                <div 
+                  className="absolute top-2 right-2 z-20"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <DirectCMS
                     slotId="about-collective-kimgyeongsu-profile"
                     currentUrl={kimGyeongsuCMS.currentUrl}
                     type="image"
                     onUpload={kimGyeongsuCMS.handleUpload}
                     onDelete={kimGyeongsuCMS.handleDelete}
                     isAdminMode={true}
-                    className="w-8 h-8"
                     placeholder="Kim Gyeongsu"
                   />
                 </div>

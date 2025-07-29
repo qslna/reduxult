@@ -6,7 +6,7 @@ import { designers } from '@/data/designers';
 import { useTextContent } from '@/hooks/usePageContent';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import SimpleCMS from '@/components/cms/SimpleCMS';
+import DirectCMS from '@/components/cms/DirectCMS';
 
 interface DesignerCardProps {
   designer: {
@@ -108,23 +108,22 @@ function DesignerCard({ designer, index, isAuthenticated, onClick }: DesignerCar
         </span>
       </div>
       
-      {/* CMS overlay for admin */}
+      {/* CMS 버튼 for admin */}
       {isAuthenticated && (
         <div 
-          className="absolute top-4 left-4 z-20 w-8 h-8"
+          className="absolute top-4 left-4 z-20"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
           }}
         >
-          <SimpleCMS
+          <DirectCMS
             slotId={`designer-${designer.id}-profile`}
             currentUrl={currentUrl}
             type="image"
             onUpload={handleUpload}
             onDelete={handleDelete}
             isAdminMode={true}
-            className="w-full h-full"
             placeholder={designer.name}
           />
         </div>

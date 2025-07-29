@@ -242,11 +242,21 @@ export default function MemoryPage() {
         )}
       </div>
 
-      {/* Professional Lightbox - HTML 버전과 완전 동일 */}
+      {/* Professional Lightbox - 현재 보는 위치 기준으로 수정 */}
       {isLightboxOpen && (
         <div 
-          className="lightbox fixed top-0 left-0 w-full h-full bg-black/95 backdrop-blur-[20px] z-[10000] flex items-center justify-center opacity-100 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)]"
+          className="lightbox fixed inset-0 bg-black/95 backdrop-blur-[20px] z-[10000] opacity-100 transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)]"
           onClick={handleLightboxClick}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh'
+          }}
         >
           <div className="lightbox-content max-w-[90vw] max-h-[90vh] relative">
             <button 

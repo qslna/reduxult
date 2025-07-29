@@ -7,7 +7,7 @@ import OptimizedImage from '@/components/ui/OptimizedImage';
 import HydrationSafe, { useIsClient } from '@/components/ui/HydrationSafe';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import SimpleCMS from '@/components/cms/SimpleCMS';
+import DirectCMS from '@/components/cms/DirectCMS';
 
 // 최적화된 About 페이지 - 로딩 문제 해결
 export default function AboutPage() {
@@ -239,23 +239,22 @@ function AboutContent() {
                       </div>
                     </div>
                     
-                    {/* CMS overlay for admin */}
+                    {/* CMS 버튼 for admin */}
                     {isAuthenticated && cms && (
                       <div 
-                        className="absolute top-2 right-2 z-20 w-8 h-8"
+                        className="absolute top-2 right-2 z-20"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                         }}
                       >
-                        <SimpleCMS
+                        <DirectCMS
                           slotId={`about-preview-${category.id}`}
                           currentUrl={cms.currentUrl}
                           type="image"
                           onUpload={cms.handleUpload}
                           onDelete={cms.handleDelete}
                           isAdminMode={true}
-                          className="w-full h-full"
                           placeholder={category.name}
                         />
                       </div>

@@ -9,6 +9,7 @@ import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS, useGalleryCMS } from '@/hooks/useSimpleCMS';
 import GalleryCMS from '@/components/cms/GalleryCMS';
+import DirectCMS from '@/components/cms/DirectCMS';
 import { getSlotById } from '@/lib/cms-config';
 
 interface Props {
@@ -269,6 +270,20 @@ export default function DesignerPage({ params }: Props) {
                       }}
                     />
                     
+                    {/* 프로필 이미지 CMS */}
+                    {isAuthenticated && (
+                      <div className="absolute top-2 left-2 z-20">
+                        <DirectCMS
+                          slotId={`designer-${designer.id}-profile`}
+                          currentUrl={profileCMS.currentUrl}
+                          type="image"
+                          onUpload={profileCMS.handleUpload}
+                          onDelete={profileCMS.handleDelete}
+                          isAdminMode={true}
+                          placeholder="프로필"
+                        />
+                      </div>
+                    )}
                     
                     {/* Decorative elements */}
                     <div 
@@ -344,6 +359,34 @@ export default function DesignerPage({ params }: Props) {
                         {String(index + 1).padStart(2, '0')} / {String((portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages).length).padStart(2, '0')}
                       </p>
                     </div>
+                    
+                    {/* 개별 이미지 CMS */}
+                    {isAuthenticated && (
+                      <div 
+                        className="absolute top-2 left-2 z-20"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                      >
+                        <DirectCMS
+                          slotId={`designer-${designer.id}-portfolio-${index}`}
+                          currentUrl={image}
+                          type="image"
+                          onUpload={(url) => {
+                            const newImages = [...(portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages)];
+                            newImages[index] = url;
+                            portfolioCMS.handleUpload(url); // 전체 갤러리 업데이트
+                          }}
+                          onDelete={() => {
+                            const newImages = (portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages).filter((_, i) => i !== index);
+                            portfolioCMS.reorderImages?.(0, 0); // 갤러리 업데이트 트리거
+                          }}
+                          isAdminMode={true}
+                          placeholder={`포트폴리오 ${index + 1}`}
+                        />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

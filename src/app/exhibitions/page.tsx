@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import SimpleCMS from '@/components/cms/SimpleCMS';
+import DirectCMS from '@/components/cms/DirectCMS';
 
 // Simplified Exhibitions Page
 export default function ExhibitionsPage() {
@@ -154,14 +154,13 @@ export default function ExhibitionsPage() {
                       e.stopPropagation();
                     }}
                   >
-                    <SimpleCMS
+                    <DirectCMS
                       slotId="exhibition-cinemode-1"
                       currentUrl={cinemode1CMS.currentUrl}
                       type="image"
                       onUpload={cinemode1CMS.handleUpload}
                       onDelete={cinemode1CMS.handleDelete}
                       isAdminMode={true}
-                      className="w-full h-full"
                       placeholder="Cinemode 1"
                     />
                   </div>
@@ -187,6 +186,26 @@ export default function ExhibitionsPage() {
                     onClick={() => openLightbox(cms.currentUrl || `/images/exhibitions/cinemode/${num}.jpg`, `CINE MODE Gallery ${num}`)}
                   />
                   
+                  {/* CMS 버튼 for admin */}
+                  {isAuthenticated && (
+                    <div 
+                      className="absolute top-2 right-2 z-20"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    >
+                      <DirectCMS
+                        slotId={`exhibition-cinemode-${num}`}
+                        currentUrl={cms.currentUrl}
+                        type="image"
+                        onUpload={cms.handleUpload}
+                        onDelete={cms.handleDelete}
+                        isAdminMode={true}
+                        placeholder={`Cinemode ${num}`}
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -218,14 +237,13 @@ export default function ExhibitionsPage() {
                       e.stopPropagation();
                     }}
                   >
-                    <SimpleCMS
+                    <DirectCMS
                       slotId="exhibition-theroom-1"
                       currentUrl={theroom1CMS.currentUrl}
                       type="image"
                       onUpload={theroom1CMS.handleUpload}
                       onDelete={theroom1CMS.handleDelete}
                       isAdminMode={true}
-                      className="w-full h-full"
                       placeholder="The Room 1"
                     />
                   </div>
@@ -274,6 +292,26 @@ export default function ExhibitionsPage() {
                     onClick={() => openLightbox(cms.currentUrl || `/images/exhibitions/theroom/${num}.jpg`, `THE ROOM Gallery ${num}`)}
                   />
                   
+                  {/* CMS 버튼 for admin */}
+                  {isAuthenticated && (
+                    <div 
+                      className="absolute top-2 right-2 z-20"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    >
+                      <DirectCMS
+                        slotId={`exhibition-theroom-${num}`}
+                        currentUrl={cms.currentUrl}
+                        type="image"
+                        onUpload={cms.handleUpload}
+                        onDelete={cms.handleDelete}
+                        isAdminMode={true}
+                        placeholder={`The Room ${num}`}
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

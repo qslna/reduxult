@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import SimpleCMS from '@/components/cms/SimpleCMS';
+import DirectCMS from '@/components/cms/DirectCMS';
 
 /**
  * 최적화된 Hero Section - 로딩 문제 해결
@@ -220,17 +220,16 @@ function HeroSection() {
         </div>
       </div>
 
-      {/* CMS overlay for admin - video management */}
+      {/* CMS 버튼 for admin - video management */}
       {isAuthenticated && (
         <div className="absolute top-20 right-8 z-30">
-          <SimpleCMS
+          <DirectCMS
             slotId="main-hero-video"
             currentUrl={heroVideoUrl}
             type="video"
             onUpload={cmsUpload}
             onDelete={cmsDelete}
             isAdminMode={true}
-            className="w-10 h-10"
             placeholder="Hero Video"
           />
         </div>

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import SimpleCMS from '@/components/cms/SimpleCMS';
+import DirectCMS from '@/components/cms/DirectCMS';
 
 // HTML redux6 about-installation.html과 완전 동일한 Process 페이지 구현
 export default function InstallationPage() {
@@ -278,23 +278,22 @@ export default function InstallationPage() {
                   className="object-cover transition-transform duration-[1.5s] ease-in-out hover:transform hover:scale-110"
                 />
                 
-                {/* CMS overlay for admin */}
+                {/* CMS 버튼 for admin */}
                 {isAuthenticated && installation.cms && (
                   <div 
-                    className="absolute top-4 right-4 z-20 w-10 h-10"
+                    className="absolute top-4 right-4 z-20"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                     }}
                   >
-                    <SimpleCMS
+                    <DirectCMS
                       slotId={`about-installation-${installation.title.toLowerCase().replace(/[^a-z]/g, '')}`}
                       currentUrl={installation.cms.currentUrl}
                       type="image"
                       onUpload={installation.cms.handleUpload}
                       onDelete={installation.cms.handleDelete}
                       isAdminMode={true}
-                      className="w-full h-full"
                       placeholder={installation.title}
                     />
                   </div>
@@ -356,23 +355,22 @@ export default function InstallationPage() {
                 </p>
               </div>
               
-              {/* CMS overlay for admin */}
+              {/* CMS 버튼 for admin */}
               {isAuthenticated && slide.cms && (
                 <div 
-                  className="absolute top-4 right-4 z-30 w-10 h-10"
+                  className="absolute top-4 right-4 z-30"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                   }}
                 >
-                  <SimpleCMS
+                  <DirectCMS
                     slotId={`about-installation-gallery${index + 1}`}
                     currentUrl={slide.cms.currentUrl}
                     type="image"
                     onUpload={slide.cms.handleUpload}
                     onDelete={slide.cms.handleDelete}
                     isAdminMode={true}
-                    className="w-full h-full"
                     placeholder={slide.title}
                   />
                 </div>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import SimpleCMS from '@/components/cms/SimpleCMS';
+import DirectCMS from '@/components/cms/DirectCMS';
 
 // 최적화된 ShowcaseSection - 로딩 문제 해결
 export default function ShowcaseSection() {
@@ -160,23 +160,22 @@ export default function ShowcaseSection() {
                 </div>
               </div>
 
-              {/* CMS overlay for admin */}
+              {/* CMS 버튼 for admin */}
               {isAuthenticated && (
                 <div 
-                  className="absolute top-2 right-2 z-20 w-8 h-8"
+                  className="absolute top-2 right-2 z-20"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                   }}
                 >
-                  <SimpleCMS
+                  <DirectCMS
                     slotId={`main-designer-profile-${designer.id}`}
                     currentUrl={designer.cms.currentUrl}
                     type="image"
                     onUpload={designer.cms.handleUpload}
                     onDelete={designer.cms.handleDelete}
                     isAdminMode={true}
-                    className="w-full h-full"
                     placeholder={designer.name}
                   />
                 </div>
@@ -223,23 +222,22 @@ export default function ShowcaseSection() {
                 </div>
               </div>
 
-              {/* CMS overlay for admin */}
+              {/* CMS 버튼 for admin */}
               {isAuthenticated && (
                 <div 
-                  className="absolute top-2 right-2 z-20 w-8 h-8"
+                  className="absolute top-2 right-2 z-20"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                   }}
                 >
-                  <SimpleCMS
+                  <DirectCMS
                     slotId={`main-exhibition-${exhibition.id}`}
                     currentUrl={exhibition.cms.currentUrl}
                     type="image"
                     onUpload={exhibition.cms.handleUpload}
                     onDelete={exhibition.cms.handleDelete}
                     isAdminMode={true}
-                    className="w-full h-full"
                     placeholder={exhibition.name}
                   />
                 </div>

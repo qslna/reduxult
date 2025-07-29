@@ -351,21 +351,25 @@ function FashionFilmContent() {
         </div>
       </section>
 
-      {/* Video Modal */}
+      {/* Video Modal - 현재 보는 위치 기준으로 수정 */}
       {isModalOpen && (
         <div 
-          className="modal-overlay fixed inset-0 bg-black/95 z-[10000] flex items-center justify-center cursor-pointer"
+          className="modal-overlay fixed inset-0 bg-black/95 z-[10000] cursor-pointer"
           onClick={handleModalClick}
           style={{
-            backdropFilter: 'blur(20px)'
+            backdropFilter: 'blur(20px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh'
           }}
         >
           <div 
             className="modal-content relative max-w-[90vw] max-h-[90vh]"
-            style={{
-              transform: `translate(${modalTransform.x}px, ${modalTransform.y}px) scale(${modalTransform.scale})`,
-              transition: 'transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)'
-            }}
             onClick={(e) => e.stopPropagation()}
           >
             <button 
