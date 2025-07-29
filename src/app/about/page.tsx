@@ -4,16 +4,22 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { aboutGalleries } from '@/data/aboutGallery';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import HydrationSafe, { useIsClient } from '@/components/ui/HydrationSafe';
 
 // 최적화된 About 페이지 - 로딩 문제 해결
 export default function AboutPage() {
-  const router = useRouter();
-  const [isClient, setIsClient] = useState(false);
+  return (
+    <HydrationSafe fallback={<div className="min-h-screen bg-black"></div>}>
+      <AboutContent />
+    </HydrationSafe>
+  );
+}
 
-  // 클라이언트 마운트 처리
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+function AboutContent() {
+  const router = useRouter();
+  const isClient = useIsClient();
+
+  // useIsClient 훅으로 클라이언트 상태 관리
 
   useEffect(() => {
     if (!isClient) return;
@@ -51,28 +57,7 @@ export default function AboutPage() {
     'collective': { gridColumn: 'span 8', gridRow: 'span 2' }
   };
 
-  // 서버 사이드 렌더링 중에는 기본 콘텐츠 반환
-  if (!isClient) {
-    return (
-      <div className="min-h-screen bg-black text-white">
-        <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] border-b border-white/10">
-          <div className="flex justify-between items-center max-w-[1600px] mx-auto">
-            <div className="flex items-center gap-10">
-              <span className="text-xl text-white">←</span>
-              <span className="text-lg tracking-[0.2em] text-amber-300 uppercase">ABOUT</span>
-            </div>
-            <div className="font-['Playfair_Display'] text-2xl font-extrabold text-white">REDUX</div>
-          </div>
-        </nav>
-        <div className="pt-[120px] flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <h1 className="text-6xl font-['Playfair_Display'] font-bold mb-4">ABOUT</h1>
-            <p className="text-xl opacity-80">Loading...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // HydrationSafe 컴포넌트가 클라이언트 렌더링을 보장
 
   return (
     <div className="min-h-screen bg-black text-white">

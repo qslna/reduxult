@@ -2,18 +2,31 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useCMSSlot } from '@/hooks/useCMSSlot';
+import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import MediaSlot from '@/components/cms/MediaSlot';
+import SimpleCMSSlot from '@/components/cms/SimpleCMSSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import HydrationSafe, { useIsClient } from '@/components/ui/HydrationSafe';
 
 // 최적화된 Fashion Film 페이지
 export default function FashionFilmPage() {
+  return (
+    <HydrationSafe 
+      fallback={
+        <div className="min-h-screen bg-black"></div>
+      }
+    >
+      <FashionFilmContent />
+    </HydrationSafe>
+  );
+}
+
+function FashionFilmContent() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFilm, setCurrentFilm] = useState('');
   const [modalTransform, setModalTransform] = useState({ x: 0, y: 0, scale: 0 });
-  const [isClient, setIsClient] = useState(false);
+  const isClient = useIsClient();
   
   // CMS integration
   const { isAuthenticated } = useSimpleAuth();
@@ -25,8 +38,8 @@ export default function FashionFilmPage() {
       name: 'Kim Bomin',
       title: 'CHASING VOWS',
       description: '설레임과 이별의 감정을 담은 서사',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-kimbomin-thumbnail'),
-      videoSlot: useCMSSlot('designer-kimbomin-film'),
+      thumbnailCMS: useSimpleCMS('about-fashionfilm-kimbomin-thumbnail', '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg'),
+      videoCMS: useSimpleCMS('designer-kimbomin-film', '1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X'),
       defaultThumbnail: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
       defaultVideo: '1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X'
     },
@@ -35,8 +48,8 @@ export default function FashionFilmPage() {
       name: 'Park Parang',
       title: 'THE TIME BETWEEN',
       description: '시간의 틈 사이에서 발견하는 아름다움',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-parkparang-thumbnail'),
-      videoSlot: useCMSSlot('designer-parkparang-film'),
+      thumbnailCMS: useSimpleCMS('about-fashionfilm-parkparang-thumbnail', '/images/profile/Park Parang.jpg'),
+      videoCMS: useSimpleCMS('designer-parkparang-film', '15d901XRElkF5p7xiJYelIyblYFb-PtsD'),
       defaultThumbnail: '/images/profile/Park Parang.jpg',
       defaultVideo: '15d901XRElkF5p7xiJYelIyblYFb-PtsD'
     },
@@ -45,8 +58,8 @@ export default function FashionFilmPage() {
       name: 'Lee Taehyeon',
       title: 'POLYHEDRON',
       description: '다면체로 표현하는 인간의 복잡성',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-leetaehyeon-thumbnail'),
-      videoSlot: useCMSSlot('designer-leetaehyeon-film'),
+      thumbnailCMS: useSimpleCMS('about-fashionfilm-leetaehyeon-thumbnail', '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg'),
+      videoCMS: useSimpleCMS('designer-leetaehyeon-film', '1fG2fchKvEG7i7Lo79K7250mgiVTse6ks'),
       defaultThumbnail: '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
       defaultVideo: '1fG2fchKvEG7i7Lo79K7250mgiVTse6ks'
     },
@@ -55,8 +68,8 @@ export default function FashionFilmPage() {
       name: 'Choi Eunsol',
       title: 'SOUL SUCKER',
       description: '영혼을 빨아드리는 유혹의 힘',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-choieunsol-thumbnail'),
-      videoSlot: useCMSSlot('designer-choieunsol-film'),
+      thumbnailCMS: useSimpleCMS('about-fashionfilm-choieunsol-thumbnail', '/images/designers/choieunsol/cinemode/IMG_8617.jpeg'),
+      videoCMS: useSimpleCMS('designer-choieunsol-film', '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3'),
       defaultThumbnail: '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
       defaultVideo: '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3'
     },
@@ -65,8 +78,8 @@ export default function FashionFilmPage() {
       name: 'Hwang Jinsu',
       title: 'WHO AM I ?!',
       description: '자아에 대한 끝없는 물음',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-hwangjinsu-thumbnail'),
-      videoSlot: useCMSSlot('designer-hwangjinsu-film'),
+      thumbnailCMS: useSimpleCMS('about-fashionfilm-hwangjinsu-thumbnail', '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg'),
+      videoCMS: useSimpleCMS('designer-hwangjinsu-film', '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d'),
       defaultThumbnail: '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
       defaultVideo: '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d'
     },
@@ -75,17 +88,41 @@ export default function FashionFilmPage() {
       name: 'Kim Gyeongsu',
       title: 'TO BE REVEALED',
       description: '드러날 진실에 대한 고민',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-kimgyeongsu-thumbnail'),
-      videoSlot: useCMSSlot('designer-kimgyeongsu-film'),
+      thumbnailCMS: useSimpleCMS('about-fashionfilm-kimgyeongsu-thumbnail', '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg'),
+      videoCMS: useSimpleCMS('designer-kimgyeongsu-film', '1Hl594dd_MY714hZwmklTAPTc-pofe9bY'),
       defaultThumbnail: '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg',
       defaultVideo: '1Hl594dd_MY714hZwmklTAPTc-pofe9bY'
     }
   ];
 
-  // 클라이언트 마운트 처리
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  // 새로운 CMS 컴포넌트용 어댑터 함수들
+  const createUploadAdapter = (cmsUpload: (url: string) => void) => async (file: File): Promise<void> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (response.ok) {
+        const { url } = await response.json();
+        cmsUpload(url);
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      throw error;
+    }
+  };
+
+  const createDeleteAdapter = (cmsDelete: () => void) => async (): Promise<void> => {
+    return Promise.resolve(cmsDelete());
+  };
+
+  // useIsClient 훅으로 클라이언트 상태 관리
 
   useEffect(() => {
     if (!isClient) return;
@@ -171,7 +208,7 @@ export default function FashionFilmPage() {
       scale: 0.1 
     });
     
-    const videoFile = film.videoSlot.currentFiles[0] || film.defaultVideo;
+    const videoFile = film.videoCMS.currentUrl || film.defaultVideo;
     setCurrentFilm(videoFile);
     setIsModalOpen(true);
     document.body.style.overflow = 'hidden';
@@ -194,10 +231,7 @@ export default function FashionFilmPage() {
     }
   };
 
-  // 서버 사이드 렌더링 중에는 null 반환
-  if (!isClient) {
-    return null;
-  }
+  // HydrationSafe 컴포넌트가 클라이언트 렌더링을 보장
 
   return (
     <>
@@ -277,7 +311,7 @@ export default function FashionFilmPage() {
         
         <div className="films-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1400px] mx-auto">
           {filmData.map((film, index) => {
-            const thumbnailUrl = film.thumbnailSlot.currentFiles[0] || film.defaultThumbnail;
+            const thumbnailUrl = film.thumbnailCMS.currentUrl || film.defaultThumbnail;
             
             return (
               <div 
@@ -290,14 +324,17 @@ export default function FashionFilmPage() {
                 }}
                 onClick={(e) => openFilm(film.id, e)}
               >
-                <OptimizedImage 
-                  src={thumbnailUrl}
-                  alt={`${film.name} - ${film.title}`}
-                  fill={true}
-                  priority={index < 3}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-all duration-[800ms] group-hover:scale-105"
-                />
+                {/* Image rendered by SimpleCMSSlot in admin mode, or default image for non-admin */}
+                {!isAuthenticated && (
+                  <OptimizedImage 
+                    src={thumbnailUrl}
+                    alt={`${film.name} - ${film.title}`}
+                    fill={true}
+                    priority={index < 3}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-all duration-[800ms] group-hover:scale-105"
+                  />
+                )}
                 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
@@ -324,18 +361,29 @@ export default function FashionFilmPage() {
                 {/* CMS overlay for admin */}
                 {isAuthenticated && (
                   <div 
-                    className="absolute top-2 right-2 z-20 w-8 h-8"
+                    className="absolute inset-0 z-20"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                     }}
                   >
-                    <MediaSlot
-                      slot={film.thumbnailSlot.slot!}
-                      currentFiles={film.thumbnailSlot.currentFiles}
-                      onFilesUpdate={film.thumbnailSlot.updateFiles}
-                      isAdminMode={true}
-                    />
+                    <SimpleCMSSlot
+                      slotId={`about-fashionfilm-${film.id}-thumbnail`}
+                      currentUrl={film.thumbnailCMS.currentUrl}
+                      onUpload={createUploadAdapter(film.thumbnailCMS.handleUpload)}
+                      onDelete={createDeleteAdapter(film.thumbnailCMS.handleDelete)}
+                      alt={`${film.name} - ${film.title}`}
+                      className="w-full h-full"
+                    >
+                      <OptimizedImage 
+                        src={thumbnailUrl}
+                        alt={`${film.name} - ${film.title}`}
+                        fill={true}
+                        priority={index < 3}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-all duration-[800ms] group-hover:scale-105"
+                      />
+                    </SimpleCMSSlot>
                   </div>
                 )}
               </div>

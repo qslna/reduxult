@@ -18,7 +18,6 @@ export const metadata: Metadata = baseMetadata;
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5,
   userScalable: true,
   themeColor: '#000000',
   colorScheme: 'dark',
@@ -143,6 +142,70 @@ export default function RootLayout({
           <Footer />
         </ErrorBoundary>
         
+        {/* 전역 에러 처리 시스템 */}
+        <Script
+          id="global-error-handler"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              // 전역 에러 처리 시스템
+              (function() {
+                let errorCount = 0;
+                const MAX_ERRORS = 5;
+                const RELOAD_DELAY = 1000;
+                
+                // JavaScript 에러 처리
+                window.onerror = function(message, source, lineno, colno, error) {
+                  console.warn('Global error caught:', { message, source, lineno, colno, error });
+                  errorCount++;
+                  
+                  // 너무 많은 에러가 발생하면 페이지 새로고침
+                  if (errorCount >= MAX_ERRORS) {
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, RELOAD_DELAY);
+                  }
+                  
+                  return true; // 에러를 처리했음을 알림
+                };
+                
+                // Promise rejection 처리
+                window.addEventListener('unhandledrejection', function(event) {
+                  console.warn('Unhandled promise rejection:', event.reason);
+                  event.preventDefault(); // 기본 에러 처리 방지
+                });
+                
+                // React 하이드레이션 에러 처리
+                window.addEventListener('error', function(event) {
+                  if (event.error && event.error.message) {
+                    const message = event.error.message.toLowerCase();
+                    if (message.includes('hydration') || 
+                        message.includes('server-rendered') || 
+                        message.includes('client-rendered')) {
+                      console.warn('Hydration error detected, attempting recovery...');
+                      event.preventDefault();
+                      
+                      // 하이드레이션 에러의 경우 잠시 후 새로고침
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 2000);
+                    }
+                  }
+                });
+                
+                // DOM이 준비되면 폰트 로딩 완료 클래스 추가
+                if (document.readyState === 'loading') {
+                  document.addEventListener('DOMContentLoaded', function() {
+                    document.body.classList.add('fonts-loaded');
+                  });
+                } else {
+                  document.body.classList.add('fonts-loaded');
+                }
+              })();
+            `,
+          }}
+        />
+
         {/* 성능 최적화 초기화 */}
         <Script
           id="performance-optimization"

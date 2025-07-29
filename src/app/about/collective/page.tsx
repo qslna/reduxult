@@ -3,11 +3,52 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import { useSimpleCMS } from '@/hooks/useSimpleCMS';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import SimpleCMSSlot from '@/components/cms/SimpleCMSSlot';
 
 // HTML redux6 about-collective.html과 완전 동일한 Collective 페이지 구현
 export default function CollectivePage() {
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
+  
+  // CMS integration
+  const { isAuthenticated } = useSimpleAuth();
+  
+  // CMS 슬롯들 - 각 멤버별 프로필 이미지
+  const kimBominCMS = useSimpleCMS('about-collective-kimbomin-profile', '/images/profile/Kim Bomin.webp');
+  const parkParangCMS = useSimpleCMS('about-collective-parkparang-profile', '/images/profile/Park Parang.jpg');
+  const leeTaehyeonCMS = useSimpleCMS('about-collective-leetaehyeon-profile', '/images/profile/Lee Taehyeon.jpg');
+  const choiEunsolCMS = useSimpleCMS('about-collective-choieunsol-profile', '/images/profile/Choi Eunsol.jpeg');
+  const hwangJinsuCMS = useSimpleCMS('about-collective-hwangjinsu-profile', '/images/profile/Hwang Jinsu.jpg');
+  const kimGyeongsuCMS = useSimpleCMS('about-collective-kimgyeongsu-profile', '/images/profile/Kim Gyeongsu.webp');
+  
+  // 새로운 CMS 컴포넌트용 어댑터 함수들
+  const createUploadAdapter = (cmsUpload: (url: string) => void) => async (file: File): Promise<void> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (response.ok) {
+        const { url } = await response.json();
+        cmsUpload(url);
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      throw error;
+    }
+  };
+
+  const createDeleteAdapter = (cmsDelete: () => void) => async (): Promise<void> => {
+    return Promise.resolve(cmsDelete());
+  };
 
   // Ensure client-side rendering
   useEffect(() => {
@@ -158,17 +199,37 @@ export default function CollectivePage() {
             onClick={() => openDesignerPage('kimbomin')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
-              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50 z-10">
                 01
               </div>
-              <OptimizedImage 
-                src="/images/profile/Kim Bomin.webp" 
-                alt="Kim Bomin" 
-                fill={true}
-                priority={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
-              />
+              {isAuthenticated ? (
+                <SimpleCMSSlot
+                  slotId="about-collective-kimbomin-profile"
+                  currentUrl={kimBominCMS.currentUrl}
+                  onUpload={createUploadAdapter(kimBominCMS.handleUpload)}
+                  onDelete={createDeleteAdapter(kimBominCMS.handleDelete)}
+                  alt="Kim Bomin"
+                  className="w-full h-full"
+                >
+                  <OptimizedImage 
+                    src={kimBominCMS.currentUrl || "/images/profile/Kim Bomin.webp"} 
+                    alt="Kim Bomin" 
+                    fill={true}
+                    priority={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                  />
+                </SimpleCMSSlot>
+              ) : (
+                <OptimizedImage 
+                  src={kimBominCMS.currentUrl || "/images/profile/Kim Bomin.webp"} 
+                  alt="Kim Bomin" 
+                  fill={true}
+                  priority={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                />
+              )}
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               KIM BOMIN
@@ -184,16 +245,35 @@ export default function CollectivePage() {
             onClick={() => openDesignerPage('parkparang')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
-              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50 z-10">
                 02
               </div>
-              <OptimizedImage 
-                src="/images/profile/Park Parang.jpg" 
-                alt="Park Parang" 
-                fill={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
-              />
+              {isAuthenticated ? (
+                <SimpleCMSSlot
+                  slotId="about-collective-parkparang-profile"
+                  currentUrl={parkParangCMS.currentUrl}
+                  onUpload={createUploadAdapter(parkParangCMS.handleUpload)}
+                  onDelete={createDeleteAdapter(parkParangCMS.handleDelete)}
+                  alt="Park Parang"
+                  className="w-full h-full"
+                >
+                  <OptimizedImage 
+                    src={parkParangCMS.currentUrl || "/images/profile/Park Parang.jpg"} 
+                    alt="Park Parang" 
+                    fill={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                  />
+                </SimpleCMSSlot>
+              ) : (
+                <OptimizedImage 
+                  src={parkParangCMS.currentUrl || "/images/profile/Park Parang.jpg"} 
+                  alt="Park Parang" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                />
+              )}
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               PARK PARANG
@@ -209,16 +289,35 @@ export default function CollectivePage() {
             onClick={() => openDesignerPage('leetaehyeon')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
-              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50 z-10">
                 03
               </div>
-              <OptimizedImage 
-                src="/images/profile/Lee Taehyeon.jpg" 
-                alt="Lee Taehyeon" 
-                fill={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
-              />
+              {isAuthenticated ? (
+                <SimpleCMSSlot
+                  slotId="about-collective-leetaehyeon-profile"
+                  currentUrl={leeTaehyeonCMS.currentUrl}
+                  onUpload={createUploadAdapter(leeTaehyeonCMS.handleUpload)}
+                  onDelete={createDeleteAdapter(leeTaehyeonCMS.handleDelete)}
+                  alt="Lee Taehyeon"
+                  className="w-full h-full"
+                >
+                  <OptimizedImage 
+                    src={leeTaehyeonCMS.currentUrl || "/images/profile/Lee Taehyeon.jpg"} 
+                    alt="Lee Taehyeon" 
+                    fill={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                  />
+                </SimpleCMSSlot>
+              ) : (
+                <OptimizedImage 
+                  src={leeTaehyeonCMS.currentUrl || "/images/profile/Lee Taehyeon.jpg"} 
+                  alt="Lee Taehyeon" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                />
+              )}
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               LEE TAEHYEON
@@ -234,16 +333,35 @@ export default function CollectivePage() {
             onClick={() => openDesignerPage('choieunsol')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
-              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50 z-10">
                 04
               </div>
-              <OptimizedImage 
-                src="/images/profile/Choi Eunsol.jpeg" 
-                alt="Choi Eunsol" 
-                fill={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
-              />
+              {isAuthenticated ? (
+                <SimpleCMSSlot
+                  slotId="about-collective-choieunsol-profile"
+                  currentUrl={choiEunsolCMS.currentUrl}
+                  onUpload={createUploadAdapter(choiEunsolCMS.handleUpload)}
+                  onDelete={createDeleteAdapter(choiEunsolCMS.handleDelete)}
+                  alt="Choi Eunsol"
+                  className="w-full h-full"
+                >
+                  <OptimizedImage 
+                    src={choiEunsolCMS.currentUrl || "/images/profile/Choi Eunsol.jpeg"} 
+                    alt="Choi Eunsol" 
+                    fill={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                  />
+                </SimpleCMSSlot>
+              ) : (
+                <OptimizedImage 
+                  src={choiEunsolCMS.currentUrl || "/images/profile/Choi Eunsol.jpeg"} 
+                  alt="Choi Eunsol" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                />
+              )}
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               CHOI EUNSOL
@@ -259,16 +377,35 @@ export default function CollectivePage() {
             onClick={() => openDesignerPage('hwangjinsu')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
-              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50 z-10">
                 05
               </div>
-              <OptimizedImage 
-                src="/images/profile/Hwang Jinsu.jpg" 
-                alt="Hwang Jinsu" 
-                fill={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
-              />
+              {isAuthenticated ? (
+                <SimpleCMSSlot
+                  slotId="about-collective-hwangjinsu-profile"
+                  currentUrl={hwangJinsuCMS.currentUrl}
+                  onUpload={createUploadAdapter(hwangJinsuCMS.handleUpload)}
+                  onDelete={createDeleteAdapter(hwangJinsuCMS.handleDelete)}
+                  alt="Hwang Jinsu"
+                  className="w-full h-full"
+                >
+                  <OptimizedImage 
+                    src={hwangJinsuCMS.currentUrl || "/images/profile/Hwang Jinsu.jpg"} 
+                    alt="Hwang Jinsu" 
+                    fill={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                  />
+                </SimpleCMSSlot>
+              ) : (
+                <OptimizedImage 
+                  src={hwangJinsuCMS.currentUrl || "/images/profile/Hwang Jinsu.jpg"} 
+                  alt="Hwang Jinsu" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                />
+              )}
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               HWANG JINSU
@@ -284,16 +421,35 @@ export default function CollectivePage() {
             onClick={() => openDesignerPage('kimgyeongsu')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
-              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50">
+              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50 z-10">
                 06
               </div>
-              <OptimizedImage 
-                src="/images/profile/Kim Gyeongsu.webp" 
-                alt="Kim Gyeongsu" 
-                fill={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
-              />
+              {isAuthenticated ? (
+                <SimpleCMSSlot
+                  slotId="about-collective-kimgyeongsu-profile"
+                  currentUrl={kimGyeongsuCMS.currentUrl}
+                  onUpload={createUploadAdapter(kimGyeongsuCMS.handleUpload)}
+                  onDelete={createDeleteAdapter(kimGyeongsuCMS.handleDelete)}
+                  alt="Kim Gyeongsu"
+                  className="w-full h-full"
+                >
+                  <OptimizedImage 
+                    src={kimGyeongsuCMS.currentUrl || "/images/profile/Kim Gyeongsu.webp"} 
+                    alt="Kim Gyeongsu" 
+                    fill={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                  />
+                </SimpleCMSSlot>
+              ) : (
+                <OptimizedImage 
+                  src={kimGyeongsuCMS.currentUrl || "/images/profile/Kim Gyeongsu.webp"} 
+                  alt="Kim Gyeongsu" 
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
+                />
+              )}
             </div>
             <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
               KIM GYEONGSU

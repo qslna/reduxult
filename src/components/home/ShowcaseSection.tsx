@@ -5,7 +5,7 @@ import Link from 'next/link';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import SimpleCMS from '@/components/cms/SimpleCMS';
+import SimpleCMSSlot from '@/components/cms/SimpleCMSSlot';
 
 // 최적화된 ShowcaseSection - 로딩 문제 해결
 export default function ShowcaseSection() {
@@ -90,6 +90,33 @@ export default function ShowcaseSection() {
     }
   ];
 
+  // 새로운 CMS 컴포넌트용 어댑터 함수들
+  const createUploadAdapter = (cmsUpload: (url: string) => void) => async (file: File): Promise<void> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (response.ok) {
+        const { url } = await response.json();
+        cmsUpload(url);
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      throw error;
+    }
+  };
+
+  const createDeleteAdapter = (cmsDelete: () => void) => async (): Promise<void> => {
+    return Promise.resolve(cmsDelete());
+  };
+
   // 클라이언트 마운트 처리
   useEffect(() => {
     setIsClient(true);
@@ -140,13 +167,16 @@ export default function ShowcaseSection() {
                 opacity: 0
               }}
             >
-              <OptimizedImage
-                src={designer.cms.currentUrl || `/images/profile/${designer.name.replace(' ', ' ')}.${designer.id === 'kimbomin' || designer.id === 'kimgyeongsu' ? 'webp' : designer.id === 'choieunsol' ? 'jpeg' : 'jpg'}`}
-                alt={designer.name}
-                fill={true}
-                sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-cover transition-all duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
-              />
+              {/* Image rendered by SimpleCMSSlot in admin mode, or default image for non-admin */}
+              {!isAuthenticated && (
+                <OptimizedImage
+                  src={designer.cms.currentUrl || `/images/profile/${designer.name.replace(' ', ' ')}.${designer.id === 'kimbomin' || designer.id === 'kimgyeongsu' ? 'webp' : designer.id === 'choieunsol' ? 'jpeg' : 'jpg'}`}
+                  alt={designer.name}
+                  fill={true}
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover transition-all duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
+                />
+              )}
               
               {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -163,22 +193,28 @@ export default function ShowcaseSection() {
               {/* CMS overlay for admin */}
               {isAuthenticated && (
                 <div 
-                  className="absolute top-2 right-2 z-20 w-8 h-8"
+                  className="absolute inset-0 z-20"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                   }}
                 >
-                  <SimpleCMS
+                  <SimpleCMSSlot
                     slotId={`main-designer-profile-${designer.id}`}
                     currentUrl={designer.cms.currentUrl}
-                    type="image"
-                    onUpload={designer.cms.handleUpload}
-                    onDelete={designer.cms.handleDelete}
-                    isAdminMode={true}
+                    onUpload={createUploadAdapter(designer.cms.handleUpload)}
+                    onDelete={createDeleteAdapter(designer.cms.handleDelete)}
+                    alt={designer.name}
                     className="w-full h-full"
-                    placeholder={designer.name}
-                  />
+                  >
+                    <OptimizedImage
+                      src={designer.cms.currentUrl || `/images/profile/${designer.name.replace(' ', ' ')}.${designer.id === 'kimbomin' || designer.id === 'kimgyeongsu' ? 'webp' : designer.id === 'choieunsol' ? 'jpeg' : 'jpg'}`}
+                      alt={designer.name}
+                      fill={true}
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      className="object-cover transition-all duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
+                    />
+                  </SimpleCMSSlot>
                 </div>
               )}
             </Link>
@@ -196,13 +232,16 @@ export default function ShowcaseSection() {
                 opacity: 0
               }}
             >
-              <OptimizedImage
-                src={exhibition.cms.currentUrl || `/images/exhibitions/${exhibition.id}/1.jpg`}
-                alt={exhibition.name}
-                fill={true}
-                sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-cover transition-all duration-700 group-hover:scale-110"
-              />
+              {/* Image rendered by SimpleCMSSlot in admin mode, or default image for non-admin */}
+              {!isAuthenticated && (
+                <OptimizedImage
+                  src={exhibition.cms.currentUrl || `/images/exhibitions/${exhibition.id}/1.jpg`}
+                  alt={exhibition.name}
+                  fill={true}
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover transition-all duration-700 group-hover:scale-110"
+                />
+              )}
               
               {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -226,22 +265,28 @@ export default function ShowcaseSection() {
               {/* CMS overlay for admin */}
               {isAuthenticated && (
                 <div 
-                  className="absolute top-2 right-2 z-20 w-8 h-8"
+                  className="absolute inset-0 z-20"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                   }}
                 >
-                  <SimpleCMS
+                  <SimpleCMSSlot
                     slotId={`main-exhibition-${exhibition.id}`}
                     currentUrl={exhibition.cms.currentUrl}
-                    type="image"
-                    onUpload={exhibition.cms.handleUpload}
-                    onDelete={exhibition.cms.handleDelete}
-                    isAdminMode={true}
+                    onUpload={createUploadAdapter(exhibition.cms.handleUpload)}
+                    onDelete={createDeleteAdapter(exhibition.cms.handleDelete)}
+                    alt={exhibition.name}
                     className="w-full h-full"
-                    placeholder={exhibition.name}
-                  />
+                  >
+                    <OptimizedImage
+                      src={exhibition.cms.currentUrl || `/images/exhibitions/${exhibition.id}/1.jpg`}
+                      alt={exhibition.name}
+                      fill={true}
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      className="object-cover transition-all duration-700 group-hover:scale-110"
+                    />
+                  </SimpleCMSSlot>
                 </div>
               )}
             </Link>
