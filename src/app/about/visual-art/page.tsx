@@ -1,12 +1,25 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import OptimizedImage from '@/components/ui/OptimizedImage';
+import dynamic from 'next/dynamic';
+
+// Dynamic imports to prevent hydration issues
+const OptimizedImage = dynamic(() => import('@/components/ui/OptimizedImage'), {
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-gray-800 animate-pulse" />
+});
 
 // HTML redux6 about-visual-art.html과 완전 동일한 Visual Art 페이지 구현
 export default function VisualArtPage() {
   const router = useRouter();
+  // Client-side only state
+  const [isClient, setIsClient] = useState(false);
+
+  // Ensure client-side rendering
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     // 클라이언트 사이드에서만 실행
@@ -71,6 +84,18 @@ export default function VisualArtPage() {
   const goHome = () => {
     router.push('/');
   };
+
+  // Show loading until client-side is ready
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-sm opacity-60">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
