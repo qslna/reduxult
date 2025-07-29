@@ -1,38 +1,27 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 import { aboutGalleries } from '@/data/aboutGallery';
 import { useTextContent } from '@/hooks/usePageContent';
-
-// Dynamic imports to prevent hydration issues
-const OptimizedImage = dynamic(() => import('@/components/ui/OptimizedImage'), {
-  ssr: false,
-  loading: () => <div className="w-full h-full bg-gray-800 animate-pulse" />
-});
-
-const CategoryPreview = dynamic(() => import('@/components/about/CategoryPreview'), {
-  ssr: false,
-  loading: () => <div className="w-full h-full bg-gray-800 animate-pulse rounded-lg" />
-});
+import OptimizedImage from '@/components/ui/OptimizedImage';
+import CategoryPreview from '@/components/about/CategoryPreview';
 
 // HTML redux6 about.html과 완전 동일한 About 페이지 구현
 export default function AboutPage() {
   // Client-side only state
   const [isClient, setIsClient] = useState(false);
-  const [hasError, setHasError] = useState(false);
   
-  // Dynamic content loading
-  const { text: heroTitle } = useTextContent('about', 'about-title', 'WHO REDUX?');
-  const { text: heroSubtitle } = useTextContent('about', 'about-subtitle', 'Fashion Designer Collective');
-  const { text: introTitle } = useTextContent('about', 'intro-title', '우리는\nREDUX\n입니다');
-  const { text: introDescription1 } = useTextContent('about', 'intro-description-1', 'REDUX는 6인의 패션 디자이너가 모여 만든 크리에이티브 콜렉티브입니다. 우리는 패션을 넘어 다양한 예술적 매체를 통해 새로운 경험을 창조합니다.');
-  const { text: introDescription2 } = useTextContent('about', 'intro-description-2', '패션 필름, 설치 미술, 비주얼 아트, 공간 디자인 등 다양한 형태로 관객들에게 \'기억에 남을 순간\'을 선사하고자 합니다.');
-  const { text: philosophyTitle } = useTextContent('about', 'philosophy-title', 'OUR PHILOSOPHY');
-  const { text: philosophyText1 } = useTextContent('about', 'philosophy-text-1', '우리는 경계를 넘어 새로운 가능성을 탐구합니다.');
-  const { text: philosophyText2 } = useTextContent('about', 'philosophy-text-2', '각자의 개성이 하나로 모여 더 큰 시너지를 만들어냅니다.');
-  const { text: philosophyText3 } = useTextContent('about', 'philosophy-text-3', '순간을 넘어 영원히 기억될 경험을 디자인합니다.');
-  const { text: valuesTitle } = useTextContent('about', 'values-title', 'OUR VALUES');
+  // Static content (removed dynamic content loading for stability)
+  const heroTitle = 'WHO REDUX?';
+  const heroSubtitle = 'Fashion Designer Collective';
+  const introTitle = '우리는\nREDUX\n입니다';
+  const introDescription1 = 'REDUX는 6인의 패션 디자이너가 모여 만든 크리에이티브 콜렉티브입니다. 우리는 패션을 넘어 다양한 예술적 매체를 통해 새로운 경험을 창조합니다.';
+  const introDescription2 = '패션 필름, 설치 미술, 비주얼 아트, 공간 디자인 등 다양한 형태로 관객들에게 \'기억에 남을 순간\'을 선사하고자 합니다.';
+  const philosophyTitle = 'OUR PHILOSOPHY';
+  const philosophyText1 = '우리는 경계를 넘어 새로운 가능성을 탐구합니다.';
+  const philosophyText2 = '각자의 개성이 하나로 모여 더 큰 시너지를 만들어냅니다.';
+  const philosophyText3 = '순간을 넘어 영원히 기억될 경험을 디자인합니다.';
+  const valuesTitle = 'OUR VALUES';
 
   // Ensure client-side rendering
   useEffect(() => {
@@ -308,74 +297,47 @@ export default function AboutPage() {
           margin: '0 auto 120px'
         }}
       >
-        {/* Safe rendering with error boundaries */}
-        {(() => {
-          try {
-            const categories = [
-              { id: 'fashion-film', gridColumn: 'span 7', gridRow: 'span 2' },
-              { id: 'memory', gridColumn: 'span 5', gridRow: 'span 3' },
-              { id: 'visual-art', gridColumn: 'span 4', gridRow: 'span 2' },
-              { id: 'installation', gridColumn: 'span 4', gridRow: 'span 2' },
-              { id: 'collective', gridColumn: 'span 4', gridRow: 'span 2' }
-            ];
-
-            return categories.map((categoryConfig) => {
-              const category = aboutGalleries.find(g => g.id === categoryConfig.id);
-              
-              if (!category) {
-                console.warn(`Category not found: ${categoryConfig.id}`);
-                return (
-                  <div 
-                    key={categoryConfig.id}
-                    className="grid-item"
-                    style={{
-                      gridColumn: categoryConfig.gridColumn,
-                      gridRow: categoryConfig.gridRow,
-                      background: '#f0f0f0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#666',
-                      fontSize: '14px'
-                    }}
-                  >
-                    Category not found: {categoryConfig.id}
-                  </div>
-                );
-              }
-
-              return (
-                <CategoryPreview 
-                  key={category.id}
-                  category={category}
-                  gridStyle={{
-                    gridColumn: categoryConfig.gridColumn,
-                    gridRow: categoryConfig.gridRow
-                  }}
-                  className="grid-item"
-                />
-              );
-            });
-          } catch (error) {
-            console.error('Error rendering category grid:', error);
+        {/* Category Grid - Safe rendering */}
+        {aboutGalleries.length > 0 ? (
+          aboutGalleries.map((category) => {
+            const categoryConfigs: Record<string, { gridColumn: string; gridRow: string }> = {
+              'fashion-film': { gridColumn: 'span 7', gridRow: 'span 2' },
+              'memory': { gridColumn: 'span 5', gridRow: 'span 3' },
+              'visual-art': { gridColumn: 'span 4', gridRow: 'span 2' },
+              'installation': { gridColumn: 'span 4', gridRow: 'span 2' },
+              'collective': { gridColumn: 'span 4', gridRow: 'span 2' }
+            };
+            
+            const config = categoryConfigs[category.id] || { gridColumn: 'span 4', gridRow: 'span 2' };
+            
             return (
-              <div 
-                style={{
-                  gridColumn: 'span 12',
-                  gridRow: 'span 2',
-                  background: '#f0f0f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#666',
-                  fontSize: '16px'
+              <CategoryPreview 
+                key={category.id}
+                category={category}
+                gridStyle={{
+                  gridColumn: config.gridColumn,
+                  gridRow: config.gridRow
                 }}
-              >
-                Unable to load gallery content. Please refresh the page.
-              </div>
+                className="grid-item"
+              />
             );
-          }
-        })()}
+          })
+        ) : (
+          <div 
+            style={{
+              gridColumn: 'span 12',
+              gridRow: 'span 2',
+              background: '#f0f0f0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#666',
+              fontSize: '16px'
+            }}
+          >
+            갤러리 콘텐츠를 불러오는 중입니다...
+          </div>
+        )}
       </div>
 
       {/* Philosophy Section - HTML 버전과 완전 동일한 다크 섹션 */}

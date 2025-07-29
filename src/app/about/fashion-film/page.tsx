@@ -329,7 +329,7 @@ export default function FashionFilmPage() {
         </div>
         
         <div className="film-grid grid grid-cols-3 gap-[60px] max-w-[1400px] mx-auto max-[1024px]:grid-cols-2 max-[1024px]:gap-10 max-[768px]:grid-cols-1 max-[768px]:gap-[60px]">
-          {films.map((film, index) => (
+          {films.map((film) => (
             <div 
               key={film.id}
               className="film-item group relative cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards]"

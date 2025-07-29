@@ -7,8 +7,10 @@ import { designers } from '@/data/designers';
 import { Designer } from '@/types';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useSimpleCMS } from '@/hooks/useSimpleCMS';
+import { useSimpleCMS, useGalleryCMS } from '@/hooks/useSimpleCMS';
 import SimpleCMS from '@/components/cms/SimpleCMS';
+import GalleryCMS from '@/components/cms/GalleryCMS';
+import { getSlotById } from '@/lib/cms-config';
 
 interface Props {
   params: Promise<{
@@ -29,7 +31,13 @@ export default function DesignerPage({ params }: Props) {
   
   // CMS 슬롯들
   const profileCMS = useSimpleCMS(`designer-${designer?.id || 'default'}-profile`, designer?.profileImage);
-  const portfolioCMS = useSimpleCMS(`designer-${designer?.id || 'default'}-portfolio`);
+  
+  // 포트폴리오 갤러리 CMS - cms-config.ts에서 정의된 이미지들 사용
+  const portfolioSlot = getSlotById(`designer-${designer?.id || 'default'}-portfolio`);
+  const portfolioCMS = useGalleryCMS(
+    `designer-${designer?.id || 'default'}-portfolio`, 
+    portfolioSlot?.currentFiles || designer?.portfolioImages
+  );
 
   // Resolve params first
   useEffect(() => {
@@ -45,7 +53,19 @@ export default function DesignerPage({ params }: Props) {
     
     try {
       const designerSlug = resolvedParams.slug;
-      const designerData = designers.find(d => d.id === designerSlug);
+      // Try to find designer by various id formats
+      let designerData = designers.find(d => d.id === designerSlug);
+      
+      // If not found, try with different slug formats
+      if (!designerData) {
+        designerData = designers.find(d => 
+          d.id === designerSlug.replace('-', '') || 
+          d.id === designerSlug.replace(/-/g, '') ||
+          d.id.replace('-', '') === designerSlug ||
+          d.name.toLowerCase().replace(/\s+/g, '-') === designerSlug ||
+          d.name.toLowerCase().replace(/\s+/g, '') === designerSlug
+        );
+      }
       
       if (!designerData) {
         notFound();
@@ -75,13 +95,15 @@ export default function DesignerPage({ params }: Props) {
 
   const nextImage = () => {
     if (designer) {
-      setCurrentImageIndex(prev => (prev + 1) % designer.portfolioImages.length);
+      const images = portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages;
+      setCurrentImageIndex(prev => (prev + 1) % images.length);
     }
   };
 
   const prevImage = () => {
     if (designer) {
-      setCurrentImageIndex(prev => (prev - 1 + designer.portfolioImages.length) % designer.portfolioImages.length);
+      const images = portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages;
+      setCurrentImageIndex(prev => (prev - 1 + images.length) % images.length);
     }
   };
 
@@ -274,20 +296,18 @@ export default function DesignerPage({ params }: Props) {
             
             {/* Portfolio Grid */}
             <div className="relative">
-              {/* CMS 오버레이 - 포트폴리오 */}
+              {/* CMS 오버레이 - 포트폴리오 갤러리 */}
               {isAuthenticated && (
-                <div className="absolute -top-16 right-0 z-20">
-                  <div className="bg-black/90 backdrop-blur-sm border border-gray-700 rounded-lg p-4">
-                    <div className="text-sm font-medium text-white mb-3">포트폴리오 관리</div>
-                    <SimpleCMS
+                <div className="absolute -top-20 right-0 z-20 w-80">
+                  <div className="bg-black/95 backdrop-blur-sm border border-gray-700 rounded-lg p-4">
+                    <GalleryCMS
                       slotId={`designer-${designer.id}-portfolio`}
-                      currentUrl={portfolioCMS.currentUrl}
-                      type="image"
+                      currentImages={portfolioCMS.currentImages}
                       onUpload={portfolioCMS.handleUpload}
                       onDelete={portfolioCMS.handleDelete}
+                      onReorder={portfolioCMS.reorderImages}
                       isAdminMode={true}
-                      className="w-16 h-16"
-                      placeholder="포트폴리오"
+                      maxImages={50}
                     />
                   </div>
                 </div>
@@ -295,7 +315,8 @@ export default function DesignerPage({ params }: Props) {
 
               {/* Masonry Grid */}
               <div className="[columns:4] [column-gap:20px] max-[1400px]:[columns:3] max-[1024px]:[columns:2] max-[768px]:[columns:1]">
-                {designer.portfolioImages.map((image: string, index: number) => (
+                {/* CMS 관리 이미지 우선, 없으면 기본 이미지 사용 */}
+                {(portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages).map((image: string, index: number) => (
                   <div 
                     key={index}
                     className="[break-inside:avoid] mb-5 relative overflow-hidden cursor-pointer opacity-0 transition-all duration-[600ms] hover:transform hover:scale-[1.02] hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
@@ -318,7 +339,7 @@ export default function DesignerPage({ params }: Props) {
                     {/* Hover overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-[400ms] flex items-end p-5 hover:opacity-100">
                       <p className="text-xs font-light tracking-[0.1em] text-white uppercase [text-shadow:0_2px_4px_rgba(0,0,0,0.7)]">
-                        {String(index + 1).padStart(2, '0')} / {String(designer.portfolioImages.length).padStart(2, '0')}
+                        {String(index + 1).padStart(2, '0')} / {String((portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages).length).padStart(2, '0')}
                       </p>
                     </div>
                   </div>
@@ -351,7 +372,7 @@ export default function DesignerPage({ params }: Props) {
             </button>
             
             <OptimizedImage 
-              src={designer.portfolioImages[currentImageIndex]}
+              src={(portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages)[currentImageIndex]}
               alt={`${designer.name} Portfolio ${currentImageIndex + 1}`}
               width={1200}
               height={800}
@@ -370,7 +391,7 @@ export default function DesignerPage({ params }: Props) {
             {/* Image info */}
             <div className="absolute bottom-[-50px] left-0 text-white">
               <p className="text-sm tracking-[0.1em]">
-                {String(currentImageIndex + 1).padStart(2, '0')} / {String(designer.portfolioImages.length).padStart(2, '0')}
+                {String(currentImageIndex + 1).padStart(2, '0')} / {String((portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages).length).padStart(2, '0')}
               </p>
             </div>
           </div>

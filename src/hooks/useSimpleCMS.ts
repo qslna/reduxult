@@ -96,6 +96,99 @@ export function useSimpleCMS(slotId: string, initialUrl?: string) {
 }
 
 /**
+ * 갤러리 타입 CMS Hook (다중 이미지 관리)
+ */
+export function useGalleryCMS(slotId: string, initialImages?: string[]) {
+  const [currentImages, setCurrentImages] = useState<string[]>(initialImages || []);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 로컬 스토리지 키
+  const storageKey = `redux-gallery-${slotId}`;
+
+  // 초기화 시 로컬 스토리지에서 갤러리 데이터 불러오기
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem(storageKey);
+      if (stored) {
+        try {
+          const data = JSON.parse(stored);
+          if (Array.isArray(data)) {
+            setCurrentImages(data);
+          }
+        } catch (error) {
+          console.warn('Failed to parse gallery data:', error);
+        }
+      }
+    }
+  }, [storageKey]);
+
+  // 갤러리 업데이트
+  const updateGallery = (newImages: string[]) => {
+    setCurrentImages(newImages);
+    
+    // 로컬 스토리지에 갤러리 데이터 저장
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(storageKey, JSON.stringify(newImages));
+    }
+  };
+
+  // 이미지 추가
+  const addImage = (url: string) => {
+    const newImages = [...currentImages, url];
+    updateGallery(newImages);
+  };
+
+  // 이미지 삭제
+  const removeImage = (index: number) => {
+    const newImages = currentImages.filter((_, i) => i !== index);
+    updateGallery(newImages);
+  };
+
+  // 이미지 순서 변경
+  const reorderImages = (fromIndex: number, toIndex: number) => {
+    const newImages = [...currentImages];
+    const [removed] = newImages.splice(fromIndex, 1);
+    newImages.splice(toIndex, 0, removed);
+    updateGallery(newImages);
+  };
+
+  // 갤러리 초기화
+  const clearGallery = () => {
+    setCurrentImages([]);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(storageKey);
+    }
+  };
+
+  // 파일 업로드 핸들러 (갤러리에 추가)
+  const handleUpload = (url: string) => {
+    addImage(url);
+  };
+
+  // 파일 삭제 핸들러
+  const handleDelete = (index?: number) => {
+    if (typeof index === 'number') {
+      removeImage(index);
+    } else {
+      clearGallery();
+    }
+  };
+
+  return {
+    currentImages,
+    updateGallery,
+    addImage,
+    removeImage,
+    reorderImages,
+    clearGallery,
+    isLoading,
+    setIsLoading,
+    handleUpload,
+    handleDelete
+  };
+}
+
+/**
  * 모든 CMS 슬롯 정보를 가져오는 Hook
  */
 export function useAllCMSSlots() {
