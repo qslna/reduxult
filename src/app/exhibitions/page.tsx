@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
@@ -36,10 +36,10 @@ export default function ExhibitionsPage() {
     document.body.style.overflow = 'hidden';
   };
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
     document.body.style.overflow = '';
-  };
+  }, []);
 
   const handleLightboxClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -56,7 +56,7 @@ export default function ExhibitionsPage() {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxOpen]);
+  }, [lightboxOpen, closeLightbox]);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -289,7 +289,7 @@ export default function ExhibitionsPage() {
                     fill={true}
                     sizes="(max-width: 768px) 50vw, 33vw"
                     className="object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.1]"
-                    onClick={() => openLightbox(cms.currentUrl || (num === 1 ? '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png' : num === 2 ? '/images/exhibitions/theroom/qslna_minimalist_concrete_courtyard_high-key_daylight_overcas_85d5cd51-4cd3-40e8-9111-12e1bf3c2bdd_0.png' : '/images/exhibitions/theroom/qslna_split-frame_triptych_left_strip--front_close-crop_of_ma_25f1d65c-d800-4e74-9a72-5919d703eeb2_1.png'), `THE ROOM Gallery ${num}`)
+                    onClick={() => openLightbox(cms.currentUrl || (num === 1 ? '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png' : num === 2 ? '/images/exhibitions/theroom/qslna_minimalist_concrete_courtyard_high-key_daylight_overcas_85d5cd51-4cd3-40e8-9111-12e1bf3c2bdd_0.png' : '/images/exhibitions/theroom/qslna_split-frame_triptych_left_strip--front_close-crop_of_ma_25f1d65c-d800-4e74-9a72-5919d703eeb2_1.png'), `THE ROOM Gallery ${num}`)}
                   />
                   
                   {/* CMS 버튼 for admin */}
