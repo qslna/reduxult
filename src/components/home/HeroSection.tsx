@@ -71,16 +71,23 @@ function HeroSection() {
 
   const showVideo = () => {
     setIsVideoVisible(true);
-    // 비디오가 보이게 된 후 약간의 지연을 두고 재생
-    setTimeout(() => {
-      if (videoRef.current && isVideoVisible) {
-        videoRef.current.currentTime = 0; // 처음부터 재생
-        videoRef.current.play().catch((error) => {
-          console.warn('Video play failed:', error);
-        });
-      }
-    }, 100);
   };
+
+  // 비디오가 다시 보이게 될 때 자동 재생
+  useEffect(() => {
+    if (isVideoVisible && videoRef.current && isClient) {
+      const timer = setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.currentTime = 0; // 처음부터 재생
+          videoRef.current.play().catch((error) => {
+            console.warn('Video play failed:', error);
+          });
+        }
+      }, 200);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isVideoVisible, isClient]);
 
   // 서버 사이드 렌더링 중에는 기본 콘텐츠 반환
   if (!isClient) {
