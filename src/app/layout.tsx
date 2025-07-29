@@ -27,7 +27,6 @@ import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import PageTransition from '@/components/ui/PageTransition';
 import InitialLoadingScreen from '@/components/ui/InitialLoadingScreen';
-import ErrorBoundary from '@/components/ui/ErrorBoundary';
 
 export default function RootLayout({
   children,
@@ -132,15 +131,13 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-black text-white overflow-x-hidden">
         <InitialLoadingScreen />
-        <ErrorBoundary>
-          <Navigation />
-          <main>
-            <PageTransition>
-              {children}
-            </PageTransition>
-          </main>
-          <Footer />
-        </ErrorBoundary>
+        <Navigation />
+        <main>
+          <PageTransition>
+            {children}
+          </PageTransition>
+        </main>
+        <Footer />
         
         {/* 전역 에러 처리 시스템 */}
         <Script

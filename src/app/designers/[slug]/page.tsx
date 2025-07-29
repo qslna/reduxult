@@ -8,7 +8,6 @@ import { Designer } from '@/types';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS, useGalleryCMS } from '@/hooks/useSimpleCMS';
-import SimpleCMS from '@/components/cms/SimpleCMS';
 import GalleryCMS from '@/components/cms/GalleryCMS';
 import { getSlotById } from '@/lib/cms-config';
 

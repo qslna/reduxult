@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { VideoCMSSlot } from '@/components/cms/SimpleCMSSlot';
+import SimpleCMS from '@/components/cms/SimpleCMS';
 
 /**
  * 최적화된 Hero Section - 로딩 문제 해결
@@ -13,42 +13,13 @@ function HeroSection() {
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
-  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [isVideoVisible, setIsVideoVisible] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   
   // CMS integration
   const { isAuthenticated } = useSimpleAuth();
   const { currentUrl: heroVideoUrl, handleUpload: cmsUpload, handleDelete: cmsDelete } = useSimpleCMS('main-hero-video', '/VIDEO/main.mp4');
   
-  // 새로운 CMS 컴포넌트용 어댑터 함수들
-  const handleUpload = async (file: File): Promise<void> => {
-    // 파일을 업로드하고 URL을 받아서 기존 CMS에 저장
-    // 실제 구현에서는 ImageKit이나 다른 업로드 서비스를 사용
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-      
-      if (response.ok) {
-        const { url } = await response.json();
-        cmsUpload(url);
-      } else {
-        throw new Error('Upload failed');
-      }
-    } catch (error) {
-      console.error('Upload error:', error);
-      throw error;
-    }
-  };
-  
-  const handleDelete = async (): Promise<void> => {
-    return Promise.resolve(cmsDelete());
-  };
 
   // 클라이언트 마운트 처리
   useEffect(() => {
@@ -90,34 +61,21 @@ function HeroSection() {
     router.push('/exhibitions');
   };
 
-  // 비디오 컨트롤 함수들
-  const toggleVideoPlayback = () => {
-    if (!videoRef.current) return;
-
-    if (isVideoPlaying) {
+  // 비디오 컨트롤 함수들 - 간소화
+  const hideVideo = () => {
+    setIsVideoVisible(false);
+    if (videoRef.current) {
       videoRef.current.pause();
-      setIsVideoPlaying(false);
-    } else {
-      videoRef.current.play().catch(() => {
-        // 재생 실패시 무시
-      });
-      setIsVideoPlaying(true);
     }
   };
 
-  const toggleVideoMute = () => {
-    if (!videoRef.current) return;
-
-    videoRef.current.muted = !isVideoMuted;
-    setIsVideoMuted(!isVideoMuted);
-  };
-
-  const stopVideo = () => {
-    if (!videoRef.current) return;
-
-    videoRef.current.pause();
-    videoRef.current.currentTime = 0;
-    setIsVideoPlaying(false);
+  const showVideo = () => {
+    setIsVideoVisible(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // 재생 실패시 무시
+      });
+    }
   };
 
   // 서버 사이드 렌더링 중에는 기본 콘텐츠 반환
@@ -140,15 +98,9 @@ function HeroSection() {
   }
 
   return (
-    <VideoCMSSlot
-      slotId="main-hero-video"
-      currentUrl={heroVideoUrl}
-      onUpload={handleUpload}
-      onDelete={handleDelete}
-      className="hero-section relative h-screen flex items-center justify-center bg-black overflow-hidden"
-    >
+    <section className="hero-section relative h-screen flex items-center justify-center bg-black overflow-hidden">
       {/* Background Video */}
-      {!videoError && (
+      {!videoError && isVideoVisible && (
         <video
           ref={videoRef}
           className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
@@ -161,10 +113,13 @@ function HeroSection() {
         </video>
       )}
 
-      {/* Fallback Background */}
-      {videoError && (
+      {/* Background Image (when video is hidden or error) */}
+      {(videoError || !isVideoVisible) && (
         <div 
-          className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-80"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80"
+          style={{
+            backgroundImage: 'url(/images/hero-background/background.png)'
+          }}
         />
       )}
 
@@ -231,43 +186,30 @@ function HeroSection() {
         </div>
       </div>
 
-      {/* 비디오 컨트롤 - 메뉴바에 가려지지 않는 위치 */}
+      {/* 비디오 컨트롤 - 간소화된 버전 */}
       {!videoError && (
-        <div className="absolute bottom-20 right-8 z-30 flex flex-col gap-3">
-          <button
-            onClick={toggleVideoPlayback}
-            className="w-12 h-12 bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg"
-            title={isVideoPlaying ? '비디오 일시정지' : '비디오 재생'}
-            aria-label={isVideoPlaying ? '비디오 일시정지' : '비디오 재생'}
-          >
-            {isVideoPlaying ? (
-              <span className="text-sm" role="img" aria-label="일시정지">⏸️</span>
-            ) : (
+        <div className="absolute bottom-20 right-8 z-30">
+          {isVideoVisible ? (
+            // X 버튼 - 비디오 끄기
+            <button
+              onClick={hideVideo}
+              className="w-12 h-12 bg-black/70 hover:bg-red-600/90 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-400/50 shadow-lg"
+              title="비디오 끄기"
+              aria-label="비디오 끄기"
+            >
+              <span className="text-lg font-bold">×</span>
+            </button>
+          ) : (
+            // 재생 버튼 - 비디오 켜기
+            <button
+              onClick={showVideo}
+              className="w-12 h-12 bg-black/70 hover:bg-green-600/90 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-green-400/50 shadow-lg"
+              title="비디오 재생"
+              aria-label="비디오 재생"
+            >
               <span className="text-sm" role="img" aria-label="재생">▶️</span>
-            )}
-          </button>
-          
-          <button
-            onClick={toggleVideoMute}
-            className="w-12 h-12 bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg"
-            title={isVideoMuted ? '음소거 해제' : '음소거'}
-            aria-label={isVideoMuted ? '음소거 해제' : '음소거'}
-          >
-            {isVideoMuted ? (
-              <span className="text-sm" role="img" aria-label="음소거">🔇</span>
-            ) : (
-              <span className="text-sm" role="img" aria-label="음성">🔊</span>
-            )}
-          </button>
-          
-          <button
-            onClick={stopVideo}
-            className="w-12 h-12 bg-black/70 hover:bg-red-600/90 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-400/50 shadow-lg"
-            title="비디오 정지"
-            aria-label="비디오 정지"
-          >
-            <span className="text-lg font-bold">×</span>
-          </button>
+            </button>
+          )}
         </div>
       )}
 
@@ -277,7 +219,23 @@ function HeroSection() {
           <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-bounce"></div>
         </div>
       </div>
-    </VideoCMSSlot>
+
+      {/* CMS overlay for admin - video management */}
+      {isAuthenticated && (
+        <div className="absolute top-20 right-8 z-30">
+          <SimpleCMS
+            slotId="main-hero-video"
+            currentUrl={heroVideoUrl}
+            type="video"
+            onUpload={cmsUpload}
+            onDelete={cmsDelete}
+            isAdminMode={true}
+            className="w-10 h-10"
+            placeholder="Hero Video"
+          />
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -319,11 +277,10 @@ const HeroSectionWithStyles = () => (
             max-width: 280px;
           }
           
-          /* 모바일에서 비디오 컨트롤 위치 조정 */
+          /* 모바일에서 비디오 컨트롤 위치 조정 - 간소화된 버전 */
           .hero-section .absolute.bottom-20.right-8 {
             bottom: 120px;
             right: 16px;
-            gap: 12px;
           }
           
           .hero-section .absolute.bottom-20.right-8 button {
@@ -339,14 +296,13 @@ const HeroSectionWithStyles = () => (
             .hero-section .absolute.bottom-20.right-8 {
               bottom: 100px;
               right: 12px;
-              gap: 8px;
             }
             
             .hero-section .absolute.bottom-20.right-8 button {
-              width: 36px;
-              height: 36px;
-              min-height: 36px;
-              min-width: 36px;
+              width: 40px;
+              height: 40px;
+              min-height: 40px;
+              min-width: 40px;
               font-size: 12px;
             }
           }

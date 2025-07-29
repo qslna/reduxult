@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import OptimizedImage from '@/components/ui/OptimizedImage';
 import { designers } from '@/data/designers';
 import { useTextContent } from '@/hooks/usePageContent';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
@@ -108,6 +107,28 @@ function DesignerCard({ designer, index, isAuthenticated, onClick }: DesignerCar
           View Profile
         </span>
       </div>
+      
+      {/* CMS overlay for admin */}
+      {isAuthenticated && (
+        <div 
+          className="absolute top-4 left-4 z-20 w-8 h-8"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
+          <SimpleCMS
+            slotId={`designer-${designer.id}-profile`}
+            currentUrl={currentUrl}
+            type="image"
+            onUpload={handleUpload}
+            onDelete={handleDelete}
+            isAdminMode={true}
+            className="w-full h-full"
+            placeholder={designer.name}
+          />
+        </div>
+      )}
     </div>
   );
 }

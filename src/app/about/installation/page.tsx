@@ -3,12 +3,31 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import { useSimpleCMS } from '@/hooks/useSimpleCMS';
+import SimpleCMS from '@/components/cms/SimpleCMS';
 
 // HTML redux6 about-installation.html과 완전 동일한 Process 페이지 구현
 export default function InstallationPage() {
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isClient, setIsClient] = useState(false);
+
+  // CMS integration
+  const { isAuthenticated } = useSimpleAuth();
+  
+  // CMS 슬롯들 - 설치 과정 이미지들
+  const directingCMS = useSimpleCMS('about-installation-directing', '/images/process/디렉팅.png');
+  const videoCMS = useSimpleCMS('about-installation-video', '/images/process/영상 & 편집.png');
+  const spaceCMS = useSimpleCMS('about-installation-space', '/images/process/공간  연출.png');
+  const promoCMS = useSimpleCMS('about-installation-promo', '/images/process/홍보  브랜딩.png');
+  const artGraphicCMS = useSimpleCMS('about-installation-artgraphic', '/images/process/아트 그래픽.png');
+  const digitalCMS = useSimpleCMS('about-installation-digital', '/images/process/디지털  웹 디자인.png');
+  
+  // CMS 슬롯들 - 갤러리 슬라이드 이미지들
+  const gallerySlide1CMS = useSimpleCMS('about-installation-gallery1', '/images/exhibitions/cinemode/behind.jpg');
+  const gallerySlide2CMS = useSimpleCMS('about-installation-gallery2', '/images/exhibitions/cinemode/exhibition.jpg');
+  const gallerySlide3CMS = useSimpleCMS('about-installation-gallery3', '/images/exhibitions/cinemode/opening.jpg');
 
   // Ensure client-side rendering
   useEffect(() => {
@@ -97,57 +116,78 @@ export default function InstallationPage() {
     setCurrentSlide(prev => (prev - 1 + 3) % 3);
   };
 
-  // 설치 과정 데이터 - HTML 버전과 완전 동일
+  // 설치 과정 데이터 - CMS 통합
   const installations = [
     {
       number: '01',
       title: '디렉팅',
       description: '전체적인 전시의 방향성을 설정하고 이끌어갑니다. 패션 디자이너의 시선으로 공간과 작품, 관객의 경험을 하나로 연결하는 스토리를 만듭니다.',
       details: ['전시 컨셉 기획', '작품 배치 및 동선 설계', '팀원 역할 조율', '전체 일정 관리'],
-      image: '/images/process/디렉팅.png'
+      image: directingCMS.currentUrl || '/images/process/디렉팅.png',
+      cms: directingCMS
     },
     {
       number: '02',
       title: '영상 & 편집',
       description: '패션 필름과 전시 영상을 제작합니다. 의상의 움직임과 감정을 영상 언어로 번역하여 관객에게 전달합니다.',
       details: ['패션 필름 촬영', '전시 영상 편집', '음향 및 색보정', '영상 설치 기술 지원'],
-      image: '/images/process/영상 & 편집.png'
+      image: videoCMS.currentUrl || '/images/process/영상 & 편집.png',
+      cms: videoCMS
     },
     {
       number: '03',
       title: '공간 / 연출',
       description: '전시 공간을 디자인하고 작품을 배치합니다. 패션의 시각적 언어를 공간으로 확장하여 몰입감 있는 경험을 만듭니다.',
       details: ['공간 구성 및 설계', '조명 연출', '작품 디스플레이', '관람 동선 디자인'],
-      image: '/images/process/공간  연출.png'
+      image: spaceCMS.currentUrl || '/images/process/공간  연출.png',
+      cms: spaceCMS
     },
     {
       number: '04',
       title: '홍보 / 브랜딩',
       description: '전시의 아이덴티티를 만들고 관객과 소통합니다. 패션 브랜드의 감성으로 전시를 알리고 기억에 남을 이미지를 구축합니다.',
       details: ['전시 아이덴티티 개발', 'SNS 콘텐츠 제작', '프레스 자료 준비', '관객 소통 전략'],
-      image: '/images/process/홍보  브랜딩.png'
+      image: promoCMS.currentUrl || '/images/process/홍보  브랜딩.png',
+      cms: promoCMS
     },
     {
       number: '05',
       title: '아트 그래픽',
       description: '전시의 시각적 요소를 디자인합니다. 패션의 미학을 그래픽으로 표현하여 전시의 분위기를 완성합니다.',
       details: ['포스터 및 인쇄물 디자인', '전시 그래픽 요소 제작', '타이포그래피 작업', '시각 아이덴티티 통합'],
-      image: '/images/process/아트 그래픽.png'
+      image: artGraphicCMS.currentUrl || '/images/process/아트 그래픽.png',
+      cms: artGraphicCMS
     },
     {
       number: '06',
       title: '디지털 / 웹 디자인',
       description: '온라인 공간에서의 전시 경험을 디자인합니다. 디지털 매체를 통해 전시를 확장하고 더 많은 관객과 만납니다.',
       details: ['전시 웹사이트 제작', '디지털 아카이브 구축', '인터랙티브 콘텐츠 개발', '온라인 전시 경험 디자인'],
-      image: '/images/process/디지털  웹 디자인.png'
+      image: digitalCMS.currentUrl || '/images/process/디지털  웹 디자인.png',
+      cms: digitalCMS
     }
   ];
 
-  // 갤러리 슬라이드 데이터 - HTML 버전과 완전 동일
+  // 갤러리 슬라이드 데이터 - CMS 통합
   const gallerySlides = [
-    { title: 'CINE MODE - Behind', location: '전시 준비 과정', image: '' },
-    { title: 'CINE MODE - Exhibition', location: '전시 공간', image: '' },
-    { title: 'CINE MODE - Opening', location: '오프닝 현장', image: '' }
+    { 
+      title: 'CINE MODE - Behind', 
+      location: '전시 준비 과정', 
+      image: gallerySlide1CMS.currentUrl || '/images/exhibitions/cinemode/behind.jpg',
+      cms: gallerySlide1CMS 
+    },
+    { 
+      title: 'CINE MODE - Exhibition', 
+      location: '전시 공간', 
+      image: gallerySlide2CMS.currentUrl || '/images/exhibitions/cinemode/exhibition.jpg',
+      cms: gallerySlide2CMS 
+    },
+    { 
+      title: 'CINE MODE - Opening', 
+      location: '오프닝 현장', 
+      image: gallerySlide3CMS.currentUrl || '/images/exhibitions/cinemode/opening.jpg',
+      cms: gallerySlide3CMS 
+    }
   ];
 
   // 서버 사이드 렌더링 중에는 null 반환 - 로딩 화면 없이
@@ -237,6 +277,28 @@ export default function InstallationPage() {
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover transition-transform duration-[1.5s] ease-in-out hover:transform hover:scale-110"
                 />
+                
+                {/* CMS overlay for admin */}
+                {isAuthenticated && installation.cms && (
+                  <div 
+                    className="absolute top-4 right-4 z-20 w-10 h-10"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                  >
+                    <SimpleCMS
+                      slotId={`about-installation-${installation.title.toLowerCase().replace(/[^a-z]/g, '')}`}
+                      currentUrl={installation.cms.currentUrl}
+                      type="image"
+                      onUpload={installation.cms.handleUpload}
+                      onDelete={installation.cms.handleDelete}
+                      isAdminMode={true}
+                      className="w-full h-full"
+                      placeholder={installation.title}
+                    />
+                  </div>
+                )}
               </div>
               <div className={`installation-info flex flex-col justify-center py-20 px-20 bg-transparent ${
                 index % 2 === 1 ? '[direction:ltr]' : ''
@@ -293,6 +355,28 @@ export default function InstallationPage() {
                   {slide.location}
                 </p>
               </div>
+              
+              {/* CMS overlay for admin */}
+              {isAuthenticated && slide.cms && (
+                <div 
+                  className="absolute top-4 right-4 z-30 w-10 h-10"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <SimpleCMS
+                    slotId={`about-installation-gallery${index + 1}`}
+                    currentUrl={slide.cms.currentUrl}
+                    type="image"
+                    onUpload={slide.cms.handleUpload}
+                    onDelete={slide.cms.handleDelete}
+                    isAdminMode={true}
+                    className="w-full h-full"
+                    placeholder={slide.title}
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>

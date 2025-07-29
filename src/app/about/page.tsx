@@ -1,10 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { aboutGalleries } from '@/data/aboutGallery';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import HydrationSafe, { useIsClient } from '@/components/ui/HydrationSafe';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import { useSimpleCMS } from '@/hooks/useSimpleCMS';
+import SimpleCMS from '@/components/cms/SimpleCMS';
 
 // 최적화된 About 페이지 - 로딩 문제 해결
 export default function AboutPage() {
@@ -18,6 +21,25 @@ export default function AboutPage() {
 function AboutContent() {
   const router = useRouter();
   const isClient = useIsClient();
+  
+  // CMS integration
+  const { isAuthenticated } = useSimpleAuth();
+  
+  // CMS 슬롯들 - 각 카테고리별 프리뷰 이미지
+  const fashionFilmCMS = useSimpleCMS('about-preview-fashion-film', '/images/designers/choieunsol/cinemode/IMG_8617.jpeg');
+  const visualArtCMS = useSimpleCMS('about-preview-visual-art', '/images/about/visual-art/Metamorphosis.png');
+  const memoryCMS = useSimpleCMS('about-preview-memory', '/images/about/memory/IMG_3452.JPG');
+  const installationCMS = useSimpleCMS('about-preview-installation', '/images/about/process/공간  연출.png');
+  const collectiveCMS = useSimpleCMS('about-preview-collective', '/images/profile/Kim Bomin.webp');
+  
+  // CMS 매핑
+  const categoryCMSMap: { [key: string]: any } = {
+    'fashion-film': fashionFilmCMS,
+    'visual-art': visualArtCMS,
+    'memory': memoryCMS,
+    'installation': installationCMS,
+    'collective': collectiveCMS
+  };
 
   // useIsClient 훅으로 클라이언트 상태 관리
 
@@ -174,6 +196,8 @@ function AboutContent() {
             {aboutGalleries.length > 0 ? (
               aboutGalleries.map((category, index) => {
                 const config = categoryConfigs[category.id] || { gridColumn: 'span 6', gridRow: 'span 2' };
+                const cms = categoryCMSMap[category.id];
+                const imageUrl = cms?.currentUrl || category.previewImages[0]?.src || '/images/default-preview.jpg';
                 
                 return (
                   <div
@@ -188,7 +212,7 @@ function AboutContent() {
                     onClick={() => router.push(`/about/${category.id}`)}
                   >
                     <OptimizedImage
-                      src={category.previewImages[0]?.src || '/images/default-preview.jpg'}
+                      src={imageUrl}
                       alt={category.name}
                       fill={true}
                       priority={index < 3}
@@ -214,6 +238,28 @@ function AboutContent() {
                         <span className="text-sm">→</span>
                       </div>
                     </div>
+                    
+                    {/* CMS overlay for admin */}
+                    {isAuthenticated && cms && (
+                      <div 
+                        className="absolute top-2 right-2 z-20 w-8 h-8"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                      >
+                        <SimpleCMS
+                          slotId={`about-preview-${category.id}`}
+                          currentUrl={cms.currentUrl}
+                          type="image"
+                          onUpload={cms.handleUpload}
+                          onDelete={cms.handleDelete}
+                          isAdminMode={true}
+                          className="w-full h-full"
+                          placeholder={category.name}
+                        />
+                      </div>
+                    )}
                   </div>
                 );
               })

@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSimpleCMS } from '@/hooks/useSimpleCMS';
+import { useCMSSlot } from '@/hooks/useCMSSlot';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import SimpleCMSSlot from '@/components/cms/SimpleCMSSlot';
+import MediaSlot from '@/components/cms/MediaSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import HydrationSafe, { useIsClient } from '@/components/ui/HydrationSafe';
 
@@ -38,8 +38,8 @@ function FashionFilmContent() {
       name: 'Kim Bomin',
       title: 'CHASING VOWS',
       description: '설레임과 이별의 감정을 담은 서사',
-      thumbnailCMS: useSimpleCMS('about-fashionfilm-kimbomin-thumbnail', '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg'),
-      videoCMS: useSimpleCMS('designer-kimbomin-film', '1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X'),
+      thumbnailSlot: useCMSSlot('about-fashionfilm-kimbomin-thumbnail'),
+      videoSlot: useCMSSlot('designer-kimbomin-film'),
       defaultThumbnail: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
       defaultVideo: '1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X'
     },
@@ -48,8 +48,8 @@ function FashionFilmContent() {
       name: 'Park Parang',
       title: 'THE TIME BETWEEN',
       description: '시간의 틈 사이에서 발견하는 아름다움',
-      thumbnailCMS: useSimpleCMS('about-fashionfilm-parkparang-thumbnail', '/images/profile/Park Parang.jpg'),
-      videoCMS: useSimpleCMS('designer-parkparang-film', '15d901XRElkF5p7xiJYelIyblYFb-PtsD'),
+      thumbnailSlot: useCMSSlot('about-fashionfilm-parkparang-thumbnail'),
+      videoSlot: useCMSSlot('designer-parkparang-film'),
       defaultThumbnail: '/images/profile/Park Parang.jpg',
       defaultVideo: '15d901XRElkF5p7xiJYelIyblYFb-PtsD'
     },
@@ -58,8 +58,8 @@ function FashionFilmContent() {
       name: 'Lee Taehyeon',
       title: 'POLYHEDRON',
       description: '다면체로 표현하는 인간의 복잡성',
-      thumbnailCMS: useSimpleCMS('about-fashionfilm-leetaehyeon-thumbnail', '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg'),
-      videoCMS: useSimpleCMS('designer-leetaehyeon-film', '1fG2fchKvEG7i7Lo79K7250mgiVTse6ks'),
+      thumbnailSlot: useCMSSlot('about-fashionfilm-leetaehyeon-thumbnail'),
+      videoSlot: useCMSSlot('designer-leetaehyeon-film'),
       defaultThumbnail: '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
       defaultVideo: '1fG2fchKvEG7i7Lo79K7250mgiVTse6ks'
     },
@@ -68,8 +68,8 @@ function FashionFilmContent() {
       name: 'Choi Eunsol',
       title: 'SOUL SUCKER',
       description: '영혼을 빨아드리는 유혹의 힘',
-      thumbnailCMS: useSimpleCMS('about-fashionfilm-choieunsol-thumbnail', '/images/designers/choieunsol/cinemode/IMG_8617.jpeg'),
-      videoCMS: useSimpleCMS('designer-choieunsol-film', '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3'),
+      thumbnailSlot: useCMSSlot('about-fashionfilm-choieunsol-thumbnail'),
+      videoSlot: useCMSSlot('designer-choieunsol-film'),
       defaultThumbnail: '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
       defaultVideo: '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3'
     },
@@ -78,8 +78,8 @@ function FashionFilmContent() {
       name: 'Hwang Jinsu',
       title: 'WHO AM I ?!',
       description: '자아에 대한 끝없는 물음',
-      thumbnailCMS: useSimpleCMS('about-fashionfilm-hwangjinsu-thumbnail', '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg'),
-      videoCMS: useSimpleCMS('designer-hwangjinsu-film', '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d'),
+      thumbnailSlot: useCMSSlot('about-fashionfilm-hwangjinsu-thumbnail'),
+      videoSlot: useCMSSlot('designer-hwangjinsu-film'),
       defaultThumbnail: '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
       defaultVideo: '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d'
     },
@@ -88,39 +88,12 @@ function FashionFilmContent() {
       name: 'Kim Gyeongsu',
       title: 'TO BE REVEALED',
       description: '드러날 진실에 대한 고민',
-      thumbnailCMS: useSimpleCMS('about-fashionfilm-kimgyeongsu-thumbnail', '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg'),
-      videoCMS: useSimpleCMS('designer-kimgyeongsu-film', '1Hl594dd_MY714hZwmklTAPTc-pofe9bY'),
+      thumbnailSlot: useCMSSlot('about-fashionfilm-kimgyeongsu-thumbnail'),
+      videoSlot: useCMSSlot('designer-kimgyeongsu-film'),
       defaultThumbnail: '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg',
       defaultVideo: '1Hl594dd_MY714hZwmklTAPTc-pofe9bY'
     }
   ];
-
-  // 새로운 CMS 컴포넌트용 어댑터 함수들
-  const createUploadAdapter = (cmsUpload: (url: string) => void) => async (file: File): Promise<void> => {
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-      
-      if (response.ok) {
-        const { url } = await response.json();
-        cmsUpload(url);
-      } else {
-        throw new Error('Upload failed');
-      }
-    } catch (error) {
-      console.error('Upload error:', error);
-      throw error;
-    }
-  };
-
-  const createDeleteAdapter = (cmsDelete: () => void) => async (): Promise<void> => {
-    return Promise.resolve(cmsDelete());
-  };
 
   // useIsClient 훅으로 클라이언트 상태 관리
 
@@ -208,7 +181,7 @@ function FashionFilmContent() {
       scale: 0.1 
     });
     
-    const videoFile = film.videoCMS.currentUrl || film.defaultVideo;
+    const videoFile = film.videoSlot.currentFiles[0] || film.defaultVideo;
     setCurrentFilm(videoFile);
     setIsModalOpen(true);
     document.body.style.overflow = 'hidden';
@@ -311,7 +284,7 @@ function FashionFilmContent() {
         
         <div className="films-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1400px] mx-auto">
           {filmData.map((film, index) => {
-            const thumbnailUrl = film.thumbnailCMS.currentUrl || film.defaultThumbnail;
+            const thumbnailUrl = film.thumbnailSlot.currentFiles[0] || film.defaultThumbnail;
             
             return (
               <div 
@@ -324,17 +297,14 @@ function FashionFilmContent() {
                 }}
                 onClick={(e) => openFilm(film.id, e)}
               >
-                {/* Image rendered by SimpleCMSSlot in admin mode, or default image for non-admin */}
-                {!isAuthenticated && (
-                  <OptimizedImage 
-                    src={thumbnailUrl}
-                    alt={`${film.name} - ${film.title}`}
-                    fill={true}
-                    priority={index < 3}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition-all duration-[800ms] group-hover:scale-105"
-                  />
-                )}
+                <OptimizedImage 
+                  src={thumbnailUrl}
+                  alt={`${film.name} - ${film.title}`}
+                  fill={true}
+                  priority={index < 3}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-all duration-[800ms] group-hover:scale-105"
+                />
                 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
@@ -361,29 +331,18 @@ function FashionFilmContent() {
                 {/* CMS overlay for admin */}
                 {isAuthenticated && (
                   <div 
-                    className="absolute inset-0 z-20"
+                    className="absolute top-2 right-2 z-20 w-8 h-8"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                     }}
                   >
-                    <SimpleCMSSlot
-                      slotId={`about-fashionfilm-${film.id}-thumbnail`}
-                      currentUrl={film.thumbnailCMS.currentUrl}
-                      onUpload={createUploadAdapter(film.thumbnailCMS.handleUpload)}
-                      onDelete={createDeleteAdapter(film.thumbnailCMS.handleDelete)}
-                      alt={`${film.name} - ${film.title}`}
-                      className="w-full h-full"
-                    >
-                      <OptimizedImage 
-                        src={thumbnailUrl}
-                        alt={`${film.name} - ${film.title}`}
-                        fill={true}
-                        priority={index < 3}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover transition-all duration-[800ms] group-hover:scale-105"
-                      />
-                    </SimpleCMSSlot>
+                    <MediaSlot
+                      slot={film.thumbnailSlot.slot!}
+                      currentFiles={film.thumbnailSlot.currentFiles}
+                      onFilesUpdate={film.thumbnailSlot.updateFiles}
+                      isAdminMode={true}
+                    />
                   </div>
                 )}
               </div>

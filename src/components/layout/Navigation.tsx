@@ -25,11 +25,6 @@ export default function Navigation() {
   ];
   const isAboutSubPage = aboutSubPages.includes(pathname);
   
-  // About 서브페이지에서는 네비게이션을 렌더링하지 않음
-  if (isAboutSubPage) {
-    return null;
-  }
-
   // Scroll effect with performance optimization
   useEffect(() => {
     let ticking = false;
@@ -95,6 +90,11 @@ export default function Navigation() {
       return () => document.removeEventListener('keydown', handleEscKey);
     }
   }, [mobileMenuActive, closeMobileMenu]);
+
+  // About 서브페이지에서는 네비게이션을 렌더링하지 않음
+  if (isAboutSubPage) {
+    return null;
+  }
 
   return (
     <>
