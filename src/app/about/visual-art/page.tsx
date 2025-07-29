@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import { useCMSSlot } from '@/hooks/useCMSSlot';
+import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import MediaSlot from '@/components/cms/MediaSlot';
 
 // Dynamic imports to prevent hydration issues
 const OptimizedImage = dynamic(() => import('@/components/ui/OptimizedImage'), {
@@ -15,6 +18,22 @@ export default function VisualArtPage() {
   const router = useRouter();
   // Client-side only state
   const [isClient, setIsClient] = useState(false);
+  
+  // CMS integration
+  const { isAuthenticated } = useSimpleAuth();
+  const { slot: visualArtSlot, currentFiles: galleryImages, updateFiles: updateGalleryImages } = useCMSSlot('about-visualart-gallery');
+  
+  // Visual art item metadata (titles and descriptions)
+  const visualArtMeta = [
+    { title: 'METAMORPHOSIS', description: '변화와 진화의 순간을 포착한 비주얼 시리즈', gridClass: 'col-span-8' },
+    { title: 'SHADOW PLAY', description: '빛과 그림자의 대비', gridClass: 'col-span-4' },
+    { title: 'TEXTURE STUDY', description: '질감의 깊이를 탐구', gridClass: 'col-span-4' },
+    { title: 'COLOR THEORY', description: '색채의 감정적 표현', gridClass: 'col-span-4' },
+    { title: 'FORM & VOID', description: '형태와 공간의 관계', gridClass: 'col-span-4' },
+    { title: 'DIGITAL DREAMS', description: '디지털 매체의 가능성', gridClass: 'col-span-6' },
+    { title: 'ANALOG MEMORIES', description: '아날로그의 따뜻함', gridClass: 'col-span-6' },
+    { title: 'COLLECTIVE VISION', description: '6인 6색의 시각적 하모니', gridClass: 'col-span-12' }
+  ];
 
   // Ensure client-side rendering
   useEffect(() => {
@@ -157,159 +176,38 @@ export default function VisualArtPage() {
         </div>
         
         <div className="visual-grid grid grid-cols-12 gap-10 max-w-[1600px] mx-auto max-[1024px]:grid-cols-6 max-[1024px]:gap-5 max-[768px]:grid-cols-1 max-[768px]:gap-5">
-          
-          {/* Visual Item 1: METAMORPHOSIS */}
-          <div className="visual-item col-span-8 [aspect-ratio:16/9] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <OptimizedImage 
-              src="/images/about/visual-art/Metamorphosis.png" 
-              alt="Visual Art 1" 
-              fill={true}
-              priority={true}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 67vw"
-              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
-            />
-            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
-              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
-                METAMORPHOSIS
-              </h3>
-              <p className="visual-description text-sm leading-[1.6] opacity-80">
-                변화와 진화의 순간을 포착한 비주얼 시리즈
-              </p>
-            </div>
-          </div>
-
-          {/* Visual Item 2: SHADOW PLAY */}
-          <div className="visual-item col-span-4 [aspect-ratio:3/4] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <OptimizedImage 
-              src="/images/about/visual-art/Shadow Play.png" 
-              alt="Visual Art 2" 
-              fill={true}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
-            />
-            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
-              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
-                SHADOW PLAY
-              </h3>
-              <p className="visual-description text-sm leading-[1.6] opacity-80">
-                빛과 그림자의 대비
-              </p>
-            </div>
-          </div>
-
-          {/* Visual Item 3: TEXTURE STUDY */}
-          <div className="visual-item col-span-4 [aspect-ratio:1] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <OptimizedImage 
-              src="/images/about/visual-art/Texture Study.png" 
-              alt="Visual Art 3" 
-              fill={true}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
-            />
-            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
-              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
-                TEXTURE STUDY
-              </h3>
-              <p className="visual-description text-sm leading-[1.6] opacity-80">
-                질감의 깊이를 탐구
-              </p>
-            </div>
-          </div>
-
-          {/* Visual Item 4: COLOR THEORY */}
-          <div className="visual-item col-span-4 [aspect-ratio:1] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <OptimizedImage 
-              src="/images/about/visual-art/Color Theory.png" 
-              alt="Visual Art 4" 
-              fill={true}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
-            />
-            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
-              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
-                COLOR THEORY
-              </h3>
-              <p className="visual-description text-sm leading-[1.6] opacity-80">
-                색채의 감정적 표현
-              </p>
-            </div>
-          </div>
-
-          {/* Visual Item 5: FORM & VOID */}
-          <div className="visual-item col-span-4 [aspect-ratio:3/4] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-3 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <OptimizedImage 
-              src="/images/about/visual-art/Form & Void.png" 
-              alt="Visual Art 5" 
-              fill={true}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
-            />
-            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
-              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
-                FORM & VOID
-              </h3>
-              <p className="visual-description text-sm leading-[1.6] opacity-80">
-                형태와 공간의 관계
-              </p>
-            </div>
-          </div>
-
-          {/* Visual Item 6: DIGITAL DREAMS */}
-          <div className="visual-item col-span-6 [aspect-ratio:4/3] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <OptimizedImage 
-              src="/images/about/visual-art/Digital Dreams.png" 
-              alt="Visual Art 6"
-              fill={true}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
-              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
-            />
-            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
-              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
-                DIGITAL DREAMS
-              </h3>
-              <p className="visual-description text-sm leading-[1.6] opacity-80">
-                디지털 매체의 가능성
-              </p>
-            </div>
-          </div>
-
-          {/* Visual Item 7: ANALOG MEMORIES */}
-          <div className="visual-item col-span-6 [aspect-ratio:4/3] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <OptimizedImage 
-              src="/images/about/visual-art/Analog Memories.png" 
-              alt="Visual Art 7"
-              fill={true}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
-              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
-            />
-            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
-              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
-                ANALOG MEMORIES
-              </h3>
-              <p className="visual-description text-sm leading-[1.6] opacity-80">
-                아날로그의 따뜻함
-              </p>
-            </div>
-          </div>
-
-          {/* Visual Item 8: COLLECTIVE VISION */}
-          <div className="visual-item col-span-12 [aspect-ratio:21/9] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]">
-            <OptimizedImage 
-              src="/images/about/visual-art/Collective Vision.png" 
-              alt="Visual Art 8"
-              fill={true}
-              sizes="100vw"
-              className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
-            />
-            <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
-              <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
-                COLLECTIVE VISION
-              </h3>
-              <p className="visual-description text-sm leading-[1.6] opacity-80">
-                6인 6색의 시각적 하모니
-              </p>
-            </div>
-          </div>
+          {/* Dynamic Visual Art Items from CMS */}
+          {galleryImages.map((image, index) => {
+            const meta = visualArtMeta[index] || { 
+              title: `VISUAL ART ${index + 1}`, 
+              description: '시각적 표현의 새로운 가능성', 
+              gridClass: 'col-span-6' 
+            };
+            
+            return (
+              <div 
+                key={index}
+                className={`visual-item ${meta.gridClass} [aspect-ratio:16/9] relative overflow-hidden bg-[--gray-light] cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealItem_0.8s_ease_forwards] max-[1024px]:col-span-6 max-[768px]:col-span-1 max-[768px]:[aspect-ratio:4/3]`}
+              >
+                <OptimizedImage 
+                  src={image}
+                  alt={`Visual Art ${index + 1}`}
+                  fill={true}
+                  priority={index < 4}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 67vw"
+                  className="object-cover transition-transform duration-[1s] ease-in-out [filter:contrast(0.9)] hover:transform hover:scale-105 hover:[filter:contrast(1.1)]"
+                />
+                <div className="visual-overlay absolute top-0 left-0 w-full h-full bg-black/70 flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-500 ease-in-out p-10 text-center hover:opacity-100">
+                  <h3 className="visual-title text-2xl font-light tracking-[2px] mb-[10px]">
+                    {meta.title}
+                  </h3>
+                  <p className="visual-description text-sm leading-[1.6] opacity-80">
+                    {meta.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -363,6 +261,44 @@ export default function VisualArtPage() {
           </div>
         </div>
       </section>
+
+      {/* CMS Admin Interface - Only visible to authenticated users */}
+      {isAuthenticated && visualArtSlot && (
+        <section className="cms-admin-section py-[80px] px-10 bg-gray-50">
+          <div 
+            className="max-w-[1600px] mx-auto"
+          >
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '16px',
+              border: '1px solid rgba(0, 0, 0, 0.1)',
+              padding: '32px',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+            }}>
+              <div style={{
+                color: '#000',
+                fontSize: '20px',
+                fontWeight: 600,
+                marginBottom: '24px',
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                textAlign: 'center'
+              }}>
+                🎨 Visual Art Gallery Management
+              </div>
+              
+              <MediaSlot
+                slot={visualArtSlot}
+                currentFiles={galleryImages}
+                onFilesUpdate={updateGalleryImages}
+                isAdminMode={true}
+                className="visual-art-cms-slot"
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CSS for animations matching HTML version */}
       <style jsx>{`
