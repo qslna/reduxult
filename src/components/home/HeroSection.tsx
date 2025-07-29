@@ -71,11 +71,15 @@ function HeroSection() {
 
   const showVideo = () => {
     setIsVideoVisible(true);
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // 재생 실패시 무시
-      });
-    }
+    // 비디오가 보이게 된 후 약간의 지연을 두고 재생
+    setTimeout(() => {
+      if (videoRef.current && isVideoVisible) {
+        videoRef.current.currentTime = 0; // 처음부터 재생
+        videoRef.current.play().catch((error) => {
+          console.warn('Video play failed:', error);
+        });
+      }
+    }, 100);
   };
 
   // 서버 사이드 렌더링 중에는 기본 콘텐츠 반환
@@ -190,24 +194,24 @@ function HeroSection() {
       {!videoError && (
         <div className="absolute bottom-20 right-8 z-30">
           {isVideoVisible ? (
-            // X 버튼 - 비디오 끄기
+            // X 버튼 - 비디오 끄기 (미니멀 디자인)
             <button
               onClick={hideVideo}
-              className="w-12 h-12 bg-black/70 hover:bg-red-600/90 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-400/50 shadow-lg"
+              className="w-12 h-12 bg-black/70 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/30 shadow-lg"
               title="비디오 끄기"
               aria-label="비디오 끄기"
             >
               <span className="text-lg font-bold">×</span>
             </button>
           ) : (
-            // 재생 버튼 - 비디오 켜기
+            // 재생 버튼 - 비디오 켜기 (미니멀 디자인)
             <button
               onClick={showVideo}
-              className="w-12 h-12 bg-black/70 hover:bg-green-600/90 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-green-400/50 shadow-lg"
+              className="w-12 h-12 bg-black/70 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/30 shadow-lg"
               title="비디오 재생"
               aria-label="비디오 재생"
             >
-              <span className="text-sm" role="img" aria-label="재생">▶️</span>
+              <span className="text-lg font-bold ml-0.5">▶</span>
             </button>
           )}
         </div>

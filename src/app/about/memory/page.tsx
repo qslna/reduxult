@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useCMSSlot } from '@/hooks/useCMSSlot';
+import { useGalleryCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import MediaSlot from '@/components/cms/MediaSlot';
+import DirectCMS from '@/components/cms/DirectCMS';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // HTML redux6 about-memory.html과 완전 동일한 Memory 페이지 구현
@@ -19,7 +19,14 @@ export default function MemoryPage() {
   
   // CMS integration
   const { isAuthenticated } = useSimpleAuth();
-  const { slot: memorySlot, currentFiles: galleryImages, updateFiles: updateGalleryImages } = useCMSSlot('about-memory-gallery');
+  const memoryCMS = useGalleryCMS('about-memory-gallery', [
+    '/images/about/memory/IMG_3452.JPG',
+    '/images/about/memory/IMG_3453.JPG',
+    '/images/about/memory/IMG_3454.JPG',
+    '/images/about/memory/IMG_3455.JPG',
+    '/images/about/memory/IMG_3456.JPG'
+  ]);
+  const galleryImages = memoryCMS.currentImages;
 
   // Ensure client-side rendering
   useEffect(() => {
@@ -197,45 +204,58 @@ export default function MemoryPage() {
                   Moment {String(index + 1).padStart(2, '0')}
                 </p>
               </div>
+              
+              {/* CMS 버튼 for admin */}
+              {isAuthenticated && (
+                <div 
+                  className="absolute top-2 right-2 z-20"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <DirectCMS
+                    slotId={`memory-gallery-${index}`}
+                    currentUrl={image}
+                    type="image"
+                    onUpload={(url) => {
+                      const newImages = [...galleryImages];
+                      newImages[index] = url;
+                      memoryCMS.updateGallery(newImages);
+                    }}
+                    onDelete={() => {
+                      const newImages = galleryImages.filter((_, i) => i !== index);
+                      memoryCMS.updateGallery(newImages);
+                    }}
+                    isAdminMode={true}
+                    placeholder={`메모리 ${index + 1}`}
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>
 
-        {/* CMS Admin Interface - Only visible to authenticated users */}
-        {isAuthenticated && memorySlot && (
-          <div 
-            className="cms-admin-section"
-            style={{
-              maxWidth: '1800px',
-              margin: '60px auto 0',
-              padding: '0 20px'
-            }}
-          >
-            <div style={{
-              background: 'rgba(0, 0, 0, 0.8)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '16px',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              padding: '24px'
-            }}>
-              <div style={{
-                color: 'var(--primary-white)',
-                fontSize: '16px',
-                fontWeight: 600,
-                marginBottom: '20px',
-                letterSpacing: '1px',
-                textTransform: 'uppercase',
-                textAlign: 'center'
-              }}>
-                📸 Memory Gallery Management
-              </div>
-              
-              <MediaSlot
-                slot={memorySlot}
-                currentFiles={galleryImages}
-                onFilesUpdate={updateGalleryImages}
+        {/* 새 이미지 추가 슬롯 */}
+        {isAuthenticated && (
+          <div className="max-w-[1800px] mx-auto mt-10 px-5">
+            <div 
+              className="[break-inside:avoid] mb-[2px] relative overflow-hidden bg-gray-800/50 border-2 border-dashed border-gray-600 hover:border-amber-300 transition-all duration-300 min-h-[200px] flex items-center justify-center"
+              style={{ 
+                animation: `fadeInSequential 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards`,
+                animationDelay: `${galleryImages.length * 50}ms`
+              }}
+            >
+              <DirectCMS
+                slotId={`memory-gallery-new`}
+                type="image"
+                onUpload={(url) => {
+                  const newImages = [...galleryImages, url];
+                  memoryCMS.updateGallery(newImages);
+                }}
                 isAdminMode={true}
-                className="memory-cms-slot"
+                placeholder="새 메모리 추가"
+                className="w-full h-full flex items-center justify-center"
               />
             </div>
           </div>

@@ -374,13 +374,21 @@ export default function DesignerPage({ params }: Props) {
                           currentUrl={image}
                           type="image"
                           onUpload={(url) => {
-                            const newImages = [...(portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages)];
-                            newImages[index] = url;
-                            portfolioCMS.handleUpload(url); // 전체 갤러리 업데이트
+                            const currentImages = portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages;
+                            const newImages = [...currentImages];
+                            if (index < newImages.length) {
+                              // 기존 이미지 교체
+                              newImages[index] = url;
+                            } else {
+                              // 새 이미지 추가
+                              newImages.push(url);
+                            }
+                            portfolioCMS.updateGallery(newImages);
                           }}
                           onDelete={() => {
-                            const newImages = (portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages).filter((_, i) => i !== index);
-                            portfolioCMS.reorderImages?.(0, 0); // 갤러리 업데이트 트리거
+                            const currentImages = portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages;
+                            const newImages = currentImages.filter((_, i) => i !== index);
+                            portfolioCMS.updateGallery(newImages);
                           }}
                           isAdminMode={true}
                           placeholder={`포트폴리오 ${index + 1}`}
@@ -389,6 +397,30 @@ export default function DesignerPage({ params }: Props) {
                     )}
                   </div>
                 ))}
+                
+                {/* 새 이미지 추가 슬롯 */}
+                {isAuthenticated && (
+                  <div 
+                    className="[break-inside:avoid] mb-5 relative overflow-hidden bg-gray-800/50 border-2 border-dashed border-gray-600 hover:border-amber-300 transition-all duration-300 min-h-[200px] flex items-center justify-center"
+                    style={{ 
+                      animation: `revealItem 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards`,
+                      animationDelay: `${(portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages).length * 100}ms`
+                    }}
+                  >
+                    <DirectCMS
+                      slotId={`designer-${designer.id}-portfolio-new`}
+                      type="image"
+                      onUpload={(url) => {
+                        const currentImages = portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages;
+                        const newImages = [...currentImages, url];
+                        portfolioCMS.updateGallery(newImages);
+                      }}
+                      isAdminMode={true}
+                      placeholder="새 이미지 추가"
+                      className="w-full h-full flex items-center justify-center"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
