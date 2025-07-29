@@ -127,35 +127,38 @@ export default function DirectCMS({
       />
 
       {previewUrl ? (
-        // 이미지가 있을 때 - 삭제(-) 버튼과 교체 버튼
+        // 이미지가 있을 때 - 삭제(-) 버튼과 교체 버튼 (모바일 최적화)
         <div className="flex items-center gap-1">
           <button
             onClick={handleDelete}
-            className="w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold transition-colors"
+            className="w-7 h-7 md:w-6 md:h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold transition-colors touch-manipulation"
+            style={{ minWidth: '28px', minHeight: '28px' }}
             title="삭제"
           >
-            <X className="w-3 h-3" />
+            <X className="w-4 h-4 md:w-3 md:h-3" />
           </button>
           <button
             onClick={triggerFileInput}
-            className="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded transition-colors"
+            className="px-3 py-2 md:px-2 md:py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded transition-colors touch-manipulation"
+            style={{ minHeight: '28px' }}
             title="교체"
           >
             교체
           </button>
         </div>
       ) : (
-        // 이미지가 없을 때 - 추가(+) 버튼
+        // 이미지가 없을 때 - 추가(+) 버튼 (모바일 최적화)
         <button
           onClick={triggerFileInput}
           disabled={isUploading}
-          className="w-6 h-6 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white rounded-full flex items-center justify-center transition-colors"
+          className="w-7 h-7 md:w-6 md:h-6 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white rounded-full flex items-center justify-center transition-colors touch-manipulation"
+          style={{ minWidth: '28px', minHeight: '28px' }}
           title={`${placeholder} 추가`}
         >
           {isUploading ? (
-            <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin" />
+            <div className="w-4 h-4 md:w-3 md:h-3 border border-white border-t-transparent rounded-full animate-spin" />
           ) : (
-            <Plus className="w-3 h-3" />
+            <Plus className="w-4 h-4 md:w-3 md:h-3" />
           )}
         </button>
       )}

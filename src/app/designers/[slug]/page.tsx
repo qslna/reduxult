@@ -513,33 +513,86 @@ export default function DesignerPage({ params }: Props) {
         
         @media (max-width: 768px) {
           nav {
-            padding: 15px 20px;
+            padding: 15px 20px !important;
           }
           
           .page-title {
-            display: none;
+            display: none !important;
           }
           
           .hero-section {
-            height: 50vh;
-            min-height: 350px;
-            padding: 0 20px;
+            height: auto !important;
+            min-height: 100vh !important;
+            padding: 140px 20px 40px !important;
           }
           
-          .portfolio-section {
-            padding: 60px 20px;
-          }
-          
-          .portfolio-grid {
-            column-gap: 10px;
-          }
-          
-          .portfolio-item {
-            margin-bottom: 10px;
+          .designer-info {
+            text-align: center !important;
+            margin-bottom: 2rem !important;
           }
           
           .designer-name {
             font-size: clamp(2rem, 8vw, 3rem) !important;
+            text-align: center !important;
+          }
+          
+          .profile-image {
+            max-width: 280px !important;
+            margin: 0 auto !important;
+          }
+          
+          .portfolio-section {
+            padding: 60px 20px !important;
+          }
+          
+          .portfolio-grid {
+            columns: 2 !important;
+            column-gap: 8px !important;
+          }
+          
+          .portfolio-item {
+            margin-bottom: 8px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .hero-section {
+            padding: 120px 15px 30px !important;
+          }
+          
+          .designer-name {
+            font-size: clamp(1.8rem, 10vw, 2.5rem) !important;
+          }
+          
+          .profile-image {
+            max-width: 240px !important;
+          }
+          
+          .portfolio-section {
+            padding: 50px 15px !important;
+          }
+          
+          .portfolio-grid {
+            columns: 1 !important;
+            column-gap: 0 !important;
+          }
+          
+          .portfolio-item {
+            margin-bottom: 6px !important;
+          }
+        }
+        
+        @media (max-width: 375px) {
+          .hero-section {
+            padding: 100px 12px 25px !important;
+          }
+          
+          .designer-name {
+            font-size: clamp(1.6rem, 12vw, 2.2rem) !important;
+          }
+          
+          .profile-image {
+            max-width: 220px !important;
           }
         }
         

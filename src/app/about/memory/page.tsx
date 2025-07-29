@@ -21,10 +21,45 @@ export default function MemoryPage() {
   const { isAuthenticated } = useSimpleAuth();
   const memoryCMS = useGalleryCMS('about-memory-gallery', [
     '/images/about/memory/IMG_3452.JPG',
-    '/images/about/memory/IMG_3453.JPG',
     '/images/about/memory/IMG_3454.JPG',
     '/images/about/memory/IMG_3455.JPG',
-    '/images/about/memory/IMG_3456.JPG'
+    '/images/about/memory/IMG_3481.JPG',
+    '/images/about/memory/IMG_3491.JPG',
+    '/images/about/memory/IMG_3492.JPG',
+    '/images/about/memory/IMG_3493.JPG',
+    '/images/about/memory/IMG_4339.JPG',
+    '/images/about/memory/IMG_4345.JPG',
+    '/images/about/memory/IMG_4348.JPG',
+    '/images/about/memory/IMG_4367.JPG',
+    '/images/about/memory/IMG_5380.JPG',
+    '/images/about/memory/IMG_5381.JPG',
+    '/images/about/memory/IMG_5382.JPG',
+    '/images/about/memory/IMG_5383.JPG',
+    '/images/about/memory/0C22A68E-AADF-4A8D-B5E7-44DDBA2EE64F.jpeg',
+    '/images/about/memory/83C1CE7D-97A9-400F-9403-60E89979528A.jpg',
+    '/images/about/memory/IMG_1728.jpeg',
+    '/images/about/memory/IMG_7103.jpeg',
+    '/images/about/memory/IMG_7146.jpeg',
+    '/images/about/memory/IMG_7272.jpeg',
+    '/images/about/memory/KakaoTalk_20250626_002430368.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_01.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_02.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_03.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_04.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_05.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_06.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_07.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_08.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_09.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_10.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_11.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_12.jpg',
+    '/images/about/memory/KakaoTalk_20250626_002430368_13.jpg',
+    '/images/about/memory/KakaoTalk_Photo_2025-06-29-18-44-00 001.jpeg',
+    '/images/about/memory/KakaoTalk_Photo_2025-06-29-18-44-01 002.jpeg',
+    '/images/about/memory/KakaoTalk_Photo_2025-06-29-18-44-01 003.jpeg',
+    '/images/about/memory/KakaoTalk_Photo_2025-06-29-18-44-01 004.jpeg',
+    '/images/about/memory/KakaoTalk_Photo_2025-06-29-18-44-01 005.jpeg'
   ]);
   const galleryImages = memoryCMS.currentImages;
 
@@ -381,22 +416,80 @@ export default function MemoryPage() {
           --accent-neutral: #F8F6F4;
         }
         
-        /* Responsive adjustments */
+        /* Enhanced Mobile Responsive adjustments */
         @media (max-width: 768px) {
           nav {
-            padding: 15px 20px;
+            padding: 15px 20px !important;
           }
           
           .page-title {
-            display: none;
+            display: none !important;
           }
           
           .gallery-container {
-            padding: 100px 10px 40px;
+            padding: 100px 15px 40px !important;
           }
           
           .gallery-header {
-            margin-bottom: 40px;
+            margin-bottom: 30px !important;
+            text-align: center !important;
+          }
+          
+          .gallery-header h1 {
+            font-size: 2.5rem !important;
+            margin-bottom: 1rem !important;
+          }
+          
+          .gallery-header p {
+            font-size: 0.9rem !important;
+            padding: 0 20px !important;
+          }
+          
+          .gallery-grid {
+            columns: 2 !important;
+            column-gap: 1px !important;
+          }
+          
+          .gallery-item {
+            margin-bottom: 1px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .gallery-container {
+            padding: 90px 10px 30px !important;
+          }
+          
+          .gallery-header h1 {
+            font-size: 2rem !important;
+          }
+          
+          .gallery-header p {
+            font-size: 0.85rem !important;
+            padding: 0 10px !important;
+          }
+          
+          .gallery-grid {
+            columns: 1 !important;
+            column-gap: 0 !important;
+          }
+          
+          .gallery-item {
+            margin-bottom: 0.5px !important;
+          }
+        }
+        
+        @media (max-width: 375px) {
+          .gallery-container {
+            padding: 80px 8px 25px !important;
+          }
+          
+          .gallery-header h1 {
+            font-size: 1.8rem !important;
+          }
+          
+          .gallery-header p {
+            font-size: 0.8rem !important;
           }
         }
         

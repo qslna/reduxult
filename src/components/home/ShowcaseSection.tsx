@@ -115,13 +115,13 @@ export default function ShowcaseSection() {
     <section className="showcase-section py-20 px-10 bg-black min-h-screen flex items-center">
       <div className="max-w-7xl mx-auto w-full">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <h2 
-            className="font-['Playfair_Display'] text-4xl md:text-5xl font-light text-white mb-6 tracking-[0.1em]"
+            className="font-['Playfair_Display'] text-3xl md:text-4xl lg:text-5xl font-light text-white mb-4 md:mb-6 tracking-[0.1em]"
           >
             DISCOVER
           </h2>
-          <p className="text-white/70 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-white/70 text-base md:text-lg max-w-xl md:max-w-2xl mx-auto leading-relaxed px-4">
             6명의 디자이너와 그들의 창작 세계, 그리고 함께 만들어가는 전시의 공간을 탐험해보세요.
           </p>
         </div>
@@ -278,29 +278,67 @@ export default function ShowcaseSection() {
           box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
         }
         
-        /* Responsive adjustments */
+        /* Enhanced Mobile Responsive adjustments */
         @media (max-width: 768px) {
           .showcase-section {
-            padding: 60px 20px;
+            padding: 50px 20px !important;
+            min-height: auto !important;
           }
           
           .showcase-grid {
-            gap: 1rem;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 1rem !important;
           }
           
           .showcase-item {
-            aspect-ratio: 1;
+            aspect-ratio: 1 !important;
+            border-radius: 8px !important;
+          }
+          
+          .showcase-item h3 {
+            font-size: 0.75rem !important;
+          }
+          
+          .showcase-item p {
+            font-size: 0.65rem !important;
           }
         }
         
         @media (max-width: 480px) {
           .showcase-section {
-            padding: 40px 15px;
+            padding: 40px 15px !important;
           }
           
           .showcase-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.75rem !important;
+          }
+          
+          .showcase-item h3 {
+            font-size: 0.7rem !important;
+            margin-bottom: 0.25rem !important;
+          }
+          
+          .showcase-item p {
+            font-size: 0.6rem !important;
+          }
+        }
+        
+        @media (max-width: 375px) {
+          .showcase-section {
+            padding: 30px 12px !important;
+          }
+          
+          .showcase-grid {
+            gap: 0.5rem !important;
+          }
+          
+          .showcase-item h3 {
+            font-size: 0.65rem !important;
+          }
+          
+          .showcase-item p {
+            font-size: 0.55rem !important;
           }
         }
         

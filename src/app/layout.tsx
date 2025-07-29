@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
+import '../styles/mobile-optimization.css';
 import { baseMetadata, generateOrganizationStructuredData, generateWebsiteStructuredData } from '@/lib/seo';
 import { DEFAULT_SEO, seoPerformanceOptimization } from '@/lib/seo-optimization';
 import { initializePerformanceOptimization } from '@/lib/performance';

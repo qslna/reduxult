@@ -253,38 +253,51 @@ const HeroSectionWithStyles = () => (
   <>
     <HeroSection />
     <style jsx global>{`
-        /* Responsive adjustments */
+        /* Enhanced Mobile Responsive adjustments */
         @media (max-width: 768px) {
           .hero-content {
-            padding: 0 20px;
+            padding: 0 20px !important;
+            max-width: 100% !important;
           }
           
           .hero-title {
-            font-size: clamp(2.5rem, 12vw, 5rem) !important;
-            margin-bottom: 1.5rem !important;
+            font-size: clamp(2rem, 10vw, 4rem) !important;
+            margin-bottom: 1rem !important;
+            line-height: 1.1 !important;
+            text-align: center !important;
           }
           
           .hero-subtitle {
-            font-size: 1rem !important;
-            margin-bottom: 2rem !important;
+            font-size: 0.9rem !important;
+            margin-bottom: 1.5rem !important;
+            letter-spacing: 0.2em !important;
+            text-align: center !important;
           }
           
           .hero-description {
             margin-bottom: 2rem !important;
+            text-align: center !important;
           }
           
           .hero-description p {
-            font-size: 1rem !important;
+            font-size: 0.9rem !important;
+            line-height: 1.6 !important;
+            max-width: 300px !important;
+            margin: 0 auto !important;
           }
           
           .hero-actions {
-            flex-direction: column;
-            gap: 1rem;
+            flex-direction: column !important;
+            gap: 1rem !important;
+            align-items: center !important;
           }
           
           .hero-actions button {
-            width: 100%;
-            max-width: 280px;
+            width: 100% !important;
+            max-width: 260px !important;
+            padding: 14px 24px !important;
+            font-size: 0.85rem !important;
+            white-space: nowrap !important;
           }
           
           /* 모바일에서 비디오 컨트롤 위치 조정 - 간소화된 버전 */
@@ -319,9 +332,49 @@ const HeroSectionWithStyles = () => (
         }
         
         @media (max-width: 480px) {
+          .hero-title {
+            font-size: clamp(1.8rem, 12vw, 3.5rem) !important;
+          }
+          
+          .hero-subtitle {
+            font-size: 0.8rem !important;
+            letter-spacing: 0.15em !important;
+          }
+          
+          .hero-description p {
+            font-size: 0.85rem !important;
+            max-width: 280px !important;
+          }
+          
           .hero-actions button {
-            padding: 12px 24px;
-            font-size: 0.75rem;
+            padding: 12px 20px !important;
+            font-size: 0.75rem !important;
+            max-width: 240px !important;
+          }
+          
+          .hero-content {
+            padding: 0 15px !important;
+          }
+        }
+        
+        @media (max-width: 375px) {
+          .hero-title {
+            font-size: clamp(1.6rem, 12vw, 3rem) !important;
+          }
+          
+          .hero-subtitle {
+            font-size: 0.75rem !important;
+          }
+          
+          .hero-description p {
+            font-size: 0.8rem !important;
+            max-width: 260px !important;
+          }
+          
+          .hero-actions button {
+            padding: 10px 18px !important;
+            font-size: 0.7rem !important;
+            max-width: 220px !important;
           }
         }
         

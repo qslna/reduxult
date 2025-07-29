@@ -317,14 +317,58 @@ function AboutContent() {
         
         @media (max-width: 768px) {
           .about-categories-grid {
-            grid-template-columns: 1fr;
-            grid-auto-rows: 250px;
-            gap: 1rem;
+            grid-template-columns: 1fr !important;
+            grid-auto-rows: 280px !important;
+            gap: 1rem !important;
+            padding: 0 10px !important;
           }
           
           .about-grid-item {
             grid-column: 1 !important;
             grid-row: span 1 !important;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+          }
+          
+          .about-grid-item h3 {
+            font-size: 1.5rem !important;
+            margin-bottom: 0.5rem !important;
+          }
+          
+          .about-grid-item p {
+            font-size: 0.85rem !important;
+            line-height: 1.4 !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .about-categories-grid {
+            grid-auto-rows: 260px !important;
+            gap: 0.75rem !important;
+            padding: 0 5px !important;
+          }
+          
+          .about-grid-item h3 {
+            font-size: 1.25rem !important;
+          }
+          
+          .about-grid-item p {
+            font-size: 0.8rem !important;
+          }
+        }
+        
+        @media (max-width: 375px) {
+          .about-categories-grid {
+            grid-auto-rows: 240px !important;
+            gap: 0.5rem !important;
+          }
+          
+          .about-grid-item h3 {
+            font-size: 1.1rem !important;
+          }
+          
+          .about-grid-item p {
+            font-size: 0.75rem !important;
           }
         }
         
