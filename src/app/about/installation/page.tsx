@@ -209,7 +209,7 @@ export default function InstallationPage() {
             Process
           </h1>
           <p className="hero-subtitle text-base tracking-[3px] text-[--gray-medium] mt-5 opacity-0 animate-[heroFade_1.5s_ease_forwards] [animation-delay:0.3s]">
-            Six Roles, One Exhibition
+            Five Roles, One Exhibition
           </p>
         </div>
       </section>

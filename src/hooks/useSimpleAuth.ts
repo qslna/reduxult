@@ -8,19 +8,37 @@ const STORAGE_KEY = 'redux-admin-auth';
 export function useSimpleAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
-  // 로컬 스토리지에서 인증 상태 복원
+  // 클라이언트 사이드 확인
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === 'true') {
-      setIsAuthenticated(true);
-    }
+    setIsClient(true);
   }, []);
+
+  // 로컬 스토리지에서 인증 상태 복원 - 클라이언트에서만
+  useEffect(() => {
+    if (!isClient) return;
+    
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored === 'true') {
+        setIsAuthenticated(true);
+      }
+    } catch (error) {
+      console.warn('Failed to access localStorage:', error);
+    }
+  }, [isClient]);
 
   const login = (password: string): boolean => {
     if (password === ADMIN_PASSWORD) {
       setIsAuthenticated(true);
-      localStorage.setItem(STORAGE_KEY, 'true');
+      try {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(STORAGE_KEY, 'true');
+        }
+      } catch (error) {
+        console.warn('Failed to save to localStorage:', error);
+      }
       setShowLoginModal(false);
       return true;
     }
@@ -29,7 +47,13 @@ export function useSimpleAuth() {
 
   const logout = () => {
     setIsAuthenticated(false);
-    localStorage.removeItem(STORAGE_KEY);
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    } catch (error) {
+      console.warn('Failed to access localStorage:', error);
+    }
   };
 
   const requestAdminAccess = () => {

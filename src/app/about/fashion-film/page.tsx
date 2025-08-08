@@ -1,40 +1,40 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useCMSSlot } from '@/hooks/useCMSSlot';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
-import HydrationSafe, { useIsClient } from '@/components/ui/HydrationSafe';
+import { useIsClient } from '@/components/ui/HydrationSafe';
 // import SubPageNavigation from '@/components/layout/SubPageNavigation'; // 제거됨 - layout.tsx에서 Navigation 렌더링
 
 // 최적화된 Fashion Film 페이지
 export default function FashionFilmPage() {
-  return (
-    <HydrationSafe 
-      fallback={
-        <>
-          {/* <SubPageNavigation pageTitle="Fashion Film" /> */} {/* 제거됨 - layout.tsx에서 Navigation 렌더링 */}
-          <div className="min-h-screen bg-black flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-6xl font-thin tracking-[0.2em] text-white mb-4">Fashion Film</h1>
-              <p className="text-gray-400">Loading...</p>
-            </div>
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return (
+      <>
+        <div className="min-h-screen bg-black flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-6xl font-thin tracking-[0.2em] text-white mb-4">Fashion Film</h1>
+            <p className="text-gray-400">Loading...</p>
           </div>
-        </>
-      }
-    >
-      <FashionFilmContent />
-    </HydrationSafe>
-  );
+        </div>
+      </>
+    );
+  }
+
+  return <FashionFilmContent />;
 }
 
 function FashionFilmContent() {
-  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFilm, setCurrentFilm] = useState('');
-  const [modalTransform, setModalTransform] = useState({ x: 0, y: 0, scale: 0 });
   const isClient = useIsClient();
   
   // CMS integration
@@ -151,36 +151,16 @@ function FashionFilmContent() {
     return `https://drive.google.com/file/d/${fileId}/preview?usp=sharing&controls=1&modestbranding=1&rel=0&showinfo=0`;
   };
 
-  const openFilm = (filmId: string, event: React.MouseEvent) => {
+  const openFilm = (filmId: string) => {
     if (!isClient) return;
     
     const film = filmData.find(f => f.id === filmId);
     if (!film) return;
-
-    const thumbnail = event.currentTarget as HTMLElement;
-    const rect = thumbnail.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    const viewportCenterX = window.innerWidth / 2;
-    const viewportCenterY = window.innerHeight / 2;
-    const offsetX = centerX - viewportCenterX;
-    const offsetY = centerY - viewportCenterY;
-    
-    setModalTransform({ 
-      x: offsetX, 
-      y: offsetY, 
-      scale: 0.1 
-    });
     
     const videoFile = film.videoSlot.currentFiles[0] || film.defaultVideo;
     setCurrentFilm(videoFile);
     setIsModalOpen(true);
     document.body.style.overflow = 'hidden';
-    
-    setTimeout(() => {
-      setModalTransform({ x: 0, y: 0, scale: 1 });
-    }, 50);
   };
 
   const closeModal = () => {
@@ -262,7 +242,7 @@ function FashionFilmContent() {
                   animation: `revealItem 0.8s ease forwards`,
                   animationDelay: `${index * 200}ms`
                 }}
-                onClick={(e) => openFilm(film.id, e)}
+                onClick={() => openFilm(film.id)}
               >
                 <OptimizedImage 
                   src={thumbnailUrl}

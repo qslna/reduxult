@@ -5,7 +5,7 @@ export const aboutCategories: Category[] = [
     id: 'collective',
     title: 'Collective',
     titleKo: '콜렉티브',
-    description: 'Six creative minds united by a shared vision of pushing the boundaries of fashion and art.',
+    description: 'Five creative minds united by a shared vision of pushing the boundaries of fashion and art.',
     coverImage: '/images/about/process/홍보  브랜딩.png',
     images: []
   },

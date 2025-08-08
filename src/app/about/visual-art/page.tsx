@@ -8,7 +8,7 @@ import MediaSlot from '@/components/cms/MediaSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 // import SubPageNavigation from '@/components/layout/SubPageNavigation'; // 제거됨 - layout.tsx에서 Navigation 렌더링
 
-// HTML redux6 about-visual-art.html과 완전 동일한 Visual Art 페이지 구현
+// HTML redux5 about-visual-art.html과 완전 동일한 Visual Art 페이지 구현
 export default function VisualArtPage() {
   const router = useRouter();
   // Client-side only state
@@ -81,8 +81,7 @@ export default function VisualArtPage() {
   if (!isClient) {
     return (
       <>
-        {/* <SubPageNavigation pageTitle="Visual Art" /> */} {/* 제거됨 - layout.tsx에서 Navigation 렌더링 */}
-        <div className="min-h-screen bg-[--gray-light] flex items-center justify-center">
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-6xl font-thin tracking-[0.2em] text-black mb-4">Visual Art</h1>
             <p className="text-gray-600">Loading...</p>

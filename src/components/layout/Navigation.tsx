@@ -320,23 +320,19 @@ export default function Navigation() {
           z-index: var(--nav-z-index);
           transition: var(--nav-transition);
           
-          /* Simplified background - no mix-blend-mode */
+          /* Simplified background - transparent on home page, dark on others */
           background: ${
             isHomePage 
-              ? 'rgba(0, 0, 0, 0.85)' 
-              : 'rgba(255, 255, 255, 0.95)'
+              ? 'transparent' 
+              : 'rgba(0, 0, 0, 0.95)'
           };
-          backdrop-filter: blur(20px);
-          border-bottom: ${isHomePage ? 'none' : '1px solid rgba(0, 0, 0, 0.08)'};
+          backdrop-filter: ${isHomePage ? 'none' : 'blur(20px)'};
+          border-bottom: none;
         }
 
         .redux-nav--scrolled {
           padding: 15px 40px;
-          background: ${
-            isHomePage 
-              ? 'rgba(0, 0, 0, 0.95)' 
-              : 'rgba(255, 255, 255, 0.98)'
-          };
+          background: rgba(0, 0, 0, 0.95);
           box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
           backdrop-filter: blur(20px);
         }
@@ -357,7 +353,7 @@ export default function Navigation() {
           font-size: clamp(20px, 3vw, 26px);
           font-weight: 800;
           letter-spacing: 0.05em;
-          color: ${isHomePage ? 'var(--primary-white)' : 'var(--primary-black)'};
+          color: var(--primary-white);
           text-decoration: none;
           transition: var(--nav-transition);
           cursor: pointer;
@@ -390,7 +386,7 @@ export default function Navigation() {
           font-size: clamp(13px, 1.2vw, 15px);
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          color: ${isHomePage ? 'var(--primary-white)' : 'var(--primary-black)'};
+          color: var(--primary-white);
           text-decoration: none;
           padding: 8px 0;
           display: block;
@@ -416,7 +412,7 @@ export default function Navigation() {
         }
 
         .redux-nav__item:hover .redux-nav__link {
-          color: ${isHomePage ? 'var(--accent-mocha)' : 'var(--accent-deep)'};
+          color: var(--accent-mocha);
           transform: translateY(-1px);
         }
 
@@ -426,27 +422,15 @@ export default function Navigation() {
           top: calc(100% + 15px);
           left: 50%;
           transform: translateX(-50%);
-          background: ${
-            isHomePage 
-              ? 'rgba(0, 0, 0, 0.95)' 
-              : 'rgba(255, 255, 255, 0.98)'
-          };
+          background: rgba(0, 0, 0, 0.95);
           backdrop-filter: blur(20px);
           min-width: 200px;
           padding: 20px 0;
           opacity: 0;
           visibility: hidden;
           transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-          border: 1px solid ${
-            isHomePage 
-              ? 'rgba(255, 255, 255, 0.15)' 
-              : 'rgba(0, 0, 0, 0.08)'
-          };
-          box-shadow: ${
-            isHomePage 
-              ? '0 10px 40px rgba(0, 0, 0, 0.3)' 
-              : '0 10px 40px rgba(0, 0, 0, 0.1)'
-          };
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
           border-radius: 8px;
         }
 
@@ -459,7 +443,7 @@ export default function Navigation() {
         .redux-nav__dropdown-item {
           display: block;
           padding: 12px 25px;
-          color: ${isHomePage ? 'var(--primary-white)' : 'var(--primary-black)'};
+          color: var(--primary-white);
           font-size: 13px;
           letter-spacing: 0.5px;
           text-transform: uppercase;
@@ -481,13 +465,9 @@ export default function Navigation() {
         }
 
         .redux-nav__dropdown-item:hover {
-          background: ${
-            isHomePage 
-              ? 'rgba(255, 255, 255, 0.1)' 
-              : 'rgba(0, 0, 0, 0.05)'
-          };
+          background: rgba(255, 255, 255, 0.1);
           padding-left: 35px;
-          color: ${isHomePage ? 'var(--accent-mocha)' : 'var(--accent-deep)'};
+          color: var(--accent-mocha);
         }
 
         .redux-nav__dropdown-item:hover::before {
@@ -512,7 +492,7 @@ export default function Navigation() {
         .redux-nav__toggle-line {
           width: 100%;
           height: 2px;
-          background: ${isHomePage ? 'var(--primary-white)' : 'var(--primary-black)'};
+          background: var(--primary-white);
           transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
           transform-origin: center;
         }

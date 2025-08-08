@@ -74,7 +74,7 @@ export default function AboutCategoryGrid() {
           <h1 className="about-title">ABOUT REDUX</h1>
           <p className="about-subtitle">FASHION DESIGNER COLLECTIVE</p>
           <p className="about-description">
-            Six visionary designers exploring the boundaries of fashion, art, and digital expression
+            Five visionary designers exploring the boundaries of fashion, art, and digital expression
           </p>
         </div>
       </section>

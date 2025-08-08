@@ -213,7 +213,7 @@ export const aboutGalleries: CategoryGallery[] = [
         src: '/images/profile/Choi Eunsol.jpeg',
         alt: 'Collective Work - Choi Eunsol',
         title: 'Shared Dreams',
-        description: 'Dreams and visions shared among six designers'
+        description: 'Dreams and visions shared among five designers'
       },
       {
         src: '/images/profile/Lee Taehyeon.jpg',

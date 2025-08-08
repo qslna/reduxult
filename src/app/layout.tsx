@@ -30,6 +30,7 @@ import InitialLoadingScreen from '@/components/ui/InitialLoadingScreen';
 import GlobalErrorBoundary from '@/components/ui/GlobalErrorBoundary';
 import MobileAdminPanel from '@/components/admin/MobileAdminPanel';
 import SkipToContent from '@/components/ui/SkipToContent';
+import ClientMobileOptimizer from '@/components/ui/ClientMobileOptimizer';
 
 export default function RootLayout({
   children,
@@ -139,6 +140,7 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-black text-white overflow-x-hidden">
         <SkipToContent />
         <InitialLoadingScreen />
+        <ClientMobileOptimizer />
         <GlobalErrorBoundary>
           <Navigation />
           <main id="main-content" tabIndex={-1}>
