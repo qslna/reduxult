@@ -45,7 +45,7 @@ export const homePageConfig: PageConfig = {
   name: 'Home',
   path: '/',
   title: 'REDUX - Fashion Design Collective',
-  description: 'REDUX는 6인의 패션 디자이너로 구성된 창작 집단입니다.',
+  description: 'REDUX는 5인의 패션 디자이너로 구성된 창작 집단입니다.',
   keywords: ['fashion', 'design', 'collective', 'redux', 'designers'],
   sections: [
     {
@@ -74,10 +74,10 @@ export const homePageConfig: PageConfig = {
   ],
   seo: {
     title: 'REDUX - Fashion Design Collective',
-    description: 'REDUX는 6인의 패션 디자이너로 구성된 창작 집단입니다.',
+    description: 'REDUX는 5인의 패션 디자이너로 구성된 창작 집단입니다.',
     keywords: ['fashion', 'design', 'collective', 'redux', 'designers'],
     ogTitle: 'REDUX - Fashion Design Collective',
-    ogDescription: 'REDUX는 6인의 패션 디자이너로 구성된 창작 집단입니다.',
+    ogDescription: 'REDUX는 5인의 패션 디자이너로 구성된 창작 집단입니다.',
     ogImage: '/images/og-home.jpg'
   },
   layout: {
@@ -208,7 +208,7 @@ export const designersPageConfig: PageConfig = {
   name: 'Designers',
   path: '/designers',
   title: 'Designers - REDUX',
-  description: 'REDUX를 구성하는 6인의 패션 디자이너들을 만나보세요.',
+  description: 'REDUX를 구성하는 5인의 패션 디자이너들을 만나보세요.',
   keywords: ['designers', 'fashion', 'redux', 'profiles', 'portfolio'],
   sections: [
     {
@@ -231,7 +231,7 @@ export const designersPageConfig: PageConfig = {
   ],
   seo: {
     title: 'Designers - REDUX Fashion Collective',
-    description: 'REDUX를 구성하는 6인의 패션 디자이너들을 만나보세요.',
+    description: 'REDUX를 구성하는 5인의 패션 디자이너들을 만나보세요.',
     keywords: ['designers', 'fashion', 'redux', 'profiles', 'portfolio']
   },
   layout: {

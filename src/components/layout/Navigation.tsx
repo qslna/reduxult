@@ -91,10 +91,14 @@ export default function Navigation() {
     }
   }, [mobileMenuActive, closeMobileMenu]);
 
-  // About 서브페이지에서는 네비게이션을 렌더링하지 않음
-  if (isAboutSubPage) {
-    return null;
-  }
+  // Close mobile menu on pathname change
+  useEffect(() => {
+    if (mobileMenuActive) {
+      closeMobileMenu();
+    }
+  }, [pathname, mobileMenuActive, closeMobileMenu]);
+
+  // 모든 페이지에서 네비게이션 렌더링 (사용자 요청에 따라 수정)
 
   return (
     <>
@@ -109,7 +113,7 @@ export default function Navigation() {
       >
         <div className="redux-nav__container">
           {/* Logo */}
-          <Link href="/" className="redux-nav__logo" aria-label="REDUX Home">
+          <Link href="/" className="redux-nav__logo" aria-label="REDUX Home" onClick={closeMobileMenu}>
             REDUX
           </Link>
 
@@ -123,15 +127,16 @@ export default function Navigation() {
                 role="menuitem"
                 aria-haspopup="true"
                 aria-expanded="false"
+                onClick={closeMobileMenu}
               >
                 About
               </Link>
               <div className="redux-nav__dropdown" role="menu" aria-label="About submenu">
-                <Link href="/about/fashion-film" className="redux-nav__dropdown-item" role="menuitem">Fashion Film</Link>
-                <Link href="/about/memory" className="redux-nav__dropdown-item" role="menuitem">Memory</Link>
-                <Link href="/about/visual-art" className="redux-nav__dropdown-item" role="menuitem">Visual Art</Link>
-                <Link href="/about/installation" className="redux-nav__dropdown-item" role="menuitem">Process</Link>
-                <Link href="/about/collective" className="redux-nav__dropdown-item" role="menuitem">Collective</Link>
+                <Link href="/about/fashion-film" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>Fashion Film</Link>
+                <Link href="/about/memory" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>Memory</Link>
+                <Link href="/about/visual-art" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>Visual Art</Link>
+                <Link href="/about/installation" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>Process</Link>
+                <Link href="/about/collective" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>Collective</Link>
               </div>
             </li>
 
@@ -143,15 +148,16 @@ export default function Navigation() {
                 role="menuitem"
                 aria-haspopup="true"
                 aria-expanded="false"
+                onClick={closeMobileMenu}
               >
                 Designers
               </Link>
               <div className="redux-nav__dropdown" role="menu" aria-label="Designers submenu">
-                <Link href="/designers/kim-bomin" className="redux-nav__dropdown-item" role="menuitem">Kim Bomin</Link>
-                <Link href="/designers/park-parang" className="redux-nav__dropdown-item" role="menuitem">Park Parang</Link>
-                <Link href="/designers/lee-taehyeon" className="redux-nav__dropdown-item" role="menuitem">Lee Taehyeon</Link>
-                <Link href="/designers/choi-eunsol" className="redux-nav__dropdown-item" role="menuitem">Choi Eunsol</Link>
-                <Link href="/designers/kim-gyeongsu" className="redux-nav__dropdown-item" role="menuitem">Kim Gyeongsu</Link>
+                <Link href="/designers/kim-bomin" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>Kim Bomin</Link>
+                <Link href="/designers/park-parang" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>Park Parang</Link>
+                <Link href="/designers/lee-taehyeon" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>Lee Taehyeon</Link>
+                <Link href="/designers/choi-eunsol" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>Choi Eunsol</Link>
+                <Link href="/designers/kim-gyeongsu" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>Kim Gyeongsu</Link>
               </div>
             </li>
 
@@ -163,23 +169,24 @@ export default function Navigation() {
                 role="menuitem"
                 aria-haspopup="true"
                 aria-expanded="false"
+                onClick={closeMobileMenu}
               >
                 Exhibitions
               </Link>
               <div className="redux-nav__dropdown" role="menu" aria-label="Exhibitions submenu">
-                <Link href="/exhibitions#cine-mode" className="redux-nav__dropdown-item" role="menuitem">CINE MODE</Link>
-                <Link href="/exhibitions#the-room" className="redux-nav__dropdown-item" role="menuitem">THE ROOM OF [ ]</Link>
+                <Link href="/exhibitions#cine-mode" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>CINE MODE</Link>
+                <Link href="/exhibitions#the-room" className="redux-nav__dropdown-item" role="menuitem" onClick={closeMobileMenu}>THE ROOM OF [ ]</Link>
               </div>
             </li>
 
             {/* Contact Menu */}
             <li className="redux-nav__item" role="none">
-              <Link href="/contact" className="redux-nav__link" role="menuitem">Contact</Link>
+              <Link href="/contact" className="redux-nav__link" role="menuitem" onClick={closeMobileMenu}>Contact</Link>
             </li>
 
             {/* Admin Menu */}
             <li className="redux-nav__item" role="none">
-              <Link href="/admin" className="redux-nav__link" role="menuitem">Admin</Link>
+              <Link href="/admin" className="redux-nav__link" role="menuitem" onClick={closeMobileMenu}>Admin</Link>
             </li>
           </ul>
 

@@ -7,14 +7,22 @@ import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import HydrationSafe, { useIsClient } from '@/components/ui/HydrationSafe';
-import SubPageNavigation from '@/components/layout/SubPageNavigation';
+// import SubPageNavigation from '@/components/layout/SubPageNavigation'; // 제거됨 - layout.tsx에서 Navigation 렌더링
 
 // 최적화된 Fashion Film 페이지
 export default function FashionFilmPage() {
   return (
     <HydrationSafe 
       fallback={
-        <div className="min-h-screen bg-black"></div>
+        <>
+          {/* <SubPageNavigation pageTitle="Fashion Film" /> */} {/* 제거됨 - layout.tsx에서 Navigation 렌더링 */}
+          <div className="min-h-screen bg-black flex items-center justify-center">
+            <div className="text-center">
+              <h1 className="text-6xl font-thin tracking-[0.2em] text-white mb-4">Fashion Film</h1>
+              <p className="text-gray-400">Loading...</p>
+            </div>
+          </div>
+        </>
       }
     >
       <FashionFilmContent />
@@ -193,8 +201,8 @@ function FashionFilmContent() {
   return (
     <>
 
-      {/* Navigation - About 서브페이지용 */}
-      <SubPageNavigation pageTitle="Fashion Film" />
+      {/* Navigation - About 서브페이지용 - 제거됨: layout.tsx에서 렌더링됨 */}
+      {/* <SubPageNavigation pageTitle="Fashion Film" /> */}
 
       {/* Hero Section */}
       <section className="hero-section h-screen relative flex items-center justify-center bg-black overflow-hidden pt-[100px]">

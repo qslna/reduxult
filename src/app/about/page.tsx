@@ -155,7 +155,7 @@ function AboutContent() {
               </h2>
               <div className="space-y-6 text-white/80 text-lg leading-relaxed">
                 <p>
-                  REDUX는 6인의 패션 디자이너가 모여 만든 크리에이티브 콜렉티브입니다. 
+                  REDUX는 5인의 패션 디자이너가 모여 만든 크리에이티브 콜렉티브입니다. 
                   우리는 패션을 넘어 다양한 예술적 매체를 통해 새로운 경험을 창조합니다.
                 </p>
                 <p>

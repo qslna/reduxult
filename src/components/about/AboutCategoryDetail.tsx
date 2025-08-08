@@ -30,8 +30,8 @@ const categoryContent: Record<string, {
       {
         title: 'Our Collective Vision',
         titleKo: '우리의 비전',
-        content: 'REDUX is a creative collective formed by six fashion designers. We maintain our individual perspectives and styles while collaborating under a unified vision.',
-        contentKo: 'REDUX는 6인의 패션 디자이너가 모여 만든 창작 집단입니다. 우리는 각자의 고유한 시각과 스타일을 유지하면서도, 하나의 통합된 비전 아래 협업합니다.'
+        content: 'REDUX is a creative collective formed by five fashion designers. We maintain our individual perspectives and styles while collaborating under a unified vision.',
+        contentKo: 'REDUX는 5인의 패션 디자이너가 모여 만든 창작 집단입니다. 우리는 각자의 고유한 시각과 스타일을 유지하면서도, 하나의 통합된 비전 아래 협업합니다.'
       },
       {
         title: 'Beyond Fashion',

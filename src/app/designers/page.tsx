@@ -136,7 +136,7 @@ export default function DesignersPage() {
   const router = useRouter();
   
   // Dynamic content loading
-  const { text: heroTitle } = useTextContent('designers', 'hero-title', 'SIX DESIGNERS');
+  const { text: heroTitle } = useTextContent('designers', 'hero-title', 'FIVE DESIGNERS');
   const { text: heroSubtitle } = useTextContent('designers', 'hero-subtitle', 'One Collective Vision');
   
   // CMS 인증

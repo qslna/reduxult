@@ -6,7 +6,7 @@ import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import DirectCMS from '@/components/cms/DirectCMS';
-import SubPageNavigation from '@/components/layout/SubPageNavigation';
+// import SubPageNavigation from '@/components/layout/SubPageNavigation'; // 제거됨 - layout.tsx에서 Navigation 렌더링
 
 // HTML redux6 about-installation.html과 완전 동일한 Process 페이지 구현
 export default function InstallationPage() {
@@ -190,8 +190,8 @@ export default function InstallationPage() {
 
   return (
     <>
-      {/* Navigation - About 서브페이지용 통일된 네비게이션 */}
-      <SubPageNavigation pageTitle="Process" />
+      {/* Navigation - About 서브페이지용 통일된 네비게이션 - 제거됨: layout.tsx에서 렌더링됨 */}
+      {/* <SubPageNavigation pageTitle="Process" /> */}
 
       {/* Hero Section - HTML 버전과 완전 동일한 3D 효과 */}
       <section className="hero-section h-screen relative overflow-hidden bg-[linear-gradient(45deg,#1a1a1a_0%,#2a2a2a_50%,#1a1a1a_100%)] pt-[100px]">

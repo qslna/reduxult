@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 // 기본 SEO 설정
 export const DEFAULT_SEO = {
   title: 'REDUX - Fashion Creative Collective',
-  description: 'REDUX는 6인의 패션 디자이너로 구성된 창작 집단입니다. 패션 필름, 비주얼 아트, 설치 작품을 통해 새로운 패션의 가능성을 탐구합니다.',
+  description: 'REDUX는 5인의 패션 디자이너로 구성된 창작 집단입니다. 패션 필름, 비주얼 아트, 설치 작품을 통해 새로운 패션의 가능성을 탐구합니다.',
   keywords: ['패션', '디자인', '크리에이티브', '패션필름', '비주얼아트', '설치작품', 'fashion', 'design', 'creative', 'collective'],
   author: 'REDUX Creative Collective',
   language: 'ko',
@@ -28,7 +28,7 @@ export const DEFAULT_SEO = {
 export const PAGE_SEO_CONFIG = {
   home: {
     title: 'REDUX - 패션 크리에이티브 컬렉티브',
-    description: 'REDUX는 6인의 패션 디자이너로 구성된 창작 집단입니다. 혁신적인 패션 디자인과 창작 활동을 통해 새로운 예술적 가능성을 탐구합니다.',
+    description: 'REDUX는 5인의 패션 디자이너로 구성된 창작 집단입니다. 혁신적인 패션 디자인과 창작 활동을 통해 새로운 예술적 가능성을 탐구합니다.',
     keywords: ['REDUX', '패션 컬렉티브', '패션 디자인', '크리에이티브', '한국 패션'],
     canonical: '/',
     ogImage: '/images/og/home.jpg',
@@ -60,14 +60,14 @@ export const PAGE_SEO_CONFIG = {
 
   designers: {
     title: 'Designers - REDUX 디자이너들',
-    description: '6인의 독창적인 패션 디자이너들을 만나보세요. 각자의 고유한 스타일과 창작 철학을 바탕으로 혁신적인 패션 작품을 선보입니다.',
+    description: '5인의 독창적인 패션 디자이너들을 만나보세요. 각자의 고유한 스타일과 창작 철학을 바탕으로 혁신적인 패션 작품을 선보입니다.',
     keywords: ['패션 디자이너', 'REDUX 멤버', '한국 패션 디자이너', '크리에이티브 디자이너'],
     canonical: '/designers',
     ogImage: '/images/og/designers.jpg',
     structuredData: {
       '@type': 'CollectionPage',
       name: 'REDUX Designers',
-      description: '6인의 패션 디자이너로 구성된 창작 집단'
+      description: '5인의 패션 디자이너로 구성된 창작 집단'
     }
   },
 

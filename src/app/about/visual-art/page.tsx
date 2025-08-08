@@ -6,7 +6,7 @@ import { useCMSSlot } from '@/hooks/useCMSSlot';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
-import SubPageNavigation from '@/components/layout/SubPageNavigation';
+// import SubPageNavigation from '@/components/layout/SubPageNavigation'; // 제거됨 - layout.tsx에서 Navigation 렌더링
 
 // HTML redux6 about-visual-art.html과 완전 동일한 Visual Art 페이지 구현
 export default function VisualArtPage() {
@@ -77,15 +77,25 @@ export default function VisualArtPage() {
   }, [isClient]);
 
 
-  // 서버 사이드 렌더링 중에는 null 반환 - 로딩 화면 없이
+  // 서버 사이드 렌더링 중에는 기본 레이아웃 표시
   if (!isClient) {
-    return null;
+    return (
+      <>
+        {/* <SubPageNavigation pageTitle="Visual Art" /> */} {/* 제거됨 - layout.tsx에서 Navigation 렌더링 */}
+        <div className="min-h-screen bg-[--gray-light] flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-6xl font-thin tracking-[0.2em] text-black mb-4">Visual Art</h1>
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </div>
+      </>
+    );
   }
 
   return (
     <>
-      {/* Navigation - About 서브페이지용 통일된 네비게이션 */}
-      <SubPageNavigation pageTitle="Visual Art" />
+      {/* Navigation - About 서브페이지용 통일된 네비게이션 - 제거됨: layout.tsx에서 렌더링됨 */}
+      {/* <SubPageNavigation pageTitle="Visual Art" /> */}
 
       {/* Hero Section - HTML 버전과 완전 동일 */}
       <section className="hero-section h-screen relative flex items-center justify-center bg-[--gray-light] overflow-hidden pt-[100px]">

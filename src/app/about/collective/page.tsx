@@ -6,7 +6,7 @@ import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import DirectCMS from '@/components/cms/DirectCMS';
-import SubPageNavigation from '@/components/layout/SubPageNavigation';
+// import SubPageNavigation from '@/components/layout/SubPageNavigation'; // 제거됨 - layout.tsx에서 Navigation 렌더링
 
 // HTML redux6 about-collective.html과 완전 동일한 Collective 페이지 구현
 export default function CollectivePage() {
@@ -81,8 +81,8 @@ export default function CollectivePage() {
 
   return (
     <>
-      {/* Navigation - About 서브페이지용 통일된 네비게이션 */}
-      <SubPageNavigation pageTitle="Collective" />
+      {/* Navigation - About 서브페이지용 통일된 네비게이션 - 제거됨: layout.tsx에서 렌더링됨 */}
+      {/* <SubPageNavigation pageTitle="Collective" /> */}
 
       {/* Hero Section - HTML 버전과 완전 동일 */}
       <section className="hero-section h-screen relative flex items-center justify-center bg-black overflow-hidden pt-[100px]">
@@ -103,7 +103,7 @@ export default function CollectivePage() {
             REDUX
           </h1>
           <p className="hero-subtitle text-lg tracking-[4px] opacity-0 animate-[heroFade_1.5s_ease_forwards] [animation-delay:0.3s]">
-            SIX MINDS, ONE VISION
+            FIVE MINDS, ONE VISION
           </p>
         </div>
       </section>
