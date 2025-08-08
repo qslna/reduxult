@@ -6,6 +6,7 @@ import { useCMSSlot } from '@/hooks/useCMSSlot';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import SubPageNavigation from '@/components/layout/SubPageNavigation';
 
 // HTML redux6 about-visual-art.html과 완전 동일한 Visual Art 페이지 구현
 export default function VisualArtPage() {
@@ -26,7 +27,7 @@ export default function VisualArtPage() {
     { title: 'FORM & VOID', description: '형태와 공간의 관계', gridClass: 'col-span-4' },
     { title: 'DIGITAL DREAMS', description: '디지털 매체의 가능성', gridClass: 'col-span-6' },
     { title: 'ANALOG MEMORIES', description: '아날로그의 따뜻함', gridClass: 'col-span-6' },
-    { title: 'COLLECTIVE VISION', description: '6인 6색의 시각적 하모니', gridClass: 'col-span-12' }
+    { title: 'COLLECTIVE VISION', description: '5인 5색의 시각적 하모니', gridClass: 'col-span-12' }
   ];
 
   // Ensure client-side rendering
@@ -75,14 +76,6 @@ export default function VisualArtPage() {
     };
   }, [isClient]);
 
-  // HTML 버전과 동일한 내비게이션 함수들
-  const goBack = () => {
-    router.back();
-  };
-
-  const goHome = () => {
-    router.push('/');
-  };
 
   // 서버 사이드 렌더링 중에는 null 반환 - 로딩 화면 없이
   if (!isClient) {
@@ -91,28 +84,8 @@ export default function VisualArtPage() {
 
   return (
     <>
-      {/* Navigation - HTML 버전과 동일 */}
-      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-white/95 backdrop-blur-[10px] z-[1000] transition-all duration-300 ease-in-out border-b border-black/10 scrolled:py-[15px] scrolled:px-10 scrolled:shadow-[0_2px_20px_rgba(0,0,0,0.1)]">
-        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
-          <div className="nav-left flex items-center gap-10">
-            <span 
-              className="back-button text-xl cursor-pointer transition-all duration-300 ease-in-out text-black hover:transform hover:-translate-x-[5px]"
-              onClick={goBack}
-            >
-              ←
-            </span>
-            <span className="page-title text-lg font-medium tracking-[2px] text-black max-[768px]:hidden">
-              VISUAL ART
-            </span>
-          </div>
-          <div 
-            className="logo text-2xl font-bold tracking-[2px] cursor-pointer transition-opacity duration-300 ease-in-out text-black hover:opacity-70"
-            onClick={goHome}
-          >
-            REDUX
-          </div>
-        </div>
-      </nav>
+      {/* Navigation - About 서브페이지용 통일된 네비게이션 */}
+      <SubPageNavigation pageTitle="Visual Art" />
 
       {/* Hero Section - HTML 버전과 완전 동일 */}
       <section className="hero-section h-screen relative flex items-center justify-center bg-[--gray-light] overflow-hidden pt-[100px]">

@@ -1661,3 +1661,154 @@ footer {
     page-break-inside: avoid;
   }
 }
+
+/* === 2025 Enhanced UX: Cursor & Hover Improvements === */
+
+/* Better cursor states for all interactive elements */
+a, button, [role="button"], .clickable, .cursor-pointer {
+  cursor: pointer !important;
+}
+
+input, textarea, [contenteditable] {
+  cursor: text !important;
+}
+
+/* Enhanced hover states with smooth transitions */
+a:hover, button:hover, [role="button"]:hover, 
+.clickable:hover, .cursor-pointer:hover {
+  transform: translateY(-1px);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Button hover enhancements */
+button:not(:disabled):hover, 
+.btn:not(:disabled):hover,
+[role="button"]:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Link hover enhancements */
+a:hover {
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+/* Image hover improvements */
+img:hover, .image-container:hover img {
+  transform: scale(1.02);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Card/Gallery item hover improvements */
+.card:hover, .gallery-item:hover, .portfolio-item:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Navigation hover states */
+nav a:hover, .nav-link:hover {
+  color: var(--accent-mocha) !important;
+  transform: translateY(-1px);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Form element focus states */
+input:focus, textarea:focus, select:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(183, 175, 163, 0.3);
+  outline: 2px solid var(--accent-mocha);
+  outline-offset: 2px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Custom cursor for drag areas */
+.draggable, .sortable-item {
+  cursor: grab !important;
+}
+
+.draggable:active, .sortable-item:active {
+  cursor: grabbing !important;
+}
+
+/* Loading states */
+.loading, .is-loading {
+  cursor: wait !important;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Disabled states */
+[disabled], .disabled {
+  cursor: not-allowed !important;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Text selection improvements */
+::selection {
+  background: var(--accent-mocha);
+  color: var(--primary-black);
+}
+
+::-moz-selection {
+  background: var(--accent-mocha);
+  color: var(--primary-black);
+}
+
+/* Focus improvements for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--accent-mocha);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better touch interactions on mobile */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  *:hover {
+    transform: none !important;
+  }
+  
+  /* Better tap targets */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Touch feedback */
+  button:active, a:active, [role="button"]:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  button, a, [role="button"] {
+    border: 2px solid currentColor;
+  }
+  
+  *:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *:hover, *:focus, *:active {
+    transform: none !important;
+    transition: none !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}

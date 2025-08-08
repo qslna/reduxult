@@ -6,6 +6,7 @@ import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import DirectCMS from '@/components/cms/DirectCMS';
+import SubPageNavigation from '@/components/layout/SubPageNavigation';
 
 // HTML redux6 about-collective.html과 완전 동일한 Collective 페이지 구현
 export default function CollectivePage() {
@@ -68,14 +69,6 @@ export default function CollectivePage() {
     };
   }, [isClient]);
 
-  // HTML 버전과 동일한 내비게이션 함수들
-  const goBack = () => {
-    router.back();
-  };
-
-  const goHome = () => {
-    router.push('/');
-  };
 
   const openDesignerPage = (designer: string) => {
     router.push(`/designers/${designer}`);
@@ -88,28 +81,8 @@ export default function CollectivePage() {
 
   return (
     <>
-      {/* Navigation - HTML 버전과 동일 */}
-      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-white/95 backdrop-blur-[10px] z-[1000] transition-all duration-300 ease-in-out border-b border-black/10 scrolled:py-[15px] scrolled:px-10 scrolled:shadow-[0_2px_20px_rgba(0,0,0,0.1)]">
-        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
-          <div className="nav-left flex items-center gap-10">
-            <span 
-              className="back-button text-xl cursor-pointer transition-all duration-300 ease-in-out text-black hover:transform hover:-translate-x-[5px]"
-              onClick={goBack}
-            >
-              ←
-            </span>
-            <span className="page-title text-lg font-medium tracking-[2px] text-black max-[768px]:hidden">
-              COLLECTIVE
-            </span>
-          </div>
-          <div 
-            className="logo text-2xl font-bold tracking-[2px] cursor-pointer transition-opacity duration-300 ease-in-out text-black hover:opacity-70"
-            onClick={goHome}
-          >
-            REDUX
-          </div>
-        </div>
-      </nav>
+      {/* Navigation - About 서브페이지용 통일된 네비게이션 */}
+      <SubPageNavigation pageTitle="Collective" />
 
       {/* Hero Section - HTML 버전과 완전 동일 */}
       <section className="hero-section h-screen relative flex items-center justify-center bg-black overflow-hidden pt-[100px]">
@@ -142,7 +115,7 @@ export default function CollectivePage() {
             WHO WE ARE
           </h2>
           <p className="philosophy-text text-2xl font-light leading-[2] text-gray-600 mb-10">
-            REDUX는 <span className="text-black font-normal">6인의 패션 디자이너</span>가 모여서 만든 예술 크루입니다.
+            REDUX는 <span className="text-black font-normal">5인의 패션 디자이너</span>가 모여서 만든 예술 크루입니다.
           </p>
           <p className="philosophy-text text-2xl font-light leading-[2] text-gray-600 mb-10">
             우리는 패션필름, 설치, 비주얼 작업 등 다양한 방식으로<br />

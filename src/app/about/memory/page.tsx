@@ -6,6 +6,7 @@ import { useGalleryCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import DirectCMS from '@/components/cms/DirectCMS';
 import OptimizedImage from '@/components/ui/OptimizedImage';
+import SubPageNavigation from '@/components/layout/SubPageNavigation';
 
 // HTML redux6 about-memory.html과 완전 동일한 Memory 페이지 구현
 export default function MemoryPage() {
@@ -118,14 +119,6 @@ export default function MemoryPage() {
     };
   }, [isClient, galleryImages]);
 
-  // HTML 버전과 동일한 내비게이션 함수들
-  const goBack = () => {
-    router.back();
-  };
-
-  const goHome = () => {
-    router.push('/');
-  };
 
   // 라이트박스 함수들 - 클라이언트 체크 포함
   const openLightbox = (index: number) => {
@@ -174,31 +167,8 @@ export default function MemoryPage() {
 
   return (
     <>
-      {/* Navigation - HTML 버전과 완전 동일한 다크 테마 */}
-      <nav 
-        id="navbar"
-        className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] border-b border-[--accent-mocha]/10"
-      >
-        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
-          <div className="nav-left flex items-center gap-10">
-            <span 
-              className="back-button font-['Inter'] text-xl cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:transform hover:-translate-x-[5px] hover:text-[--accent-mocha]"
-              onClick={goBack}
-            >
-              ←
-            </span>
-            <span className="page-title font-['Inter'] text-lg font-light tracking-[0.2em] text-[--accent-mocha] uppercase max-[768px]:hidden">
-              Memory
-            </span>
-          </div>
-          <div 
-            className="logo font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:opacity-70 hover:transform hover:scale-[1.02]"
-            onClick={goHome}
-          >
-            REDUX
-          </div>
-        </div>
-      </nav>
+      {/* Navigation - About 서브페이지용 통일된 네비게이션 */}
+      <SubPageNavigation pageTitle="Memory" />
 
       {/* Professional Gallery - HTML 버전과 완전 동일 */}
       <div className="gallery-container min-h-screen pt-[120px] pr-5 pb-[60px] pl-5 relative">

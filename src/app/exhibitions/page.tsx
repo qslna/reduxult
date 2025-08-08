@@ -27,7 +27,6 @@ export default function ExhibitionsPage() {
   const theroom2CMS = useSimpleCMS('exhibition-theroom-2', '/images/exhibitions/theroom/qslna_minimalist_concrete_courtyard_high-key_daylight_overcas_85d5cd51-4cd3-40e8-9111-12e1bf3c2bdd_0.png');
   const theroom3CMS = useSimpleCMS('exhibition-theroom-3', '/images/exhibitions/theroom/qslna_split-frame_triptych_left_strip--front_close-crop_of_ma_25f1d65c-d800-4e74-9a72-5919d703eeb2_1.png');
   
-  const goBack = () => router.push('/');
 
   const openLightbox = (imageSrc: string, imageAlt: string) => {
     setCurrentImage(imageSrc);
@@ -60,25 +59,91 @@ export default function ExhibitionsPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] border-b border-white/10">
-        <div className="flex justify-between items-center max-w-[1600px] mx-auto">
-          <div className="flex items-center gap-10">
-            <span 
-              className="text-xl cursor-pointer transition-all duration-[400ms] text-white hover:transform hover:-translate-x-[5px] hover:text-amber-300"
-              onClick={goBack}
+      {/* Enhanced Navigation with better UX */}
+      <nav className="fixed top-0 left-0 w-full py-4 px-6 bg-black/95 backdrop-blur-md z-[1000] border-b border-white/10">
+        <div className="flex justify-between items-center max-w-7xl mx-auto">
+          {/* Left navigation */}
+          <div className="flex items-center space-x-6">
+            {/* Back button with better UX */}
+            <button
+              onClick={() => router.push('/')}
+              className="flex items-center text-white hover:text-amber-300 transition-all duration-300 cursor-pointer group"
+              aria-label="홈으로 가기"
             >
-              ←
-            </span>
-            <span className="text-lg font-light tracking-[0.2em] text-amber-300 uppercase max-[768px]:hidden">
-              EXHIBITIONS
-            </span>
+              <svg className="w-6 h-6 group-hover:-translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            {/* Breadcrumb navigation */}
+            <div className="flex items-center space-x-2 text-sm">
+              <button
+                onClick={() => router.push('/')}
+                className="text-white/70 hover:text-white transition-colors tracking-wider uppercase font-medium"
+              >
+                Home
+              </button>
+              <span className="text-white/30">/</span>
+              <span className="text-amber-300 tracking-wider uppercase">Exhibitions</span>
+            </div>
+            
+            {/* Quick navigation links */}
+            <div className="hidden md:flex items-center space-x-4 ml-8">
+              <button
+                onClick={() => router.push('/about')}
+                className="text-white/70 hover:text-amber-300 transition-colors text-sm tracking-wider uppercase"
+              >
+                About
+              </button>
+              <button
+                onClick={() => router.push('/designers')}
+                className="text-white/70 hover:text-amber-300 transition-colors text-sm tracking-wider uppercase"
+              >
+                Designers
+              </button>
+              <button
+                onClick={() => router.push('/contact')}
+                className="text-white/70 hover:text-amber-300 transition-colors text-sm tracking-wider uppercase"
+              >
+                Contact
+              </button>
+            </div>
           </div>
-          <div 
-            className="font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] text-white hover:opacity-70 hover:transform hover:scale-[1.02]"
-            onClick={goBack}
+
+          {/* Right - Logo */}
+          <button
+            onClick={() => router.push('/')}
+            className="text-2xl font-bold text-white hover:text-amber-300 transition-all duration-300 font-['Playfair_Display'] tracking-wider hover:scale-105"
           >
             REDUX
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className="md:hidden flex items-center justify-between mt-2 pt-2 border-t border-white/10">
+          <button
+            onClick={() => router.push('/')}
+            className="flex items-center space-x-2 text-white hover:text-amber-300 transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            <span className="text-sm">Exhibitions</span>
+          </button>
+          
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => router.push('/about')}
+              className="text-white/70 hover:text-amber-300 transition-colors text-xs uppercase"
+            >
+              About
+            </button>
+            <button
+              onClick={() => router.push('/designers')}
+              className="text-white/70 hover:text-amber-300 transition-colors text-xs uppercase"
+            >
+              Designers
+            </button>
           </div>
         </div>
       </nav>

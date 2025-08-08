@@ -6,6 +6,7 @@ import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import DirectCMS from '@/components/cms/DirectCMS';
+import SubPageNavigation from '@/components/layout/SubPageNavigation';
 
 // HTML redux6 about-installation.html과 완전 동일한 Process 페이지 구현
 export default function InstallationPage() {
@@ -99,14 +100,6 @@ export default function InstallationPage() {
     };
   }, [isClient]);
 
-  // HTML 버전과 동일한 내비게이션 함수들
-  const goBack = () => {
-    router.back();
-  };
-
-  const goHome = () => {
-    router.push('/');
-  };
 
   const nextSlide = () => {
     setCurrentSlide(prev => (prev + 1) % 3);
@@ -197,31 +190,8 @@ export default function InstallationPage() {
 
   return (
     <>
-      {/* Navigation - HTML 버전과 동일한 mix-blend-mode 효과 */}
-      <nav 
-        id="navbar"
-        className="fixed top-0 left-0 w-full py-5 px-10 bg-transparent z-[1000] transition-all duration-300 ease-in-out [mix-blend-mode:difference] scrolled:py-[15px] scrolled:px-10 scrolled:bg-black/95 scrolled:backdrop-blur-[10px] scrolled:[mix-blend-mode:normal]"
-      >
-        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
-          <div className="nav-left flex items-center gap-10">
-            <span 
-              className="back-button text-xl cursor-pointer transition-all duration-300 ease-in-out text-white hover:transform hover:-translate-x-[5px]"
-              onClick={goBack}
-            >
-              ←
-            </span>
-            <span className="page-title text-lg font-medium tracking-[2px] text-white max-[768px]:hidden">
-              PROCESS
-            </span>
-          </div>
-          <div 
-            className="logo text-2xl font-bold tracking-[2px] cursor-pointer transition-opacity duration-300 ease-in-out text-white hover:opacity-70"
-            onClick={goHome}
-          >
-            REDUX
-          </div>
-        </div>
-      </nav>
+      {/* Navigation - About 서브페이지용 통일된 네비게이션 */}
+      <SubPageNavigation pageTitle="Process" />
 
       {/* Hero Section - HTML 버전과 완전 동일한 3D 효과 */}
       <section className="hero-section h-screen relative overflow-hidden bg-[linear-gradient(45deg,#1a1a1a_0%,#2a2a2a_50%,#1a1a1a_100%)] pt-[100px]">

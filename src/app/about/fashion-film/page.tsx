@@ -7,6 +7,7 @@ import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import HydrationSafe, { useIsClient } from '@/components/ui/HydrationSafe';
+import SubPageNavigation from '@/components/layout/SubPageNavigation';
 
 // 최적화된 Fashion Film 페이지
 export default function FashionFilmPage() {
@@ -136,13 +137,6 @@ function FashionFilmContent() {
     };
   }, [isClient, isModalOpen]);
 
-  const goBack = () => {
-    router.push('/about');
-  };
-
-  const goHome = () => {
-    router.push('/');
-  };
 
   const formatGoogleDriveUrl = (cmsUrl: string | undefined, defaultId: string) => {
     const fileId = cmsUrl || defaultId;
@@ -198,34 +192,9 @@ function FashionFilmContent() {
 
   return (
     <>
-      {/* Navigation */}
-      <nav 
-        id="navbar"
-        className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[10px] z-[1000] transition-all duration-300 ease-in-out border-b border-white/10"
-        style={{
-          transition: 'all 0.3s ease-in-out'
-        }}
-      >
-        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
-          <div className="nav-left flex items-center gap-10">
-            <span 
-              className="back-button text-xl cursor-pointer transition-all duration-300 ease-in-out text-white hover:transform hover:-translate-x-[5px] hover:text-amber-300"
-              onClick={goBack}
-            >
-              ←
-            </span>
-            <span className="page-title text-lg font-medium tracking-[2px] text-amber-300 uppercase max-[768px]:hidden">
-              FASHION FILM
-            </span>
-          </div>
-          <div 
-            className="logo font-['Playfair_Display'] text-2xl font-bold tracking-[2px] cursor-pointer transition-opacity duration-300 ease-in-out text-white hover:opacity-70"
-            onClick={goHome}
-          >
-            REDUX
-          </div>
-        </div>
-      </nav>
+
+      {/* Navigation - About 서브페이지용 */}
+      <SubPageNavigation pageTitle="Fashion Film" />
 
       {/* Hero Section */}
       <section className="hero-section h-screen relative flex items-center justify-center bg-black overflow-hidden pt-[100px]">
@@ -264,10 +233,10 @@ function FashionFilmContent() {
       <section className="films-section py-[120px] px-10 bg-black">
         <div className="section-intro max-w-[800px] mx-auto mb-[120px] text-center">
           <h2 className="text-4xl font-['Playfair_Display'] font-light tracking-[3px] text-white mb-[30px]">
-            6인 6색의 시각적 서사
+            5인 5색의 시각적 서사
           </h2>
           <p className="text-base leading-[2] text-white/70">
-            REDUX의 각 디자이너가 자신만의 시선으로 풀어낸 패션 필름 컬렉션입니다.<br />
+            REDUX의 5명 디자이너가 각자의 시선으로 풀어낸 패션 필름 컬렉션입니다.<br />
             의상을 넘어선 이야기, 움직임을 통해 전달되는 감정을 경험해보세요.
           </p>
         </div>
@@ -279,7 +248,7 @@ function FashionFilmContent() {
             return (
               <div 
                 key={film.id}
-                className="film-item relative overflow-hidden cursor-pointer group opacity-0 transform translate-y-[50px]"
+                className="film-item relative overflow-hidden cursor-pointer group opacity-0 transform translate-y-[50px] hover:scale-[1.02] transition-all duration-500 ease-out"
                 style={{ 
                   aspectRatio: '16/10',
                   animation: `revealItem 0.8s ease forwards`,
