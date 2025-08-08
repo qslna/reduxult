@@ -345,8 +345,8 @@ export const splitPoints = {
 
   // 라이브러리별 분할
   libraries: {
-    gsap: () => import('gsap'),
-    framerMotion: () => import('framer-motion')
+    framerMotion: () => import('framer-motion'),
+    animations: () => import('@/lib/animations')
   }
 };
 

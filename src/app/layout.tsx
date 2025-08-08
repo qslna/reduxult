@@ -5,7 +5,6 @@ import './globals.css';
 import '../styles/mobile-optimization.css';
 import { baseMetadata, generateOrganizationStructuredData, generateWebsiteStructuredData } from '@/lib/seo';
 import { DEFAULT_SEO, seoPerformanceOptimization } from '@/lib/seo-optimization';
-import { initializePerformanceOptimization } from '@/lib/performance';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -28,7 +27,9 @@ import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import PageTransition from '@/components/ui/PageTransition';
 import InitialLoadingScreen from '@/components/ui/InitialLoadingScreen';
-import ErrorBoundary from '@/components/ui/ErrorBoundary';
+import GlobalErrorBoundary from '@/components/ui/GlobalErrorBoundary';
+import MobileAdminPanel from '@/components/admin/MobileAdminPanel';
+import SkipToContent from '@/components/ui/SkipToContent';
 
 export default function RootLayout({
   children,
@@ -136,16 +137,18 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased bg-black text-white overflow-x-hidden">
+        <SkipToContent />
         <InitialLoadingScreen />
-        <ErrorBoundary>
+        <GlobalErrorBoundary>
           <Navigation />
-          <main>
+          <main id="main-content" tabIndex={-1}>
             <PageTransition>
               {children}
             </PageTransition>
           </main>
           <Footer />
-        </ErrorBoundary>
+          <MobileAdminPanel />
+        </GlobalErrorBoundary>
         
         {/* 전역 에러 처리 시스템 */}
         <Script
@@ -210,19 +213,120 @@ export default function RootLayout({
           }}
         />
 
-        {/* 성능 최적화 초기화 */}
+        {/* 성능 및 호환성 최적화 초기화 */}
         <Script
           id="performance-optimization"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              // 성능 최적화 초기화
+              // 기본 성능 최적화 및 호환성 테스트
               (function() {
-                const initPerf = ${initializePerformanceOptimization.toString()};
-                if (document.readyState === 'loading') {
-                  document.addEventListener('DOMContentLoaded', initPerf);
-                } else {
-                  initPerf();
+                if (typeof window !== 'undefined') {
+                  // 폰트 로딩 최적화
+                  document.fonts.ready.then(() => {
+                    document.body.classList.add('fonts-loaded');
+                  });
+                  
+                  // 브라우저 호환성 체크
+                  const checkCompatibility = () => {
+                    const warnings = [];
+                    
+                    // 필수 기능 지원 확인
+                    if (!window.IntersectionObserver) {
+                      warnings.push('IntersectionObserver not supported - image lazy loading may be limited');
+                    }
+                    if (!window.fetch) {
+                      warnings.push('Fetch API not supported - network requests may be limited');
+                    }
+                    if (!CSS.supports || !CSS.supports('display', 'grid')) {
+                      warnings.push('CSS Grid not supported - layout may be affected');
+                    }
+                    
+                    // 오래된 브라우저 감지
+                    const ua = navigator.userAgent.toLowerCase();
+                    if (ua.indexOf('msie') !== -1 || ua.indexOf('trident') !== -1) {
+                      warnings.push('Internet Explorer is not supported - please upgrade to a modern browser');
+                    }
+                    
+                    if (warnings.length > 0) {
+                      console.group('⚠️ Browser Compatibility Warnings');
+                      warnings.forEach(warning => console.warn(warning));
+                      console.groupEnd();
+                    }
+                  };
+                  
+                  // 모바일 최적화
+                  const optimizeForMobile = () => {
+                    const isMobile = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent);
+                    const isTablet = /ipad|android(?!.*mobile)|tablet/i.test(navigator.userAgent);
+                    
+                    if (isMobile || isTablet) {
+                      // 뷰포트 높이 수정 (iOS Safari)
+                      const setViewportHeight = () => {
+                        const vh = window.innerHeight * 0.01;
+                        document.documentElement.style.setProperty('--vh', vh + 'px');
+                      };
+                      
+                      setViewportHeight();
+                      window.addEventListener('resize', setViewportHeight);
+                      window.addEventListener('orientationchange', () => {
+                        setTimeout(setViewportHeight, 100);
+                      });
+                      
+                      // 터치 스크롤 최적화
+                      document.body.style.webkitOverflowScrolling = 'touch';
+                      
+                      // 300ms 클릭 지연 제거
+                      document.addEventListener('touchstart', () => {}, { passive: true });
+                      
+                      console.log('📱 Mobile optimizations applied');
+                    }
+                  };
+                  
+                  // 이미지 지연 로딩
+                  if ('IntersectionObserver' in window) {
+                    const imageObserver = new IntersectionObserver((entries) => {
+                      entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                          const img = entry.target;
+                          const dataSrc = img.getAttribute('data-src');
+                          if (dataSrc) {
+                            img.src = dataSrc;
+                            img.classList.add('loaded');
+                            imageObserver.unobserve(img);
+                          }
+                        }
+                      });
+                    }, { rootMargin: '50px' });
+                    
+                    // 기존 이미지와 새로 추가되는 이미지 모두 관찰
+                    const observeImages = () => {
+                      document.querySelectorAll('img[data-src]:not(.observed)').forEach(img => {
+                        img.classList.add('observed');
+                        imageObserver.observe(img);
+                      });
+                    };
+                    
+                    observeImages();
+                    
+                    // DOM 변경 감지하여 새 이미지 관찰
+                    if ('MutationObserver' in window) {
+                      const mutationObserver = new MutationObserver(() => {
+                        observeImages();
+                      });
+                      
+                      mutationObserver.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                      });
+                    }
+                  }
+                  
+                  // 초기화 실행
+                  checkCompatibility();
+                  optimizeForMobile();
+                  
+                  console.log('🚀 Performance and compatibility optimizations loaded');
                 }
               })();
             `,

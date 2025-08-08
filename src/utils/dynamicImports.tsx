@@ -13,9 +13,9 @@ export const loadLucideIcons = () => {
   return import('lucide-react');
 };
 
-// GSAP 동적 import (미래 사용을 위한 준비)
-export const loadGSAP = () => {
-  return import('gsap');
+// Animation utilities 동적 import
+export const loadAnimations = () => {
+  return import('@/lib/animations');
 };
 
 // 특정 Framer Motion 컴포넌트들

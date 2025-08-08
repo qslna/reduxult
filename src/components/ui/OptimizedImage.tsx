@@ -18,6 +18,11 @@ interface OptimizedImageProps {
   onClick?: () => void;
   onLoad?: () => void;
   onError?: () => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
+  tabIndex?: number;
+  role?: string;
+  'aria-label'?: string;
+  'aria-describedby'?: string;
 }
 
 /**
@@ -39,7 +44,12 @@ export default function OptimizedImage({
   style,
   onClick,
   onLoad,
-  onError
+  onError,
+  onKeyDown,
+  tabIndex,
+  role,
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedby
 }: OptimizedImageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -79,6 +89,11 @@ export default function OptimizedImage({
     onClick,
     onLoad: handleLoad,
     onError: handleError,
+    onKeyDown,
+    tabIndex,
+    role,
+    'aria-label': ariaLabel,
+    'aria-describedby': ariaDescribedby,
     sizes: sizes || defaultSizes,
     ...(fill ? { fill: true } : { width, height })
   };

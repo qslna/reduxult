@@ -40,7 +40,6 @@ const nextConfig = {
     optimizePackageImports: [
       'framer-motion', 
       'lucide-react', 
-      'gsap', 
       '@radix-ui/react-dialog', 
       '@radix-ui/react-toast'
     ],

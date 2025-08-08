@@ -149,7 +149,7 @@ export default function ExhibitionsPage() {
       </nav>
 
       {/* Main Content */}
-      <div className="pt-[120px]">
+      <div className="pt-[120px] md:pt-[120px] pt-[100px]">
         {/* Hero Section */}
         <section className="relative h-[70vh] min-h-[500px] overflow-hidden flex items-center justify-center">
           <div className="text-center">
@@ -439,9 +439,65 @@ export default function ExhibitionsPage() {
 
       <style jsx>{`
         /* Enhanced Mobile Responsive adjustments */
+        @media (max-width: 1024px) {
+          .hero-section {
+            height: 60vh !important;
+            min-height: 400px !important;
+            padding: 0 20px !important;
+          }
+          
+          section.py-20 {
+            padding: 60px 20px !important;
+          }
+          
+          .grid {
+            gap: 10px !important;
+          }
+        }
+        
         @media (max-width: 768px) {
           nav {
             padding: 15px 20px !important;
+          }
+          
+          .hero-section {
+            height: 50vh !important;
+            min-height: 350px !important;
+            padding: 0 15px !important;
+          }
+          
+          .hero-section h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem) !important;
+            margin-bottom: 20px !important;
+          }
+          
+          .hero-section p {
+            font-size: 16px !important;
+            padding: 0 20px !important;
+          }
+          
+          section.py-20 {
+            padding: 40px 15px !important;
+          }
+          
+          section h2 {
+            font-size: clamp(2rem, 6vw, 3rem) !important;
+            margin-bottom: 20px !important;
+          }
+          
+          section .max-w-\\[600px\\] p {
+            font-size: 16px !important;
+            margin-bottom: 15px !important;
+          }
+          
+          .grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+          }
+          
+          button {
+            padding: 12px 24px !important;
+            font-size: 14px !important;
           }
           
           .page-title {

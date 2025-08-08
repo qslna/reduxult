@@ -36,7 +36,7 @@ function DesignerCard({ designer, index, isAuthenticated, onClick }: DesignerCar
 
   return (
     <div 
-      className="relative h-[65vh] min-h-[450px] max-h-[600px] overflow-hidden cursor-pointer bg-black transition-all duration-[600ms] ease-out hover:transform hover:scale-[1.002] hover:z-10"
+      className="designer-card relative h-[65vh] min-h-[450px] max-h-[600px] overflow-hidden cursor-pointer bg-black transition-all duration-[600ms] ease-out hover:transform hover:scale-[1.002] hover:z-10"
       onClick={onClick}
       style={{
         borderRight: (index + 1) % 3 !== 0 ? '1px solid rgba(255, 255, 255, 0.05)' : 'none',
@@ -207,7 +207,7 @@ export default function DesignersPage() {
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
       <section 
-        className="flex items-center justify-center relative overflow-hidden"
+        className="hero-section flex items-center justify-center relative overflow-hidden"
         style={{
           marginTop: '80px',
           height: '50vh',
@@ -224,7 +224,7 @@ export default function DesignersPage() {
           className="text-center z-10 text-white"
         >
           <h1 
-            className="font-['Playfair_Display'] font-light tracking-[0.2em] mb-5 opacity-0 transform translate-y-[30px]"
+            className="hero-title font-['Playfair_Display'] font-light tracking-[0.2em] mb-5 opacity-0 transform translate-y-[30px]"
             style={{
               fontSize: 'clamp(48px, 8vw, 80px)',
               animation: 'fadeInUp 1s ease forwards'
@@ -233,7 +233,7 @@ export default function DesignersPage() {
             {heroTitle}
           </h1>
           <p 
-            className="text-[18px] text-gray-400 tracking-[2px] opacity-0"
+            className="hero-subtitle text-[18px] text-gray-400 tracking-[2px] opacity-0"
             style={{
               animation: 'fadeInUp 1s ease forwards',
               animationDelay: '0.2s'
@@ -246,11 +246,11 @@ export default function DesignersPage() {
 
       {/* Designer Grid */}
       <section 
-        className="py-[120px] px-[40px]"
+        className="designers-container py-[120px] px-[40px]"
       >
         <div className="max-w-[1600px] mx-auto">
           <div 
-            className="grid grid-cols-3 gap-0 relative max-[1024px]:grid-cols-2 max-[768px]:grid-cols-1"
+            className="designers-grid grid grid-cols-3 gap-0 relative max-[1024px]:grid-cols-2 max-[768px]:grid-cols-1"
           >
             {designerDisplayData.map((designer, index) => {
               return (

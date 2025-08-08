@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { initGSAPAnimations, animations, isMobile } from '@/lib/gsap';
+// GSAP 제거됨 - 필요한 애니메이션은 Framer Motion으로 대체
 import { useTextContent } from '@/hooks/usePageContent';
 
 // HTML redux6 contact.html과 완전 동일한 Contact 페이지 구현
@@ -52,7 +52,7 @@ export default function ContactPage() {
     window.addEventListener('scroll', handleScroll);
 
     // 모바일 감지 및 iOS 폼 입력 줄 수정
-    const mobileDevice = isMobile();
+    const mobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     if (mobileDevice) {
       const inputs = document.querySelectorAll('input, textarea');
@@ -65,11 +65,7 @@ export default function ContactPage() {
       });
     }
 
-    // HTML 버전과 동일한 GSAP 애니메이션
-    initGSAPAnimations(() => {
-      animations.contactInfoAnimation('.contact-info-group', '.contact-info-section');
-      animations.contactFormAnimation('.contact-form-section');
-    });
+    // 애니메이션은 이제 Framer Motion으로 처리됨
     
     return () => {
       window.removeEventListener('scroll', handleScroll);

@@ -507,9 +507,4 @@ export default function MemoryPage() {
   );
 }
 
-// GSAP 타입 확장
-declare global {
-  interface Window {
-    gsap: any;
-  }
-}
+// Framer Motion 애니메이션으로 마이그레이션 완료
