@@ -42,7 +42,7 @@ Route (app)                              Size     First Load JS
 ### **2. All Pages Completely Rebuilt**
 - ✅ **Home Page** - Dynamic hero, optimized performance
 - ✅ **About Page** - 5 sub-categories with galleries
-- ✅ **Designers Page** - 6 designer profiles with dynamic routing
+- ✅ **Designers Page** - 5 designer profiles with dynamic routing
 - ✅ **Contact Page** - Modern form with validation
 - ✅ **Exhibitions Page** - CINE MODE + THE ROOM displays
 

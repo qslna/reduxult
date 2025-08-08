@@ -74,16 +74,6 @@ function FashionFilmContent() {
       defaultVideo: '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3'
     },
     {
-      id: 'hwangjinsu',
-      name: 'Hwang Jinsu',
-      title: 'WHO AM I ?!',
-      description: '자아에 대한 끝없는 물음',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-hwangjinsu-thumbnail'),
-      videoSlot: useCMSSlot('designer-hwangjinsu-film'),
-      defaultThumbnail: '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
-      defaultVideo: '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d'
-    },
-    {
       id: 'kimgyeongsu',
       name: 'Kim Gyeongsu',
       title: 'TO BE REVEALED',

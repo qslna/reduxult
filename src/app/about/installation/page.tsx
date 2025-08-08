@@ -251,7 +251,7 @@ export default function InstallationPage() {
             전시를 만드는 6가지 방법
           </h2>
           <p className="text-base leading-[2] text-[--gray-medium]">
-            REDUX는 6명의 디자이너가 각자의 역할을 맡아 하나의 전시를 만들어갑니다.
+            REDUX는 5명의 디자이너가 각자의 역할을 맡아 하나의 전시를 만들어갑니다.
             패션 디자이너로서 완벽하지 않지만, 우리만의 방식으로 새로운 경험을 디자인합니다.
           </p>
         </div>

@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import Lightbox from './Lightbox';
-import EditableImage from '@/components/admin/EditableImage';
+import LazyLightbox from './LazyLightbox';
+import LazyEditableImage from '@/components/admin/LazyEditableImage';
 
 interface ImageGalleryProps {
   images: string[];
@@ -62,7 +62,7 @@ export default function ImageGallery({
             }}
           >
             {editable ? (
-              <EditableImage
+              <LazyEditableImage
                 src={image}
                 alt={`Gallery image ${index + 1}`}
                 className="object-cover hover:scale-110 transition-transform duration-700"
@@ -98,7 +98,7 @@ export default function ImageGallery({
       </div>
 
       {/* Lightbox */}
-      <Lightbox
+      <LazyLightbox
         images={galleryImages}
         currentIndex={currentIndex}
         isOpen={lightboxOpen}

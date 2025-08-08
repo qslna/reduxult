@@ -173,7 +173,7 @@ function HeroSection() {
 
         <div className="hero-description max-w-2xl mx-auto mb-12">
           <p className="text-white/70 text-lg leading-relaxed">
-            6명의 패션 디자이너가 만들어가는 창작의 공간.<br />
+            5명의 패션 디자이너가 만들어가는 창작의 공간.<br />
             패션을 넘어 예술로, 개인을 넘어 집단으로.
           </p>
         </div>

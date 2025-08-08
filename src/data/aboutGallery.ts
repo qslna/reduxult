@@ -28,12 +28,6 @@ export const aboutGalleries: CategoryGallery[] = [
         description: 'Fashion film scene from Choi Eunsol collection'
       },
       {
-        src: '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
-        alt: 'Fashion Film - Hwang Jinsu Scene 1',
-        title: 'Hwang Jinsu - NOR Collection',
-        description: 'Cinematic moment from Hwang Jinsu fashion film'
-      },
-      {
         src: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
         alt: 'Fashion Film - Kim Bomin Scene 1',
         title: 'Kim Bomin - Visual Narrative',
@@ -46,12 +40,6 @@ export const aboutGalleries: CategoryGallery[] = [
         description: 'Dynamic fashion film by Lee Taehyeon'
       },
       {
-        src: '/images/designers/hwangjinsu/cinemode/📌NOR_7699.jpg',
-        alt: 'Fashion Film - Hwang Jinsu Scene 2',
-        title: 'Hwang Jinsu - Creative Vision',
-        description: 'Artistic fashion film by Hwang Jinsu'
-      },
-      {
         src: '/images/exhibitions/cinemode/1.jpg',
         alt: 'Fashion Film - Exhibition Scene',
         title: 'Exhibition Moments',
@@ -62,10 +50,6 @@ export const aboutGalleries: CategoryGallery[] = [
       {
         src: '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
         alt: 'Fashion Film Preview 1'
-      },
-      {
-        src: '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
-        alt: 'Fashion Film Preview 2'
       },
       {
         src: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
@@ -226,12 +210,6 @@ export const aboutGalleries: CategoryGallery[] = [
         description: 'Collaborative work by REDUX collective'
       },
       {
-        src: '/images/profile/Hwang Jinsu.jpg',
-        alt: 'Collective Work - Hwang Jinsu',
-        title: 'Six Voices, One Vision',
-        description: 'Unity in diversity through collective design'
-      },
-      {
         src: '/images/profile/Choi Eunsol.jpeg',
         alt: 'Collective Work - Choi Eunsol',
         title: 'Shared Dreams',
@@ -248,10 +226,6 @@ export const aboutGalleries: CategoryGallery[] = [
       {
         src: '/images/profile/Kim Bomin.webp',
         alt: 'Collective Preview 1'
-      },
-      {
-        src: '/images/profile/Hwang Jinsu.jpg',
-        alt: 'Collective Preview 2'
       },
       {
         src: '/images/profile/Choi Eunsol.jpeg',

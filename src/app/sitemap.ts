@@ -21,7 +21,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Designer pages
   const designers = [
     'choi-eunsol',
-    'hwang-jinsu',
     'kim-bomin',
     'kim-gyeongsu',
     'lee-taehyeon',

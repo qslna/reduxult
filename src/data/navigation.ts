@@ -33,7 +33,6 @@ export const navigationItems: NavigationItem[] = [
       { label: 'Park Parang', href: '/designers/parkparang' },
       { label: 'Lee Taehyeon', href: '/designers/leetaehyeon' },
       { label: 'Choi Eunsol', href: '/designers/choieunsol' },
-      { label: 'Hwang Jinsu', href: '/designers/hwangjinsu' },
       { label: 'Kim Gyeongsu', href: '/designers/kimgyeongsu' }
     ]
   },

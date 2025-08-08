@@ -6,7 +6,7 @@ export const baseMetadata: Metadata = {
     template: '%s | REDUX',
     default: 'REDUX - Fashion & Art Collective'
   },
-  description: 'REDUX는 6인의 디자이너로 구성된 패션과 예술의 창작 집단입니다. 패션과 예술의 경계를 넘나드는 창의적인 작품을 선보입니다.',
+  description: 'REDUX는 5인의 디자이너로 구성된 패션과 예술의 창작 집단입니다. 패션과 예술의 경계를 넘나드는 창의적인 작품을 선보입니다.',
   keywords: [
     'REDUX',
     'fashion design',
@@ -31,7 +31,7 @@ export const baseMetadata: Metadata = {
     type: 'website',
     siteName: 'REDUX',
     title: 'REDUX - Fashion & Art Collective',
-    description: 'REDUX는 6인의 디자이너로 구성된 패션과 예술의 창작 집단입니다.',
+    description: 'REDUX는 5인의 디자이너로 구성된 패션과 예술의 창작 집단입니다.',
     url: 'https://reduxult.vercel.app',
     locale: 'ko_KR',
     images: [
@@ -46,7 +46,7 @@ export const baseMetadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'REDUX - Fashion & Art Collective',
-    description: 'REDUX는 6인의 디자이너로 구성된 패션과 예술의 창작 집단입니다.',
+    description: 'REDUX는 5인의 디자이너로 구성된 패션과 예술의 창작 집단입니다.',
     images: ['/og-image.jpg'],
   },
   robots: {
@@ -152,7 +152,7 @@ export const generateOrganizationStructuredData = () => ({
   alternateName: 'REDUX Creative Collective',
   url: 'https://reduxult.vercel.app',
   logo: 'https://reduxult.vercel.app/logo.png',
-  description: 'REDUX는 6인의 디자이너로 구성된 패션과 예술의 창작 집단입니다.',
+  description: 'REDUX는 5인의 디자이너로 구성된 패션과 예술의 창작 집단입니다.',
   foundingDate: '2020',
   foundingLocation: {
     '@type': 'Place',
@@ -237,7 +237,7 @@ export const generateWebsiteStructuredData = () => ({
   '@type': 'WebSite',
   name: 'REDUX',
   url: 'https://reduxult.vercel.app',
-  description: 'REDUX는 6인의 디자이너로 구성된 패션과 예술의 창작 집단입니다.',
+  description: 'REDUX는 5인의 디자이너로 구성된 패션과 예술의 창작 집단입니다.',
   inLanguage: 'ko-KR',
   potentialAction: {
     '@type': 'SearchAction',

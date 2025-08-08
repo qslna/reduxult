@@ -81,18 +81,6 @@ export const mediaSlots: MediaSlot[] = [
     section: 'films'
   },
   {
-    id: 'designer-hwangjinsu-film',
-    type: 'google-drive-video',
-    name: 'Hwang Jinsu 패션 필름',
-    description: 'WHO AM I ?! - Hwang Jinsu 패션 필름',
-    category: 'fashion-film',
-    priority: 1,
-    supportedFormats: ['google-drive'],
-    currentFiles: ['1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d'],
-    page: '/about/fashion-film',
-    section: 'films'
-  },
-  {
     id: 'designer-kimgyeongsu-film',
     type: 'google-drive-video',
     name: 'Kim Gyeongsu 패션 필름',
@@ -154,18 +142,6 @@ export const mediaSlots: MediaSlot[] = [
     priority: 2,
     supportedFormats: ['jpg', 'jpeg', 'png', 'webp'],
     currentFiles: ['/images/profile/Choi Eunsol.jpeg'],
-    page: '/',
-    section: 'showcase'
-  },
-  {
-    id: 'main-designer-profile-hwangjinsu',
-    type: 'single-image',
-    name: 'Hwang Jinsu 프로필 이미지',
-    description: '메인 페이지 디자이너 그리드 - Hwang Jinsu',
-    category: 'main-profiles',
-    priority: 2,
-    supportedFormats: ['jpg', 'jpeg', 'png', 'webp'],
-    currentFiles: ['/images/profile/Hwang Jinsu.jpg'],
     page: '/',
     section: 'showcase'
   },
@@ -254,18 +230,6 @@ export const mediaSlots: MediaSlot[] = [
     priority: 2,
     supportedFormats: ['jpg', 'jpeg', 'png', 'webp'],
     currentFiles: ['/images/designers/choieunsol/cinemode/IMG_8617.jpeg'],
-    page: '/about/fashion-film',
-    section: 'thumbnails'
-  },
-  {
-    id: 'about-fashionfilm-hwangjinsu-thumbnail',
-    type: 'single-image',
-    name: 'Hwang Jinsu 패션 필름 썸네일',
-    description: 'About 페이지 패션 필름 썸네일 - Hwang Jinsu',
-    category: 'about-fashion-film',
-    priority: 2,
-    supportedFormats: ['jpg', 'jpeg', 'png', 'webp'],
-    currentFiles: ['/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg'],
     page: '/about/fashion-film',
     section: 'thumbnails'
   },
@@ -368,18 +332,6 @@ export const mediaSlots: MediaSlot[] = [
     supportedFormats: ['jpg', 'jpeg', 'png', 'webp'],
     currentFiles: ['/images/designers/choieunsol/cinemode/IMG_8617.jpeg'],
     page: '/designers/choieunsol',
-    section: 'cover'
-  },
-  {
-    id: 'designer-hwangjinsu-cover',
-    type: 'single-image',
-    name: 'Hwang Jinsu 커버 이미지',
-    description: '디자이너 개별 페이지 커버 - Hwang Jinsu',
-    category: 'designer-covers',
-    priority: 2,
-    supportedFormats: ['jpg', 'jpeg', 'png', 'webp'],
-    currentFiles: ['/images/designers/hwangjinsu/cinemode/NOR_7743.jpg'],
-    page: '/designers/hwangjinsu',
     section: 'cover'
   },
   {
@@ -550,29 +502,6 @@ export const mediaSlots: MediaSlot[] = [
       '/images/designers/choieunsol/cinemode/IMG_8621.jpeg'
     ],
     page: '/designers/choieunsol',
-    section: 'portfolio'
-  },
-  {
-    id: 'designer-hwangjinsu-portfolio',
-    type: 'gallery',
-    name: 'Hwang Jinsu 포트폴리오',
-    description: 'Hwang Jinsu 디자이너 포트폴리오 갤러리',
-    category: 'designer-portfolios',
-    priority: 3,
-    maxFiles: 50,
-    supportedFormats: ['jpg', 'jpeg', 'png', 'webp'],
-    currentFiles: [
-      '/images/designers/hwangjinsu/cinemode/NOR_7743.jpg',
-      '/images/designers/hwangjinsu/cinemode/⭐️NOR_7677.jpg',
-      '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
-      '/images/designers/hwangjinsu/cinemode/⭐️NOR_7696.jpg',
-      '/images/designers/hwangjinsu/cinemode/📌NOR_7689.jpg',
-      '/images/designers/hwangjinsu/cinemode/📌NOR_7699.jpg',
-      '/images/designers/hwangjinsu/cinemode/📌NOR_7704.jpg',
-      '/images/designers/hwangjinsu/cinemode/📌NOR_7709.jpg',
-      '/images/designers/hwangjinsu/cinemode/📌NOR_7716.jpg'
-    ],
-    page: '/designers/hwangjinsu',
     section: 'portfolio'
   },
   {

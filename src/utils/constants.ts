@@ -2,29 +2,6 @@ import { Designer, Project, Exhibition } from '@/types';
 
 export const DESIGNERS: Designer[] = [
   {
-    id: 'hwang-jinsu',
-    name: 'Hwang Jinsu',
-    nameKo: '황진수',
-    mainRole: 'Fashion Designer',
-    role: 'Creative Director',
-    bio: 'REDUX의 창립자이자 크리에이티브 디렉터로, 실험적인 패션과 예술의 경계를 탐구합니다.',
-    profileImage: 'https://ik.imagekit.io/t914/redux/designers/hwangjinsu/profile.jpg',
-    coverImage: 'https://ik.imagekit.io/t914/redux/designers/hwangjinsu/cinemode/NOR_7677.jpg',
-    instagramHandle: '@j_j_j_j_j_h',
-    portfolioImages: [
-      'https://ik.imagekit.io/t914/redux/designers/hwangjinsu/cinemode/NOR_7690.jpg',
-      'https://ik.imagekit.io/t914/redux/designers/hwangjinsu/cinemode/NOR_7696.jpg',
-      'https://ik.imagekit.io/t914/redux/designers/hwangjinsu/cinemode/NOR_7689.jpg',
-      'https://ik.imagekit.io/t914/redux/designers/hwangjinsu/cinemode/NOR_7699.jpg',
-      'https://ik.imagekit.io/t914/redux/designers/hwangjinsu/cinemode/NOR_7704.jpg',
-      'https://ik.imagekit.io/t914/redux/designers/hwangjinsu/cinemode/NOR_7709.jpg',
-      'https://ik.imagekit.io/t914/redux/designers/hwangjinsu/cinemode/NOR_7716.jpg',
-      'https://ik.imagekit.io/t914/redux/designers/hwangjinsu/cinemode/NOR_7743.jpg',
-    ],
-    featured: true,
-    order: 1,
-  },
-  {
     id: 'choi-eunsol',
     name: 'Choi Eunsol',
     nameKo: '최은솔',
@@ -42,7 +19,7 @@ export const DESIGNERS: Designer[] = [
       'https://ik.imagekit.io/t914/redux/designers/choieunsol/cinemode/IMG_8621.jpeg',
     ],
     featured: true,
-    order: 2,
+    order: 1,
   },
   {
     id: 'park-parang',
@@ -58,7 +35,7 @@ export const DESIGNERS: Designer[] = [
       'https://ik.imagekit.io/t914/redux/profile/Park_Parang.jpg',
     ],
     featured: true,
-    order: 3,
+    order: 2,
   },
   {
     id: 'lee-taehyeon',
@@ -77,7 +54,7 @@ export const DESIGNERS: Designer[] = [
       'https://ik.imagekit.io/t914/redux/designers/leetaehyeon/portfolio/21.png',
     ],
     featured: false,
-    order: 4,
+    order: 3,
   },
   {
     id: 'kim-bomin',
@@ -100,7 +77,7 @@ export const DESIGNERS: Designer[] = [
       'https://ik.imagekit.io/t914/redux/designers/kimbomin/portfolio/KakaoTalk_Photo_2025-06-28-13-18-36_004.jpeg',
     ],
     featured: false,
-    order: 5,
+    order: 4,
   },
   {
     id: 'kim-gyeongsu',
@@ -118,7 +95,7 @@ export const DESIGNERS: Designer[] = [
       'https://ik.imagekit.io/t914/redux/designers/kimgyeongsu/Showcase/IMG_5939.jpg',
     ],
     featured: false,
-    order: 6,
+    order: 5,
   },
 ];
 
@@ -130,7 +107,7 @@ export const PROJECTS: Project[] = [
     description: 'A revolutionary collection that challenges the boundaries between fashion and art.',
     descriptionKo: '패션과 예술의 경계에 도전하는 혁신적인 컬렉션입니다.',
     category: 'collective',
-    designers: ['hwang-jinsu', 'choi-eunsol', 'park-parang'],
+    designers: ['choi-eunsol', 'park-parang'],
     images: [
       'https://ik.imagekit.io/t914/redux/collective/main-cover.jpg',
       'https://ik.imagekit.io/t914/redux/collective/image-1.jpg',
@@ -288,7 +265,7 @@ export const EXHIBITIONS: Exhibition[] = [
     startDate: '2024-03-15',
     endDate: '2024-04-30',
     year: 2024,
-    participants: ['Hwang Jinsu', 'Choi Eunsol', 'Park Parang', 'Lee Soyeon'],
+    participants: ['Choi Eunsol', 'Park Parang', 'Lee Soyeon'],
     images: ['https://ik.imagekit.io/t914/redux/exhibitions/redux-showcase-2024-main.jpg'],
     status: 'upcoming',
     featured: true,
@@ -302,7 +279,7 @@ export const EXHIBITIONS: Exhibition[] = [
     startDate: '2023-10-16',
     endDate: '2023-10-21',
     year: 2023,
-    participants: ['Hwang Jinsu', 'Choi Eunsol', 'Jung Jiwoo'],
+    participants: ['Choi Eunsol', 'Jung Jiwoo'],
     images: ['https://ik.imagekit.io/t914/redux/exhibitions/seoul-fashion-week-2023-main.jpg'],
     status: 'past',
     featured: true,

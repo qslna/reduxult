@@ -43,7 +43,7 @@ export default function AboutContent() {
           <div className="space-y-6 text-gray-400">
             <p className="body-large">
               REDUX는 2024년 설립된 패션과 예술의 창작 집단입니다. 
-              6인의 디자이너가 모여 각자의 독창성을 바탕으로 협업하며, 
+              5인의 디자이너가 모여 각자의 독창성을 바탕으로 협업하며, 
               패션의 새로운 가능성을 탐구합니다.
             </p>
             <p className="body-large">

@@ -17,6 +17,9 @@ export default function InitialLoadingScreen() {
     let hideTimer: NodeJS.Timeout;
 
     const startLoadingSequence = () => {
+      // Ensure fonts-loaded class is added immediately to prevent blank screen
+      document.body.classList.add('fonts-loaded');
+
       // Simulate progressive loading
       let currentProgress = 0;
       progressTimer = setInterval(() => {
@@ -26,32 +29,17 @@ export default function InitialLoadingScreen() {
           clearInterval(progressTimer);
         }
         setProgress(currentProgress);
-      }, 100);
+      }, 80);
 
-      // Wait for fonts and critical resources to load
+      // Simple timer-based loading screen (no font dependency)
       const hideLoadingScreen = () => {
-        // Check if fonts are loaded
-        if (document.fonts && document.fonts.ready) {
-          document.fonts.ready.then(() => {
-            // Add fonts-loaded class to body to show content
-            document.body.classList.add('fonts-loaded');
-            // Additional delay to ensure smooth transition
-            hideTimer = setTimeout(() => {
-              setProgress(100);
-              setTimeout(() => setIsLoading(false), 300);
-            }, 800);
-          });
-        } else {
-          // Fallback for browsers without font loading API
-          document.body.classList.add('fonts-loaded');
-          hideTimer = setTimeout(() => {
-            setProgress(100);
-            setTimeout(() => setIsLoading(false), 300);
-          }, 1200);
-        }
+        hideTimer = setTimeout(() => {
+          setProgress(100);
+          setTimeout(() => setIsLoading(false), 400);
+        }, 1500); // Reduced from 800ms + font loading time to simple 1.5s
       };
 
-      // Start font loading check after DOM is ready
+      // Start hiding sequence after DOM is ready
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', hideLoadingScreen);
       } else {
@@ -64,7 +52,6 @@ export default function InitialLoadingScreen() {
     return () => {
       clearInterval(progressTimer);
       clearTimeout(hideTimer);
-      document.removeEventListener('DOMContentLoaded', startLoadingSequence);
     };
   }, []);
 

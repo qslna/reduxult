@@ -28,6 +28,7 @@ import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import PageTransition from '@/components/ui/PageTransition';
 import InitialLoadingScreen from '@/components/ui/InitialLoadingScreen';
+import ErrorBoundary from '@/components/ui/ErrorBoundary';
 
 export default function RootLayout({
   children,
@@ -59,9 +60,13 @@ export default function RootLayout({
               overflow-x: hidden;
               -webkit-font-smoothing: antialiased;
             }
-            /* Hide content until fonts are loaded */
+            /* Prevent FOUC with smoother transition */
             body:not(.fonts-loaded) {
-              visibility: hidden;
+              opacity: 0;
+              transition: opacity 0.3s ease;
+            }
+            body.fonts-loaded {
+              opacity: 1;
             }
             /* Ensure loading screen is always visible */
             .initial-loading-screen {
@@ -132,13 +137,15 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-black text-white overflow-x-hidden">
         <InitialLoadingScreen />
-        <Navigation />
-        <main>
-          <PageTransition>
-            {children}
-          </PageTransition>
-        </main>
-        <Footer />
+        <ErrorBoundary>
+          <Navigation />
+          <main>
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </main>
+          <Footer />
+        </ErrorBoundary>
         
         {/* 전역 에러 처리 시스템 */}
         <Script
@@ -157,10 +164,11 @@ export default function RootLayout({
                   console.warn('Global error caught:', { message, source, lineno, colno, error });
                   errorCount++;
                   
-                  // 너무 많은 에러가 발생하면 페이지 새로고침
+                  // 너무 많은 에러가 발생하면 사용자에게 알리고 홈으로 이동
                   if (errorCount >= MAX_ERRORS) {
+                    console.error('Too many errors detected, redirecting to home...');
                     setTimeout(() => {
-                      window.location.reload();
+                      window.location.href = '/';
                     }, RELOAD_DELAY);
                   }
                   
@@ -191,14 +199,12 @@ export default function RootLayout({
                   }
                 });
                 
-                // DOM이 준비되면 폰트 로딩 완료 클래스 추가
-                if (document.readyState === 'loading') {
-                  document.addEventListener('DOMContentLoaded', function() {
+                // Emergency fallback to show content if InitialLoadingScreen fails
+                setTimeout(function() {
+                  if (!document.body.classList.contains('fonts-loaded')) {
                     document.body.classList.add('fonts-loaded');
-                  });
-                } else {
-                  document.body.classList.add('fonts-loaded');
-                }
+                  }
+                }, 3000); // 3초 후 강제로 콘텐츠 표시
               })();
             `,
           }}

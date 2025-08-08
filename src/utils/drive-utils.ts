@@ -36,12 +36,6 @@ export const DESIGNER_VIDEOS: Record<string, DesignerVideo> = {
     embedUrl: 'https://drive.google.com/file/d/1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X/preview',
     previewUrl: 'https://drive.google.com/file/d/1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X/view?usp=drive_link'
   },
-  hwangjinsu: {
-    name: 'Hwang Jinsu',
-    driveId: '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d',
-    embedUrl: 'https://drive.google.com/file/d/1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d/preview',
-    previewUrl: 'https://drive.google.com/file/d/1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d/view?usp=drive_link'
-  },
   choieunsol: {
     name: 'Choi Eunsol',
     driveId: '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3',

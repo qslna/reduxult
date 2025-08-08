@@ -3,16 +3,28 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, X } from 'lucide-react';
-import CMSManager from './CMSManager';
+import LazyCMSManager from './LazyCMSManager';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import { measureChunkLoading } from '@/utils/performanceMonitor';
 
 export default function FloatingCMSButton() {
   const [showCMS, setShowCMS] = useState(false);
   const { requestAdminAccess } = useSimpleAuth();
 
-  const handleCMSOpen = () => {
+  const handleCMSOpen = async () => {
     requestAdminAccess();
-    setShowCMS(true);
+    
+    // 성능 모니터링과 함께 CMS 매니저 열기
+    try {
+      await measureChunkLoading('cms-manager', async () => {
+        // CMS 매니저가 로드되기 전에 상태 업데이트
+        setShowCMS(true);
+        return Promise.resolve();
+      });
+    } catch (error) {
+      console.warn('CMS Manager loading failed:', error);
+      setShowCMS(true); // 에러가 있어도 UI는 표시
+    }
   };
 
   const handleCMSClose = () => {
@@ -39,8 +51,8 @@ export default function FloatingCMSButton() {
         </div>
       </motion.button>
 
-      {/* CMS Manager */}
-      <CMSManager isOpen={showCMS} onClose={handleCMSClose} />
+      {/* CMS Manager - 지연 로딩됨 */}
+      <LazyCMSManager isOpen={showCMS} onClose={handleCMSClose} />
     </>
   );
 }

@@ -20,7 +20,6 @@ export default function CollectivePage() {
   const parkParangCMS = useSimpleCMS('about-collective-parkparang-profile', '/images/profile/Park Parang.jpg');
   const leeTaehyeonCMS = useSimpleCMS('about-collective-leetaehyeon-profile', '/images/profile/Lee Taehyeon.jpg');
   const choiEunsolCMS = useSimpleCMS('about-collective-choieunsol-profile', '/images/profile/Choi Eunsol.jpeg');
-  const hwangJinsuCMS = useSimpleCMS('about-collective-hwangjinsu-profile', '/images/profile/Hwang Jinsu.jpg');
   const kimGyeongsuCMS = useSimpleCMS('about-collective-kimgyeongsu-profile', '/images/profile/Kim Gyeongsu.webp');
   
   // Ensure client-side rendering
@@ -351,60 +350,14 @@ export default function CollectivePage() {
             </p>
           </div>
 
-          {/* Member 5: Hwang Jinsu */}
-          <div 
-            className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
-            onClick={() => openDesignerPage('hwangjinsu')}
-          >
-            <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
-              <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50 z-10">
-                05
-              </div>
-              <OptimizedImage 
-                src={hwangJinsuCMS.currentUrl || "/images/profile/Hwang Jinsu.jpg"} 
-                alt="Hwang Jinsu" 
-                fill={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover [filter:grayscale(100%)] transition-all duration-[800ms] ease-in-out hover:[filter:grayscale(0%)] hover:transform hover:scale-105"
-              />
-              
-              {/* CMS 버튼 for admin */}
-              {isAuthenticated && (
-                <div 
-                  className="absolute top-2 right-2 z-20"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                >
-                  <DirectCMS
-                    slotId="about-collective-hwangjinsu-profile"
-                    currentUrl={hwangJinsuCMS.currentUrl}
-                    type="image"
-                    onUpload={hwangJinsuCMS.handleUpload}
-                    onDelete={hwangJinsuCMS.handleDelete}
-                    isAdminMode={true}
-                    placeholder="Hwang Jinsu"
-                  />
-                </div>
-              )}
-            </div>
-            <h3 className="member-name text-xl font-normal tracking-[2px] mb-[10px] text-black">
-              HWANG JINSU
-            </h3>
-            <p className="member-role text-sm tracking-[1px] text-gray-500 uppercase">
-              Film Director
-            </p>
-          </div>
-
-          {/* Member 6: Kim Gyeongsu */}
+          {/* Member 5: Kim Gyeongsu */}
           <div 
             className="member-card text-center cursor-pointer opacity-0 transform translate-y-[50px] revealed:animate-[revealMember_0.8s_ease_forwards]"
             onClick={() => openDesignerPage('kimgyeongsu')}
           >
             <div className="member-portrait relative [aspect-ratio:3/4] bg-gray-800 overflow-hidden mb-[30px]">
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50 z-10">
-                06
+                05
               </div>
               <OptimizedImage 
                 src={kimGyeongsuCMS.currentUrl || "/images/profile/Kim Gyeongsu.webp"} 

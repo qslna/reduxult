@@ -5,12 +5,12 @@ export const exhibitions: Exhibition[] = [
     id: 'cine-mode',
     title: 'CINE MODE',
     titleKo: '시네 모드',
-    description: 'A cinematic exploration of fashion through the lens of contemporary filmmaking. Six designers present their vision through moving images and installations.',
+    description: 'A cinematic exploration of fashion through the lens of contemporary filmmaking. Five designers present their vision through moving images and installations.',
     venue: 'Seoul Art Center',
     startDate: '2025-03-01',
     endDate: '2025-03-31',
     year: 2025,
-    participants: ['kim-bomin', 'park-parang', 'lee-taehyeon', 'choi-eunsol', 'hwang-jinsu', 'kim-gyeongsu'],
+    participants: ['kim-bomin', 'park-parang', 'lee-taehyeon', 'choi-eunsol', 'kim-gyeongsu'],
     images: [
       '/images/exhibitions/cinemode/1.jpg',
       '/images/exhibitions/cinemode/2.jpg',
@@ -29,7 +29,7 @@ export const exhibitions: Exhibition[] = [
     startDate: '2025-12-01',
     endDate: '2025-12-31',
     year: 2025,
-    participants: ['kim-bomin', 'park-parang', 'lee-taehyeon', 'choi-eunsol', 'hwang-jinsu', 'kim-gyeongsu'],
+    participants: ['kim-bomin', 'park-parang', 'lee-taehyeon', 'choi-eunsol', 'kim-gyeongsu'],
     images: [
       '/images/exhibitions/theroom/1.jpg',
       '/images/exhibitions/theroom/2.jpg',

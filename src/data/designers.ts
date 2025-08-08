@@ -86,32 +86,6 @@ export const designers: Designer[] = [
     order: 4
   },
   {
-    id: 'hwang-jinsu',
-    name: 'Hwang Jinsu',
-    nameKo: '황진수',
-    mainRole: 'Fashion Designer',
-    role: 'Visual Director',
-    bio: 'REDUX의 비주얼 디렉터로서 실험적인 패션과 예술의 경계를 탐구합니다. 독창적인 시각적 언어를 통해 패션의 새로운 가능성을 제시하며, 혁신적인 크리에이티브 작업을 선도하고 시각적 완성도를 추구합니다.',
-    profileImage: '/images/profile/Hwang Jinsu.jpg',
-    coverImage: '/images/designers/hwangjinsu/cinemode/NOR_7743.jpg',
-    instagramHandle: '@j_j_j_j_j_h',
-    portfolioImages: [
-      '/images/designers/hwangjinsu/cinemode/NOR_7743.jpg',
-      '/images/designers/hwangjinsu/cinemode/⭐️NOR_7677.jpg',
-      '/images/designers/hwangjinsu/cinemode/⭐️NOR_7690.jpg',
-      '/images/designers/hwangjinsu/cinemode/⭐️NOR_7696.jpg',
-      '/images/designers/hwangjinsu/cinemode/📌NOR_7689.jpg',
-      '/images/designers/hwangjinsu/cinemode/📌NOR_7699.jpg',
-      '/images/designers/hwangjinsu/cinemode/📌NOR_7704.jpg',
-      '/images/designers/hwangjinsu/cinemode/📌NOR_7709.jpg',
-      '/images/designers/hwangjinsu/cinemode/📌NOR_7716.jpg'
-    ],
-    videoUrl: 'https://drive.google.com/file/d/1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d/preview',
-    googleDriveFileId: '1n2COeZYlxSB6C5HZPdd8DTGxnuXCAA_d',
-    featured: true,
-    order: 5
-  },
-  {
     id: 'kim-gyeongsu',
     name: 'Kim Gyeongsu',
     nameKo: '김경수',
@@ -151,6 +125,6 @@ export const designers: Designer[] = [
     videoUrl: 'https://drive.google.com/file/d/1Hl594dd_MY714hZwmklTAPTc-pofe9bY/preview',
     googleDriveFileId: '1Hl594dd_MY714hZwmklTAPTc-pofe9bY',
     featured: true,
-    order: 6
+    order: 5
   }
 ];

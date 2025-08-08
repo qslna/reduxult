@@ -184,7 +184,7 @@ export default function DesignersPage() {
     };
   }, []);
 
-  // 6인의 디자이너 데이터를 실제 데이터에서 가져와서 display용으로 변환
+  // 5인의 디자이너 데이터를 실제 데이터에서 가져와서 display용으로 변환
   const designerDisplayData = designers.map((designer, index) => {
     return {
       id: designer.id,

@@ -292,7 +292,7 @@ export const generateSitemapUrls = () => {
   ];
 
   // 디자이너 개별 페이지 추가
-  const designerIds = ['kimbomin', 'parkparang', 'leetaehyeon', 'choieunsol', 'hwangjinsu', 'kimgyeongsu'];
+  const designerIds = ['kimbomin', 'parkparang', 'leetaehyeon', 'choieunsol', 'kimgyeongsu'];
   designerIds.forEach(id => {
     urls.push({
       url: `${baseUrl}/designers/${id}`,

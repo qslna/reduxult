@@ -151,7 +151,6 @@ export default function Navigation() {
                 <Link href="/designers/park-parang" className="redux-nav__dropdown-item" role="menuitem">Park Parang</Link>
                 <Link href="/designers/lee-taehyeon" className="redux-nav__dropdown-item" role="menuitem">Lee Taehyeon</Link>
                 <Link href="/designers/choi-eunsol" className="redux-nav__dropdown-item" role="menuitem">Choi Eunsol</Link>
-                <Link href="/designers/hwang-jinsu" className="redux-nav__dropdown-item" role="menuitem">Hwang Jinsu</Link>
                 <Link href="/designers/kim-gyeongsu" className="redux-nav__dropdown-item" role="menuitem">Kim Gyeongsu</Link>
               </div>
             </li>
@@ -252,7 +251,6 @@ export default function Navigation() {
               <Link href="/designers/park-parang" onClick={closeMobileMenu}>Park Parang</Link>
               <Link href="/designers/lee-taehyeon" onClick={closeMobileMenu}>Lee Taehyeon</Link>
               <Link href="/designers/choi-eunsol" onClick={closeMobileMenu}>Choi Eunsol</Link>
-              <Link href="/designers/hwang-jinsu" onClick={closeMobileMenu}>Hwang Jinsu</Link>
               <Link href="/designers/kim-gyeongsu" onClick={closeMobileMenu}>Kim Gyeongsu</Link>
             </div>
           </div>

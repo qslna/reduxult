@@ -19,7 +19,6 @@ export default function ShowcaseSection() {
   const parkParangCMS = useSimpleCMS('main-designer-profile-parkparang', '/images/profile/Park Parang.jpg');
   const leeTaehyeonCMS = useSimpleCMS('main-designer-profile-leetaehyeon', '/images/profile/Lee Taehyeon.jpg');
   const choiEunsolCMS = useSimpleCMS('main-designer-profile-choieunsol', '/images/profile/Choi Eunsol.jpeg');
-  const hwangJinsuCMS = useSimpleCMS('main-designer-profile-hwangjinsu', '/images/profile/Hwang Jinsu.jpg');
   const kimGyeongsuCMS = useSimpleCMS('main-designer-profile-kimgyeongsu', '/images/profile/Kim Gyeongsu.webp');
   
   // SimpleCMS 슬롯 - 전시 프리뷰 이미지들
@@ -54,13 +53,6 @@ export default function ShowcaseSection() {
       name: 'CHOI EUNSOL', 
       cms: choiEunsolCMS, 
       link: '/designers/choieunsol',
-      role: 'Fashion Designer'
-    },
-    { 
-      id: 'hwangjinsu', 
-      name: 'HWANG JINSU', 
-      cms: hwangJinsuCMS, 
-      link: '/designers/hwangjinsu',
       role: 'Fashion Designer'
     },
     { 
@@ -122,7 +114,7 @@ export default function ShowcaseSection() {
             DISCOVER
           </h2>
           <p className="text-white/70 text-base md:text-lg max-w-xl md:max-w-2xl mx-auto leading-relaxed px-4">
-            6명의 디자이너와 그들의 창작 세계, 그리고 함께 만들어가는 전시의 공간을 탐험해보세요.
+            5명의 디자이너와 그들의 창작 세계, 그리고 함께 만들어가는 전시의 공간을 탐험해보세요.
           </p>
         </div>
 
