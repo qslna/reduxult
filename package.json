@@ -58,10 +58,12 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@types/gsap": "^3.0.0",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "critters": "^0.0.23",
     "eslint": "^9.17.0",
     "eslint-config-next": "15.1.0",
     "glob": "^11.0.3",

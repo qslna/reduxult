@@ -53,64 +53,34 @@ const nextConfig = {
         },
       },
     },
-    // 추가 성능 최적화
-    optimizeCss: true,
-    // 더 세밀한 청크 분할
-    modularizeImports: {
-      'framer-motion': {
-        transform: 'framer-motion/dist/es/{{member}}',
-      },
-      'lucide-react': {
-        transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
-      },
+  },
+  // 빌드 안정성을 위한 설정
+  compress: true,
+  // modularizeImports를 experimental 밖으로 이동
+  modularizeImports: {
+    'framer-motion': {
+      transform: 'framer-motion/dist/es/{{member}}',
+    },
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
     },
   },
   serverExternalPackages: ['sharp'],
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // 웹팩 최적화 설정
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // 프로덕션 환경에서만 청크 최적화 적용
+  // 단순화된 웹팩 설정 (빌드 안정성 우선)
+  webpack: (config, { dev, isServer }) => {
+    // SVG 지원
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    // 개발 환경에서만 최적화 적용
     if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        ...config.optimization.splitChunks,
-        cacheGroups: {
-          ...config.optimization.splitChunks.cacheGroups,
-          // 프레이머 모션 별도 청크
-          framerMotion: {
-            name: 'framer-motion',
-            chunks: 'all',
-            test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-            priority: 20,
-            enforce: true,
-          },
-          // Lucide 아이콘 별도 청크
-          lucideIcons: {
-            name: 'lucide-react',
-            chunks: 'all',
-            test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
-            priority: 20,
-            enforce: true,
-          },
-          // CMS 관련 컴포넌트들
-          cmsComponents: {
-            name: 'cms-components',
-            chunks: 'async',
-            test: /[\\/]src[\\/]components[\\/](cms|admin)[\\/]/,
-            priority: 15,
-            minChunks: 1,
-          },
-          // UI 컴포넌트들
-          uiComponents: {
-            name: 'ui-components',
-            chunks: 'all',
-            test: /[\\/]src[\\/]components[\\/]ui[\\/]/,
-            priority: 10,
-            minSize: 10000,
-          },
-        },
-      };
+      // 기본 최적화만 유지
+      config.optimization.minimize = true;
     }
 
     return config;

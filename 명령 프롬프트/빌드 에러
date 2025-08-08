@@ -1,0 +1,69 @@
+[00:50:09.620] Running build in Washington, D.C., USA (East) – iad1
+[00:50:09.628] Build machine configuration: 2 cores, 8 GB
+[00:50:09.683] Cloning github.com/qslna/reduxult (Branch: main, Commit: ea2be7d)
+[00:50:43.052] Cloning completed: 33.369s
+[00:50:43.248] Restored build cache from previous deployment (BQfSFpVmXbLBhi1eJxy8YmGFZPj3)
+[00:50:47.891] Running "vercel build"
+[00:50:48.398] Vercel CLI 44.7.3
+[00:50:48.728] WARNING: You should not upload the `.next` directory.
+[00:50:48.732] Running "install" command: `npm install --legacy-peer-deps`...
+[00:50:51.936] 
+[00:50:51.937] up to date, audited 631 packages in 3s
+[00:50:51.937] 
+[00:50:51.937] 192 packages are looking for funding
+[00:50:51.937]   run `npm fund` for details
+[00:50:51.999] 
+[00:50:51.999] 8 vulnerabilities (3 low, 3 high, 2 critical)
+[00:50:51.999] 
+[00:50:52.000] To address issues that do not require attention, run:
+[00:50:52.000]   npm audit fix
+[00:50:52.000] 
+[00:50:52.000] To address all issues, run:
+[00:50:52.000]   npm audit fix --force
+[00:50:52.000] 
+[00:50:52.000] Run `npm audit` for details.
+[00:50:52.031] Detected Next.js version: 15.1.0
+[00:50:52.032] Running "npm run build"
+[00:50:52.141] 
+[00:50:52.141] > redux-portfolio@1.0.0 build
+[00:50:52.142] > next build
+[00:50:52.142] 
+[00:50:52.790]  ⚠ Invalid next.config.js options detected: 
+[00:50:52.791]  ⚠     Unrecognized key(s) in object: 'modularizeImports' at "experimental"
+[00:50:52.792]  ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+[00:50:52.852]    ▲ Next.js 15.1.0
+[00:50:52.853]    - Environments: .env.local
+[00:50:52.853]    - Experiments (use with caution):
+[00:50:52.853]      · turbo
+[00:50:52.854]      · optimizeCss
+[00:50:52.854] 
+[00:50:52.931]    Creating an optimized production build ...
+[00:51:11.955]  ✓ Compiled successfully
+[00:51:11.960]    Skipping linting
+[00:51:11.960]    Checking validity of types ...
+[00:51:24.348]    Collecting page data ...
+[00:51:29.060]    Generating static pages (0/21) ...
+[00:51:29.876]    Generating static pages (5/21) 
+[00:51:29.881] Error occurred prerendering page "/404". Read more: https://nextjs.org/docs/messages/prerender-error
+[00:51:29.881] Error: Cannot find module 'critters'
+[00:51:29.882] Require stack:
+[00:51:29.882] - /vercel/path0/node_modules/next/dist/compiled/next-server/pages.runtime.prod.js
+[00:51:29.882] - /vercel/path0/.next/server/pages/_document.js
+[00:51:29.882] - /vercel/path0/node_modules/next/dist/server/require.js
+[00:51:29.882] - /vercel/path0/node_modules/next/dist/server/load-components.js
+[00:51:29.882] - /vercel/path0/node_modules/next/dist/build/utils.js
+[00:51:29.883] - /vercel/path0/node_modules/next/dist/build/worker.js
+[00:51:29.883] - /vercel/path0/node_modules/next/dist/compiled/jest-worker/processChild.js
+[00:51:29.883]     at Function.<anonymous> (node:internal/modules/cjs/loader:1365:15)
+[00:51:29.883]     at /vercel/path0/node_modules/next/dist/server/require-hook.js:55:36
+[00:51:29.883]     at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)
+[00:51:29.883]     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)
+[00:51:29.883]     at Function._load (node:internal/modules/cjs/loader:1175:37)
+[00:51:29.883]     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+[00:51:29.883]     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+[00:51:29.883]     at Module.<anonymous> (node:internal/modules/cjs/loader:1445:12)
+[00:51:29.884]     at mod.require (/vercel/path0/node_modules/next/dist/server/require-hook.js:65:28)
+[00:51:29.884]     at require (node:internal/modules/helpers:135:16)
+[00:51:29.884] Export encountered an error on /_error: /404, exiting the build.
+[00:51:29.901]  ⨯ Static worker exited with code: 1 and signal: null
+[00:51:29.949] Error: Command "npm run build" exited with 1
