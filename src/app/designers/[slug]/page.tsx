@@ -344,13 +344,36 @@ export default function DesignerPage({ params }: Props) {
             <div className="relative">
               {/* CMS 오버레이 - 포트폴리오 갤러리 */}
               {isAuthenticated && (
-                <div className="absolute -top-20 right-0 z-20 w-80">
-                  <div className="bg-black/95 backdrop-blur-sm border border-gray-700 rounded-lg p-4">
+                <div className="fixed top-20 right-4 z-50 w-80 max-w-[calc(100vw-2rem)] max-h-[70vh] bg-black/95 backdrop-blur-sm border border-gray-700 rounded-lg p-4 shadow-xl">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-white font-medium text-sm">포트폴리오 갤러리 관리</h3>
+                  </div>
+                  <div className="overflow-y-auto max-h-[50vh]">
                     <GalleryCMS
                       slotId={`designer-${designer.id}-portfolio`}
-                      currentImages={portfolioCMS.currentImages}
-                      onUpload={portfolioCMS.handleUpload}
-                      onDelete={portfolioCMS.handleDelete}
+                      currentImages={portfolioCMS.currentImages.length > 0 ? portfolioCMS.currentImages : designer.portfolioImages}
+                      onUpload={(url: string) => {
+                        try {
+                          console.log('Gallery upload attempt:', url);
+                          if (url && url.trim() !== '') {
+                            portfolioCMS.handleUpload(url.trim());
+                            console.log('Gallery upload successful:', url);
+                          } else {
+                            console.error('Invalid URL provided:', url);
+                          }
+                        } catch (error) {
+                          console.error('Gallery upload failed:', error);
+                        }
+                      }}
+                      onDelete={(index: number) => {
+                        try {
+                          console.log('Gallery delete attempt:', index);
+                          portfolioCMS.handleDelete(index);
+                          console.log('Gallery delete successful:', index);
+                        } catch (error) {
+                          console.error('Gallery delete failed:', error);
+                        }
+                      }}
                       onReorder={portfolioCMS.reorderImages}
                       isAdminMode={true}
                       maxImages={50}
@@ -519,30 +542,94 @@ export default function DesignerPage({ params }: Props) {
           }
         }
         
-        /* Responsive adjustments */
+        /* 완전한 모바일 최적화 - 깨짐 방지 */
         @media (max-width: 1024px) {
+          /* Navigation 모바일 최적화 */
+          nav {
+            padding: 15px 20px !important;
+            backdrop-filter: blur(10px) !important;
+          }
+          
           .hero-section {
-            height: 60vh;
-            min-height: 400px;
+            height: 60vh !important;
+            min-height: 500px !important;
+            padding: 0 20px !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
           }
           
           .hero-section .grid {
-            grid-template-columns: 1fr;
-            gap: 2rem;
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+            width: 100% !important;
+            max-width: 100% !important;
           }
           
           .profile-image-container {
-            order: -1;
+            order: -1 !important;
+            width: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
           }
           
           .profile-image {
-            max-width: 300px;
+            max-width: 300px !important;
+            width: 100% !important;
+            height: auto !important;
+          }
+          
+          /* Portfolio section 모바일 최적화 */
+          .portfolio-section {
+            padding: 60px 20px !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+          }
+          
+          /* Masonry grid 모바일 최적화 */
+          .portfolio-grid {
+            columns: 2 !important;
+            column-gap: 10px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+          
+          .portfolio-item {
+            margin-bottom: 10px !important;
+            break-inside: avoid !important;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+          
+          /* CMS 오버레이 모바일 대응 */
+          .hero-section .absolute.top-20.right-4,
+          .portfolio-section .fixed.top-20.right-4 {
+            top: 80px !important;
+            right: 10px !important;
+            width: calc(100vw - 20px) !important;
+            max-width: 320px !important;
+            font-size: 0.8rem !important;
           }
         }
         
         @media (max-width: 768px) {
+          /* 모든 컨테이너 너비 제한 */
+          * {
+            max-width: 100vw !important;
+            box-sizing: border-box !important;
+          }
+          
+          html, body {
+            overflow-x: hidden !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+          }
+          
           nav {
             padding: 15px 20px !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
           }
           
           .page-title {
@@ -552,62 +639,132 @@ export default function DesignerPage({ params }: Props) {
           .hero-section {
             height: auto !important;
             min-height: 100vh !important;
-            padding: 140px 20px 40px !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            padding: 120px 15px 40px !important;
+            overflow-x: hidden !important;
+          }
+          
+          .hero-section .max-w-\\[1600px\\] {
+            max-width: 100% !important;
+            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+          
+          .hero-section .grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 2rem !important;
+            width: 100% !important;
+            max-width: 100% !important;
           }
           
           .designer-info {
             text-align: center !important;
             margin-bottom: 2rem !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            order: 1 !important;
           }
           
-          .designer-name {
+          .designer-name,
+          .hero-section h1 {
             font-size: clamp(2rem, 8vw, 3rem) !important;
             text-align: center !important;
+            width: 100% !important;
+            margin-bottom: 1rem !important;
+            line-height: 1.1 !important;
           }
           
-          .profile-image {
+          .profile-image,
+          .hero-section .relative:has(OptimizedImage) {
             max-width: 280px !important;
+            width: 100% !important;
             margin: 0 auto !important;
+            order: 0 !important;
           }
           
           .portfolio-section {
-            padding: 60px 20px !important;
+            padding: 60px 15px !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
           }
           
-          .portfolio-grid {
-            columns: 2 !important;
-            column-gap: 8px !important;
+          .portfolio-section .max-w-\\[1600px\\] {
+            max-width: 100% !important;
+            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
           }
           
-          .portfolio-item {
-            margin-bottom: 8px !important;
+          .portfolio-grid,
+          .\\[columns\\:4\\] {
+            columns: 1 !important;
+            column-gap: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+          }
+          
+          .portfolio-item,
+          .\\[break-inside\\:avoid\\] {
+            margin-bottom: 15px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+          
+          /* CMS 모바일 최적화 */
+          .fixed.top-20.right-4 {
+            position: fixed !important;
+            top: 80px !important;
+            right: 10px !important;
+            left: 10px !important;
+            width: auto !important;
+            max-width: none !important;
+            z-index: 60 !important;
           }
         }
         
         @media (max-width: 480px) {
           .hero-section {
-            padding: 120px 15px 30px !important;
+            padding: 100px 12px 25px !important;
+            min-height: 90vh !important;
           }
           
+          .hero-section h1,
           .designer-name {
             font-size: clamp(1.8rem, 10vw, 2.5rem) !important;
+            margin-bottom: 0.8rem !important;
           }
           
-          .profile-image {
+          .profile-image,
+          .hero-section .relative:has(OptimizedImage) {
             max-width: 240px !important;
           }
           
           .portfolio-section {
-            padding: 50px 15px !important;
+            padding: 50px 12px !important;
           }
           
-          .portfolio-grid {
+          .portfolio-grid,
+          .\\[columns\\:4\\] {
             columns: 1 !important;
             column-gap: 0 !important;
           }
           
-          .portfolio-item {
-            margin-bottom: 6px !important;
+          .portfolio-item,
+          .\\[break-inside\\:avoid\\] {
+            margin-bottom: 10px !important;
+          }
+          
+          /* 매우 작은 화면에서 CMS 오버레이 조정 */
+          .fixed.top-20.right-4 {
+            top: 70px !important;
+            right: 5px !important;
+            left: 5px !important;
+            font-size: 0.75rem !important;
           }
         }
         

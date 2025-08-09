@@ -105,9 +105,12 @@ export const createLazyComponent = (
 ) => {
   const LazyComponent = React.lazy(loader);
   
-  return (props: any) => (
+  const LazyWrapper = (props: any) => (
     <React.Suspense fallback={fallback ? React.createElement(fallback) : null}>
       <LazyComponent {...props} />
     </React.Suspense>
   );
+  
+  LazyWrapper.displayName = 'LazyWrapper';
+  return LazyWrapper;
 };

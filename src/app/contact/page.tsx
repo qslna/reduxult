@@ -207,7 +207,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Professional Navigation */}
-      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] border-b border-[--accent-mocha]/10">
+      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 z-[1000] transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] border-b border-[--accent-mocha]/10">
         <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
           <div className="nav-left flex items-center gap-10">
             <span 
@@ -284,7 +284,7 @@ export default function ContactPage() {
           
           {/* 인터랙티브 CTA */}
           <div className="opacity-0 animate-[bounceIn_1s_ease_forwards] [animation-delay:2s]">
-            <div className="inline-flex items-center gap-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-full px-8 py-4">
+            <div className="inline-flex items-center gap-4 bg-white/5 border border-white/20 rounded-full px-8 py-4">
               <div className="w-[8px] h-[8px] bg-white/60 rounded-full animate-pulse"></div>
               <span className="text-white/90 font-['Inter'] text-sm tracking-[2px] uppercase font-light">
                 {ctaText}
@@ -466,7 +466,7 @@ export default function ContactPage() {
           
             {/* Contact Form Section - 오른쪽 8열 */}
             <div className="contact-form-section col-span-8 max-[1024px]:col-span-1">
-              <div className="relative bg-gradient-to-br from-white/[0.03] to-white/[0.01] backdrop-blur-sm border border-white/10 rounded-2xl p-12 overflow-hidden max-[1024px]:p-8 max-[768px]:p-6">
+              <div className="relative bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/10 rounded-2xl p-12 overflow-hidden max-[1024px]:p-8 max-[768px]:p-6">
                 {/* 배경 데코레이션 */}
                 <div className="absolute inset-0">
                   <div className="absolute top-8 right-8 w-[100px] h-[1px] bg-gradient-to-r from-white/10 to-transparent transform rotate-12"></div>
@@ -594,7 +594,7 @@ export default function ContactPage() {
                     <button 
                       type="submit"
                       disabled={isSubmitting}
-                      className="submit-btn group relative w-full bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-sm border border-white/20 text-white py-6 px-8 rounded-lg font-['Inter'] text-sm tracking-[1px] uppercase font-medium transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                      className="submit-btn group relative w-full bg-gradient-to-r from-white/10 to-white/5 border border-white/20 text-white py-6 px-8 rounded-lg font-['Inter'] text-sm tracking-[1px] uppercase font-medium transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
                     >
                       {/* 배경 애니메이션 */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
@@ -681,7 +681,7 @@ export default function ContactPage() {
           
           {/* Location Info */}
           <div className="absolute bottom-8 left-8 max-[768px]:bottom-4 max-[768px]:left-4">
-            <div className="bg-black/80 backdrop-blur-sm border border-white/10 rounded-lg p-4 max-w-xs">
+            <div className="bg-black/80 border border-white/10 rounded-lg p-4 max-w-xs">
               <h3 className="text-white font-medium text-lg mb-2">REDUX Studio</h3>
               <p className="text-white/70 text-sm leading-relaxed">
                 Seoul, South Korea<br />
@@ -697,7 +697,7 @@ export default function ContactPage() {
           
           {/* Click to View Message */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="bg-black/60 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3">
+            <div className="bg-black/60 border border-white/20 rounded-full px-6 py-3">
               <p className="text-white/80 text-sm font-light tracking-wider">
                 Seoul, South Korea
               </p>

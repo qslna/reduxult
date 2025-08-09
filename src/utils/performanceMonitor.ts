@@ -37,7 +37,7 @@ class PerformanceMonitor {
 
     try {
       observer.observe({ entryTypes: ['largest-contentful-paint'] });
-    } catch (e) {
+    } catch (_e) {
       // Safari 및 구형 브라우저 지원
       console.warn('LCP measurement not supported');
     }
@@ -53,7 +53,7 @@ class PerformanceMonitor {
 
     try {
       paintObserver.observe({ entryTypes: ['paint'] });
-    } catch (e) {
+    } catch (_e) {
       console.warn('Paint timing not supported');
     }
 
@@ -71,7 +71,7 @@ class PerformanceMonitor {
     const startTime = performance.now();
     
     try {
-      const module = await importFunction();
+      const loadedModule = await importFunction();
       const loadTime = performance.now() - startTime;
       
       this.chunkMetrics.push({
@@ -82,7 +82,7 @@ class PerformanceMonitor {
       });
 
       console.log(`📦 Chunk '${chunkName}' loaded in ${loadTime.toFixed(2)}ms`);
-      return module;
+      return loadedModule;
     } catch (error) {
       console.error(`❌ Failed to load chunk '${chunkName}':`, error);
       throw error;
@@ -94,7 +94,7 @@ class PerformanceMonitor {
     if (typeof window === 'undefined' || process.env.NODE_ENV !== 'development') return;
 
     const scripts = Array.from(document.querySelectorAll('script[src]'));
-    let totalSize = 0;
+    const totalSize = 0;
 
     scripts.forEach(script => {
       const src = (script as HTMLScriptElement).src;

@@ -162,15 +162,32 @@ export function useGalleryCMS(slotId: string, initialImages?: string[]) {
 
   // 파일 업로드 핸들러 (갤러리에 추가)
   const handleUpload = (url: string) => {
-    addImage(url);
+    try {
+      console.log(`useGalleryCMS handleUpload for ${slotId}:`, url);
+      if (url && url.trim() !== '') {
+        addImage(url.trim());
+        console.log(`Upload successful for ${slotId}, new images:`, currentImages.length + 1);
+      } else {
+        console.error('Invalid URL provided to handleUpload:', url);
+      }
+    } catch (error) {
+      console.error('Error in handleUpload:', error);
+    }
   };
 
   // 파일 삭제 핸들러
   const handleDelete = (index?: number) => {
-    if (typeof index === 'number') {
-      removeImage(index);
-    } else {
-      clearGallery();
+    try {
+      console.log(`useGalleryCMS handleDelete for ${slotId}:`, index);
+      if (typeof index === 'number') {
+        removeImage(index);
+        console.log(`Delete successful for ${slotId}, remaining images:`, currentImages.length - 1);
+      } else {
+        clearGallery();
+        console.log(`Gallery cleared for ${slotId}`);
+      }
+    } catch (error) {
+      console.error('Error in handleDelete:', error);
     }
   };
 

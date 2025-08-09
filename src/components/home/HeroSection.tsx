@@ -316,103 +316,186 @@ const HeroSectionWithStyles = () => (
   <>
     <HeroSection />
     <style jsx global>{`
-        /* 완전히 새로운 모바일 최적화 */
+        /* 완전히 새로운 모바일 최적화 - 깨짐 방지 */
         @media (max-width: 768px) {
           .hero-section {
             height: 100vh !important;
             height: 100dvh !important;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left) !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+            position: relative !important;
+            padding: 0 !important;
+            margin: 0 !important;
           }
           
           .hero-content {
-            padding: 0 16px !important;
-            max-width: 100% !important;
-            margin: 0 auto !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+            padding: 0 20px !important;
+            margin: 0 !important;
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
             align-items: center !important;
-            height: 100% !important;
             text-align: center !important;
+            box-sizing: border-box !important;
           }
           
           .hero-title {
-            font-size: clamp(2.5rem, 12vw, 4rem) !important;
-            margin-bottom: 1.5rem !important;
+            font-size: clamp(2rem, 10vw, 3.5rem) !important;
+            margin-bottom: 1rem !important;
             line-height: 0.9 !important;
             font-weight: 700 !important;
-            letter-spacing: -0.02em !important;
+            letter-spacing: -0.01em !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            word-break: keep-all !important;
+            overflow-wrap: break-word !important;
           }
           
           .hero-subtitle {
-            font-size: clamp(0.75rem, 3vw, 1rem) !important;
-            margin-bottom: 2rem !important;
-            letter-spacing: 0.3em !important;
+            font-size: clamp(0.75rem, 2.5vw, 0.9rem) !important;
+            margin-bottom: 1.5rem !important;
+            letter-spacing: 0.2em !important;
             opacity: 0.9 !important;
+            width: 100% !important;
+            max-width: 90vw !important;
           }
           
           .hero-description {
-            margin-bottom: 3rem !important;
-            max-width: 320px !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
+            margin-bottom: 2rem !important;
+            width: 100% !important;
+            max-width: 90vw !important;
           }
           
           .hero-description p {
-            font-size: 0.9rem !important;
-            line-height: 1.6 !important;
-            max-width: 300px !important;
+            font-size: 0.85rem !important;
+            line-height: 1.5 !important;
+            width: 100% !important;
+            max-width: 280px !important;
             margin: 0 auto !important;
           }
           
           .hero-actions {
             flex-direction: column !important;
-            gap: 1.5rem !important;
+            gap: 1rem !important;
             align-items: center !important;
             width: 100% !important;
+            max-width: 90vw !important;
           }
           
           .hero-actions button {
             width: 100% !important;
-            max-width: 280px !important;
-            padding: 16px 32px !important;
-            font-size: 0.9rem !important;
-            min-height: 56px !important;
+            max-width: 260px !important;
+            padding: 14px 24px !important;
+            font-size: 0.8rem !important;
+            min-height: 48px !important;
             border-width: 2px !important;
-            border-radius: 0 !important;
             font-weight: 500 !important;
-            letter-spacing: 0.15em !important;
+            letter-spacing: 0.1em !important;
             transition: all 0.3s ease !important;
+            box-sizing: border-box !important;
           }
           
-          /* 모바일에서 비디오 컨트롤 위치 조정 - 간소화된 버전 */
+          /* 비디오 컨트롤 모바일 최적화 */
           .hero-section .absolute.bottom-20.right-8 {
-            bottom: 120px;
-            right: 16px;
+            bottom: 100px !important;
+            right: 20px !important;
+            z-index: 50 !important;
           }
           
           .hero-section .absolute.bottom-20.right-8 button {
-            width: 44px;
-            height: 44px;
-            font-size: 14px;
-            min-height: 44px; /* 터치 접근성 보장 */
-            min-width: 44px;
+            width: 44px !important;
+            height: 44px !important;
+            font-size: 14px !important;
+            min-height: 44px !important;
+            min-width: 44px !important;
+            touch-action: manipulation !important;
           }
           
-          /* 매우 작은 화면에서 더 작게 조정 */
-          @media (max-width: 320px) {
-            .hero-section .absolute.bottom-20.right-8 {
-              bottom: 100px;
-              right: 12px;
-            }
-            
-            .hero-section .absolute.bottom-20.right-8 button {
-              width: 40px;
-              height: 40px;
-              min-height: 40px;
-              min-width: 40px;
-              font-size: 12px;
-            }
+          /* CMS 버튼 모바일 최적화 */
+          .hero-section .absolute.top-20.right-8 {
+            top: 80px !important;
+            right: 20px !important;
+            z-index: 50 !important;
+          }
+          
+          /* 스크롤 인디케이터 모바일 위치 */
+          .hero-section .absolute.bottom-8.left-1\\/2 {
+            bottom: 20px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            z-index: 40 !important;
+          }
+        }
+        
+        /* 매우 작은 화면 (iPhone SE 등) */
+        @media (max-width: 375px) {
+          .hero-content {
+            padding: 0 15px !important;
+          }
+          
+          .hero-title {
+            font-size: clamp(1.8rem, 8vw, 2.5rem) !important;
+          }
+          
+          .hero-subtitle {
+            font-size: clamp(0.7rem, 2vw, 0.8rem) !important;
+            letter-spacing: 0.15em !important;
+          }
+          
+          .hero-description p {
+            font-size: 0.8rem !important;
+            max-width: 250px !important;
+          }
+          
+          .hero-actions button {
+            max-width: 240px !important;
+            padding: 12px 20px !important;
+            font-size: 0.75rem !important;
+            min-height: 44px !important;
+          }
+        }
+        
+        /* 가로모드 모바일 대응 */
+        @media (max-width: 768px) and (orientation: landscape) {
+          .hero-section {
+            height: 100vh !important;
+          }
+          
+          .hero-content {
+            padding: 0 30px !important;
+          }
+          
+          .hero-title {
+            font-size: clamp(2rem, 8vw, 3rem) !important;
+            margin-bottom: 0.5rem !important;
+          }
+          
+          .hero-subtitle {
+            margin-bottom: 1rem !important;
+          }
+          
+          .hero-description {
+            margin-bottom: 1.5rem !important;
+          }
+          
+          .hero-actions {
+            flex-direction: row !important;
+            gap: 1rem !important;
+            justify-content: center !important;
+          }
+          
+          .hero-actions button {
+            width: auto !important;
+            max-width: none !important;
+            padding: 12px 24px !important;
+            font-size: 0.8rem !important;
           }
         }
         

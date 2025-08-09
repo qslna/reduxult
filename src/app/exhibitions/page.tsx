@@ -23,9 +23,12 @@ export default function ExhibitionsPage() {
   const cinemode3CMS = useSimpleCMS('exhibition-cinemode-3', '/images/exhibitions/cinemode/3.jpg');
   const cinemode4CMS = useSimpleCMS('exhibition-cinemode-4', '/images/exhibitions/cinemode/4.jpg');
   
-  const theroom1CMS = useSimpleCMS('exhibition-theroom-1', '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png');
-  const theroom2CMS = useSimpleCMS('exhibition-theroom-2', '/images/exhibitions/theroom/qslna_minimalist_concrete_courtyard_high-key_daylight_overcas_85d5cd51-4cd3-40e8-9111-12e1bf3c2bdd_0.png');
-  const theroom3CMS = useSimpleCMS('exhibition-theroom-3', '/images/exhibitions/theroom/qslna_split-frame_triptych_left_strip--front_close-crop_of_ma_25f1d65c-d800-4e74-9a72-5919d703eeb2_1.png');
+  // THE ROOM OF [ ] 기본 이미지 - 사용자 지정
+  const defaultTheroomImage = '/images/exhibitions/theroom/qslna_mirror-box_installation_four_polished_steel_walls_refle_4ffced5d-0e8e-41c6-a7ad-8f08583b1c72_2.png';
+  
+  const theroom1CMS = useSimpleCMS('exhibition-theroom-1', defaultTheroomImage);
+  const theroom2CMS = useSimpleCMS('exhibition-theroom-2', defaultTheroomImage);
+  const theroom3CMS = useSimpleCMS('exhibition-theroom-3', defaultTheroomImage);
   
 
   const openLightbox = (imageSrc: string, imageAlt: string) => {
@@ -195,13 +198,13 @@ export default function ExhibitionsPage() {
               {/* Featured Image */}
               <div className="relative order-2 lg:order-1">
                 <OptimizedImage 
-                  src={theroom1CMS.currentUrl || "/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png"}
+                  src={theroom1CMS.currentUrl || defaultTheroomImage}
                   alt="THE ROOM OF [ ] Exhibition"
                   width={600}
                   height={400}
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="w-full h-auto object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.02]"
-                  onClick={() => openLightbox(theroom1CMS.currentUrl || '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png', 'THE ROOM OF [ ] Exhibition')}
+                  onClick={() => openLightbox(theroom1CMS.currentUrl || defaultTheroomImage, 'THE ROOM OF [ ] Exhibition')}
                 />
                 
                 {/* CMS 오버레이 */}
@@ -241,12 +244,27 @@ export default function ExhibitionsPage() {
                   <p>
                     빈 공간 [ ] 안에 각자의 이야기를 채워나가는 실험적인 전시입니다.
                   </p>
+                  
+                  {/* 전시 정보 */}
+                  <div className="mt-8 p-6 bg-white/5 border border-white/10 rounded-lg">
+                    <div className="space-y-3">
+                      <div>
+                        <span className="text-amber-300 font-medium tracking-[0.1em] uppercase text-sm">장소</span>
+                        <p className="text-white font-light">레온갤러리 성수커넥트</p>
+                        <p className="text-white/70 text-sm">서울 성동구 아차산로1가길 11 지하1층</p>
+                      </div>
+                      <div>
+                        <span className="text-amber-300 font-medium tracking-[0.1em] uppercase text-sm">일정</span>
+                        <p className="text-white font-light">2025.12.11 (목) - 12.14 (일)</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <button 
-                  className="mt-8 px-8 py-4 border border-gray-500 text-gray-400 bg-transparent cursor-not-allowed tracking-[0.1em] uppercase"
-                  disabled
+                  className="mt-8 px-8 py-4 border border-amber-300 text-amber-300 bg-transparent hover:bg-amber-300 hover:text-black transition-all duration-300 tracking-[0.1em] uppercase"
+                  onClick={() => window.open('https://naver.me/GnK4CyeV', '_blank')}
                 >
-                  Coming Soon
+                  전시 안내
                 </button>
               </div>
             </div>
@@ -260,12 +278,12 @@ export default function ExhibitionsPage() {
               ].map(({ num, cms }) => (
                 <div key={num} className="relative aspect-square overflow-hidden">
                   <OptimizedImage 
-                    src={cms.currentUrl || (num === 1 ? '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png' : num === 2 ? '/images/exhibitions/theroom/qslna_minimalist_concrete_courtyard_high-key_daylight_overcas_85d5cd51-4cd3-40e8-9111-12e1bf3c2bdd_0.png' : '/images/exhibitions/theroom/qslna_split-frame_triptych_left_strip--front_close-crop_of_ma_25f1d65c-d800-4e74-9a72-5919d703eeb2_1.png')}
+                    src={cms.currentUrl || defaultTheroomImage}
                     alt={`THE ROOM Gallery ${num}`}
                     fill={true}
                     sizes="(max-width: 768px) 50vw, 33vw"
                     className="object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.1]"
-                    onClick={() => openLightbox(cms.currentUrl || (num === 1 ? '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png' : num === 2 ? '/images/exhibitions/theroom/qslna_minimalist_concrete_courtyard_high-key_daylight_overcas_85d5cd51-4cd3-40e8-9111-12e1bf3c2bdd_0.png' : '/images/exhibitions/theroom/qslna_split-frame_triptych_left_strip--front_close-crop_of_ma_25f1d65c-d800-4e74-9a72-5919d703eeb2_1.png'), `THE ROOM Gallery ${num}`)}
+                    onClick={() => openLightbox(cms.currentUrl || defaultTheroomImage, `THE ROOM Gallery ${num}`)}
                   />
                   
                   {/* CMS 버튼 for admin */}
