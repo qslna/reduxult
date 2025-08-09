@@ -31,9 +31,10 @@ export const exhibitions: Exhibition[] = [
     year: 2025,
     participants: ['kim-bomin', 'park-parang', 'lee-taehyeon', 'choi-eunsol', 'kim-gyeongsu'],
     images: [
-      '/images/exhibitions/theroom/1.jpg',
-      '/images/exhibitions/theroom/2.jpg',
-      '/images/exhibitions/theroom/3.jpg'
+      '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png',
+      '/images/exhibitions/theroom/qslna_minimalist_concrete_courtyard_high-key_daylight_overcas_85d5cd51-4cd3-40e8-9111-12e1bf3c2bdd_0.png',
+      '/images/exhibitions/theroom/qslna_mirror-box_installation_four_polished_steel_walls_refle_4ffced5d-0e8e-41c6-a7ad-8f08583b1c72_2.png',
+      '/images/exhibitions/theroom/qslna_split-frame_triptych_left_strip--front_close-crop_of_ma_25f1d65c-d800-4e74-9a72-5919d703eeb2_1.png'
     ],
     status: 'upcoming',
     featured: true

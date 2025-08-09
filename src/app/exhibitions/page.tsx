@@ -23,10 +23,11 @@ export default function ExhibitionsPage() {
   const cinemode3CMS = useSimpleCMS('exhibition-cinemode-3', '/images/exhibitions/cinemode/3.jpg');
   const cinemode4CMS = useSimpleCMS('exhibition-cinemode-4', '/images/exhibitions/cinemode/4.jpg');
   
-  // THE ROOM OF [ ] 기본 이미지 - 전시 페이지는 기존 이미지 유지
-  const theroom1CMS = useSimpleCMS('exhibition-theroom-1', '/images/exhibitions/theroom/1.jpg');
-  const theroom2CMS = useSimpleCMS('exhibition-theroom-2', '/images/exhibitions/theroom/2.jpg');
-  const theroom3CMS = useSimpleCMS('exhibition-theroom-3', '/images/exhibitions/theroom/3.jpg');
+  // THE ROOM OF [ ] 실제 존재하는 이미지들 사용
+  const theroom1CMS = useSimpleCMS('exhibition-theroom-1', '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png');
+  const theroom2CMS = useSimpleCMS('exhibition-theroom-2', '/images/exhibitions/theroom/qslna_minimalist_concrete_courtyard_high-key_daylight_overcas_85d5cd51-4cd3-40e8-9111-12e1bf3c2bdd_0.png');
+  const theroom3CMS = useSimpleCMS('exhibition-theroom-3', '/images/exhibitions/theroom/qslna_mirror-box_installation_four_polished_steel_walls_refle_4ffced5d-0e8e-41c6-a7ad-8f08583b1c72_2.png');
+  const theroom4CMS = useSimpleCMS('exhibition-theroom-4', '/images/exhibitions/theroom/qslna_split-frame_triptych_left_strip--front_close-crop_of_ma_25f1d65c-d800-4e74-9a72-5919d703eeb2_1.png');
   
 
   const openLightbox = (imageSrc: string, imageAlt: string) => {
@@ -196,13 +197,13 @@ export default function ExhibitionsPage() {
               {/* Featured Image */}
               <div className="relative order-2 lg:order-1">
                 <OptimizedImage 
-                  src={theroom1CMS.currentUrl || '/images/exhibitions/theroom/1.jpg'}
+                  src={theroom1CMS.currentUrl || '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png'}
                   alt="THE ROOM OF [ ] Exhibition"
                   width={600}
                   height={400}
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="w-full h-auto object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.02]"
-                  onClick={() => openLightbox(theroom1CMS.currentUrl || '/images/exhibitions/theroom/1.jpg', 'THE ROOM OF [ ] Exhibition')}
+                  onClick={() => openLightbox(theroom1CMS.currentUrl || '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png', 'THE ROOM OF [ ] Exhibition')}
                 />
                 
                 {/* CMS 오버레이 */}
@@ -268,20 +269,21 @@ export default function ExhibitionsPage() {
             </div>
 
             {/* Gallery Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { num: 1, cms: theroom1CMS },
-                { num: 2, cms: theroom2CMS },
-                { num: 3, cms: theroom3CMS }
-              ].map(({ num, cms }) => (
+                { num: 1, cms: theroom1CMS, fallback: '/images/exhibitions/theroom/qslna_dawn_alleyway_low-angle_28_mm_R13_2025_layered_denim-ov_828e4c6e-0b81-4949-8c96-7e241f9a3c03_0.png' },
+                { num: 2, cms: theroom2CMS, fallback: '/images/exhibitions/theroom/qslna_minimalist_concrete_courtyard_high-key_daylight_overcas_85d5cd51-4cd3-40e8-9111-12e1bf3c2bdd_0.png' },
+                { num: 3, cms: theroom3CMS, fallback: '/images/exhibitions/theroom/qslna_mirror-box_installation_four_polished_steel_walls_refle_4ffced5d-0e8e-41c6-a7ad-8f08583b1c72_2.png' },
+                { num: 4, cms: theroom4CMS, fallback: '/images/exhibitions/theroom/qslna_split-frame_triptych_left_strip--front_close-crop_of_ma_25f1d65c-d800-4e74-9a72-5919d703eeb2_1.png' }
+              ].map(({ num, cms, fallback }) => (
                 <div key={num} className="relative aspect-square overflow-hidden">
                   <OptimizedImage 
-                    src={cms.currentUrl || `/images/exhibitions/theroom/${num}.jpg`}
+                    src={cms.currentUrl || fallback}
                     alt={`THE ROOM Gallery ${num}`}
                     fill={true}
                     sizes="(max-width: 768px) 50vw, 33vw"
                     className="object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.1]"
-                    onClick={() => openLightbox(cms.currentUrl || `/images/exhibitions/theroom/${num}.jpg`, `THE ROOM Gallery ${num}`)}
+                    onClick={() => openLightbox(cms.currentUrl || fallback, `THE ROOM Gallery ${num}`)}
                   />
                   
                   {/* CMS 버튼 for admin */}
