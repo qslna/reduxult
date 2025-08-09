@@ -10,7 +10,7 @@ export const designers: Designer[] = [
     bio: 'REDUX의 필름 디렉터로서 색채와 텍스처를 통해 감정을 표현하는 크리에이티브 디자이너입니다. 패션 필름이라는 매체를 통해 의상의 움직임과 감정을 영상 언어로 번역하여 관객에게 전달하며, 시각적 스토리텔링의 새로운 가능성을 탐구합니다.',
     profileImage: '/images/profile/Kim Bomin.webp',
     coverImage: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
-    instagramHandle: '@minectivbe',
+    instagramHandle: '@minective_',
     portfolioImages: [
       '/images/designers/kimbomin/portfolio/KakaoTalk_Photo_2025-06-28-13-18-36 001.jpeg',
       '/images/designers/kimbomin/portfolio/KakaoTalk_Photo_2025-06-28-13-18-36 002.jpeg',
