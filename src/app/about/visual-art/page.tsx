@@ -14,9 +14,6 @@ export default function VisualArtPage() {
   // Client-side only state
   const [isClient, setIsClient] = useState(false);
   
-  // CMS integration
-  const { isAuthenticated } = useSimpleAuth();
-  const { slot: visualArtSlot, currentFiles: galleryImages, updateFiles: updateGalleryImages } = useCMSSlot('about-visualart-gallery');
   
   // Visual art item metadata (titles and descriptions)
   const visualArtMeta = [
@@ -29,6 +26,10 @@ export default function VisualArtPage() {
     { title: 'ANALOG MEMORIES', description: '아날로그의 따뜻함', gridClass: 'col-span-6' },
     { title: 'COLLECTIVE VISION', description: '5인 5색의 시각적 하모니', gridClass: 'col-span-12' }
   ];
+
+  // Client-side state management
+  const { isAuthenticated } = useSimpleAuth();
+  const { slot: visualArtSlot, currentFiles: galleryImages, updateFiles: updateGalleryImages } = useCMSSlot('about-visualart-gallery');
 
   // Ensure client-side rendering
   useEffect(() => {
@@ -80,14 +81,12 @@ export default function VisualArtPage() {
   // 서버 사이드 렌더링 중에는 기본 레이아웃 표시
   if (!isClient) {
     return (
-      <>
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-6xl font-thin tracking-[0.2em] text-black mb-4">Visual Art</h1>
-            <p className="text-gray-600">Loading...</p>
-          </div>
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-6xl font-thin tracking-[0.2em] text-black mb-4">Visual Art</h1>
+          <p className="text-gray-600">Loading...</p>
         </div>
-      </>
+      </div>
     );
   }
 

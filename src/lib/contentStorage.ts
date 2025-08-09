@@ -150,7 +150,7 @@ export const defaultContent = {
   },
   about: {
     'page-title': 'About REDUX',
-    'page-subtitle': 'A collective of six fashion designers pushing boundaries'
+    'page-subtitle': 'A collective of five fashion designers pushing boundaries'
   },
   designers: {
     'page-title': 'Our Designers',

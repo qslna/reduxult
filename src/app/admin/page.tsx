@@ -4,7 +4,25 @@ import { useRouter } from 'next/navigation';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import SimpleLoginModal from '@/components/cms/SimpleLoginModal';
 import CMSBackendStatus from '@/components/admin/CMSBackendStatus';
-import { Shield, LogOut } from 'lucide-react';
+import { Shield, LogOut, Server } from 'lucide-react';
+import { ErrorBoundary } from 'react-error-boundary';
+
+// CMS 상태 컴포넌트 에러 시 대체 컴포넌트
+function CMSStatusFallback() {
+  return (
+    <div className="bg-gray-900 rounded-lg p-6">
+      <div className="flex items-center space-x-2 mb-4">
+        <Server className="w-5 h-5 text-blue-400" />
+        <h3 className="text-lg font-semibold text-white">CMS 백엔드 상태</h3>
+      </div>
+      <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-md p-3">
+        <p className="text-yellow-300 text-sm">
+          백엔드 상태를 확인할 수 없습니다. 로컬 저장소 모드로 작동 중입니다.
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export default function AdminPage() {
   const router = useRouter();
@@ -67,9 +85,11 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* CMS 백엔드 상태 */}
+        {/* CMS 백엔드 상태 - 에러 방지 */}
         <div className="mb-8">
-          <CMSBackendStatus />
+          <ErrorBoundary fallback={<CMSStatusFallback />}>
+            <CMSBackendStatus />
+          </ErrorBoundary>
         </div>
 
         {/* 추가 관리 기능들 */}

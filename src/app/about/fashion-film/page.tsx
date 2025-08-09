@@ -5,37 +5,22 @@ import { useCMSSlot } from '@/hooks/useCMSSlot';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
-import { useIsClient } from '@/components/ui/HydrationSafe';
 // import SubPageNavigation from '@/components/layout/SubPageNavigation'; // 제거됨 - layout.tsx에서 Navigation 렌더링
 
 // 최적화된 Fashion Film 페이지
 export default function FashionFilmPage() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return (
-      <>
-        <div className="min-h-screen bg-black flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-6xl font-thin tracking-[0.2em] text-white mb-4">Fashion Film</h1>
-            <p className="text-gray-400">Loading...</p>
-          </div>
-        </div>
-      </>
-    );
-  }
-
   return <FashionFilmContent />;
 }
 
 function FashionFilmContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFilm, setCurrentFilm] = useState('');
-  const isClient = useIsClient();
+  const [isClient, setIsClient] = useState(false);
+
+  // 클라이언트 사이드 렌더링 확인
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   
   // CMS integration
   const { isAuthenticated } = useSimpleAuth();
@@ -93,8 +78,6 @@ function FashionFilmContent() {
       defaultVideo: '1Hl594dd_MY714hZwmklTAPTc-pofe9bY'
     }
   ];
-
-  // useIsClient 훅으로 클라이언트 상태 관리
 
   useEffect(() => {
     if (!isClient) return;
@@ -176,7 +159,17 @@ function FashionFilmContent() {
     }
   };
 
-  // HydrationSafe 컴포넌트가 클라이언트 렌더링을 보장
+  // 클라이언트에서만 렌더링
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-6xl font-thin tracking-[0.2em] text-white mb-4">Fashion Film</h1>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

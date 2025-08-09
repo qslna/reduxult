@@ -128,10 +128,10 @@ export class GlobalErrorBoundary extends Component<Props, State> {
               className="mb-8"
             >
               <h1 className="text-4xl font-bold mb-4 font-['Playfair_Display']">
-                Something went wrong
+                일시적인 문제가 발생했습니다
               </h1>
               <p className="text-xl text-gray-400 mb-4">
-                We're sorry, but something unexpected happened.
+                페이지를 새로고침하거나 잠시 후 다시 시도해주세요.
               </p>
               
               {isDevelopment && this.state.error && (

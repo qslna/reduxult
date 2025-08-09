@@ -96,7 +96,7 @@ export default function Navigation() {
     if (mobileMenuActive) {
       closeMobileMenu();
     }
-  }, [pathname, mobileMenuActive, closeMobileMenu]);
+  }, [pathname, closeMobileMenu]); // Remove mobileMenuActive from dependencies to prevent infinite loops
 
   // 모든 페이지에서 네비게이션 렌더링 (사용자 요청에 따라 수정)
 

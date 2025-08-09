@@ -358,10 +358,10 @@ export default function ContactPage() {
                     <div className="flex-1">
                       <p className="text-xs tracking-[2px] uppercase text-white/50 mb-2 font-medium">Email</p>
                       <a 
-                        href="mailto:reduxsix@gmail.com"
+                        href="mailto:redux@gmail.com"
                         className="text-white font-['Inter'] font-medium text-sm"
                       >
-                        reduxsix@gmail.com
+                        redux@gmail.com
                       </a>
                     </div>
                   </div>

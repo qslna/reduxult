@@ -48,12 +48,17 @@ export default function CMSBackendStatus() {
         setIsBackendOnline(true);
         setLastChecked(new Date().toLocaleTimeString());
       } else {
-        throw new Error(response.error || 'Backend check failed');
+        // 백엔드가 없어도 앱이 작동하도록 graceful fallback
+        setIsBackendOnline(false);
+        setHealthData(null);
+        setError('백엔드 오프라인 - localStorage 모드로 작동 중');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      // 네트워크 에러나 기타 에러도 graceful 처리
       setIsBackendOnline(false);
       setHealthData(null);
+      setError('백엔드 연결 불가 - 로컬 저장소 모드');
+      console.warn('CMS Backend unavailable, using fallback mode:', err);
     } finally {
       setIsLoading(false);
     }
