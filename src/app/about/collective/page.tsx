@@ -491,6 +491,149 @@ export default function CollectivePage() {
         .revealed {
           animation: revealMember 0.8s ease forwards;
         }
+        
+        /* 완전한 모바일 최적화 */
+        @media (max-width: 768px) {
+          html, body {
+            overflow-x: hidden !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+          }
+          
+          .hero-section {
+            height: 100vh !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            padding: 80px 15px 0 !important;
+            overflow-x: hidden !important;
+          }
+          
+          .hero-title {
+            font-size: clamp(2.5rem, 8vw, 4rem) !important;
+            letter-spacing: 0.2em !important;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+          
+          .hero-subtitle {
+            font-size: clamp(0.8rem, 2.5vw, 1rem) !important;
+            letter-spacing: 0.15em !important;
+            margin-top: 1rem !important;
+            width: 100% !important;
+            max-width: 90vw !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+          }
+          
+          .members-section {
+            padding: 60px 15px !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+          }
+          
+          .members-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+          
+          .member-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 1.5rem !important;
+            margin-bottom: 1rem !important;
+          }
+          
+          .member-image {
+            width: 120px !important;
+            height: 120px !important;
+            margin: 0 auto 1rem !important;
+          }
+          
+          .member-name {
+            font-size: 1.25rem !important;
+            margin-bottom: 0.5rem !important;
+          }
+          
+          .member-role {
+            font-size: 0.875rem !important;
+            margin-bottom: 1rem !important;
+          }
+          
+          .member-bio {
+            font-size: 0.875rem !important;
+            line-height: 1.5 !important;
+          }
+          
+          .philosophy-section {
+            padding: 60px 15px !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+          }
+          
+          .philosophy-text h3 {
+            font-size: 1.5rem !important;
+            margin-bottom: 1rem !important;
+          }
+          
+          .philosophy-text p {
+            font-size: 0.875rem !important;
+            line-height: 1.6 !important;
+          }
+          
+          .cta-section {
+            padding: 60px 15px !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+          }
+          
+          .cta-section h2 {
+            font-size: clamp(1.5rem, 5vw, 2rem) !important;
+            margin-bottom: 2rem !important;
+            line-height: 1.3 !important;
+          }
+          
+          .cta-button {
+            padding: 15px 30px !important;
+            font-size: 0.875rem !important;
+            letter-spacing: 1px !important;
+            width: 100% !important;
+            max-width: 280px !important;
+            text-align: center !important;
+            display: block !important;
+            margin: 0 auto !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .hero-section {
+            padding: 60px 12px 0 !important;
+          }
+          
+          .hero-title {
+            font-size: clamp(2rem, 10vw, 3rem) !important;
+          }
+          
+          .members-section,
+          .philosophy-section,
+          .cta-section {
+            padding: 40px 12px !important;
+          }
+          
+          .member-image {
+            width: 100px !important;
+            height: 100px !important;
+          }
+          
+          .cta-button {
+            padding: 12px 24px !important;
+            font-size: 0.8rem !important;
+          }
+        }
       `}</style>
 
     </>

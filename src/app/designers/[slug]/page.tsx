@@ -284,18 +284,19 @@ export default function DesignerPage({ params }: Props) {
                 <div className="relative">
                   <div 
                     className="relative w-full max-w-[400px] mx-auto"
-                    style={{ aspectRatio: '3/4' }}
                   >
                     <OptimizedImage 
                       src={profileCMS.currentUrl || designer.profileImage}
                       alt={`${designer.name} Profile`}
-                      fill={true}
+                      width={400}
+                      height={500}
                       priority={true}
                       sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-out"
+                      className="w-full h-auto object-contain grayscale hover:grayscale-0 transition-all duration-700 ease-out"
                       style={{
                         filter: 'contrast(1.1) brightness(0.9)',
-                        clipPath: 'polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%)'
+                        maxHeight: '500px',
+                        minHeight: '300px'
                       }}
                     />
                     
@@ -679,10 +680,20 @@ export default function DesignerPage({ params }: Props) {
           
           .profile-image,
           .hero-section .relative:has(OptimizedImage) {
-            max-width: 280px !important;
+            max-width: 100% !important;
             width: 100% !important;
             margin: 0 auto !important;
             order: 0 !important;
+            padding: 0 20px !important;
+          }
+          
+          .profile-image img,
+          .hero-section .relative:has(OptimizedImage) img {
+            width: 100% !important;
+            height: auto !important;
+            object-fit: contain !important;
+            max-height: 400px !important;
+            min-height: 250px !important;
           }
           
           .portfolio-section {
