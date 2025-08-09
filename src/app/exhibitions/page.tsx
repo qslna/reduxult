@@ -23,12 +23,10 @@ export default function ExhibitionsPage() {
   const cinemode3CMS = useSimpleCMS('exhibition-cinemode-3', '/images/exhibitions/cinemode/3.jpg');
   const cinemode4CMS = useSimpleCMS('exhibition-cinemode-4', '/images/exhibitions/cinemode/4.jpg');
   
-  // THE ROOM OF [ ] 기본 이미지 - 사용자 지정
-  const defaultTheroomImage = '/images/exhibitions/theroom/qslna_mirror-box_installation_four_polished_steel_walls_refle_4ffced5d-0e8e-41c6-a7ad-8f08583b1c72_2.png';
-  
-  const theroom1CMS = useSimpleCMS('exhibition-theroom-1', defaultTheroomImage);
-  const theroom2CMS = useSimpleCMS('exhibition-theroom-2', defaultTheroomImage);
-  const theroom3CMS = useSimpleCMS('exhibition-theroom-3', defaultTheroomImage);
+  // THE ROOM OF [ ] 기본 이미지 - 전시 페이지는 기존 이미지 유지
+  const theroom1CMS = useSimpleCMS('exhibition-theroom-1', '/images/exhibitions/theroom/1.jpg');
+  const theroom2CMS = useSimpleCMS('exhibition-theroom-2', '/images/exhibitions/theroom/2.jpg');
+  const theroom3CMS = useSimpleCMS('exhibition-theroom-3', '/images/exhibitions/theroom/3.jpg');
   
 
   const openLightbox = (imageSrc: string, imageAlt: string) => {
@@ -198,13 +196,13 @@ export default function ExhibitionsPage() {
               {/* Featured Image */}
               <div className="relative order-2 lg:order-1">
                 <OptimizedImage 
-                  src={theroom1CMS.currentUrl || defaultTheroomImage}
+                  src={theroom1CMS.currentUrl || '/images/exhibitions/theroom/1.jpg'}
                   alt="THE ROOM OF [ ] Exhibition"
                   width={600}
                   height={400}
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="w-full h-auto object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.02]"
-                  onClick={() => openLightbox(theroom1CMS.currentUrl || defaultTheroomImage, 'THE ROOM OF [ ] Exhibition')}
+                  onClick={() => openLightbox(theroom1CMS.currentUrl || '/images/exhibitions/theroom/1.jpg', 'THE ROOM OF [ ] Exhibition')}
                 />
                 
                 {/* CMS 오버레이 */}
@@ -278,12 +276,12 @@ export default function ExhibitionsPage() {
               ].map(({ num, cms }) => (
                 <div key={num} className="relative aspect-square overflow-hidden">
                   <OptimizedImage 
-                    src={cms.currentUrl || defaultTheroomImage}
+                    src={cms.currentUrl || `/images/exhibitions/theroom/${num}.jpg`}
                     alt={`THE ROOM Gallery ${num}`}
                     fill={true}
                     sizes="(max-width: 768px) 50vw, 33vw"
                     className="object-cover cursor-pointer transition-all duration-[600ms] hover:scale-[1.1]"
-                    onClick={() => openLightbox(cms.currentUrl || defaultTheroomImage, `THE ROOM Gallery ${num}`)}
+                    onClick={() => openLightbox(cms.currentUrl || `/images/exhibitions/theroom/${num}.jpg`, `THE ROOM Gallery ${num}`)}
                   />
                   
                   {/* CMS 버튼 for admin */}

@@ -23,7 +23,7 @@ export default function ShowcaseSection() {
   
   // SimpleCMS 슬롯 - 전시 프리뷰 이미지들
   const cinemodeCMS = useSimpleCMS('main-exhibition-cinemode', '/images/exhibitions/cinemode/1.jpg');
-  const theroomCMS = useSimpleCMS('main-exhibition-theroom', '/images/exhibitions/theroom/1.jpg');
+  const theroomCMS = useSimpleCMS('main-exhibition-theroom', '/images/exhibitions/theroom/qslna_mirror-box_installation_four_polished_steel_walls_refle_4ffced5d-0e8e-41c6-a7ad-8f08583b1c72_2.png');
   
   // 디자이너 데이터
   const designers = [
