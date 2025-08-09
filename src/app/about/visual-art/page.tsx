@@ -30,6 +30,21 @@ export default function VisualArtPage() {
   // Client-side state management
   const { isAuthenticated } = useSimpleAuth();
   const { slot: visualArtSlot, currentFiles: galleryImages, updateFiles: updateGalleryImages } = useCMSSlot('about-visualart-gallery');
+  
+  // 기본 이미지들 - CMS가 비어있을 때 사용
+  const defaultImages = [
+    '/images/about/visual-art/Metamorphosis.png',
+    '/images/about/visual-art/Shadow Play.png',
+    '/images/about/visual-art/Texture Study.png',
+    '/images/about/visual-art/Color Theory.png',
+    '/images/about/visual-art/Form & Void.png',
+    '/images/about/visual-art/Digital Dreams.png',
+    '/images/about/visual-art/Analog Memories.png',
+    '/images/about/visual-art/Collective Vision.png'
+  ];
+  
+  // CMS 이미지가 없으면 기본 이미지 사용
+  const displayImages = galleryImages.length > 0 ? galleryImages : defaultImages;
 
   // Ensure client-side rendering
   useEffect(() => {
@@ -78,17 +93,7 @@ export default function VisualArtPage() {
   }, [isClient]);
 
 
-  // 서버 사이드 렌더링 중에는 기본 레이아웃 표시
-  if (!isClient) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-6xl font-thin tracking-[0.2em] text-black mb-4">Visual Art</h1>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  // 블랙스크린 방지 - SSR에서도 실제 콘텐츠 렌더링
 
   return (
     <>
@@ -131,7 +136,7 @@ export default function VisualArtPage() {
         
         <div className="visual-grid grid grid-cols-12 gap-10 max-w-[1600px] mx-auto max-[1024px]:grid-cols-6 max-[1024px]:gap-5 max-[768px]:grid-cols-1 max-[768px]:gap-5">
           {/* Dynamic Visual Art Items from CMS */}
-          {galleryImages.map((image, index) => {
+          {displayImages.map((image, index) => {
             const meta = visualArtMeta[index] || { 
               title: `VISUAL ART ${index + 1}`, 
               description: '시각적 표현의 새로운 가능성', 

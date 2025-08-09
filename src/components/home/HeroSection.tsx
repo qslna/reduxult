@@ -145,23 +145,32 @@ function HeroSection() {
         }}
       />
 
-      {/* Decorative elements */}
+      {/* Avant-garde line elements */}
       <div 
-        className="absolute top-[20%] right-[15%] w-[150px] h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"
-        style={{ transform: 'rotate(-15deg)' }}
+        className="absolute top-[18%] right-[12%] w-[200px] h-[0.5px] bg-gradient-to-r from-transparent via-white/20 to-transparent"
+        style={{ transform: 'rotate(-23deg) skewX(-15deg)' }}
       />
       <div 
-        className="absolute bottom-[30%] left-[10%] w-[60px] h-[60px] border border-white/20"
-        style={{ transform: 'rotate(25deg)', borderRadius: '30%' }}
+        className="absolute bottom-[25%] left-[8%] w-[180px] h-[0.5px] bg-gradient-to-l from-transparent via-white/15 to-transparent"
+        style={{ transform: 'rotate(17deg) skewY(12deg)' }}
+      />
+      <div 
+        className="absolute top-[65%] right-[20%] w-[120px] h-[0.5px] bg-gradient-to-r from-transparent via-white/10 to-transparent"
+        style={{ transform: 'rotate(-45deg)' }}
+      />
+      <div 
+        className="absolute top-[40%] left-[15%] w-[100px] h-[0.5px] bg-gradient-to-l from-transparent via-white/15 to-transparent"
+        style={{ transform: 'rotate(72deg) skewX(20deg)' }}
       />
 
-      {/* Main content */}
-      <div className="hero-content text-center z-10 px-6 max-w-4xl mx-auto">
+      {/* Main content with mix-blend-mode for transparency effect */}
+      <div className="hero-content text-center z-10 px-6 max-w-4xl mx-auto" style={{ mixBlendMode: 'screen' }}>
         <h1 
           className="hero-title font-['Playfair_Display'] font-bold text-white mb-8 tracking-[-0.02em] leading-[0.85]"
           style={{ 
             fontSize: 'clamp(3rem, 8vw, 8rem)',
-            textShadow: '0 0 30px rgba(255,255,255,0.1)'
+            textShadow: '0 0 30px rgba(255,255,255,0.1)',
+            mixBlendMode: 'difference'
           }}
         >
           REDUX
@@ -190,7 +199,7 @@ function HeroSection() {
           
           <button
             onClick={navigateToExhibitions}
-            className="group relative px-8 py-4 bg-amber-300 text-black uppercase tracking-[0.2em] text-sm font-medium transition-all duration-300 hover:bg-amber-400 hover:scale-105"
+            className="group relative px-8 py-4 bg-transparent border-2 border-white/60 text-white uppercase tracking-[0.2em] text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:border-white hover:scale-105"
           >
             View Exhibitions
           </button>
@@ -253,30 +262,46 @@ const HeroSectionWithStyles = () => (
   <>
     <HeroSection />
     <style jsx global>{`
-        /* Enhanced Mobile Responsive adjustments */
+        /* 완전히 새로운 모바일 최적화 */
         @media (max-width: 768px) {
+          .hero-section {
+            height: 100vh !important;
+            height: 100dvh !important;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left) !important;
+          }
+          
           .hero-content {
-            padding: 0 20px !important;
+            padding: 0 16px !important;
             max-width: 100% !important;
+            margin: 0 auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            height: 100% !important;
+            text-align: center !important;
           }
           
           .hero-title {
-            font-size: clamp(2rem, 10vw, 4rem) !important;
-            margin-bottom: 1rem !important;
-            line-height: 1.1 !important;
-            text-align: center !important;
+            font-size: clamp(2.5rem, 12vw, 4rem) !important;
+            margin-bottom: 1.5rem !important;
+            line-height: 0.9 !important;
+            font-weight: 700 !important;
+            letter-spacing: -0.02em !important;
           }
           
           .hero-subtitle {
-            font-size: 0.9rem !important;
-            margin-bottom: 1.5rem !important;
-            letter-spacing: 0.2em !important;
-            text-align: center !important;
+            font-size: clamp(0.75rem, 3vw, 1rem) !important;
+            margin-bottom: 2rem !important;
+            letter-spacing: 0.3em !important;
+            opacity: 0.9 !important;
           }
           
           .hero-description {
-            margin-bottom: 2rem !important;
-            text-align: center !important;
+            margin-bottom: 3rem !important;
+            max-width: 320px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
           }
           
           .hero-description p {
@@ -288,16 +313,22 @@ const HeroSectionWithStyles = () => (
           
           .hero-actions {
             flex-direction: column !important;
-            gap: 1rem !important;
+            gap: 1.5rem !important;
             align-items: center !important;
+            width: 100% !important;
           }
           
           .hero-actions button {
             width: 100% !important;
-            max-width: 260px !important;
-            padding: 14px 24px !important;
-            font-size: 0.85rem !important;
-            white-space: nowrap !important;
+            max-width: 280px !important;
+            padding: 16px 32px !important;
+            font-size: 0.9rem !important;
+            min-height: 56px !important;
+            border-width: 2px !important;
+            border-radius: 0 !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.15em !important;
+            transition: all 0.3s ease !important;
           }
           
           /* 모바일에서 비디오 컨트롤 위치 조정 - 간소화된 버전 */

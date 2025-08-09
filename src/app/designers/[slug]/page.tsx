@@ -147,9 +147,16 @@ export default function DesignerPage({ params }: Props) {
     }
   };
 
-  // 서버 사이드 렌더링 중이거나 로딩 중에는 null 반환 - 로딩 화면 없이
+  // 블랙스크린 방지 - 로딩 중이거나 디자이너 정보가 없으면 기본 화면
   if (!isClient || isLoading || !designer) {
-    return null;
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-thin tracking-[0.2em] text-white mb-4">REDUX</h1>
+          <p className="text-gray-400">{isLoading ? 'Loading...' : 'Designer not found'}</p>
+        </div>
+      </div>
+    );
   }
 
   return (

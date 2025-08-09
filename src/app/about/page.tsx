@@ -1,26 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { aboutGalleries } from '@/data/aboutGallery';
 import OptimizedImage from '@/components/ui/OptimizedImage';
-import HydrationSafe, { useIsClient } from '@/components/ui/HydrationSafe';
+// HydrationSafe import 제거
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useSimpleCMS } from '@/hooks/useSimpleCMS';
 import DirectCMS from '@/components/cms/DirectCMS';
 
-// 최적화된 About 페이지 - 로딩 문제 해결
+// 최적화된 About 페이지 - HydrationSafe 제거
 export default function AboutPage() {
-  return (
-    <HydrationSafe fallback={<div className="min-h-screen bg-black"></div>}>
-      <AboutContent />
-    </HydrationSafe>
-  );
-}
-
-function AboutContent() {
   const router = useRouter();
-  const isClient = useIsClient();
+  const [isClient, setIsClient] = useState(false);
   
   // CMS integration
   const { isAuthenticated } = useSimpleAuth();
@@ -41,7 +33,10 @@ function AboutContent() {
     'collective': collectiveCMS
   };
 
-  // useIsClient 훅으로 클라이언트 상태 관리
+  // 클라이언트 상태 관리
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (!isClient) return;

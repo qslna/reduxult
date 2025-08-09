@@ -87,21 +87,8 @@ export default function ShowcaseSection() {
     setIsClient(true);
   }, []);
 
-  // 서버 사이드 렌더링 중에는 기본 콘텐츠 반환
-  if (!isClient) {
-    return (
-      <section className="showcase-section py-20 px-10 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="showcase-grid grid grid-cols-2 md:grid-cols-4 gap-6 auto-rows-fr">
-            {/* Loading skeleton */}
-            {[...Array(8)].map((_, index) => (
-              <div key={index} className="aspect-square bg-gray-800 animate-pulse rounded"></div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
+  // 서버 사이드 렌더링에서도 실제 콘텐츠 표시
+  const actualDesigners = designers.slice(0, 5); // 5명만 표시
 
   return (
     <section className="showcase-section py-20 px-10 bg-black min-h-screen flex items-center">

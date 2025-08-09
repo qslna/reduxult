@@ -583,10 +583,15 @@ export default function Navigation() {
         .redux-nav__mobile-button,
         .redux-nav__mobile-item > a {
           font-family: 'Inter', sans-serif;
-          font-size: clamp(18px, 4vw, 22px);
-          font-weight: 300;
+          font-size: clamp(16px, 4.5vw, 20px);
+          font-weight: 400;
           color: var(--primary-white);
-          letter-spacing: 1.5px;
+          letter-spacing: 1.2px;
+          min-height: 54px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 12px 24px;
           text-transform: uppercase;
           background: none;
           border: none;

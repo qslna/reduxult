@@ -330,8 +330,8 @@ class CMSBackend {
       const result = await response.json();
       
       return {
-        success: response.ok,
-        data: result
+        success: response.ok && result.success,
+        data: result.data || result
       };
     } catch (error) {
       return {

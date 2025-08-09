@@ -47,11 +47,14 @@ export default function CMSBackendStatus() {
         setHealthData(response.data);
         setIsBackendOnline(true);
         setLastChecked(new Date().toLocaleTimeString());
+        setError(null);
+        console.log('✅ CMS 백엔드 상태 정상:', response.data);
       } else {
         // 백엔드가 없어도 앱이 작동하도록 graceful fallback
         setIsBackendOnline(false);
         setHealthData(null);
         setError('백엔드 오프라인 - localStorage 모드로 작동 중');
+        console.warn('⚠️ CMS 백엔드 응답 문제:', response);
       }
     } catch (err) {
       // 네트워크 에러나 기타 에러도 graceful 처리

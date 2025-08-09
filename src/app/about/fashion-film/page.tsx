@@ -159,17 +159,7 @@ function FashionFilmContent() {
     }
   };
 
-  // 클라이언트에서만 렌더링
-  if (!isClient) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-6xl font-thin tracking-[0.2em] text-white mb-4">Fashion Film</h1>
-          <p className="text-gray-400">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  // 블랙스크린 방지 - SSR에서도 콘텐츠 렌더링
 
   return (
     <>

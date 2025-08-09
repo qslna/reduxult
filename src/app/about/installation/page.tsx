@@ -183,10 +183,7 @@ export default function InstallationPage() {
     }
   ];
 
-  // 서버 사이드 렌더링 중에는 null 반환 - 로딩 화면 없이
-  if (!isClient) {
-    return null;
-  }
+  // 블랙스크린 방지 - SSR에서도 콘텐츠 렌더링
 
   return (
     <>
