@@ -177,7 +177,7 @@ function FashionFilmContent() {
           }}
         />
         
-        {/* Decorative elements */}
+        {/* Avant-garde decorative scratch lines */}
         <div 
           className="absolute top-[15%] right-[10%] w-[200px] h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"
           style={{ transform: 'rotate(-25deg)' }}
@@ -185,6 +185,28 @@ function FashionFilmContent() {
         <div 
           className="absolute bottom-[25%] left-[8%] w-[80px] h-[80px] border border-white/20"
           style={{ transform: 'rotate(15deg)', borderRadius: '30%' }}
+        />
+        
+        {/* 추가 아방가르드 선 요소들 */}
+        <div 
+          className="absolute top-[35%] left-[15%] w-[120px] h-[0.4px] bg-gradient-to-r from-white/10 via-white/20 to-transparent"
+          style={{ transform: 'rotate(-75deg) skewX(-20deg)' }}
+        />
+        <div 
+          className="absolute top-[60%] right-[25%] w-[90px] h-[0.3px] bg-gradient-to-l from-transparent via-white/15 to-white/8"
+          style={{ transform: 'rotate(42deg) skewY(15deg)' }}
+        />
+        <div 
+          className="absolute bottom-[45%] left-[35%] w-[60px] h-[0.2px] bg-white/12"
+          style={{ transform: 'rotate(-135deg) skewX(30deg)' }}
+        />
+        <div 
+          className="absolute top-[80%] right-[15%] w-[110px] h-[0.3px] bg-gradient-to-r from-white/6 via-transparent to-white/18"
+          style={{ transform: 'rotate(28deg) skewY(-25deg)' }}
+        />
+        <div 
+          className="absolute top-[20%] left-[50%] w-[40px] h-[0.15px] bg-white/8"
+          style={{ transform: 'rotate(-88deg)' }}
         />
         
         <div className="hero-content text-center z-10">

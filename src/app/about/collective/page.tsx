@@ -144,6 +144,16 @@ export default function CollectivePage() {
               <div className="member-number absolute top-5 left-5 text-5xl font-thin text-white opacity-50 z-10">
                 01
               </div>
+              
+              {/* 개별 멤버 카드용 아방가르드 선 */}
+              <div 
+                className="absolute top-[15%] right-[8%] w-[50px] h-[0.3px] bg-white/15"
+                style={{ transform: 'rotate(-45deg) skewX(-10deg)' }}
+              />
+              <div 
+                className="absolute bottom-[20%] left-[12%] w-[35px] h-[0.2px] bg-gradient-to-r from-transparent to-white/12"
+                style={{ transform: 'rotate(75deg)' }}
+              />
               <OptimizedImage 
                 src={kimBominCMS.currentUrl || "/images/profile/Kim Bomin.webp"} 
                 alt="Kim Bomin" 

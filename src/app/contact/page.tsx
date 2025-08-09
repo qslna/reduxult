@@ -358,10 +358,10 @@ export default function ContactPage() {
                     <div className="flex-1">
                       <p className="text-xs tracking-[2px] uppercase text-white/50 mb-2 font-medium">Email</p>
                       <a 
-                        href="mailto:redux@gmail.com"
+                        href="mailto:reduxfive@gmail.com"
                         className="text-white font-['Inter'] font-medium text-sm"
                       >
-                        redux@gmail.com
+                        reduxfive@gmail.com
                       </a>
                     </div>
                   </div>
@@ -431,7 +431,7 @@ export default function ContactPage() {
                 </p>
                 <div className="flex gap-4">
                   <a 
-                    href="https://instagram.com/redux.official" 
+                    href="https://instagram.com/redux.dnr" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="w-12 h-12 bg-white/10 border border-white/20 rounded-full flex items-center justify-center"

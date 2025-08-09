@@ -145,7 +145,7 @@ function HeroSection() {
         }}
       />
 
-      {/* Avant-garde line elements */}
+      {/* Avant-garde scratch-style irregular line elements - 확장된 버전 */}
       <div 
         className="absolute top-[18%] right-[12%] w-[200px] h-[0.5px] bg-gradient-to-r from-transparent via-white/20 to-transparent"
         style={{ transform: 'rotate(-23deg) skewX(-15deg)' }}
@@ -162,21 +162,75 @@ function HeroSection() {
         className="absolute top-[40%] left-[15%] w-[100px] h-[0.5px] bg-gradient-to-l from-transparent via-white/15 to-transparent"
         style={{ transform: 'rotate(72deg) skewX(20deg)' }}
       />
+      
+      {/* 추가된 아방가르드 선 요소들 */}
+      <div 
+        className="absolute top-[10%] left-[25%] w-[80px] h-[0.3px] bg-gradient-to-r from-white/8 via-white/25 to-transparent"
+        style={{ transform: 'rotate(-67deg) skewY(-8deg)' }}
+      />
+      <div 
+        className="absolute top-[55%] right-[35%] w-[140px] h-[0.4px] bg-gradient-to-l from-transparent via-white/12 to-white/8"
+        style={{ transform: 'rotate(38deg) skewX(25deg)' }}
+      />
+      <div 
+        className="absolute bottom-[40%] right-[8%] w-[60px] h-[0.3px] bg-gradient-to-r from-white/10 to-transparent"
+        style={{ transform: 'rotate(-82deg) skewX(-30deg)' }}
+      />
+      <div 
+        className="absolute top-[75%] left-[35%] w-[90px] h-[0.4px] bg-gradient-to-l from-transparent via-white/18 to-white/5"
+        style={{ transform: 'rotate(15deg) skewY(18deg)' }}
+      />
+      <div 
+        className="absolute top-[30%] right-[45%] w-[50px] h-[0.2px] bg-white/12"
+        style={{ transform: 'rotate(-125deg) skewX(40deg)' }}
+      />
+      <div 
+        className="absolute bottom-[15%] left-[20%] w-[110px] h-[0.3px] bg-gradient-to-r from-white/6 via-transparent to-white/14"
+        style={{ transform: 'rotate(55deg) skewY(-22deg)' }}
+      />
+      
+      {/* 매우 미세한 스크래치 라인들 */}
+      <div 
+        className="absolute top-[25%] left-[45%] w-[35px] h-[0.2px] bg-white/8"
+        style={{ transform: 'rotate(-95deg)' }}
+      />
+      <div 
+        className="absolute top-[85%] right-[25%] w-[70px] h-[0.2px] bg-gradient-to-r from-transparent to-white/10"
+        style={{ transform: 'rotate(110deg) skewX(-15deg)' }}
+      />
+      <div 
+        className="absolute top-[45%] left-[60%] w-[40px] h-[0.15px] bg-white/6"
+        style={{ transform: 'rotate(-155deg) skewY(35deg)' }}
+      />
 
-      {/* Main content with mix-blend-mode for transparency effect */}
-      <div className="hero-content text-center z-10 px-6 max-w-4xl mx-auto" style={{ mixBlendMode: 'screen' }}>
+      {/* Main content with enhanced transparency effects for video interaction */}
+      <div className="hero-content text-center z-10 px-6 max-w-4xl mx-auto">
         <h1 
-          className="hero-title font-['Playfair_Display'] font-bold text-white mb-8 tracking-[-0.02em] leading-[0.85]"
+          className="hero-title font-['Playfair_Display'] font-bold text-white mb-8 tracking-[-0.02em] leading-[0.85] transition-all duration-1000 ease-out"
           style={{ 
             fontSize: 'clamp(3rem, 8vw, 8rem)',
-            textShadow: '0 0 30px rgba(255,255,255,0.1)',
-            mixBlendMode: 'difference'
+            textShadow: '0 0 40px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+            mixBlendMode: 'screen',
+            filter: 'contrast(1.2) brightness(1.1)',
+            background: 'linear-gradient(45deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7), rgba(255,255,255,0.95))',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            color: 'transparent',
+            animation: 'textGlow 3s ease-in-out infinite alternate'
           }}
         >
           REDUX
         </h1>
         
-        <p className="hero-subtitle text-white/80 text-xl tracking-[0.3em] uppercase mb-12">
+        <p 
+          className="hero-subtitle text-white text-xl tracking-[0.3em] uppercase mb-12 transition-all duration-1000"
+          style={{ 
+            textShadow: '0 0 20px rgba(255,255,255,0.3), 0 0 40px rgba(255,255,255,0.15)',
+            mixBlendMode: 'overlay',
+            filter: 'brightness(1.1) contrast(1.1)',
+            animation: 'subtitleGlow 4s ease-in-out infinite alternate'
+          }}
+        >
           THE ROOM OF [ ]
         </p>
 
@@ -425,6 +479,43 @@ const HeroSectionWithStyles = () => (
           will-change: auto;
         }
         
+        /* 텍스트 투명 효과 애니메이션 */
+        @keyframes textGlow {
+          0% {
+            filter: contrast(1.2) brightness(1.1) saturate(1.1);
+            text-shadow: 0 0 40px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1);
+            background: linear-gradient(45deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7), rgba(255,255,255,0.95));
+          }
+          50% {
+            filter: contrast(1.4) brightness(1.3) saturate(1.2);
+            text-shadow: 0 0 50px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.2), 0 0 150px rgba(255,255,255,0.1);
+            background: linear-gradient(45deg, rgba(255,255,255,1), rgba(255,255,255,0.8), rgba(255,255,255,1));
+          }
+          100% {
+            filter: contrast(1.3) brightness(1.2) saturate(1.15);
+            text-shadow: 0 0 60px rgba(255,255,255,0.4), 0 0 120px rgba(255,255,255,0.25);
+            background: linear-gradient(45deg, rgba(255,255,255,0.95), rgba(255,255,255,0.75), rgba(255,255,255,0.98));
+          }
+        }
+
+        @keyframes subtitleGlow {
+          0% {
+            opacity: 0.8;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3), 0 0 40px rgba(255,255,255,0.15);
+            filter: brightness(1.1) contrast(1.1);
+          }
+          50% {
+            opacity: 0.95;
+            text-shadow: 0 0 30px rgba(255,255,255,0.45), 0 0 60px rgba(255,255,255,0.25), 0 0 90px rgba(255,255,255,0.1);
+            filter: brightness(1.3) contrast(1.2);
+          }
+          100% {
+            opacity: 0.9;
+            text-shadow: 0 0 25px rgba(255,255,255,0.4), 0 0 50px rgba(255,255,255,0.2);
+            filter: brightness(1.2) contrast(1.15);
+          }
+        }
+
         /* Reduce motion for users who prefer it */
         @media (prefers-reduced-motion: reduce) {
           * {

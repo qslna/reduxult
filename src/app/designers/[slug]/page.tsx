@@ -196,7 +196,7 @@ export default function DesignerPage({ params }: Props) {
             }}
           />
           
-          {/* Decorative elements */}
+          {/* Avant-garde decorative elements */}
           <div 
             className="absolute top-[20%] right-[15%] w-[150px] h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"
             style={{ transform: 'rotate(-15deg)' }}
@@ -204,6 +204,28 @@ export default function DesignerPage({ params }: Props) {
           <div 
             className="absolute bottom-[30%] left-[10%] w-[60px] h-[60px] border border-white/20"
             style={{ transform: 'rotate(25deg)', borderRadius: '30%' }}
+          />
+          
+          {/* 추가 아방가르드 스크래치 라인들 */}
+          <div 
+            className="absolute top-[35%] left-[25%] w-[100px] h-[0.4px] bg-gradient-to-r from-white/8 via-white/18 to-transparent"
+            style={{ transform: 'rotate(-62deg) skewX(-18deg)' }}
+          />
+          <div 
+            className="absolute top-[70%] right-[30%] w-[80px] h-[0.3px] bg-gradient-to-l from-transparent via-white/14 to-white/6"
+            style={{ transform: 'rotate(35deg) skewY(12deg)' }}
+          />
+          <div 
+            className="absolute bottom-[50%] right-[12%] w-[45px] h-[0.2px] bg-white/10"
+            style={{ transform: 'rotate(-105deg) skewX(25deg)' }}
+          />
+          <div 
+            className="absolute top-[85%] left-[40%] w-[90px] h-[0.3px] bg-gradient-to-r from-white/5 via-transparent to-white/15"
+            style={{ transform: 'rotate(22deg) skewY(-20deg)' }}
+          />
+          <div 
+            className="absolute top-[15%] left-[55%] w-[30px] h-[0.15px] bg-white/8"
+            style={{ transform: 'rotate(-78deg)' }}
           />
           
           <div className="relative z-10 h-full flex items-center px-10">

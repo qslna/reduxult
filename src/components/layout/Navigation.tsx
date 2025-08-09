@@ -68,13 +68,48 @@ export default function Navigation() {
     setActiveSubmenu(prev => prev === menu ? null : menu);
   }, []);
 
-  // Close mobile menu on navigation
+  // Close mobile menu on navigation - 완전히 강화된 버전
   const closeMobileMenu = useCallback(() => {
+    console.log('🔴 모바일 메뉴 닫기 호출됨'); // 디버그용
+    
+    // 즉시 상태 변경
     setMobileMenuActive(false);
+    setActiveSubmenu(null);
+    
+    // Body 스크롤 즉시 복원
     document.body.style.overflow = '';
     document.body.style.position = '';
     document.body.style.width = '';
-    setActiveSubmenu(null);
+    document.body.style.height = '';
+    document.body.classList.remove('mobile-menu-active');
+    
+    // DOM 조작으로 강제 닫기
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu) {
+      mobileMenu.classList.remove('redux-nav__mobile--active');
+      mobileMenu.style.display = 'none';
+      mobileMenu.style.transform = 'translateX(100%)';
+      mobileMenu.style.opacity = '0';
+      mobileMenu.style.visibility = 'hidden';
+      
+      // 약간의 딜레이 후 스타일 초기화
+      setTimeout(() => {
+        if (mobileMenu && !mobileMenuActive) {
+          mobileMenu.style.display = '';
+          mobileMenu.style.transform = '';
+          mobileMenu.style.opacity = '';
+          mobileMenu.style.visibility = '';
+        }
+      }, 300);
+    }
+    
+    // 토글 버튼도 비활성화
+    const toggleButton = document.querySelector('.redux-nav__toggle');
+    if (toggleButton) {
+      toggleButton.classList.remove('redux-nav__toggle--active');
+    }
+    
+    console.log('✅ 모바일 메뉴 완전히 닫힘');
   }, []);
 
   // ESC key handler for mobile menu
@@ -91,12 +126,45 @@ export default function Navigation() {
     }
   }, [mobileMenuActive, closeMobileMenu]);
 
-  // Close mobile menu on pathname change
+  // Close mobile menu on pathname change - 강화된 버전
   useEffect(() => {
     if (mobileMenuActive) {
+      console.log('🔄 경로 변경으로 인한 메뉴 닫기:', pathname);
       closeMobileMenu();
     }
   }, [pathname, closeMobileMenu]); // Remove mobileMenuActive from dependencies to prevent infinite loops
+
+  // 전역 클릭 이벤트로 메뉴 닫기 - 추가 안전장치
+  useEffect(() => {
+    if (!mobileMenuActive) return;
+
+    const handleGlobalClick = (event: Event) => {
+      const target = event.target as HTMLElement;
+      if (!target) return;
+      
+      // 메뉴 내부 클릭이 아닌 경우에만 닫기
+      const mobileMenu = document.getElementById('mobile-menu');
+      const isMenuClick = mobileMenu?.contains(target);
+      const isToggleClick = target.closest('.redux-nav__toggle');
+      
+      if (!isMenuClick && !isToggleClick) {
+        console.log('🔄 전역 클릭으로 인한 메뉴 닫기');
+        closeMobileMenu();
+      }
+    };
+
+    // 약간의 딜레이를 주어 토글 버튼 클릭과 충돌 방지
+    const timer = setTimeout(() => {
+      document.addEventListener('click', handleGlobalClick, { passive: true });
+      document.addEventListener('touchend', handleGlobalClick, { passive: true });
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('click', handleGlobalClick);
+      document.removeEventListener('touchend', handleGlobalClick);
+    };
+  }, [mobileMenuActive, closeMobileMenu]);
 
   // 모든 페이지에서 네비게이션 렌더링 (사용자 요청에 따라 수정)
 
@@ -510,21 +578,38 @@ export default function Navigation() {
           transform: rotate(-45deg) translateY(-9px);
         }
 
-        /* Mobile Menu */
+        /* Mobile Menu - 최종 강화 버전 */
         .redux-nav__mobile {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100vh;
-          z-index: 1000;
-          transform: translateX(100%);
-          transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-          display: none;
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          width: 100% !important;
+          height: 100vh !important;
+          height: 100dvh !important;
+          z-index: 9999 !important;
+          transform: translateX(100%) !important;
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+          display: none !important;
+          opacity: 0 !important;
+          visibility: hidden !important;
+          pointer-events: none !important;
         }
 
         .redux-nav__mobile--active {
-          transform: translateX(0);
+          display: block !important;
+          transform: translateX(0) !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+          pointer-events: auto !important;
+        }
+
+        /* 비활성화 상태 강제 적용 */
+        .redux-nav__mobile:not(.redux-nav__mobile--active) {
+          display: none !important;
+          transform: translateX(100%) !important;
+          opacity: 0 !important;
+          visibility: hidden !important;
+          pointer-events: none !important;
         }
 
         .redux-nav__mobile-content {
