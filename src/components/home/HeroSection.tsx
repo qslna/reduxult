@@ -2,9 +2,9 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import DirectCMS from '@/components/cms/DirectCMS';
+import { useSimpleCMS } from '../../hooks/useSimpleCMS';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
+import DirectCMS from '../cms/DirectCMS';
 
 /**
  * 최적화된 Hero Section - 로딩 문제 해결

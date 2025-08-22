@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import { Server, Database, AlertCircle, CheckCircle, RefreshCw, Cloud } from 'lucide-react';
-import { cmsBackend, CMSBackendResponse } from '@/lib/cms-backend';
+import { cmsBackend, CMSBackendResponse } from '../../lib/cms-backend';
 
 interface BackendHealthData {
   server: {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { X, Plus, Upload, Grid, Move } from 'lucide-react';
-import OptimizedImage from '@/components/ui/OptimizedImage';
+import OptimizedImage from '../ui/OptimizedImage';
 
 interface GalleryCMSProps {
   slotId: string;

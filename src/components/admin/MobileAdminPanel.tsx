@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
 import { useRouter } from 'next/navigation';
 
 /**
