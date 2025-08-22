@@ -1,64 +1,64 @@
-[20:19:04.724] Running build in Washington, D.C., USA (East) – iad1
-[20:19:04.725] Build machine configuration: 2 cores, 8 GB
-[20:19:04.751] Cloning github.com/qslna/reduxult (Branch: main, Commit: 1d8aa61)
-[20:19:35.529] Cloning completed: 30.778s
-[20:19:35.718] Restored build cache from previous deployment (8gSLD41yXBaVKffnCtwSUa2k5PGR)
-[20:19:36.317] Running "vercel build"
-[20:19:36.711] Vercel CLI 46.0.2
-[20:19:37.051] WARNING: You should not upload the `.next` directory.
-[20:19:37.055] Running "install" command: `npm install --legacy-peer-deps`...
-[20:19:40.849] 
-[20:19:40.849] removed 3 packages, and audited 264 packages in 3s
-[20:19:40.849] 
-[20:19:40.850] 66 packages are looking for funding
-[20:19:40.850]   run `npm fund` for details
-[20:19:40.853] 
-[20:19:40.854] 4 vulnerabilities (2 low, 2 high)
-[20:19:40.854] 
-[20:19:40.854] To address all issues, run:
-[20:19:40.854]   npm audit fix
-[20:19:40.854] 
-[20:19:40.854] Run `npm audit` for details.
-[20:19:40.887] Detected Next.js version: 15.4.6
-[20:19:40.888] Running "npm run build"
-[20:19:41.001] 
-[20:19:41.001] > redux-portfolio@1.0.0 build
-[20:19:41.001] > next build
-[20:19:41.002] 
-[20:19:41.759]    ▲ Next.js 15.4.6
-[20:19:41.760]    - Environments: .env.local
-[20:19:41.760]    - Experiments (use with caution):
-[20:19:41.760]      · webVitalsAttribution
-[20:19:41.760]      · optimizePackageImports
-[20:19:41.760] 
-[20:19:41.850]    Creating an optimized production build ...
-[20:19:48.909] Failed to compile.
-[20:19:48.909] 
-[20:19:48.910] ./src/app/about/collective/page.tsx
-[20:19:48.910] Module not found: Can't resolve '@/components/ui/OptimizedImage'
-[20:19:48.910] 
-[20:19:48.910] https://nextjs.org/docs/messages/module-not-found
-[20:19:48.910] 
-[20:19:48.910] ./src/app/about/collective/page.tsx
-[20:19:48.910] Module not found: Can't resolve '@/hooks/useSimpleCMS'
-[20:19:48.910] 
-[20:19:48.910] https://nextjs.org/docs/messages/module-not-found
-[20:19:48.910] 
-[20:19:48.910] ./src/app/about/collective/page.tsx
-[20:19:48.910] Module not found: Can't resolve '@/hooks/useSimpleAuth'
-[20:19:48.910] 
-[20:19:48.911] https://nextjs.org/docs/messages/module-not-found
-[20:19:48.911] 
-[20:19:48.911] ./src/app/about/collective/page.tsx
-[20:19:48.911] Module not found: Can't resolve '@/components/cms/DirectCMS'
-[20:19:48.911] 
-[20:19:48.911] https://nextjs.org/docs/messages/module-not-found
-[20:19:48.911] 
-[20:19:48.911] ./src/app/about/fashion-film/page.tsx
-[20:19:48.911] Module not found: Can't resolve '@/hooks/useCMSSlot'
-[20:19:48.911] 
-[20:19:48.911] https://nextjs.org/docs/messages/module-not-found
-[20:19:48.911] 
-[20:19:48.915] 
-[20:19:48.916] > Build failed because of webpack errors
-[20:19:48.951] Error: Command "npm run build" exited with 1
+[20:25:02.487] Running build in Washington, D.C., USA (East) – iad1
+[20:25:02.488] Build machine configuration: 2 cores, 8 GB
+[20:25:02.502] Cloning github.com/qslna/reduxult (Branch: main, Commit: da2a027)
+[20:25:26.717] Cloning completed: 24.214s
+[20:25:27.504] Restored build cache from previous deployment (8gSLD41yXBaVKffnCtwSUa2k5PGR)
+[20:25:28.135] Running "vercel build"
+[20:25:28.539] Vercel CLI 46.0.2
+[20:25:28.894] WARNING: You should not upload the `.next` directory.
+[20:25:28.899] Running "install" command: `npm install --legacy-peer-deps`...
+[20:25:31.821] 
+[20:25:31.822] removed 3 packages, and audited 264 packages in 3s
+[20:25:31.823] 
+[20:25:31.823] 66 packages are looking for funding
+[20:25:31.823]   run `npm fund` for details
+[20:25:31.825] 
+[20:25:31.826] 4 vulnerabilities (2 low, 2 high)
+[20:25:31.826] 
+[20:25:31.826] To address all issues, run:
+[20:25:31.826]   npm audit fix
+[20:25:31.827] 
+[20:25:31.827] Run `npm audit` for details.
+[20:25:31.856] Detected Next.js version: 15.4.6
+[20:25:31.857] Running "npm run build"
+[20:25:31.981] 
+[20:25:31.982] > redux-portfolio@1.0.0 build
+[20:25:31.982] > next build
+[20:25:31.982] 
+[20:25:32.764]    ▲ Next.js 15.4.6
+[20:25:32.764]    - Environments: .env.local
+[20:25:32.764]    - Experiments (use with caution):
+[20:25:32.764]      · webVitalsAttribution
+[20:25:32.765]      · optimizePackageImports
+[20:25:32.765] 
+[20:25:32.850]    Creating an optimized production build ...
+[20:25:39.810] Failed to compile.
+[20:25:39.811] 
+[20:25:39.811] ./src/app/about/collective/page.tsx
+[20:25:39.811] Module not found: Can't resolve '@/components/ui/OptimizedImage'
+[20:25:39.811] 
+[20:25:39.811] https://nextjs.org/docs/messages/module-not-found
+[20:25:39.812] 
+[20:25:39.812] ./src/app/about/collective/page.tsx
+[20:25:39.812] Module not found: Can't resolve '@/hooks/useSimpleCMS'
+[20:25:39.812] 
+[20:25:39.812] https://nextjs.org/docs/messages/module-not-found
+[20:25:39.812] 
+[20:25:39.812] ./src/app/about/collective/page.tsx
+[20:25:39.813] Module not found: Can't resolve '@/hooks/useSimpleAuth'
+[20:25:39.813] 
+[20:25:39.813] https://nextjs.org/docs/messages/module-not-found
+[20:25:39.813] 
+[20:25:39.813] ./src/app/about/collective/page.tsx
+[20:25:39.813] Module not found: Can't resolve '@/components/cms/DirectCMS'
+[20:25:39.813] 
+[20:25:39.813] https://nextjs.org/docs/messages/module-not-found
+[20:25:39.813] 
+[20:25:39.813] ./src/app/about/fashion-film/page.tsx
+[20:25:39.814] Module not found: Can't resolve '@/hooks/useCMSSlot'
+[20:25:39.814] 
+[20:25:39.814] https://nextjs.org/docs/messages/module-not-found
+[20:25:39.814] 
+[20:25:39.817] 
+[20:25:39.817] > Build failed because of webpack errors
+[20:25:39.851] Error: Command "npm run build" exited with 1
