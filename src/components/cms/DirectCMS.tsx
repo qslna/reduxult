@@ -25,7 +25,7 @@ interface DirectCMSProps {
 /**
  * 직접 편집 CMS - 세로칸 없이 이미지에 직접 버튼 표시
  */
-export default function DirectCMS({
+function DirectCMS({
   slotId,
   currentUrl,
   type = 'any',
@@ -165,3 +165,5 @@ export default function DirectCMS({
     </div>
   );
 }
+
+export default DirectCMS;

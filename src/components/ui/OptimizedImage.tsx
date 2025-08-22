@@ -29,7 +29,7 @@ interface OptimizedImageProps {
  * OptimizedImage component - Next.js Image 컴포넌트 래퍼
  * 이미지 최적화, 레이지 로딩, 그리고 일관된 스타일링 제공
  */
-export default function OptimizedImage({
+function OptimizedImage({
   src,
   alt,
   width,
@@ -293,6 +293,9 @@ export function BackgroundImage({
     </div>
   );
 }
+
+// Export the main component as default
+export default OptimizedImage;
 
 // Utility functions for image optimization
 export const imageUtils = {
