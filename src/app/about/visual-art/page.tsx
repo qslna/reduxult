@@ -6,7 +6,6 @@ import { useCMSSlot } from '@/hooks/useCMSSlot';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
-// import SubPageNavigation from '@/components/layout/SubPageNavigation'; // 제거됨 - layout.tsx에서 Navigation 렌더링
 
 // HTML redux5 about-visual-art.html과 완전 동일한 Visual Art 페이지 구현
 export default function VisualArtPage() {
@@ -97,11 +96,9 @@ export default function VisualArtPage() {
 
   return (
     <>
-      {/* Navigation - About 서브페이지용 통일된 네비게이션 - 제거됨: layout.tsx에서 렌더링됨 */}
-      {/* <SubPageNavigation pageTitle="Visual Art" /> */}
 
       {/* Hero Section - HTML 버전과 완전 동일 */}
-      <section className="hero-section h-screen relative flex items-center justify-center bg-[--gray-light] overflow-hidden pt-[100px]">
+      <section className="hero-section h-screen relative flex items-center justify-center bg-[--gray-light] overflow-hidden pt-[80px]">
         <div className="hero-bg absolute top-0 left-0 w-full h-full opacity-10">
           <div className="hero-pattern absolute w-[200%] h-[200%] -top-1/2 -left-1/2 animate-[patternMove_20s_linear_infinite]"
                style={{

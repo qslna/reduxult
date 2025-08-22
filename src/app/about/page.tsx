@@ -78,31 +78,8 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] border-b border-white/10">
-        <div className="flex justify-between items-center max-w-[1600px] mx-auto">
-          <div className="flex items-center gap-10">
-            <span 
-              className="text-xl cursor-pointer transition-all duration-[400ms] text-white hover:transform hover:-translate-x-[5px] hover:text-amber-300"
-              onClick={goHome}
-            >
-              ←
-            </span>
-            <span className="text-lg font-light tracking-[0.2em] text-amber-300 uppercase max-[768px]:hidden">
-              ABOUT
-            </span>
-          </div>
-          <div 
-            className="font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] text-white hover:opacity-70 hover:transform hover:scale-[1.02]"
-            onClick={goHome}
-          >
-            REDUX
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden pt-[100px]">
+      {/* Hero Section - Navigation 제거, 메인 Navigation 사용 */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden pt-[80px]">
         {/* Background texture */}
         <div 
           className="absolute inset-0 opacity-[0.03]"

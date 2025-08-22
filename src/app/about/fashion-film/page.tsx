@@ -5,7 +5,6 @@ import { useCMSSlot } from '@/hooks/useCMSSlot';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import MediaSlot from '@/components/cms/MediaSlot';
 import OptimizedImage from '@/components/ui/OptimizedImage';
-// import SubPageNavigation from '@/components/layout/SubPageNavigation'; // 제거됨 - layout.tsx에서 Navigation 렌더링
 
 // 최적화된 Fashion Film 페이지
 export default function FashionFilmPage() {
@@ -164,11 +163,9 @@ function FashionFilmContent() {
   return (
     <>
 
-      {/* Navigation - About 서브페이지용 - 제거됨: layout.tsx에서 렌더링됨 */}
-      {/* <SubPageNavigation pageTitle="Fashion Film" /> */}
 
       {/* Hero Section */}
-      <section className="hero-section h-screen relative flex items-center justify-center bg-black overflow-hidden pt-[100px]">
+      <section className="hero-section h-screen relative flex items-center justify-center bg-black overflow-hidden pt-[80px]">
         {/* Background texture */}
         <div 
           className="absolute inset-0 opacity-[0.05]"

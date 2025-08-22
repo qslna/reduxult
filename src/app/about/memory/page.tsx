@@ -6,7 +6,6 @@ import { useGalleryCMS } from '@/hooks/useSimpleCMS';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import DirectCMS from '@/components/cms/DirectCMS';
 import OptimizedImage from '@/components/ui/OptimizedImage';
-// import SubPageNavigation from '@/components/layout/SubPageNavigation'; // 제거됨 - layout.tsx에서 Navigation 렌더링
 
 // HTML redux6 about-memory.html과 완전 동일한 Memory 페이지 구현
 export default function MemoryPage() {
@@ -164,11 +163,9 @@ export default function MemoryPage() {
 
   return (
     <>
-      {/* Navigation - About 서브페이지용 통일된 네비게이션 - 제거됨: layout.tsx에서 렌더링됨 */}
-      {/* <SubPageNavigation pageTitle="Memory" /> */}
 
       {/* Professional Gallery - HTML 버전과 완전 동일 */}
-      <div className="gallery-container min-h-screen pt-[120px] pr-5 pb-[60px] pl-5 relative">
+      <div className="gallery-container min-h-screen pt-[80px] pr-5 pb-[60px] pl-5 relative">
         <div className="gallery-header text-center mb-20 opacity-0 transform translate-y-10 animate-[fadeInUp_1.2s_cubic-bezier(0.25,0.8,0.25,1)_forwards]">
           <h1 className="gallery-title font-['Playfair_Display'] font-bold text-white mb-5 [text-shadow:0_0_20px_rgba(255,255,255,0.1)]"
               style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', letterSpacing: '-0.02em', lineHeight: 0.9 }}>
