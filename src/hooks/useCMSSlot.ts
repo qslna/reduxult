@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getSlotById, type MediaSlot } from '@/lib/cms-config';
+import { getSlotById, type MediaSlot } from '../lib/cms-config';
 
 interface UseCMSSlotResult {
   slot: MediaSlot | undefined;

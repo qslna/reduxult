@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useCMSSlot } from '@/hooks/useCMSSlot';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import MediaSlot from '@/components/cms/MediaSlot';
-import OptimizedImage from '@/components/ui/OptimizedImage';
+import { useCMSSlot } from '../../../hooks/useCMSSlot';
+import { useSimpleAuth } from '../../../hooks/useSimpleAuth';
+import MediaSlot from '../../../components/cms/MediaSlot';
+import OptimizedImage from '../../../components/ui/OptimizedImage';
 
 // 최적화된 Fashion Film 페이지
 export default function FashionFilmPage() {
