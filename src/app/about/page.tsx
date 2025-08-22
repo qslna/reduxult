@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { aboutGalleries } from '@/data/aboutGallery';
-import OptimizedImage from '@/components/ui/OptimizedImage';
+import { aboutGalleries } from '../../data/aboutGallery';
+import OptimizedImage from '../../components/ui/OptimizedImage';
 // HydrationSafe import 제거
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import DirectCMS from '@/components/cms/DirectCMS';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
+import { useSimpleCMS } from '../../hooks/useSimpleCMS';
+import DirectCMS from '../../components/cms/DirectCMS';
 
 // 최적화된 About 페이지 - HydrationSafe 제거
 export default function AboutPage() {
