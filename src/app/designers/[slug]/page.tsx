@@ -162,25 +162,27 @@ export default function DesignerPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 backdrop-blur-[20px] z-[1000] transition-all duration-[400ms] border-b border-white/10">
+      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 z-[1000] transition-all duration-[400ms] border-b border-white/10">
         <div className="flex justify-between items-center max-w-[1600px] mx-auto">
           <div className="flex items-center gap-10">
-            <span 
-              className="text-xl cursor-pointer transition-all duration-[400ms] text-white hover:transform hover:-translate-x-[5px] hover:text-amber-300"
+            <button 
+              className="text-xl cursor-pointer transition-all duration-[400ms] text-white hover:transform hover:-translate-x-[5px] hover:text-amber-300 bg-transparent border-none outline-none focus:outline-none active:outline-none z-10 relative"
               onClick={goBack}
+              type="button"
             >
               ←
-            </span>
-            <span className="text-lg font-light tracking-[0.2em] text-amber-300 uppercase max-[768px]:hidden">
+            </button>
+            <span className="text-lg font-light tracking-[0.2em] text-amber-300 uppercase max-[768px]:hidden z-10 relative">
               {designer.name}
             </span>
           </div>
-          <div 
-            className="font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] text-white hover:opacity-70 hover:transform hover:scale-[1.02]"
+          <button 
+            className="font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] text-white hover:opacity-70 hover:transform hover:scale-[1.02] bg-transparent border-none outline-none focus:outline-none active:outline-none z-10 relative"
             onClick={goHome}
+            type="button"
           >
             REDUX
-          </div>
+          </button>
         </div>
       </nav>
 
@@ -235,7 +237,7 @@ export default function DesignerPage({ params }: Props) {
                 <div className="designer-info">
                   <div className="mb-8">
                     <h1 
-                      className="font-['Playfair_Display'] font-bold text-white mb-4 tracking-[-0.02em] leading-[0.9]"
+                      className="font-['Playfair_Display'] font-bold text-white mb-4 tracking-[-0.02em] leading-[0.9] w-full max-w-full"
                       style={{ 
                         fontSize: 'clamp(2.5rem, 6vw, 4rem)',
                         textShadow: '0 0 30px rgba(255,255,255,0.1)'
@@ -244,10 +246,10 @@ export default function DesignerPage({ params }: Props) {
                       {designer.name}
                     </h1>
                     <div className="mb-4">
-                      <p className="text-white text-xl font-medium tracking-[0.2em] uppercase mb-2">
+                      <p className="text-white text-xl font-medium tracking-[0.2em] uppercase mb-2 w-full max-w-full">
                         {designer.mainRole}
                       </p>
-                      <p className="text-amber-300 text-base tracking-[0.1em] uppercase">
+                      <p className="text-amber-300 text-base tracking-[0.1em] uppercase w-full max-w-full">
                         {designer.role}
                       </p>
                     </div>
@@ -255,23 +257,23 @@ export default function DesignerPage({ params }: Props) {
                   
                   {/* Bio */}
                   <div className="mb-8">
-                    <p className="text-white/80 text-lg leading-relaxed max-w-[500px] lg:max-w-[500px] md:max-w-full sm:max-w-full">
+                    <p className="text-white/80 text-lg leading-relaxed max-w-full lg:max-w-[500px] w-full">
                       {designer.bio}
                     </p>
                   </div>
                   
                   {/* Details */}
-                  <div className="space-y-4">
+                  <div className="space-y-4 w-full max-w-full">
                     {designer.instagramHandle && (
-                      <div>
-                        <span className="text-amber-300 text-sm tracking-[0.1em] uppercase mr-4">
+                      <div className="w-full max-w-full break-words">
+                        <span className="text-amber-300 text-sm tracking-[0.1em] uppercase mr-4 w-full max-w-full">
                           Instagram:
                         </span>
                         <a 
                           href={`https://instagram.com/${designer.instagramHandle.replace('@', '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white hover:text-amber-300 transition-colors duration-300"
+                          className="text-white hover:text-amber-300 transition-colors duration-300 w-full max-w-full break-words"
                         >
                           {designer.instagramHandle}
                         </a>
@@ -641,8 +643,18 @@ export default function DesignerPage({ params }: Props) {
             min-height: 100vh !important;
             width: 100vw !important;
             max-width: 100vw !important;
-            padding: 120px 15px 40px !important;
+            padding: 120px 15px 60px !important;
             overflow-x: hidden !important;
+            overflow-y: visible !important;
+          }
+          
+          /* Bio 섹션 특별 처리 */
+          .designer-info .mb-8 {
+            margin-bottom: 2rem !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            overflow: visible !important;
           }
           
           .hero-section .max-w-\\[1600px\\] {
@@ -666,10 +678,14 @@ export default function DesignerPage({ params }: Props) {
             width: 100% !important;
             max-width: 100% !important;
             order: 1 !important;
-            padding: 0 20px !important;
+            padding: 0 15px !important;
+            box-sizing: border-box !important;
           }
           
-          .designer-info p {
+          .designer-info p,
+          .designer-info .text-white\/80,
+          .designer-info .leading-relaxed,
+          .designer-info .text-lg {
             max-width: 100% !important;
             width: 100% !important;
             word-wrap: break-word !important;
@@ -677,9 +693,33 @@ export default function DesignerPage({ params }: Props) {
             overflow-wrap: break-word !important;
             white-space: normal !important;
             text-overflow: unset !important;
-            font-size: 16px !important;
-            line-height: 1.6 !important;
-            margin-bottom: 1rem !important;
+            font-size: 15px !important;
+            line-height: 1.7 !important;
+            margin-bottom: 1.5rem !important;
+            padding: 0 10px !important;
+            text-align: left !important;
+            display: block !important;
+            height: auto !important;
+            min-height: auto !important;
+            overflow: visible !important;
+            box-sizing: border-box !important;
+          }
+          
+          /* 모든 디자이너 역할 텍스트 */
+          .designer-info .uppercase,
+          .designer-info .tracking-\\[0\\.2em\\],
+          .designer-info .tracking-\\[0\\.1em\\] {
+            max-width: 100% !important;
+            width: 100% !important;
+            word-wrap: break-word !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            white-space: normal !important;
+            text-overflow: unset !important;
+            overflow: visible !important;
+            height: auto !important;
+            box-sizing: border-box !important;
+            padding: 0 10px !important;
           }
           
           .designer-name,
