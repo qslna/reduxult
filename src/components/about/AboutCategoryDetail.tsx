@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Grid, Plus, Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { Category } from '@/types';
 import EditableImage from '@/components/admin/EditableImage';
 import EditableVideo from '@/components/admin/EditableVideo';
@@ -199,17 +198,15 @@ export default function AboutCategoryDetail({ category }: Props) {
         {/* Title Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
           <div className="container">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="max-w-4xl"
+            <div
+              className="max-w-4xl animate-fade-in"
             >
               <h1 className="text-5xl md:text-7xl font-bold mb-4">{category.title}</h1>
               <p className="text-xl text-gray-300">{category.titleKo}</p>
               <p className="text-lg text-gray-400 mt-4 max-w-3xl">
                 {category.description}
               </p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
@@ -219,12 +216,10 @@ export default function AboutCategoryDetail({ category }: Props) {
         {/* Content Sections */}
         <div className="max-w-4xl mx-auto mb-20">
           {content.sections.map((section, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + index * 0.1 }}
-              className="mb-16 last:mb-0"
+              className="mb-16 last:mb-0 animate-fade-in-stagger"
+              style={{ animationDelay: `${0.2 + index * 0.1}s` }}
             >
               <h2 className="text-3xl font-bold mb-2">{section.title}</h2>
               <p className="text-lg text-gray-400 mb-6">{section.titleKo}</p>
@@ -236,27 +231,23 @@ export default function AboutCategoryDetail({ category }: Props) {
                   {section.contentKo}
                 </p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
         
         {/* Process Steps (if available) */}
         {content.processSteps && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mb-20"
+          <div
+            className="mb-20 animate-fade-in"
+            style={{ animationDelay: '0.4s' }}
           >
             <h2 className="text-3xl font-bold mb-12 text-center">Our Process</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {content.processSteps.map((step, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                  className="relative bg-zinc-900 p-8 rounded-xl overflow-hidden group"
+                  className="relative bg-zinc-900 p-8 rounded-xl overflow-hidden group animate-scale-in-stagger"
+                  style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                 >
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-pink-600" />
                   <div className="absolute top-4 right-4 text-7xl font-bold text-white/5 group-hover:text-white/10 transition-colors">
@@ -264,19 +255,17 @@ export default function AboutCategoryDetail({ category }: Props) {
                   </div>
                   <h3 className="text-xl font-semibold mb-4 relative z-10">{step.title}</h3>
                   <p className="text-gray-400 relative z-10">{step.description}</p>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
         )}
         
         {/* Video Section */}
         {(category.videoUrl || isAdmin) && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="mb-20"
+          <div
+            className="mb-20 animate-fade-in"
+            style={{ animationDelay: '0.6s' }}
           >
             <h2 className="text-3xl font-bold mb-8">Featured Video</h2>
             <div className="relative aspect-video overflow-hidden rounded-xl bg-zinc-900">
@@ -311,14 +300,13 @@ export default function AboutCategoryDetail({ category }: Props) {
                 </div>
               )}
             </div>
-          </motion.div>
+          </div>
         )}
         
         {/* Gallery Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
+        <div
+          className="animate-fade-in"
+          style={{ animationDelay: '0.8s' }}
         >
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -339,12 +327,10 @@ export default function AboutCategoryDetail({ category }: Props) {
           {categoryImages.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {categoryImages.map((image, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 + index * 0.05 }}
-                  className="relative aspect-[4/5] overflow-hidden rounded-xl bg-zinc-900 cursor-pointer group"
+                  className="relative aspect-[4/5] overflow-hidden rounded-xl bg-zinc-900 cursor-pointer group animate-scale-in-stagger"
+                  style={{ animationDelay: `${0.8 + index * 0.05}s` }}
                   onClick={() => {
                     setCurrentImageIndex(index);
                     setLightboxOpen(true);
@@ -368,23 +354,21 @@ export default function AboutCategoryDetail({ category }: Props) {
                   <div className="absolute top-4 left-4 w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                     {index + 1}
                   </div>
-                </motion.div>
+                </div>
               ))}
               
               {/* Add New Image Button (Admin Only) */}
               {isAdmin && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 + categoryImages.length * 0.05 }}
+                <button
                   onClick={handleAddImage}
-                  className="relative aspect-[4/5] overflow-hidden rounded-xl bg-zinc-900 border-2 border-dashed border-gray-700 hover:border-gray-500 transition-colors flex items-center justify-center group"
+                  className="relative aspect-[4/5] overflow-hidden rounded-xl bg-zinc-900 border-2 border-dashed border-gray-700 hover:border-gray-500 transition-colors flex items-center justify-center group animate-scale-in-stagger"
+                  style={{ animationDelay: `${0.8 + categoryImages.length * 0.05}s` }}
                 >
                   <div className="text-center">
                     <Plus size={48} className="mx-auto mb-2 text-gray-600 group-hover:text-gray-400 transition-colors" />
                     <span className="text-sm text-gray-600 group-hover:text-gray-400 transition-colors">Add Image</span>
                   </div>
-                </motion.button>
+                </button>
               )}
             </div>
           ) : (
@@ -402,7 +386,7 @@ export default function AboutCategoryDetail({ category }: Props) {
               )}
             </div>
           )}
-        </motion.div>
+        </div>
       </div>
       
       {/* Lightbox */}

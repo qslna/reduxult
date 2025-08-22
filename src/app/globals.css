@@ -255,6 +255,116 @@
     }
   }
 
+  /* === 프레이머 모션 대체 애니메이션 === */
+  
+  /* 기본 페이드인 */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 스케일 인 애니메이션 */
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* 스태거 애니메이션 (지연 포함) */
+  @keyframes fadeInStagger {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 스케일 인 스태거 */
+  @keyframes scaleInStagger {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* 슬라이드 인 라이트 */
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(300px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* 지연된 스케일 인 */
+  @keyframes scaleInDelayed {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    50% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* === 애니메이션 클래스 === */
+  
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-fade-in-stagger {
+    animation: fadeInStagger 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-scale-in-stagger {
+    animation: scaleInStagger 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-scale-in-delayed {
+    animation: scaleInDelayed 1.5s ease-out forwards;
+    opacity: 0;
+  }
+
   /* 3D 플로팅 애니메이션 */
   @keyframes float3d {
     0%, 100% {

@@ -345,7 +345,6 @@ export const splitPoints = {
 
   // 라이브러리별 분할
   libraries: {
-    framerMotion: () => import('framer-motion'),
     animations: () => import('@/lib/animations')
   }
 };

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 interface LightboxProps {
   images: string[];
@@ -109,13 +108,10 @@ export default function Lightbox({
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
+    <>
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm"
+        <div
+          className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm animate-fade-in"
           onClick={onClose}
         >
           {/* Controls */}
@@ -155,7 +151,7 @@ export default function Lightbox({
           </div>
 
           {/* Image */}
-          <motion.div
+          <div
             className="absolute inset-0 flex items-center justify-center p-16"
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleMouseDown}
@@ -164,14 +160,11 @@ export default function Lightbox({
             onMouseLeave={handleMouseUp}
             style={{ cursor: isDragging ? 'grabbing' : scale > 1 ? 'grab' : 'default' }}
           >
-            <motion.div
-              animate={{
-                scale,
-                x: position.x,
-                y: position.y,
+            <div
+              className="relative w-full h-full transition-transform duration-200 ease-out"
+              style={{
+                transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`
               }}
-              transition={{ type: 'spring', damping: 20 }}
-              className="relative w-full h-full"
             >
               {imageError ? (
                 <div className="w-full h-full flex items-center justify-center text-white">
@@ -215,8 +208,8 @@ export default function Lightbox({
                   />
                 </>
               )}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Navigation */}
           {onPrevious && images.length > 1 && (
@@ -249,15 +242,13 @@ export default function Lightbox({
           <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
             <div className="flex items-center justify-center gap-2 overflow-x-auto py-2">
               {images.map((image, index) => (
-                <motion.button
+                <button
                   key={index}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleThumbnailClick(index);
                   }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`relative w-16 h-16 rounded overflow-hidden transition-all cursor-pointer ${
+                  className={`relative w-16 h-16 rounded overflow-hidden transition-all cursor-pointer hover:scale-105 active:scale-95 ${
                     index === currentIndex
                       ? 'ring-2 ring-white ring-offset-2 ring-offset-black'
                       : 'opacity-50 hover:opacity-100'
@@ -270,12 +261,12 @@ export default function Lightbox({
                     className="object-cover"
                     sizes="64px"
                   />
-                </motion.button>
+                </button>
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

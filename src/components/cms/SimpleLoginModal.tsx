@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { X, Lock, Eye, EyeOff } from 'lucide-react';
 
 interface SimpleLoginModalProps {
@@ -43,24 +42,18 @@ export default function SimpleLoginModal({ isOpen, onClose, onLogin }: SimpleLog
   };
 
   return (
-    <AnimatePresence>
+    <>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           {/* 배경 오버레이 */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade-in"
             onClick={handleClose}
           />
 
           {/* 모달 */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 w-full max-w-md mx-4"
+          <div
+            className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 w-full max-w-md mx-4 animate-scale-in"
           >
             {/* 닫기 버튼 */}
             <button
@@ -138,9 +131,9 @@ export default function SimpleLoginModal({ isOpen, onClose, onLogin }: SimpleLog
                 💡 관리자 비밀번호를 모르시면 개발자에게 문의하세요
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

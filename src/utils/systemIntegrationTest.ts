@@ -115,11 +115,11 @@ export function checkSystemComponents(): SystemHealthCheck[] {
       });
   }
   
-  // 프레이머 모션 애니메이션
+  // CSS 애니메이션
   try {
-    const animatedElements = document.querySelectorAll('[data-framer-motion], .motion-div');
+    const animatedElements = document.querySelectorAll('[class*="animate-"], .animate-fade-in, .animate-scale-in');
     checks.push({
-      component: 'Framer Motion',
+      component: 'CSS Animations',
       status: 'HEALTHY',
       message: `${animatedElements.length}개 애니메이션 요소 감지됨`,
       details: { count: animatedElements.length },

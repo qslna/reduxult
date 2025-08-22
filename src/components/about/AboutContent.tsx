@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { CATEGORIES } from '@/utils/constants';
 import { ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
 import EditableImage from '@/components/admin/EditableImage';
 
 interface CategoryState {
@@ -63,11 +62,10 @@ export default function AboutContent() {
               const href = `/about/${category.id}`;
               
               return (
-                <motion.div
+                <div
                   key={category.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="animate-fade-in-stagger"
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <Link
                     href={href}
@@ -102,7 +100,7 @@ export default function AboutContent() {
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </div>
               );
             })}
           </div>

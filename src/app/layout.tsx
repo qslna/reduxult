@@ -1,17 +1,17 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+// import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import '../styles/mobile-optimization.css';
 import { baseMetadata, generateOrganizationStructuredData, generateWebsiteStructuredData } from '@/lib/seo';
 import { DEFAULT_SEO, seoPerformanceOptimization } from '@/lib/seo-optimization';
 
-const inter = Inter({ 
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-  preload: true,
-});
+// const inter = Inter({ 
+//   subsets: ['latin'],
+//   display: 'swap',
+//   variable: '--font-inter',
+//   preload: true,
+// });
 
 export const metadata: Metadata = baseMetadata;
 
@@ -25,9 +25,9 @@ export const viewport: Viewport = {
 
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
-import PageTransition from '@/components/ui/PageTransition';
-import InitialLoadingScreen from '@/components/ui/InitialLoadingScreen';
-import GlobalErrorBoundary from '@/components/ui/GlobalErrorBoundary';
+// import PageTransition from '@/components/ui/PageTransition';
+// import InitialLoadingScreen from '@/components/ui/InitialLoadingScreen';
+// import GlobalErrorBoundary from '@/components/ui/GlobalErrorBoundary';
 import MobileAdminPanel from '@/components/admin/MobileAdminPanel';
 import SkipToContent from '@/components/ui/SkipToContent';
 import ClientMobileOptimizer from '@/components/ui/ClientMobileOptimizer';
@@ -42,7 +42,7 @@ export default function RootLayout({
   const websiteStructuredData = generateWebsiteStructuredData();
 
   return (
-    <html lang="ko" className={inter.variable}>
+    <html lang="ko" className="font-sans">
       <head>
         {/* 파비콘 및 앱 아이콘 */}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -140,20 +140,20 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-black text-white overflow-x-hidden">
         <SkipToContent />
-        <InitialLoadingScreen />
+        {/* <InitialLoadingScreen /> */}
         <ClientMobileOptimizer />
-        <GlobalErrorBoundary>
+        {/* <GlobalErrorBoundary> */}
           <Navigation />
           <main id="main-content" tabIndex={-1}>
-            <PageTransition>
+            {/* <PageTransition> */}
               {children}
-            </PageTransition>
+            {/* </PageTransition> */}
           </main>
           <Footer />
           <MobileAdminPanel />
           {/* AI 검색 기능만 유지 */}
           <AISearch />
-        </GlobalErrorBoundary>
+        {/* </GlobalErrorBoundary> */}
         
         {/* 전역 에러 처리 시스템 */}
         <Script

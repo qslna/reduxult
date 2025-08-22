@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, X, Trash2, Eye, EyeOff, LogOut } from 'lucide-react';
 import { useSimpleAuth } from '@/hooks/useSimpleAuth';
 import { useAllCMSSlots } from '@/hooks/useSimpleCMS';
@@ -60,21 +59,10 @@ export default function SimpleAdminPanel({ isOpen, onClose }: SimpleAdminPanelPr
   };
 
   return (
-    <AnimatePresence>
+    <>
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-        >
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'tween', duration: 0.3 }}
-            className="absolute right-0 top-0 h-full w-full max-w-lg bg-white shadow-xl overflow-hidden"
-          >
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm animate-fade-in">
+          <div className="absolute right-0 top-0 h-full w-full max-w-lg bg-white shadow-xl overflow-hidden animate-slide-in-right">
             {/* 헤더 */}
             <div className="sticky top-0 bg-white border-b border-gray-200 p-4">
               <div className="flex items-center justify-between mb-4">
@@ -147,11 +135,9 @@ export default function SimpleAdminPanel({ isOpen, onClose }: SimpleAdminPanelPr
                 </div>
               ) : (
                 Object.entries(allSlots).map(([slotId, url]) => (
-                  <motion.div
+                  <div
                     key={slotId}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+                    className="bg-gray-50 rounded-lg p-4 border border-gray-200 animate-fade-in"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1 min-w-0">
@@ -194,13 +180,13 @@ export default function SimpleAdminPanel({ isOpen, onClose }: SimpleAdminPanelPr
                         )}
                       </div>
                     )}
-                  </motion.div>
+                  </div>
                 ))
               )}
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

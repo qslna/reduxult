@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, Upload, Video, Image as ImageIcon, Loader2, Check, Trash2, CheckSquare } from 'lucide-react';
 import type { MediaSlot as MediaSlotType } from '@/lib/cms-config';
 
@@ -277,12 +276,9 @@ export default function MediaSlot({
           {/* Instagram 스타일 그리드 */}
           <div className={`${slot.type === 'gallery' ? 'grid grid-cols-3 gap-1' : ''}`}>
             {currentFiles.map((url, index) => (
-              <motion.div
+              <div
                 key={index}
-                className="relative group"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
+                className="relative group animate-fade-in"
               >
                 <div 
                   className={`relative overflow-hidden rounded-lg ${
@@ -317,7 +313,7 @@ export default function MediaSlot({
                     </button>
                   )}
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

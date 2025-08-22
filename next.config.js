@@ -38,7 +38,6 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: [
-      'framer-motion', 
       'lucide-react', 
       '@radix-ui/react-dialog', 
       '@radix-ui/react-toast'
@@ -58,9 +57,6 @@ const nextConfig = {
   compress: true,
   // modularizeImports를 experimental 밖으로 이동
   modularizeImports: {
-    'framer-motion': {
-      transform: 'framer-motion/dist/es/{{member}}',
-    },
     'lucide-react': {
       transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
     },

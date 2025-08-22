@@ -22,7 +22,6 @@
     "autoprefixer": "^10.4.20",
     "clsx": "^2.1.1",
     "cookie": "^1.0.2",
-    "framer-motion": "^11.15.0",
     "imagekit": "^5.2.0",
     "imagekit-javascript": "^4.0.1",
     "lucide-react": "^0.478.0",

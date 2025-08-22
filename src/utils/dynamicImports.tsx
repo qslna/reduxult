@@ -3,11 +3,6 @@
  * 필요할 때만 라이브러리를 로드하여 초기 번들 크기를 줄임
  */
 
-// Framer Motion 동적 import
-export const loadFramerMotion = () => {
-  return import('framer-motion');
-};
-
 // Lucide React 아이콘 동적 import
 export const loadLucideIcons = () => {
   return import('lucide-react');
@@ -16,12 +11,6 @@ export const loadLucideIcons = () => {
 // Animation utilities 동적 import
 export const loadAnimations = () => {
   return import('@/lib/animations');
-};
-
-// 특정 Framer Motion 컴포넌트들
-export const loadMotionComponents = async () => {
-  const { motion, AnimatePresence } = await loadFramerMotion();
-  return { motion, AnimatePresence };
 };
 
 // 특정 아이콘들을 동적으로 로드

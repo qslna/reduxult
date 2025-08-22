@@ -6,7 +6,6 @@
 'use client';
 
 import { useState, useEffect, createContext, useContext, useCallback, ReactNode } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertCircle, Info, X } from 'lucide-react';
 
 export type NotificationType = 'success' | 'error' | 'info' | 'warning';
@@ -118,11 +117,8 @@ function NotificationItem({ notification, onRemove }: {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 300, scale: 0.3 }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, x: 300, scale: 0.5, transition: { duration: 0.2 } }}
-      className={`${getBackgroundColor()} border rounded-lg p-4 shadow-lg backdrop-blur-sm max-w-sm w-full`}
+    <div
+      className={`${getBackgroundColor()} border rounded-lg p-4 shadow-lg backdrop-blur-sm max-w-sm w-full animate-slide-in-right`}
       role="alert"
       aria-live={notification.type === 'error' ? 'assertive' : 'polite'}
     >
@@ -150,7 +146,7 @@ function NotificationItem({ notification, onRemove }: {
           <X className="w-4 h-4" />
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -160,15 +156,13 @@ function NotificationContainer() {
 
   return (
     <div className="fixed top-4 right-4 z-50 space-y-2">
-      <AnimatePresence mode="popLayout">
-        {notifications.map(notification => (
-          <NotificationItem
-            key={notification.id}
-            notification={notification}
-            onRemove={removeNotification}
-          />
-        ))}
-      </AnimatePresence>
+      {notifications.map(notification => (
+        <NotificationItem
+          key={notification.id}
+          notification={notification}
+          onRemove={removeNotification}
+        />
+      ))}
     </div>
   );
 }

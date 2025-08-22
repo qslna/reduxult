@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import LazyLightbox from './LazyLightbox';
 import LazyEditableImage from '@/components/admin/LazyEditableImage';
 
@@ -50,12 +49,10 @@ export default function ImageGallery({
     <>
       <div className={`grid grid-cols-1 ${gridCols[columns]} gap-${gap}`}>
         {galleryImages.map((image, index) => (
-          <motion.div
+          <div
             key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="relative aspect-[3/4] overflow-hidden rounded-lg bg-zinc-900 cursor-pointer group"
+            className="relative aspect-[3/4] overflow-hidden rounded-lg bg-zinc-900 cursor-pointer group animate-fade-in-stagger"
+            style={{ animationDelay: `${index * 0.1}s` }}
             onClick={() => {
               setCurrentIndex(index);
               setLightboxOpen(true);
@@ -93,7 +90,7 @@ export default function ImageGallery({
                 </svg>
               </div>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 

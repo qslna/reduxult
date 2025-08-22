@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, Search, Filter, BarChart3, X, LogOut } from 'lucide-react';
 import { mediaSlots, getCMSStats, getSlotsByPriority, getSlotsByCategory, type MediaSlot as MediaSlotType } from '@/lib/cms-config';
 import MediaSlot from './MediaSlot';
@@ -66,9 +65,9 @@ export default function CMSManager({ isOpen, onClose }: CMSManagerProps) {
   }
 
   return (
-    <AnimatePresence>
+    <>
       {isOpen && (
-        <div className="fixed inset-0 z-50 bg-white dark:bg-gray-900">
+        <div className="fixed inset-0 z-50 bg-white dark:bg-gray-900 animate-fade-in">
           {/* 헤더 */}
           <div className="sticky top-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-10">
             <div className="flex items-center justify-between px-6 py-4">
@@ -114,11 +113,8 @@ export default function CMSManager({ isOpen, onClose }: CMSManagerProps) {
 
             {/* 통계 */}
             {showStats && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700"
+              <div
+                className="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 animate-fade-in"
               >
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                   <div className="bg-white dark:bg-gray-700 rounded-lg p-3">
@@ -141,7 +137,7 @@ export default function CMSManager({ isOpen, onClose }: CMSManagerProps) {
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {/* 필터 및 검색 */}
@@ -211,11 +207,9 @@ export default function CMSManager({ isOpen, onClose }: CMSManagerProps) {
                   if (!groupedSlots[priority]?.length) return null;
                   
                   return (
-                    <motion.div
+                    <div
                       key={priority}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: priority * 0.1 }}
+                      className="animate-fade-in"
                     >
                       <h2 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
                         priority === 1 ? 'text-red-600 dark:text-red-400' :
@@ -247,7 +241,7 @@ export default function CMSManager({ isOpen, onClose }: CMSManagerProps) {
                           />
                         ))}
                       </div>
-                    </motion.div>
+                    </div>
                   );
                 })}
               </div>
@@ -255,6 +249,6 @@ export default function CMSManager({ isOpen, onClose }: CMSManagerProps) {
           </div>
         </div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

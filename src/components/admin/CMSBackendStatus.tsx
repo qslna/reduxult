@@ -6,7 +6,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Server, Database, AlertCircle, CheckCircle, RefreshCw, Cloud } from 'lucide-react';
 import { cmsBackend, CMSBackendResponse } from '@/lib/cms-backend';
 
@@ -92,24 +91,20 @@ export default function CMSBackendStatus() {
 
   if (isLoading && !healthData) {
     return (
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="bg-gray-900 rounded-lg p-6"
+      <div 
+        className="bg-gray-900 rounded-lg p-6 animate-fade-in"
       >
         <div className="flex items-center space-x-2 mb-4">
           <RefreshCw className="w-5 h-5 text-blue-400 animate-spin" />
           <h3 className="text-lg font-semibold text-white">백엔드 상태 확인 중...</h3>
         </div>
-      </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-gray-900 rounded-lg p-6 space-y-4"
+    <div
+      className="bg-gray-900 rounded-lg p-6 space-y-4 animate-fade-in"
     >
       {/* 헤더 */}
       <div className="flex items-center justify-between">
@@ -248,6 +243,6 @@ export default function CMSBackendStatus() {
           <li>• 백엔드 오프라인 시 데이터 손실 위험이 있습니다</li>
         </ul>
       </div>
-    </motion.div>
+    </div>
   );
 }
