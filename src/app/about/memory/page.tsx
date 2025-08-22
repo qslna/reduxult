@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useGalleryCMS } from '@/hooks/useSimpleCMS';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import DirectCMS from '@/components/cms/DirectCMS';
-import OptimizedImage from '@/components/ui/OptimizedImage';
+import { useGalleryCMS } from '../../../hooks/useSimpleCMS';
+import { useSimpleAuth } from '../../../hooks/useSimpleAuth';
+import DirectCMS from '../../../components/cms/DirectCMS';
+import OptimizedImage from '../../../components/ui/OptimizedImage';
 
 // HTML redux6 about-memory.html과 완전 동일한 Memory 페이지 구현
 export default function MemoryPage() {

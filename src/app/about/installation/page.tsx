@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import OptimizedImage from '@/components/ui/OptimizedImage';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import DirectCMS from '@/components/cms/DirectCMS';
+import OptimizedImage from '../../../components/ui/OptimizedImage';
+import { useSimpleAuth } from '../../../hooks/useSimpleAuth';
+import { useSimpleCMS } from '../../../hooks/useSimpleCMS';
+import DirectCMS from '../../../components/cms/DirectCMS';
 
 // HTML redux6 about-installation.html과 완전 동일한 Process 페이지 구현
 export default function InstallationPage() {
