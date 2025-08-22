@@ -548,7 +548,6 @@ export default function DesignerPage({ params }: Props) {
           /* Navigation 모바일 최적화 */
           nav {
             padding: 15px 20px !important;
-            backdrop-filter: blur(10px) !important;
           }
           
           .hero-section {

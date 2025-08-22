@@ -37,19 +37,6 @@ export default function ContactPage() {
   });
 
   useEffect(() => {
-    // HTML 버전과 동일한 스크롤 네비게이션 효과
-    const handleScroll = () => {
-      const navbar = document.getElementById('navbar');
-      if (navbar) {
-        if (window.scrollY > 50) {
-          navbar.classList.add('scrolled');
-        } else {
-          navbar.classList.remove('scrolled');
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
 
     // 모바일 감지 및 iOS 폼 입력 줄 수정
     const mobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -66,10 +53,6 @@ export default function ContactPage() {
     }
 
     // 애니메이션은 이제 Framer Motion으로 처리됨
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
   }, []);
 
   // HTML 버전과 동일한 내비게이션 함수들
@@ -206,31 +189,9 @@ export default function ContactPage() {
 
   return (
     <>
-      {/* Professional Navigation */}
-      <nav className="fixed top-0 left-0 w-full py-5 px-10 bg-black/95 z-[1000] transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] border-b border-[--accent-mocha]/10">
-        <div className="nav-container flex justify-between items-center max-w-[1600px] mx-auto">
-          <div className="nav-left flex items-center gap-10">
-            <span 
-              className="back-button font-['Inter'] text-xl cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:transform hover:-translate-x-[5px] hover:text-[--accent-mocha]"
-              onClick={() => router.back()}
-            >
-              ←
-            </span>
-            <span className="page-title font-['Inter'] text-lg font-light tracking-[0.2em] text-[--accent-mocha] uppercase max-[768px]:hidden">
-              Contact
-            </span>
-          </div>
-          <div 
-            className="logo font-['Playfair_Display'] text-2xl font-extrabold tracking-[0.05em] cursor-pointer transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.25,0.8,0.25,1)] text-white no-underline hover:opacity-70 hover:transform hover:scale-[1.02]"
-            onClick={() => router.push('/')}
-          >
-            REDUX
-          </div>
-        </div>
-      </nav>
 
       {/* Contact Hero - 비대칭 아방가르드 디자인 */}
-      <section className="contact-hero relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden pt-[120px]">
+      <section className="contact-hero relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden pt-[80px]">
         {/* 비대칭 배경 요소들 */}
         <div className="absolute inset-0">
           <div className="absolute top-[12%] left-[8%] w-[250px] h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent transform rotate-[35deg] animate-[slideInLeft_2s_ease_forwards]"></div>
