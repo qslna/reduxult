@@ -31,6 +31,9 @@ import GlobalErrorBoundary from '@/components/ui/GlobalErrorBoundary';
 import MobileAdminPanel from '@/components/admin/MobileAdminPanel';
 import SkipToContent from '@/components/ui/SkipToContent';
 import ClientMobileOptimizer from '@/components/ui/ClientMobileOptimizer';
+import ThemeToggle from '@/components/ui/ThemeToggle';
+import LanguageToggle from '@/components/ui/LanguageToggle';
+import AISearch from '@/components/ui/AISearch';
 
 export default function RootLayout({
   children,
@@ -150,6 +153,10 @@ export default function RootLayout({
           </main>
           <Footer />
           <MobileAdminPanel />
+          {/* 2025년 현대적 기능들 */}
+          <ThemeToggle />
+          <LanguageToggle />
+          <AISearch />
         </GlobalErrorBoundary>
         
         {/* 전역 에러 처리 시스템 */}

@@ -69,8 +69,13 @@ export default function MobileAdminPanel() {
 
       {/* Mobile Admin Panel */}
       {isPanelOpen && (
-        <div className="fixed inset-0 z-[1000] bg-black/80 backdrop-blur-sm">
-          <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-white/20 rounded-t-3xl p-6 transform transition-transform duration-300 translate-y-0">
+        <>
+          {/* Backdrop - \uc624\ubc84\ub808\uc774\ub97c \uc218\uc815\ud558\uc5ec \ud22c\uba85\ud558\uac8c \ub9cc\ub4ec */}
+          <div 
+            className="fixed inset-0 z-[999] bg-black/50 backdrop-blur-sm"
+            onClick={() => setIsPanelOpen(false)}
+          />
+          <div className="fixed bottom-0 left-0 right-0 z-[1000] bg-gradient-to-t from-black via-gray-900 to-gray-800 border-t border-white/20 rounded-t-3xl p-6 transform transition-transform duration-300 translate-y-0">
             <div className="flex flex-col space-y-4">
               {/* Panel Header */}
               <div className="flex items-center justify-between mb-4">
@@ -150,7 +155,7 @@ export default function MobileAdminPanel() {
               </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );

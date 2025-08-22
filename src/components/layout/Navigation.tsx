@@ -282,7 +282,33 @@ export default function Navigation() {
         aria-labelledby="mobile-menu-title"
       >
         <div className="redux-nav__mobile-content">
+          {/* Mobile Menu Header with Close Button */}
+          <div className="redux-nav__mobile-header">
+            <Link href="/" className="redux-nav__mobile-logo" onClick={closeMobileMenu}>
+              REDUX
+            </Link>
+            <button
+              onClick={closeMobileMenu}
+              className="redux-nav__mobile-close"
+              aria-label="메뉴 닫기"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
           <h2 id="mobile-menu-title" className="sr-only">Mobile Navigation Menu</h2>
+          
+          {/* Home Button - 가장 먼저 추가 */}
+          <div className="redux-nav__mobile-item redux-nav__mobile-item--home">
+            <Link href="/" onClick={closeMobileMenu}>
+              <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              Home
+            </Link>
+          </div>
           
           {/* About Mobile Menu */}
           <div className="redux-nav__mobile-item">
@@ -292,7 +318,10 @@ export default function Navigation() {
               aria-expanded={activeSubmenu === 'about'}
               aria-controls="mobile-about-submenu"
             >
-              About
+              <span>About</span>
+              <svg className={`w-4 h-4 ml-auto transition-transform ${activeSubmenu === 'about' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
             </button>
             <div 
               id="mobile-about-submenu"
@@ -315,7 +344,10 @@ export default function Navigation() {
               aria-expanded={activeSubmenu === 'designers'}
               aria-controls="mobile-designers-submenu"
             >
-              Designers
+              <span>Designers</span>
+              <svg className={`w-4 h-4 ml-auto transition-transform ${activeSubmenu === 'designers' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
             </button>
             <div 
               id="mobile-designers-submenu"
@@ -616,16 +648,59 @@ export default function Navigation() {
           position: relative;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.95);
-          backdrop-filter: blur(20px);
+          background: linear-gradient(135deg, rgba(0, 0, 0, 0.98) 0%, rgba(20, 20, 20, 0.95) 100%);
+          backdrop-filter: blur(30px);
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: center;
-          gap: 25px;
-          padding: 80px 20px 40px;
+          gap: 0;
+          padding: 0;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Mobile Menu Header */
+        .redux-nav__mobile-header {
+          width: 100%;
+          padding: 20px 24px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(0, 0, 0, 0.3);
+          backdrop-filter: blur(10px);
+          position: sticky;
+          top: 0;
+          z-index: 10;
+        }
+        
+        .redux-nav__mobile-logo {
+          font-family: 'Playfair Display', serif;
+          font-size: 24px;
+          font-weight: 700;
+          color: var(--primary-white);
+          text-decoration: none;
+          letter-spacing: 0.05em;
+        }
+        
+        .redux-nav__mobile-close {
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 12px;
+          color: var(--primary-white);
+          transition: all 0.3s ease;
+        }
+        
+        .redux-nav__mobile-close:hover,
+        .redux-nav__mobile-close:focus {
+          background: rgba(255, 255, 255, 0.2);
+          transform: scale(1.05);
+          outline: none;
         }
 
         .redux-nav__mobile-backdrop {
@@ -639,13 +714,25 @@ export default function Navigation() {
         }
 
         .redux-nav__mobile-item {
-          text-align: center;
           width: 100%;
-          max-width: 320px;
+          padding: 0 24px;
           opacity: 0;
-          transform: translateY(30px);
-          animation: fadeInUp 0.6s ease forwards;
-          animation-delay: calc(var(--index, 0) * 0.1s);
+          transform: translateY(20px);
+          animation: fadeInUp 0.4s ease forwards;
+          animation-delay: calc(var(--index, 0) * 0.05s);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .redux-nav__mobile-item--home {
+          background: linear-gradient(90deg, rgba(183, 175, 163, 0.1) 0%, transparent 100%);
+          border-bottom: 1px solid rgba(183, 175, 163, 0.2);
+        }
+        
+        .redux-nav__mobile-item--home > a {
+          color: var(--accent-mocha);
+          font-weight: 500;
+          display: flex;
+          align-items: center;
         }
 
         .redux-nav__mobile--active .redux-nav__mobile-item {
@@ -668,76 +755,111 @@ export default function Navigation() {
         .redux-nav__mobile-button,
         .redux-nav__mobile-item > a {
           font-family: 'Inter', sans-serif;
-          font-size: clamp(16px, 4.5vw, 20px);
+          font-size: 16px;
           font-weight: 400;
           color: var(--primary-white);
-          letter-spacing: 1.2px;
-          min-height: 54px;
+          letter-spacing: 0.05em;
+          min-height: 64px;
           display: flex;
           align-items: center;
-          justify-content: center;
-          padding: 12px 24px;
-          text-transform: uppercase;
+          padding: 20px 0;
+          text-transform: capitalize;
           background: none;
           border: none;
           cursor: pointer;
           text-decoration: none;
-          padding: 15px 25px;
-          display: block;
           width: 100%;
-          transition: all 0.3s ease;
-          border-radius: 8px;
-          min-height: 48px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          transition: all 0.2s ease;
+          border-radius: 0;
+          position: relative;
+        }
+        
+        .redux-nav__mobile-button {
+          justify-content: space-between;
         }
 
         .redux-nav__mobile-button:hover,
         .redux-nav__mobile-item > a:hover,
         .redux-nav__mobile-button:focus,
         .redux-nav__mobile-item > a:focus {
-          background: rgba(255, 255, 255, 0.1);
-          transform: scale(1.02);
+          color: var(--accent-mocha);
+          padding-left: 10px;
           outline: none;
+        }
+        
+        .redux-nav__mobile-button::before,
+        .redux-nav__mobile-item > a::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 3px;
+          height: 0;
+          background: var(--accent-mocha);
+          transition: height 0.3s ease;
+        }
+        
+        .redux-nav__mobile-button:hover::before,
+        .redux-nav__mobile-item > a:hover::before {
+          height: 30px;
         }
 
         .redux-nav__mobile-submenu {
           max-height: 0;
           overflow: hidden;
-          transition: max-height 0.3s ease;
-          margin-top: 10px;
+          transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          background: rgba(255, 255, 255, 0.02);
         }
 
         .redux-nav__mobile-submenu--active {
-          max-height: 400px;
+          max-height: 500px;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .redux-nav__mobile-submenu a {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 300;
           color: var(--primary-white);
-          opacity: 0.8;
+          opacity: 0.7;
           text-decoration: none;
-          padding: 12px 25px;
+          padding: 16px 24px 16px 48px;
           display: block;
-          transition: all 0.3s ease;
-          border-radius: 6px;
-          margin: 2px 0;
+          transition: all 0.2s ease;
+          border-radius: 0;
+          margin: 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+          position: relative;
         }
 
         .redux-nav__mobile-submenu a:hover,
         .redux-nav__mobile-submenu a:focus {
           opacity: 1;
-          background: rgba(255, 255, 255, 0.08);
-          transform: translateX(5px);
+          color: var(--accent-mocha);
+          background: rgba(183, 175, 163, 0.05);
+          padding-left: 56px;
           outline: none;
+        }
+        
+        .redux-nav__mobile-submenu a::before {
+          content: '→';
+          position: absolute;
+          left: 32px;
+          color: var(--accent-mocha);
+          opacity: 0;
+          transition: opacity 0.2s ease;
+        }
+        
+        .redux-nav__mobile-submenu a:hover::before {
+          opacity: 1;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
           .redux-nav {
             padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
           }
           
           .redux-nav--scrolled {
@@ -758,6 +880,16 @@ export default function Navigation() {
 
           .redux-nav__logo {
             font-size: 20px;
+          }
+          
+          /* 모바일 메뉴 컨텐츠 패딩 조정 */
+          .redux-nav__mobile-content {
+            padding-top: 0;
+          }
+          
+          /* 메뉴 아이템 시작 위치 */
+          .redux-nav__mobile-item:first-of-type {
+            margin-top: 20px;
           }
         }
 
