@@ -1,4 +1,4 @@
-import { Designer } from '@/types';
+import { Designer } from '../types';
 
 export const designers: Designer[] = [
   {

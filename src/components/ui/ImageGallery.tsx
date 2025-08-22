@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import LazyLightbox from './LazyLightbox';
-import LazyEditableImage from '@/components/admin/LazyEditableImage';
+import LazyEditableImage from '../admin/LazyEditableImage';
 
 interface ImageGalleryProps {
   images: string[];

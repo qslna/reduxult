@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
-import { createSuccessResponse, createErrorResponse, setCorsHeaders } from '@/lib/api-response';
+import { db } from '../../../lib/db';
+import { createSuccessResponse, createErrorResponse, setCorsHeaders } from '../../../lib/api-response';
 
 // GET /api/health - System health check
 export async function GET(request: NextRequest) {

@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { Settings, Search, Filter, BarChart3, X, LogOut } from 'lucide-react';
-import { mediaSlots, getCMSStats, getSlotsByPriority, getSlotsByCategory, type MediaSlot as MediaSlotType } from '@/lib/cms-config';
+import { mediaSlots, getCMSStats, getSlotsByPriority, getSlotsByCategory, type MediaSlot as MediaSlotType } from '../../lib/cms-config';
 import MediaSlot from './MediaSlot';
 import SimpleLoginModal from './SimpleLoginModal';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
 
 interface CMSManagerProps {
   isOpen: boolean;

@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { Settings, X } from 'lucide-react';
 import LazyCMSManager from './LazyCMSManager';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { measureChunkLoading } from '@/utils/performanceMonitor';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
+import { measureChunkLoading } from '../../utils/performanceMonitor';
 
 export default function FloatingCMSButton() {
   const [showCMS, setShowCMS] = useState(false);

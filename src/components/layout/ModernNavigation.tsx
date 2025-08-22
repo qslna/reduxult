@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { DESIGN_TOKENS, COMMON_CLASSES, layoutUtils } from '@/lib/design-system';
-import { navigationItems, mobileNavigationItems } from '@/data/navigation';
-import NavLink from '@/components/ui/NavLink';
-import Dropdown, { MobileAccordion, MobileMenuToggle } from '@/components/ui/Dropdown';
+import { DESIGN_TOKENS, COMMON_CLASSES, layoutUtils } from '../../lib/design-system';
+import { navigationItems, mobileNavigationItems } from '../../data/navigation';
+import NavLink from '../ui/NavLink';
+import Dropdown, { MobileAccordion, MobileMenuToggle } from '../ui/Dropdown';
 
 /**
  * ModernNavigation component - 모던한 네비게이션 컴포넌트

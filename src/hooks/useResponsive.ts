@@ -6,7 +6,7 @@ import {
   responsiveUtils, 
   type ResponsiveState, 
   type UseResponsiveOptions 
-} from '@/lib/responsive-design';
+} from '../lib/responsive-design';
 
 /**
  * Custom hook for responsive design management

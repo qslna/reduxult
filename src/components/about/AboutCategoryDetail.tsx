@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Grid, Plus, Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { Category } from '@/types';
-import EditableImage from '@/components/admin/EditableImage';
-import EditableVideo from '@/components/admin/EditableVideo';
-import Lightbox from '@/components/ui/Lightbox';
-import useContentStore from '@/store/useContentStore';
+import { Category } from '../../types';
+import EditableImage from '../admin/EditableImage';
+import EditableVideo from '../admin/EditableVideo';
+import Lightbox from '../ui/Lightbox';
+import useContentStore from '../../store/useContentStore';
 
 interface Props {
   category: Category;

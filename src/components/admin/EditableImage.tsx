@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { Edit3, Upload, Loader2 } from 'lucide-react';
-import OptimizedImage from '@/components/ui/OptimizedImage';
+import OptimizedImage from '../ui/OptimizedImage';
 
 interface EditableImageProps {
   src: string;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { initializeMobileOptimization } from '@/utils/mobileOptimization';
+import { initializeMobileOptimization } from '../../utils/mobileOptimization';
 
 /**
  * 클라이언트 사이드에서 모바일 최적화를 초기화하는 컴포넌트

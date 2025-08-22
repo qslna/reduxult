@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { COMPONENT_STYLES, TYPOGRAPHY, layoutUtils } from '@/lib/design-system';
+import { COMPONENT_STYLES, TYPOGRAPHY, layoutUtils } from '../../lib/design-system';
 
 interface NavLinkProps {
   href: string;

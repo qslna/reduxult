@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Settings, X, Trash2, Eye, EyeOff, LogOut } from 'lucide-react';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useAllCMSSlots } from '@/hooks/useSimpleCMS';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
+import { useAllCMSSlots } from '../../hooks/useSimpleCMS';
 import SimpleLoginModal from './SimpleLoginModal';
 
 interface SimpleAdminPanelProps {

@@ -6,7 +6,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { cmsBackend, CMSBackendResponse } from '@/lib/cms-backend';
+import { cmsBackend, CMSBackendResponse } from '../lib/cms-backend';
 
 interface UseEnhancedCMSOptions {
   slotId: string;

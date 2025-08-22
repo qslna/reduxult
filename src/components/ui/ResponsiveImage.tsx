@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
-import { useResponsive, useContainerQuery } from '@/hooks/useResponsive';
-import { responsiveUtils } from '@/lib/responsive-design';
+import { useResponsive, useContainerQuery } from '../../hooks/useResponsive';
+import { responsiveUtils } from '../../lib/responsive-design';
 
 interface ResponsiveImageProps {
   src: string;

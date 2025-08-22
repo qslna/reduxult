@@ -1,4 +1,4 @@
-import { LAYOUT_CLASSES, layoutUtils, type ContainerProps } from '@/lib/design-system';
+import { LAYOUT_CLASSES, layoutUtils, type ContainerProps } from '../../lib/design-system';
 
 /**
  * Container component - 반응형 컨테이너 래퍼

@@ -1,7 +1,7 @@
 'use client';
 
 import { lazy, Suspense } from 'react';
-import { Skeleton } from '@/components/ui/Skeleton';
+import { Skeleton } from './Skeleton';
 
 // 동적으로 ImageGallery 로드
 const ImageGalleryComponent = lazy(() => import('./ImageGallery'));

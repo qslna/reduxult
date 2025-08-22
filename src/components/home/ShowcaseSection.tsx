@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import OptimizedImage from '@/components/ui/OptimizedImage';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import DirectCMS from '@/components/cms/DirectCMS';
+import OptimizedImage from '../ui/OptimizedImage';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
+import { useSimpleCMS } from '../../hooks/useSimpleCMS';
+import DirectCMS from '../cms/DirectCMS';
 
 // 최적화된 ShowcaseSection - 로딩 문제 해결
 export default function ShowcaseSection() {

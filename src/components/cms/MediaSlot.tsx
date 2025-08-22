@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { Plus, Minus, Upload, Video, Image as ImageIcon, Loader2, Check, Trash2, CheckSquare } from 'lucide-react';
-import type { MediaSlot as MediaSlotType } from '@/lib/cms-config';
+import type { MediaSlot as MediaSlotType } from '../../lib/cms-config';
 
 interface MediaSlotProps {
   slot: MediaSlotType;

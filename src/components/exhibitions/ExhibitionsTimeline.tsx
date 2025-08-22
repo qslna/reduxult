@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { EXHIBITIONS } from '@/utils/constants';
-import { cn } from '@/lib/utils';
+import { EXHIBITIONS } from '../../utils/constants';
+import { cn } from '../../lib/utils';
 import { Calendar, MapPin, Users } from 'lucide-react';
 
 export default function ExhibitionsTimeline() {

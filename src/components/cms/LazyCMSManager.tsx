@@ -1,7 +1,7 @@
 'use client';
 
 import { lazy, Suspense } from 'react';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import LoadingSpinner from '../ui/LoadingSpinner';
 
 // 동적으로 CMS Manager 로드
 const CMSManagerComponent = lazy(() => import('./CMSManager'));

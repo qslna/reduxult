@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import OptimizedImage from '@/components/ui/OptimizedImage';
-import { CategoryGallery, GalleryImage } from '@/data/aboutGallery';
+import OptimizedImage from '../ui/OptimizedImage';
+import { CategoryGallery, GalleryImage } from '../../data/aboutGallery';
 
 interface CategoryPreviewProps {
   category: CategoryGallery;

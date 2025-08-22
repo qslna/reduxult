@@ -1,10 +1,10 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { footerNavigation, socialLinks } from '@/data/navigation';
-import { LAYOUT_CLASSES, TYPOGRAPHY, layoutUtils } from '@/lib/design-system';
-import { Flex } from '@/components/layout/Container';
-import NavLink, { ExternalLink } from '@/components/ui/NavLink';
+import { footerNavigation, socialLinks } from '../../data/navigation';
+import { LAYOUT_CLASSES, TYPOGRAPHY, layoutUtils } from '../../lib/design-system';
+import { Flex } from './Container';
+import NavLink, { ExternalLink } from '../ui/NavLink';
 
 /**
  * ModernFooter component - 모던한 푸터 컴포넌트

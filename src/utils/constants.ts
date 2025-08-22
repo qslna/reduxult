@@ -1,4 +1,4 @@
-import { Designer, Project, Exhibition } from '@/types';
+import { Designer, Project, Exhibition } from '../types';
 
 export const DESIGNERS: Designer[] = [
   {

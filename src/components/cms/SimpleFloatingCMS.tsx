@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Settings } from 'lucide-react';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
 import SimpleAdminPanel from './SimpleAdminPanel';
 import SimpleLoginModal from './SimpleLoginModal';
 

@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { CATEGORIES } from '@/utils/constants';
+import { CATEGORIES } from '../../utils/constants';
 import { ArrowRight } from 'lucide-react';
-import EditableImage from '@/components/admin/EditableImage';
+import EditableImage from '../admin/EditableImage';
 
 interface CategoryState {
   id: string;

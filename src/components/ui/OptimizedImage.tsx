@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useState } from 'react';
-import { layoutUtils } from '@/lib/design-system';
+import { layoutUtils } from '../../lib/design-system';
 
 interface OptimizedImageProps {
   src: string;

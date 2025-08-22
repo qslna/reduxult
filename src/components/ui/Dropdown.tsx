@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { DESIGN_TOKENS, layoutUtils } from '@/lib/design-system';
+import { DESIGN_TOKENS, layoutUtils } from '../../lib/design-system';
 import NavLink from './NavLink';
 
 interface DropdownItem {
