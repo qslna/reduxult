@@ -305,11 +305,20 @@ export default function AboutPage() {
           .about-grid-item h3 {
             font-size: 1.5rem !important;
             margin-bottom: 0.5rem !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            hyphens: auto !important;
           }
           
           .about-grid-item p {
             font-size: 0.85rem !important;
             line-height: 1.4 !important;
+            word-wrap: break-word !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            white-space: normal !important;
+            text-overflow: unset !important;
+            max-width: 100% !important;
           }
         }
         

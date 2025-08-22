@@ -214,7 +214,10 @@ export default function ContactPage() {
               style={{ 
                 fontSize: 'clamp(50px, 12vw, 140px)', 
                 letterSpacing: '-0.02em',
-                textShadow: '0 0 40px rgba(255,255,255,0.1)'
+                textShadow: '0 0 40px rgba(255,255,255,0.1)',
+                wordWrap: 'break-word',
+                overflowWrap: 'break-word',
+                hyphens: 'auto'
               }}>
             {heroTitle.split('').map((letter: string, index: number) => (
               <span 
@@ -236,7 +239,10 @@ export default function ContactPage() {
             <p className="contact-hero-subtitle font-['Inter'] text-white/80 tracking-[0.4em] uppercase opacity-0 animate-[fadeInUp_1s_ease_forwards] [animation-delay:1.5s]" 
                style={{
                  fontSize: 'clamp(14px, 2vw, 18px)',
-                 fontWeight: 300
+                 fontWeight: 300,
+                 wordWrap: 'break-word',
+                 overflowWrap: 'break-word',
+                 whiteSpace: 'normal'
                }}>
               {heroSubtitle}
             </p>
