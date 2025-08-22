@@ -46,7 +46,7 @@ export function testTouchOptimization(): MobileTestResult[] {
   const touchTargets = document.querySelectorAll('button, a, input[type="button"], input[type="submit"], [role="button"]');
   const minTouchSize = 44; // Apple HIG 권장사항
   let smallTargetCount = 0;
-  let totalTargets = touchTargets.length;
+  const totalTargets = touchTargets.length;
   
   touchTargets.forEach(target => {
     const rect = target.getBoundingClientRect();
