@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useCMSSlot } from '@/hooks/useCMSSlot';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import MediaSlot from '@/components/cms/MediaSlot';
-import OptimizedImage from '@/components/ui/OptimizedImage';
+import { useCMSSlot } from '../../../hooks/useCMSSlot';
+import { useSimpleAuth } from '../../../hooks/useSimpleAuth';
+import MediaSlot from '../../../components/cms/MediaSlot';
+import OptimizedImage from '../../../components/ui/OptimizedImage';
 
 // HTML redux5 about-visual-art.html과 완전 동일한 Visual Art 페이지 구현
 export default function VisualArtPage() {

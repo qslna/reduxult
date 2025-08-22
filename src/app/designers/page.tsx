@@ -2,11 +2,11 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { designers } from '@/data/designers';
-import { useTextContent } from '@/hooks/usePageContent';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import DirectCMS from '@/components/cms/DirectCMS';
+import { designers } from '../../data/designers';
+import { useTextContent } from '../../hooks/usePageContent';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
+import { useSimpleCMS } from '../../hooks/useSimpleCMS';
+import DirectCMS from '../../components/cms/DirectCMS';
 
 interface DesignerCardProps {
   designer: {

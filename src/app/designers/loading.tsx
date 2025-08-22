@@ -1,4 +1,4 @@
-import { SkeletonDesigner } from '@/components/ui/Skeleton';
+import { SkeletonDesigner } from '../../components/ui/Skeleton';
 
 export default function Loading() {
   return (

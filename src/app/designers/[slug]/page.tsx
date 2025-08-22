@@ -3,14 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { notFound } from 'next/navigation';
-import { designers } from '@/data/designers';
-import { Designer } from '@/types';
-import OptimizedImage from '@/components/ui/OptimizedImage';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useSimpleCMS, useGalleryCMS } from '@/hooks/useSimpleCMS';
-import GalleryCMS from '@/components/cms/GalleryCMS';
-import DirectCMS from '@/components/cms/DirectCMS';
-import { getSlotById } from '@/lib/cms-config';
+import { designers } from '../../../data/designers';
+import { Designer } from '../../../types';
+import OptimizedImage from '../../../components/ui/OptimizedImage';
+import { useSimpleAuth } from '../../../hooks/useSimpleAuth';
+import { useSimpleCMS, useGalleryCMS } from '../../../hooks/useSimpleCMS';
+import GalleryCMS from '../../../components/cms/GalleryCMS';
+import DirectCMS from '../../../components/cms/DirectCMS';
+import { getSlotById } from '../../../lib/cms-config';
 
 interface Props {
   params: Promise<{

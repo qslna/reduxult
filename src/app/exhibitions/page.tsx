@@ -2,10 +2,10 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import OptimizedImage from '@/components/ui/OptimizedImage';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import { useSimpleCMS } from '@/hooks/useSimpleCMS';
-import DirectCMS from '@/components/cms/DirectCMS';
+import OptimizedImage from '../../components/ui/OptimizedImage';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
+import { useSimpleCMS } from '../../hooks/useSimpleCMS';
+import DirectCMS from '../../components/cms/DirectCMS';
 
 // Simplified Exhibitions Page
 export default function ExhibitionsPage() {

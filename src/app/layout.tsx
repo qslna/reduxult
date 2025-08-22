@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import './globals.css';
 import '../styles/mobile-optimization.css';
-import { baseMetadata, generateOrganizationStructuredData, generateWebsiteStructuredData } from '@/lib/seo';
-import { DEFAULT_SEO, seoPerformanceOptimization } from '@/lib/seo-optimization';
+import { baseMetadata, generateOrganizationStructuredData, generateWebsiteStructuredData } from '../lib/seo';
+import { DEFAULT_SEO, seoPerformanceOptimization } from '../lib/seo-optimization';
 
 // const inter = Inter({ 
 //   subsets: ['latin'],
@@ -23,15 +23,15 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 };
 
-import Navigation from '@/components/layout/Navigation';
-import Footer from '@/components/layout/Footer';
+import Navigation from '../components/layout/Navigation';
+import Footer from '../components/layout/Footer';
 // import PageTransition from '@/components/ui/PageTransition';
 // import InitialLoadingScreen from '@/components/ui/InitialLoadingScreen';
 // import GlobalErrorBoundary from '@/components/ui/GlobalErrorBoundary';
-import MobileAdminPanel from '@/components/admin/MobileAdminPanel';
-import SkipToContent from '@/components/ui/SkipToContent';
-import ClientMobileOptimizer from '@/components/ui/ClientMobileOptimizer';
-import AISearch from '@/components/ui/AISearch';
+import MobileAdminPanel from '../components/admin/MobileAdminPanel';
+import SkipToContent from '../components/ui/SkipToContent';
+import ClientMobileOptimizer from '../components/ui/ClientMobileOptimizer';
+import AISearch from '../components/ui/AISearch';
 
 export default function RootLayout({
   children,

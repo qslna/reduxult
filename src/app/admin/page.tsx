@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useSimpleAuth } from '@/hooks/useSimpleAuth';
-import SimpleLoginModal from '@/components/cms/SimpleLoginModal';
-import CMSBackendStatus from '@/components/admin/CMSBackendStatus';
+import { useSimpleAuth } from '../../hooks/useSimpleAuth';
+import SimpleLoginModal from '../../components/cms/SimpleLoginModal';
+import CMSBackendStatus from '../../components/admin/CMSBackendStatus';
 import { Shield, LogOut, Server } from 'lucide-react';
 import { ErrorBoundary } from 'react-error-boundary';
 

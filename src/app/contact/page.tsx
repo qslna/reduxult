@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 // GSAP 제거됨 - 필요한 애니메이션은 Framer Motion으로 대체
-import { useTextContent } from '@/hooks/usePageContent';
+import { useTextContent } from '../../hooks/usePageContent';
 
 // HTML redux6 contact.html과 완전 동일한 Contact 페이지 구현
 export default function ContactPage() {
