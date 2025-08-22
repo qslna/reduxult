@@ -44,12 +44,13 @@ const nextConfig = {
       '@radix-ui/react-toast'
     ],
     webVitalsAttribution: ['CLS', 'LCP', 'FCP', 'INP', 'TTFB'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  },
+  // Turbopack 설정 (turbo가 이제 안정화되어 experimental 밖으로 이동)
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },

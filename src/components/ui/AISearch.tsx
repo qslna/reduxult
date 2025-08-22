@@ -148,7 +148,7 @@ export default function AISearch() {
           setIsOpen(true);
           setTimeout(() => inputRef.current?.focus(), 100);
         }}
-        className="fixed top-20 right-6 md:right-48 z-[90] flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white hover:bg-white/20 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/30"
+        className="fixed top-20 right-6 z-[90] flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white hover:bg-white/20 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/30"
         aria-label="AI Search (Cmd+K)"
         title="AI Search (Cmd+K)"
       >
