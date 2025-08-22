@@ -218,12 +218,10 @@ export default function VisualArtPage() {
         </div>
       </section>
 
-      {/* CMS Admin Interface - Only visible to authenticated users */}
-      {isAuthenticated && visualArtSlot && (
+      {/* CMS Admin Interface - 안전하게 조건부 렌더링 */}
+      {isAuthenticated && isClient && visualArtSlot && (
         <section className="cms-admin-section py-[80px] px-10 bg-gray-50">
-          <div 
-            className="max-w-[1600px] mx-auto"
-          >
+          <div className="max-w-[1600px] mx-auto">
             <div style={{
               background: 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(10px)',

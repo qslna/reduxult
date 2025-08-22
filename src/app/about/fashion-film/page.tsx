@@ -24,15 +24,13 @@ function FashionFilmContent() {
   // CMS integration
   const { isAuthenticated } = useSimpleAuth();
   
-  // 최적화된 CMS 슬롯 데이터 구조
-  const filmData = [
+  // 기본 영화 데이터 - 검은 화면 방지를 위해 항상 렌더링 가능
+  const baseFilmData = [
     {
       id: 'kimbomin',
       name: 'Kim Bomin',
       title: 'CHASING VOWS',
       description: '설레임과 이별의 감정을 담은 서사',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-kimbomin-thumbnail'),
-      videoSlot: useCMSSlot('designer-kimbomin-film'),
       defaultThumbnail: '/images/designers/kimbomin/cinemode/NOR_7419-11.jpg',
       defaultVideo: '1dU4ypIXASSlVMGzyPvPtlP7v-rZuAg0X'
     },
@@ -41,8 +39,6 @@ function FashionFilmContent() {
       name: 'Park Parang',
       title: 'THE TIME BETWEEN',
       description: '시간의 틈 사이에서 발견하는 아름다움',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-parkparang-thumbnail'),
-      videoSlot: useCMSSlot('designer-parkparang-film'),
       defaultThumbnail: '/images/profile/Park Parang.jpg',
       defaultVideo: '15d901XRElkF5p7xiJYelIyblYFb-PtsD'
     },
@@ -51,8 +47,6 @@ function FashionFilmContent() {
       name: 'Lee Taehyeon',
       title: 'POLYHEDRON',
       description: '다면체로 표현하는 인간의 복잡성',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-leetaehyeon-thumbnail'),
-      videoSlot: useCMSSlot('designer-leetaehyeon-film'),
       defaultThumbnail: '/images/designers/leetaehyeon/cinemode/KakaoTalk_20250628_134001383_01.jpg',
       defaultVideo: '1fG2fchKvEG7i7Lo79K7250mgiVTse6ks'
     },
@@ -61,8 +55,6 @@ function FashionFilmContent() {
       name: 'Choi Eunsol',
       title: 'SOUL SUCKER',
       description: '영혼을 빨아드리는 유혹의 힘',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-choieunsol-thumbnail'),
-      videoSlot: useCMSSlot('designer-choieunsol-film'),
       defaultThumbnail: '/images/designers/choieunsol/cinemode/IMG_8617.jpeg',
       defaultVideo: '1uFdMyzPQgpfCYYOLRtH8ixX5917fzxh3'
     },
@@ -71,12 +63,17 @@ function FashionFilmContent() {
       name: 'Kim Gyeongsu',
       title: 'TO BE REVEALED',
       description: '드러날 진실에 대한 고민',
-      thumbnailSlot: useCMSSlot('about-fashionfilm-kimgyeongsu-thumbnail'),
-      videoSlot: useCMSSlot('designer-kimgyeongsu-film'),
       defaultThumbnail: '/images/designers/kimgyeongsu/Showcase/IMG_2544.jpg',
       defaultVideo: '1Hl594dd_MY714hZwmklTAPTc-pofe9bY'
     }
   ];
+
+  // CMS 슬롯들 - 클라이언트에서만 초기화
+  const kimbomin_thumb = useCMSSlot('about-fashionfilm-kimbomin-thumbnail');
+  const parkparang_thumb = useCMSSlot('about-fashionfilm-parkparang-thumbnail');
+  const leetaehyeon_thumb = useCMSSlot('about-fashionfilm-leetaehyeon-thumbnail');
+  const choieunsol_thumb = useCMSSlot('about-fashionfilm-choieunsol-thumbnail');
+  const kimgyeongsu_thumb = useCMSSlot('about-fashionfilm-kimgyeongsu-thumbnail');
 
   useEffect(() => {
     if (!isClient) return;
@@ -136,11 +133,10 @@ function FashionFilmContent() {
   const openFilm = (filmId: string) => {
     if (!isClient) return;
     
-    const film = filmData.find(f => f.id === filmId);
+    const film = baseFilmData.find(f => f.id === filmId);
     if (!film) return;
     
-    const videoFile = film.videoSlot.currentFiles[0] || film.defaultVideo;
-    setCurrentFilm(videoFile);
+    setCurrentFilm(film.defaultVideo);
     setIsModalOpen(true);
     document.body.style.overflow = 'hidden';
   };
@@ -232,8 +228,33 @@ function FashionFilmContent() {
         </div>
         
         <div className="films-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1400px] mx-auto">
-          {filmData.map((film, index) => {
-            const thumbnailUrl = film.thumbnailSlot.currentFiles[0] || film.defaultThumbnail;
+          {baseFilmData.map((film, index) => {
+            // CMS 슬롯에서 이미지 가져오기 (안전하게)
+            let thumbnailUrl = film.defaultThumbnail;
+            let cmsSlot = null;
+            
+            if (isClient && isAuthenticated) {
+              switch(film.id) {
+                case 'kimbomin':
+                  cmsSlot = kimbomin_thumb;
+                  break;
+                case 'parkparang':
+                  cmsSlot = parkparang_thumb;
+                  break;
+                case 'leetaehyeon':
+                  cmsSlot = leetaehyeon_thumb;
+                  break;
+                case 'choieunsol':
+                  cmsSlot = choieunsol_thumb;
+                  break;
+                case 'kimgyeongsu':
+                  cmsSlot = kimgyeongsu_thumb;
+                  break;
+              }
+              if (cmsSlot?.currentFiles?.[0]) {
+                thumbnailUrl = cmsSlot.currentFiles[0];
+              }
+            }
             
             return (
               <div 
@@ -277,8 +298,8 @@ function FashionFilmContent() {
                   </div>
                 </div>
                 
-                {/* CMS overlay for admin */}
-                {isAuthenticated && (
+                {/* CMS overlay for admin - 안전한 렌더링 */}
+                {isAuthenticated && isClient && cmsSlot?.slot && (
                   <div 
                     className="absolute top-2 right-2 z-20 w-8 h-8"
                     onClick={(e) => {
@@ -287,9 +308,9 @@ function FashionFilmContent() {
                     }}
                   >
                     <MediaSlot
-                      slot={film.thumbnailSlot.slot!}
-                      currentFiles={film.thumbnailSlot.currentFiles}
-                      onFilesUpdate={film.thumbnailSlot.updateFiles}
+                      slot={cmsSlot.slot}
+                      currentFiles={cmsSlot.currentFiles}
+                      onFilesUpdate={cmsSlot.updateFiles}
                       isAdminMode={true}
                     />
                   </div>
