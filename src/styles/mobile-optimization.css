@@ -94,12 +94,38 @@ textarea,
     width: 100% !important;
     max-width: 100% !important;
     overflow-wrap: break-word !important;
-    word-break: keep-all !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+    text-overflow: unset !important;
     padding: 0 10px !important;
+  }
+  
+  /* 특히 긴 텍스트나 설명문을 위한 특별 처리 */
+  .text-white\/80,
+  .designer-info p,
+  .bio-text,
+  .description-text {
+    max-width: 100% !important;
+    width: 100% !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    text-overflow: unset !important;
+    display: block !important;
   }
   
   /* 모든 텍스트 요소에 대한 추가 보호 */
   div, span, a, button, li, td, th {
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+  }
+  
+  /* 특히 중요: max-width 제한이 있는 요소들을 모바일에서 해제 */
+  .max-w-\\[500px\\],
+  [class*="max-w-"],
+  .leading-relaxed {
     max-width: 100% !important;
     overflow-wrap: break-word !important;
     word-wrap: break-word !important;

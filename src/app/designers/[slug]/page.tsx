@@ -255,7 +255,7 @@ export default function DesignerPage({ params }: Props) {
                   
                   {/* Bio */}
                   <div className="mb-8">
-                    <p className="text-white/80 text-lg leading-relaxed max-w-[500px]">
+                    <p className="text-white/80 text-lg leading-relaxed max-w-[500px] lg:max-w-[500px] md:max-w-full sm:max-w-full">
                       {designer.bio}
                     </p>
                   </div>
@@ -666,6 +666,20 @@ export default function DesignerPage({ params }: Props) {
             width: 100% !important;
             max-width: 100% !important;
             order: 1 !important;
+            padding: 0 20px !important;
+          }
+          
+          .designer-info p {
+            max-width: 100% !important;
+            width: 100% !important;
+            word-wrap: break-word !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            white-space: normal !important;
+            text-overflow: unset !important;
+            font-size: 16px !important;
+            line-height: 1.6 !important;
+            margin-bottom: 1rem !important;
           }
           
           .designer-name,
